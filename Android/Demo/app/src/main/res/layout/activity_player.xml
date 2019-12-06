@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0d0d0d">
+
+    <fr.castorflex.android.verticalviewpager.VerticalViewPager
+        android:id="@+id/vertical_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/player_tv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="15dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:drawableLeft="@drawable/btn_back_shaddowed"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/btn_back_shaddowed"
+        android:textColor="@color/colorTransparentGray" />
+
+    <ImageButton
+        android:id="@+id/imgBtn_follow_shot"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="15dp"
+        android:background="#00ffffff"
+        android:src="@drawable/btn_follow_shot" />
+
+</RelativeLayout>

@@ -1,0 +1,69 @@
+package com.tencent.qcloud.ugckit.module.picturetransition;
+
+import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.ugc.TXVideoEditConstants;
+import com.tencent.ugc.TXVideoEditer;
+
+import java.util.ArrayList;
+
+public class PictureTransitionKit {
+
+    @NonNull
+    private static PictureTransitionKit instance = new PictureTransitionKit();
+    /**
+     * 默认图片帧率
+     */
+    private static final int DEFAULT_FPS = 20;
+    /**
+     * 默认转场动画类型
+     */
+    public static final int DEFAULT_TRANSITION = TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;
+
+    private PictureTransitionKit() {
+
+    }
+
+    @NonNull
+    public static PictureTransitionKit getInstance() {
+        return instance;
+    }
+
+    /**
+     * 计算图片加上转场动画后合成视频的时长
+     *
+     * @param type
+     * @return
+     */
+    public long pictureTransition(int type) {
+        long duration = 0;
+        TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+        switch (type) {
+            case TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING:
+                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING);
+                break;
+            case TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING:
+                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING);
+                break;
+            case TXVideoEditConstants.TX_TRANSITION_TYPE_ENLARGE:
+                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_ENLARGE);
+                break;
+            case TXVideoEditConstants.TX_TRANSITION_TYPE_NARROW:
+                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_NARROW);
+                break;
+            case TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING:
+                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING);
+                break;
+            case TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT:
+                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT);
+                break;
+        }
+        return duration;
+    }
+
+    public int setPictureList(ArrayList<Bitmap> bitmapList) {
+        return VideoEditerSDK.getInstance().getEditer().setPictureList(bitmapList, DEFAULT_FPS);
+    }
+}

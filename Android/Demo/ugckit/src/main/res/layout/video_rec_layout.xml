@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical">
+
+    <!-- 视频预览界面 -->
+    <com.tencent.rtmp.ui.TXCloudVideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <com.tencent.qcloud.ugckit.module.record.ScrollFilterView
+        android:id="@+id/scrollFilterView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.tencent.qcloud.ugckit.module.record.RecordRightLayout
+        android:id="@+id/record_right_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/titleBar_layout" />
+
+    <com.tencent.qcloud.ugckit.module.record.RecordBottomLayout
+        android:id="@+id/record_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <com.tencent.qcloud.ugckit.module.record.RecordMusicPannel
+        android:id="@+id/record_music_pannel"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
+    <com.tencent.qcloud.ugckit.module.record.beauty.BeautyPannel
+        android:id="@+id/beauty_pannel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:visibility="gone" />
+
+    <com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel
+        android:id="@+id/sound_effect_pannel"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
+    <!-- 用于拍照以后生成的图片界面显示-->
+    <com.tencent.qcloud.ugckit.module.record.ImageSnapShotView
+        android:id="@+id/image_snapshot_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:scaleType="fitCenter" />
+
+    <!-- 标题栏 -->
+    <com.tencent.qcloud.ugckit.component.TitleBarLayout
+        android:id="@+id/titleBar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+</RelativeLayout>

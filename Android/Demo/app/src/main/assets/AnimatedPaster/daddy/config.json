@@ -1,0 +1,17 @@
+{
+  "name":"daddy",
+  "count": 7,
+  "period":280,
+  "width": 620,
+  "height": 373,
+  "keyframe": 7,
+  "frameArray": [
+                 {"picture":"daddy0"},
+                 {"picture":"daddy1"},
+                 {"picture":"daddy2"},
+                 {"picture":"daddy3"},
+                 {"picture":"daddy4"},
+                 {"picture":"daddy5"},
+                 {"picture":"daddy6"}
+               ]
+}

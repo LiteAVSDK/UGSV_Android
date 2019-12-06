@@ -1,0 +1,23 @@
+{
+  "name": "face",
+  "count": 13,
+  "period": 280,
+  "width": 472,
+  "height": 271,
+  "keyframe": 6,
+  "frameArray": [
+                  {"picture": "face0"},
+                  {"picture": "face1"},
+                  {"picture": "face2"},
+                  {"picture": "face3"},
+                  {"picture": "face4"},
+                  {"picture": "face5"},
+                  {"picture": "face6"},
+                  {"picture": "face7"},
+                  {"picture": "face8"},
+                  {"picture": "face9"},
+                  {"picture": "face10"},
+                  {"picture": "face11"},
+                  {"picture": "face12"}
+                ]
+}

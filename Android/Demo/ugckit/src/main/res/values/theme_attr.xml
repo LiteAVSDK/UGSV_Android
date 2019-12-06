@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BasicStyle">
+        <attr name="titleColor" format="reference" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="backIcon" format="reference" />
+        <attr name="nextIcon" format="reference" />
+        <attr name="progressColor" format="reference" />
+        <attr name="sliderColor" format="reference" />
+        <attr name="ugckitColorPrimary" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="PickerStyle">
+        <attr name="pickerDelIcon" format="reference" />
+        <attr name="pickerNextIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RecordStyle">
+        <!-- 音乐icon -->
+        <attr name="recordMusicIcon" format="reference" />
+        <!-- 屏比icon-->
+        <attr name="recordAspect11Icon" format="reference" />
+        <attr name="recordAspect34Icon" format="reference" />
+        <attr name="recordAspect43Icon" format="reference" />
+        <attr name="recordAspect169Icon" format="reference" />
+        <attr name="recordAspect916Icon" format="reference" />
+
+        <!-- 美颜icon-->
+        <attr name="recordBeautyIcon" format="reference" />
+        <!-- 音效icon-->
+        <attr name="recordAudioEffectIcon" format="reference" />
+        <!-- 回删icon-->
+        <attr name="recordDeleteIcon" format="reference" />
+        <!-- 闪光灯icon-->
+        <attr name="recordTorchOnIcon" format="reference" />
+        <attr name="recordTorchOffIcon" format="reference" />
+        <attr name="recordTorchDisableIcon" format="reference" />
+        <!-- 速度 -->
+        <attr name="recordSpeedSlowestBackgroud" format="reference" />
+        <attr name="recordSpeedSlowBackground" format="reference" />
+        <attr name="recordSpeedNormalBackground" format="reference" />
+        <attr name="recordSpeedFastBackground" format="reference" />
+        <attr name="recordSpeedFastestBackground" format="reference" />
+        <!-- 切换摄像头icon-->
+        <attr name="recordSwitchCameraIcon" format="reference" />
+        <!-- 录制Button-->
+        <attr name="recordButtonPhotoModeOutterBackground" format="reference" />
+        <attr name="recordButtonPhotoModeInnerBackground" format="reference" />
+        <attr name="recordButtonTapModeOutterBackground" format="reference" />
+        <attr name="recordButtonTapModeInnerBackground" format="reference" />
+        <attr name="recordButtonPressModeOutterBackground" format="reference" />
+        <attr name="recordButtonPressModeInnerBackground" format="reference" />
+        <!-- 多段录制进度条-->
+        <attr name="recordTimelineColor" format="reference" />
+        <attr name="recordTimelineSelectionColor" format="reference" />
+        <attr name="recordTimelineSeperatorColor" format="reference" />
+
+        <!-- 美颜面板 -->
+        <attr name="beautyPannelSmoothIcon" format="reference" />
+        <attr name="beautyPannelNaturalIcon" format="reference" />
+        <attr name="beautyPannelPituIcon" format="reference" />
+        <attr name="beautyPannelWhiteIcon" format="reference" />
+        <attr name="beautyPannelRuddyIcon" format="reference" />
+        <attr name="beautyPannelBigeyeIcon" format="reference" />
+        <attr name="beautyPannelFaceslimIcon" format="reference" />
+        <attr name="beautyPannelFacevIcon" format="reference" />
+        <attr name="beautyPannelChinIcon" format="reference" />
+        <attr name="beautyPannelFaceshortIcon" format="reference" />
+        <attr name="beautyPannelNoseslimIcon" format="reference" />
+        <attr name="beautyPannelEyeLightenIcon" format="reference" />
+        <attr name="beautyPannelToothWhiteIcon" format="reference" />
+        <attr name="beautyPannelPounchRemoveIcon" format="reference" />
+        <attr name="beautyPannelSmileLinesRemoveIcon" format="reference" />
+        <attr name="beautyPannelWrinkleIcon" format="reference" />
+        <attr name="beautyPannelForeheadIcon" format="reference" />
+        <attr name="beautyPannelEyeDistanceIcon" format="reference" />
+        <attr name="beautyPannelEyeAngleIcon" format="reference" />
+        <attr name="beautyPannelMouthShapeIcon" format="reference" />
+        <attr name="beautyPannelNoseWingIcon" format="reference" />
+        <attr name="beautyPannelNosePositionIcon" format="reference" />
+        <attr name="beautyPannelMouseWidthIcon" format="reference" />
+        <attr name="beautyPannelFaceShapeIcon" format="reference" />
+
+        <!-- 音效面板 -->
+        <attr name="audioEffectDisabled" format="reference" />
+        <attr name="audioEffectVoicechangeBadboy" format="reference" />
+        <attr name="audioEffectVoicechangeLoli" format="reference" />
+        <attr name="audioEffectVoicechangeUncle" format="reference" />
+        <attr name="audioEffectVoicechangeHeavymechanical" format="reference" />
+        <attr name="audioEffectVoicechangeForeigner" format="reference" />
+        <attr name="audioEffectVoicechangeBeast" format="reference" />
+        <attr name="audioEffectVoicechangeFatty" format="reference" />
+        <attr name="audioEffectVoicechangeElectric" format="reference" />
+        <attr name="audioEffectVoicechangeEthereal" format="reference" />
+        <attr name="audioEffectReverbKTV" format="reference" />
+        <attr name="audioEffectReverbRoom" format="reference" />
+        <attr name="audioEffectReverbHall" format="reference" />
+        <attr name="audioEffectReverbLow" format="reference" />
+        <attr name="audioEffectReverbSonorous" format="reference" />
+        <attr name="audioEffectReverbMagnetic" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="EditerStyle">
+        <!-- 裁剪条-->
+        <attr name="editerCutViewColor" format="color" />
+        <attr name="editerCutSliderLeftIcon" format="reference" />
+        <attr name="editerCutSliderRightIcon" format="reference" />
+        <attr name="editerRotateIcon" format="reference" />
+        <!-- 播放/暂停icon -->
+        <attr name="editerPlayIcon" format="reference" />
+        <attr name="editerPauseIcon" format="reference" />
+        <!-- 进度条-->
+        <attr name="editerCurrentProgressIcon" format="reference" />
+        <!-- 编辑菜单-->
+        <attr name="editerMenuBgmIcon" format="reference" />
+        <attr name="editerMenuMotionIcon" format="reference" />
+        <attr name="editerMenuSpeedIcon" format="reference" />
+        <attr name="editerMenuFilterIcon" format="reference" />
+        <attr name="editerMenuPasterIcon" format="reference" />
+        <attr name="editerMenuSubtitleIcon" format="reference" />
+        <!--动态特效-->
+        <attr name="editerMotionUndoIcon" format="reference" />
+        <attr name="editerMotionSoulOutIcon" format="reference" />
+        <attr name="editerMotionSoulOutCoverColor" format="color" />
+        <attr name="editerMotionSplitScreenIcon" format="reference" />
+        <attr name="editerMotionSplitScreenCoverColor" format="color" />
+        <attr name="editerMotionDarkDreamIcon" format="reference" />
+        <attr name="editerMotionDarkDreamCoverColor" format="color" />
+        <attr name="editerMotionGhostIcon" format="reference" />
+        <attr name="editerMotionGhostCoverColor" format="color" />
+        <attr name="editerMotionGhostShadowIcon" format="reference" />
+        <attr name="editerMotionGhostShadowCoverColor" format="color" />
+        <attr name="editerMotionIllusionIcon" format="reference" />
+        <attr name="editerMotionIllusionCoverColor" format="color" />
+        <attr name="editerMotionLightningIcon" format="reference" />
+        <attr name="editerMotionLightningCoverColor" format="color" />
+        <attr name="editerMotionMirrorIcon" format="reference" />
+        <attr name="editerMotionMirrorCoverColor" format="color" />
+        <attr name="editerMotionPhantomShadowIcon" format="reference" />
+        <attr name="editerMotionPhantomShadowCoverColor" format="color" />
+        <attr name="editerMotionRockLightIcon" format="reference" />
+        <attr name="editerMotionRockLightCoverColor" format="color" />
+        <attr name="editerMotionWinShadowIcon" format="reference" />
+        <attr name="editerMotionWinShadowCoverColor" format="color" />
+
+        <!--速度特效-->
+        <attr name="editerTimeEffectNormalIcon" format="reference" />
+        <attr name="editerTimeEffectSlowMotionIcon" format="reference" />
+        <attr name="editerTimeEffectRepeatIcon" format="reference" />
+        <attr name="editerTimeEffectReverseIcon" format="reference" />
+
+        <!--静态滤镜-->
+        <attr name="editerFilterOriginIcon" format="reference" />
+        <attr name="editerFilterNormalIcon" format="reference" />
+        <attr name="editerFilterYinghongIcon" format="reference" />
+        <attr name="editerFilterYunchangIcon" format="reference" />
+        <attr name="editerFilterChunzhenIcon" format="reference" />
+        <attr name="editerFilterBailanIcon" format="reference" />
+        <attr name="editerFilterYuanqiIcon" format="reference" />
+        <attr name="editerFilterChaotuoIcon" format="reference" />
+        <attr name="editerFilterXiangfenIcon" format="reference" />
+        <attr name="editerFilterLangmanIcon" format="reference" />
+        <attr name="editerFilterQingxinIcon" format="reference" />
+        <attr name="editerFilterWeimeiIcon" format="reference" />
+        <attr name="editerFilterFennenIcon" format="reference" />
+        <attr name="editerFilterHuaijiuIcon" format="reference" />
+        <attr name="editerFilterLandiaoIcon" format="reference" />
+        <attr name="editerFilterQingliangIcon" format="reference" />
+        <attr name="editerFilterRixiIcon" format="reference" />
+
+        <!-- 贴纸 -->
+        <attr name="editerPasterDelIcon" format="reference" />
+        <!-- 气泡字幕 -->
+        <attr name="editerSubtitleDelIcon" format="reference" />
+
+        <attr name="editerConfirmIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="FollowRecordStyle">
+        <attr name="countDownIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="PictureTransitionStyle">
+        <attr name="transitionLeftRightIcon" format="reference" />
+        <attr name="transitionUpDownIcon" format="reference" />
+        <attr name="transitionEnlargeIcon" format="reference" />
+        <attr name="transitionNarrowIcon" format="reference" />
+        <attr name="transitionRotateIcon" format="reference" />
+        <attr name="transitionFadeInOutIcon" format="reference" />
+    </declare-styleable>
+</resources>

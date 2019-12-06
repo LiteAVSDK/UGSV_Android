@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_record_mode"
+    android:layout_width="270dp"
+    android:layout_height="30dp"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/activity_video_record_take_photo"
+        android:textColor="@drawable/record_way_selector_txt_color"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tv_click"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/activity_video_record_click_start"
+        android:textColor="@drawable/record_way_selector_txt_color"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tv_touch"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/activity_video_record_long_touch"
+        android:textColor="@drawable/record_way_selector_txt_color"
+        android:textSize="14dp" />
+
+</LinearLayout>

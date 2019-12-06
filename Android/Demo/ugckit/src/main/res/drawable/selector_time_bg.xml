@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/shape_time_bg_selected" android:state_selected="true" />
+    <item android:drawable="@drawable/shape_time_bg_normal" android:state_selected="false" />
+</selector>

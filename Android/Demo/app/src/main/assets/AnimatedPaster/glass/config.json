@@ -1,0 +1,16 @@
+﻿{
+  "name":"glass",
+  "count":6,
+  "period":480,
+  "width":444,
+  "height":256,
+  "keyframe":6,
+  "frameArray": [
+                 {"picture":"glass0"},
+                 {"picture":"glass1"},
+                 {"picture":"glass2"},
+                 {"picture":"glass3"},
+                 {"picture":"glass4"},
+                 {"picture":"glass5"}
+               ]
+}

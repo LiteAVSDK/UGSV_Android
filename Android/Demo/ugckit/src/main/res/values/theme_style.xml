@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BasicStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="titleColor">@color/colorTextWhite</item>
+        <item name="titleTextSize">@dimen/title</item>
+        <item name="backIcon">@drawable/btn_back_no_shaddow</item>
+        <item name="nextIcon">@drawable/drawable_ugc_red_next</item>
+        <item name="progressColor">@color/colorRed2</item>
+        <item name="sliderColor">@color/colorRed2</item>
+        <item name="ugckitColorPrimary">@color/colorRed2</item>
+    </style>
+
+    <!-- 视频选择器主题UI配置-->
+    <style name="PickerStyle" parent="BasicStyle">
+        <item name="pickerDelIcon">@drawable/ic_picker_close</item>
+        <item name="pickerNextIcon">@drawable/ic_choose_next_selector</item>
+    </style>
+
+    <!-- 短视频录制主题UI配置-->
+    <style name="RecordStyle" parent="BasicStyle">
+        <!-- 音乐icon -->
+        <item name="recordMusicIcon">@drawable/ugc_record_music</item>
+        <!-- 屏比icon-->
+        <item name="recordAspect11Icon">@drawable/ic_aspect_11</item>
+        <item name="recordAspect34Icon">@drawable/ic_aspect_34</item>
+        <item name="recordAspect43Icon">@drawable/ic_aspect_43</item>
+        <item name="recordAspect169Icon">@drawable/ic_aspect_169</item>
+        <item name="recordAspect916Icon">@drawable/ic_aspect_916</item>
+        <!-- 美颜icon-->
+        <item name="recordBeautyIcon">@drawable/record_beauty_selector</item>
+        <!-- 音效icon-->
+        <item name="recordAudioEffectIcon">@drawable/record_soundeffect</item>
+        <!-- 回删icon-->
+        <item name="recordDeleteIcon">@drawable/selector_delete_last_part</item>
+        <!-- 闪光灯icon-->
+        <item name="recordTorchOnIcon">@drawable/selector_torch_open</item>
+        <item name="recordTorchOffIcon">@drawable/selector_torch_close</item>
+        <!-- 切换摄像头icon-->
+        <item name="recordSwitchCameraIcon">@drawable/selector_switch_camera</item>
+        <!-- 速度 -->
+        <item name="recordSpeedSlowestBackgroud">@drawable/record_left_bg</item>
+        <item name="recordSpeedSlowBackground">@drawable/record_mid_bg</item>
+        <item name="recordSpeedNormalBackground">@drawable/record_mid_bg</item>
+        <item name="recordSpeedFastBackground">@drawable/record_mid_bg</item>
+        <item name="recordSpeedFastestBackground">@drawable/record_right_bg</item>
+        <!-- 录制Button-->
+        <item name="recordButtonPhotoModeOutterBackground">
+            @color/recordButtonTakePhotoBackgroundColor
+        </item>
+        <item name="recordButtonPhotoModeInnerBackground">@color/colorTextWhite</item>
+        <item name="recordButtonTapModeOutterBackground">
+            @color/recordButtonClickShotBackgroundColor
+        </item>
+        <item name="recordButtonTapModeInnerBackground">@color/recordButtonClickShotInnerColor
+        </item>
+        <item name="recordButtonPressModeOutterBackground">
+            @color/recordButtonTouchShotBackgroundColor
+        </item>
+        <item name="recordButtonPressModeInnerBackground">@color/recordButtonTouchShotInnerColor
+        </item>
+        <!-- 多段录制进度条-->
+        <item name="recordTimelineColor">@color/record_progress</item>
+        <item name="recordTimelineSelectionColor">@color/record_progress_pending</item>
+        <item name="recordTimelineSeperatorColor">@color/white</item>
+        <!-- 美颜面板 -->
+        <item name="beautyPannelSmoothIcon">@drawable/ic_beauty_smooth</item>
+        <item name="beautyPannelNaturalIcon">@drawable/ic_beauty_natural</item>
+        <item name="beautyPannelPituIcon">@drawable/ic_beauty_pitu</item>
+        <item name="beautyPannelWhiteIcon">@drawable/ic_beauty_white</item>
+        <item name="beautyPannelRuddyIcon">@drawable/ic_beauty_ruddy</item>
+        <item name="beautyPannelBigeyeIcon">@drawable/ic_beauty_bigeye</item>
+        <item name="beautyPannelFaceslimIcon">@drawable/ic_beauty_faceslim</item>
+        <item name="beautyPannelFacevIcon">@drawable/ic_beauty_facev</item>
+        <item name="beautyPannelChinIcon">@drawable/ic_beauty_chin</item>
+        <item name="beautyPannelFaceshortIcon">@drawable/ic_beauty_faceshort</item>
+        <item name="beautyPannelNoseslimIcon">@drawable/ic_beauty_noseslim</item>
+        <item name="beautyPannelEyeLightenIcon">@drawable/ic_eye_bright</item>
+        <item name="beautyPannelToothWhiteIcon">@drawable/ic_tooth_white</item>
+        <item name="beautyPannelPounchRemoveIcon">@drawable/ic_pounch_remove</item>
+        <item name="beautyPannelSmileLinesRemoveIcon">@drawable/ic_smilelines</item>
+        <item name="beautyPannelWrinkleIcon">@drawable/ic_wrinkles</item>
+        <item name="beautyPannelForeheadIcon">@drawable/ic_forehead</item>
+        <item name="beautyPannelEyeDistanceIcon">@drawable/ic_eye_distance</item>
+        <item name="beautyPannelEyeAngleIcon">@drawable/ic_eye_angle</item>
+        <item name="beautyPannelMouthShapeIcon">@drawable/ic_mouseshape</item>
+        <item name="beautyPannelNoseWingIcon">@drawable/ic_nose_wing</item>
+        <item name="beautyPannelNosePositionIcon">@drawable/ic_nose_position</item>
+        <item name="beautyPannelMouseWidthIcon">@drawable/ic_mouse_width</item>
+        <item name="beautyPannelFaceShapeIcon">@drawable/ic_faceshape</item>
+
+        <!-- 音效面板 -->
+        <item name="audioEffectDisabled">@drawable/ic_effect_non</item>
+        <item name="audioEffectVoicechangeBadboy">@drawable/ic_voicechange_badboy</item>
+        <item name="audioEffectVoicechangeLoli">@drawable/ic_voicechange_loli</item>
+        <item name="audioEffectVoicechangeUncle">@drawable/ic_voicechange_uncle</item>
+        <item name="audioEffectVoicechangeHeavymechanical">
+            @drawable/ic_voicechange_heavymechanical
+        </item>
+        <item name="audioEffectVoicechangeForeigner">@drawable/ic_voicechange_foreigner</item>
+        <item name="audioEffectVoicechangeBeast">@drawable/ic_voicechange_beast</item>
+        <item name="audioEffectVoicechangeFatty">@drawable/ic_voicechange_deadfathouse
+        </item>
+        <item name="audioEffectVoicechangeElectric">@drawable/ic_voicechange_electric</item>
+        <item name="audioEffectVoicechangeEthereal">@drawable/ic_voicechange_ethereal</item>
+        <item name="audioEffectReverbKTV">@drawable/ic_reverb_ktv</item>
+        <item name="audioEffectReverbRoom">@drawable/ic_reverb_room</item>
+        <item name="audioEffectReverbHall">@drawable/ic_reverb_hall</item>
+        <item name="audioEffectReverbLow">@drawable/ic_reverb_low</item>
+        <item name="audioEffectReverbSonorous">@drawable/ic_reverb_sonorous</item>
+        <item name="audioEffectReverbMagnetic">@drawable/ic_reverb_magnetic</item>
+    </style>
+
+    <!-- 短视频编辑主题UI配置-->
+    <style name="EditerStyle" parent="BasicStyle">
+        <!-- 裁剪条-->
+        <item name="editerCutViewColor">@color/colorRed2</item>
+        <item name="editerCutSliderLeftIcon">@drawable/ic_progress_left</item>
+        <item name="editerCutSliderRightIcon">@drawable/ic_progress_right</item>
+        <item name="editerRotateIcon">@drawable/icon_rotate_video_view</item>
+        <!-- 播放/暂停icon -->
+        <item name="editerPlayIcon">@drawable/ic_play_normal</item>
+        <item name="editerPauseIcon">@drawable/ic_pause_normal</item>
+        <!-- 进度条-->
+        <item name="editerCurrentProgressIcon">@drawable/ic_player_slider</item>
+        <!-- 编辑菜单-->
+        <item name="editerMenuBgmIcon">@drawable/ic_music_selector</item>
+        <item name="editerMenuMotionIcon">@drawable/ic_motion_selector</item>
+        <item name="editerMenuSpeedIcon">@drawable/ic_time_selector</item>
+        <item name="editerMenuFilterIcon">@drawable/ic_filter_selector</item>
+        <item name="editerMenuPasterIcon">@drawable/ic_paster_selector</item>
+        <item name="editerMenuSubtitleIcon">@drawable/ic_word_selector</item>
+        <!--动态特效-->
+        <item name="editerMotionUndoIcon">@drawable/editor_undo_selector</item>
+        <item name="editerMotionSoulOutIcon">@drawable/motion_soul_out</item>
+        <item name="editerMotionSoulOutCoverColor">@color/soul_out_color_press</item>
+        <item name="editerMotionSplitScreenIcon">@drawable/motion_split_screen</item>
+        <item name="editerMotionSplitScreenCoverColor">@color/screen_split_press</item>
+        <item name="editerMotionDarkDreamIcon">@drawable/motion_dark_dream</item>
+        <item name="editerMotionDarkDreamCoverColor">@color/dark_dream_press</item>
+        <item name="editerMotionGhostIcon">@drawable/motion_ghost</item>
+        <item name="editerMotionGhostCoverColor">@color/ghost_color_press</item>
+        <item name="editerMotionGhostShadowIcon">@drawable/motion_ghost_shaddow</item>
+        <item name="editerMotionGhostShadowCoverColor">@color/ghost_shaddow_color_press</item>
+        <item name="editerMotionIllusionIcon">@drawable/motion_illusion</item>
+        <item name="editerMotionIllusionCoverColor">@color/illusion_color_press</item>
+        <item name="editerMotionLightningIcon">@drawable/motion_lightning</item>
+        <item name="editerMotionLightningCoverColor">@color/lightning_color_press</item>
+        <item name="editerMotionMirrorIcon">@drawable/motion_mirror</item>
+        <item name="editerMotionMirrorCoverColor">@color/mirror_color_press</item>
+        <item name="editerMotionPhantomShadowIcon">@drawable/motion_phantom_shaddow</item>
+        <item name="editerMotionPhantomShadowCoverColor">@color/phantom_shaddow_color_press</item>
+        <item name="editerMotionRockLightIcon">@drawable/motion_rock_light</item>
+        <item name="editerMotionRockLightCoverColor">@color/rock_light_press</item>
+        <item name="editerMotionWinShadowIcon">@drawable/motion_win_shaddow</item>
+        <item name="editerMotionWinShadowCoverColor">@color/win_shaddow_color_press</item>
+
+        <!--速度特效-->
+        <item name="editerTimeEffectNormalIcon">@drawable/motion_time_normal</item>
+        <item name="editerTimeEffectSlowMotionIcon">@drawable/motion_time_slow</item>
+        <item name="editerTimeEffectRepeatIcon">@drawable/motion_time_repeat</item>
+        <item name="editerTimeEffectReverseIcon">@drawable/motion_time_reverse</item>
+
+        <!--静态滤镜-->
+        <item name="editerFilterOriginIcon">@drawable/orginal</item>
+        <item name="editerFilterNormalIcon">@drawable/biaozhun</item>
+        <item name="editerFilterYinghongIcon">@drawable/yinghong</item>
+        <item name="editerFilterYunchangIcon">@drawable/yunshang</item>
+        <item name="editerFilterChunzhenIcon">@drawable/chunzhen</item>
+        <item name="editerFilterBailanIcon">@drawable/bailan</item>
+        <item name="editerFilterYuanqiIcon">@drawable/yuanqi</item>
+        <item name="editerFilterChaotuoIcon">@drawable/chaotuo</item>
+        <item name="editerFilterXiangfenIcon">@drawable/xiangfen</item>
+        <item name="editerFilterLangmanIcon">@drawable/langman</item>
+        <item name="editerFilterQingxinIcon">@drawable/qingxin</item>
+        <item name="editerFilterWeimeiIcon">@drawable/weimei</item>
+        <item name="editerFilterFennenIcon">@drawable/fennen</item>
+        <item name="editerFilterHuaijiuIcon">@drawable/huaijiu</item>
+        <item name="editerFilterLandiaoIcon">@drawable/landiao</item>
+        <item name="editerFilterQingliangIcon">@drawable/qingliang</item>
+        <item name="editerFilterRixiIcon">@drawable/rixi</item>
+
+        <!-- 贴纸 -->
+        <item name="editerPasterDelIcon">@drawable/ic_word_del_normal</item>
+        <!-- 气泡字幕 -->
+        <item name="editerSubtitleDelIcon">@drawable/ic_word_del_normal</item>
+
+        <!-- 特效确认按钮-->
+        <item name="editerConfirmIcon">@drawable/ic_edit_effect_confirm_selector</item>
+    </style>
+
+    <style name="FollowRecordStyle" parent="RecordStyle">
+        <item name="countDownIcon">@drawable/btn_timer</item>
+    </style>
+
+    <style name="PictureTransitionStyle" parent="BasicStyle">
+        <item name="transitionLeftRightIcon">@drawable/btn_left_right</item>
+        <item name="transitionUpDownIcon">@drawable/btn_up_down</item>
+        <item name="transitionEnlargeIcon">@drawable/btn_zoom_in</item>
+        <item name="transitionNarrowIcon">@drawable/btn_zoom_out</item>
+        <item name="transitionRotateIcon">@drawable/btn_rotate</item>
+        <item name="transitionFadeInOutIcon">@drawable/btn_gradient</item>
+    </style>
+
+</resources>

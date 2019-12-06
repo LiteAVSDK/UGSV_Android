@@ -1,0 +1,61 @@
+package com.tencent.qcloud.ugckit.basic;
+
+import android.support.annotation.NonNull;
+
+/**
+ * Activity跳转的信息保存
+ */
+public class JumpActivityMgr {
+
+    @NonNull
+    private static JumpActivityMgr instance = new JumpActivityMgr();
+    private boolean mCutVideoFlag = true;
+    private boolean mRecordVideoEditFlag = true;
+    private boolean mFollowRecordEditVideoFlag = true;
+
+    private JumpActivityMgr() {
+        mCutVideoFlag = true;
+    }
+
+    @NonNull
+    public static JumpActivityMgr getInstance() {
+        return instance;
+    }
+
+    /**
+     * 设置"视频裁剪页面"是否进行"视频编辑"
+     *
+     * @param flag
+     */
+    public void setEditFlagFromCut(boolean flag) {
+        mCutVideoFlag = flag;
+    }
+
+    public boolean getEditFlagFromCut() {
+        return mCutVideoFlag;
+    }
+
+    /**
+     * 设置"视频录制页面"是否进行"视频编辑"
+     *
+     * @param flag
+     */
+    public void setEditFlagFromRecord(boolean flag) {
+        mRecordVideoEditFlag = flag;
+    }
+
+    public boolean getEditFlagFromRecord() {
+        return mRecordVideoEditFlag;
+    }
+
+    /**
+     * 设置"视频合唱"是否进行"视频编辑"
+     */
+    public void setEditFlagFromFollowRecord(boolean flag) {
+        mFollowRecordEditVideoFlag = flag;
+    }
+
+    public boolean getEditFlagFromFollowRecord() {
+        return mFollowRecordEditVideoFlag;
+    }
+}
