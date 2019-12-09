@@ -1,0 +1,5 @@
+CFBundleDisplayName = "小视频";
+NSAppleMusicUsageDescription = "App添加BGM需要使用您的媒体资料库权限，否则无法添加本地音乐，请点击“好”以允许App访问您的媒体资料库。";
+NSCameraUsageDescription = "App录制视频需要使用您的相机权限，否则无法正常录制，请点击“好”以允许App访问您的相机。";
+NSMicrophoneUsageDescription = "App录制视频需要使用您的麦克风权限，否则无法正常录制，请点击“好”以允许App访问您的麦克风。";
+NSPhotoLibraryAddUsageDescription= "App保存视频需要使用您的照片权限，否则无法保存视频，请点击“好”以允许App访问您的照片。";

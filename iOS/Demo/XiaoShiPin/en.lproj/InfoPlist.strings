@@ -1,0 +1,5 @@
+CFBundleDisplayName = "XiaoShiPin";
+NSAppleMusicUsageDescription = "This lets you upload phone music. Click \"OK\" to allow access.";
+NSCameraUsageDescription = "This lets you take photos. Click \"OK\" to allow access.";
+NSMicrophoneUsageDescription = "This lets you record videos. Click \"OK\" to allow access.";
+NSPhotoLibraryAddUsageDescription= "This lets you save videos. Click \"OK\" to allow access.";

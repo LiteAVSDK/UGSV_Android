@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TCVideoEditPrevViewController">
+            <connections>
+                <outlet property="prevPlaceHolder" destination="1xS-My-cND" id="ije-j1-oMl"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xS-My-cND">
+                    <rect key="frame" x="0.0" y="65" width="375" height="225"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="1xS-My-cND" secondAttribute="height" multiplier="375:225" id="eCD-dE-U7U"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZh-dn-156">
+                    <rect key="frame" x="15" y="559" width="345" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="bwX-jh-IIy"/>
+                    </constraints>
+                    <state key="normal" title="仅发布" backgroundImage="button_white">
+                        <color key="titleColor" red="0.0" green="0.80356335639999998" blue="0.67384082079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="publish:" destination="-1" eventType="touchUpInside" id="E9Z-QC-jE1"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NQM-4x-zQm">
+                    <rect key="frame" x="15" y="613" width="345" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="asg-tm-KRm"/>
+                    </constraints>
+                    <state key="normal" title="保存并发布" backgroundImage="button_green"/>
+                    <connections>
+                        <action selector="saveAndPublish:" destination="-1" eventType="touchUpInside" id="Z0f-cy-PZb"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5S-Oc-QEo">
+                    <rect key="frame" x="15" y="505" width="345" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="jE8-Fr-pkf"/>
+                    </constraints>
+                    <state key="normal" title="仅保存" backgroundImage="button_white">
+                        <color key="titleColor" red="0.0" green="0.80356335639999998" blue="0.67384082079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="saveToLocal:" destination="-1" eventType="touchUpInside" id="rM3-ox-QT3"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="1xS-My-cND" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="CX9-oO-MQk"/>
+                <constraint firstItem="nZh-dn-156" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="EtY-4U-4aw"/>
+                <constraint firstItem="1xS-My-cND" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="IfX-9e-WjK"/>
+                <constraint firstItem="NQM-4x-zQm" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="U9T-gt-yco"/>
+                <constraint firstItem="x5S-Oc-QEo" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WA4-Md-Y7I"/>
+                <constraint firstItem="NQM-4x-zQm" firstAttribute="top" secondItem="nZh-dn-156" secondAttribute="bottom" constant="14" id="fos-Px-gEG"/>
+                <constraint firstItem="1xS-My-cND" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="o9X-Yx-1Lx"/>
+                <constraint firstAttribute="bottom" secondItem="NQM-4x-zQm" secondAttribute="bottom" constant="14" id="qMK-3q-USU"/>
+                <constraint firstItem="nZh-dn-156" firstAttribute="top" secondItem="x5S-Oc-QEo" secondAttribute="bottom" constant="14" id="vna-JF-yf6"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <point key="canvasLocation" x="-505" y="22"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="button_green" width="345" height="40"/>
+        <image name="button_white" width="345" height="40"/>
+    </resources>
+</document>
