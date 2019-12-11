@@ -143,7 +143,8 @@ compile(name: 'LiteAVSDK_Professional', ext: 'aar')
 ```
 
 ## 步骤四：申请Licence
-在使用 UGCKit 之前要先设置 License，License的获取方法请参考 [License申请](https://cloud.tencent.com/document/product/584/20333)
+- 在使用 UGCKit 之前要先设置 License，License的获取方法请参考 [License申请](https://cloud.tencent.com/document/product/584/20333)
+- Github Demo的 `TCApplication.java` 类中的 `ugcKey` 和 `ugcLicenceUrl` 请替换成您自己的，否则部分功能无法正常使用。
 
 ## 常见问题
 - 是否支持Android X？
