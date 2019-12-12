@@ -23,6 +23,7 @@
 		453DE2C32379458C0083E759 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2C12379458C0083E759 /* LaunchScreen.storyboard */; };
 		453DE2C62379458C0083E759 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE2C52379458C0083E759 /* main.m */; };
 		453DE42423795B620083E759 /* UGCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453DE42223795A6D0083E759 /* UGCKit.framework */; };
+		453EA3CB23A236D3007C45F2 /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 453EA3CA23A236D3007C45F2 /* FilterResource.bundle */; };
 		454616A923797B9F009CDF83 /* TCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454616A823797B9F009CDF83 /* TCMainViewController.m */; };
 		454616AD23797BC8009CDF83 /* TCEditUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454616AB23797BC8009CDF83 /* TCEditUserInfoViewController.m */; };
 		454616B223797BD3009CDF83 /* TCUserInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 454616AF23797BD2009CDF83 /* TCUserInfoCell.m */; };
@@ -158,7 +159,7 @@
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
 		45E9FFB42399F4C400CEC8F1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		C02A77FC93D9A62CB1882E07 /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8691A3CC8B45707EDA8B7DC9 /* TXLiteAVSDK_UGC.framework */; };
+		AD293E3E7222F8593F080F7C /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4359EB44F0542B1233DD6C7F /* TXLiteAVSDK_UGC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +187,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4359EB44F0542B1233DD6C7F /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 		4500A67F2382472300147B05 /* SDDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDeviceHelper.h; sourceTree = "<group>"; };
 		4500A6802382472300147B05 /* SDWeakProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDWeakProxy.h; sourceTree = "<group>"; };
 		4500A6812382472300147B05 /* SDImageCachesManagerOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDImageCachesManagerOperation.m; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 		453DE2C22379458C0083E759 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		453DE2C52379458C0083E759 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = ../UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
+		453EA3CA23A236D3007C45F2 /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
 		454616A723797B9F009CDF83 /* TCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMainViewController.h; sourceTree = "<group>"; };
 		454616A823797B9F009CDF83 /* TCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMainViewController.m; sourceTree = "<group>"; };
 		454616AB23797BC8009CDF83 /* TCEditUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCEditUserInfoViewController.m; sourceTree = "<group>"; };
@@ -483,7 +486,6 @@
 		45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitWrapper.m; sourceTree = "<group>"; };
 		45E829492384EB7800702418 /* TCNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCNavigationController.h; sourceTree = "<group>"; };
 		45E8294A2384EB7800702418 /* TCNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCNavigationController.m; sourceTree = "<group>"; };
-		8691A3CC8B45707EDA8B7DC9 /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -500,7 +502,7 @@
 				45C56CD5237AA264009BDB9F /* QCloudCore.framework in Frameworks */,
 				45C56CD4237AA264009BDB9F /* QCloudCOSXML.framework in Frameworks */,
 				453DE42423795B620083E759 /* UGCKit.framework in Frameworks */,
-				C02A77FC93D9A62CB1882E07 /* TXLiteAVSDK_UGC.framework in Frameworks */,
+				AD293E3E7222F8593F080F7C /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,6 +540,7 @@
 		4500A69D2382513900147B05 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				453EA3CA23A236D3007C45F2 /* FilterResource.bundle */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -604,7 +607,7 @@
 				455AAEEE237ABBB300AF4A3C /* OpenAL.framework */,
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
-				8691A3CC8B45707EDA8B7DC9 /* TXLiteAVSDK_UGC.framework */,
+				4359EB44F0542B1233DD6C7F /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1175,6 +1178,7 @@
 				45C56C6A237AA12E009BDB9F /* TCVideoEditPrevViewController.xib in Resources */,
 				45C56CA7237AA21F009BDB9F /* MJRefresh.bundle in Resources */,
 				45C56C2B237A9993009BDB9F /* README.mdown in Resources */,
+				453EA3CB23A236D3007C45F2 /* FilterResource.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1545,10 +1549,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 5GHU44CJHG;
+				DEVELOPMENT_TEAM = FN2V63AD2J;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1568,7 +1572,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.liteav.ugc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "com.tencent.liteav.ugc AppStore 1561963242";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

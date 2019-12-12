@@ -30,11 +30,21 @@ NSString * const PhotoAlbumToolErrorDomain = @"PhotoAlbumToolErrorDomain";
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         if (status == PHAuthorizationStatusAuthorized) {
             [library performChanges:^{
-                PHAssetCreationRequest *request = [PHAssetCreationRequest creationRequestForAsset];
-                if ([urlOrData isKindOfClass:[NSURL class]]) {
-                    [request addResourceWithType:PHAssetResourceTypeVideo fileURL:urlOrData options:nil];
+                if (@available(iOS 9.0, *)) {
+                    PHAssetCreationRequest *request = [PHAssetCreationRequest creationRequestForAsset];
+                    if ([urlOrData isKindOfClass:[NSURL class]]) {
+                        [request addResourceWithType:PHAssetResourceTypeVideo fileURL:urlOrData options:nil];
+                    } else {
+                        [request addResourceWithType:PHAssetResourceTypePhoto data:urlOrData options:nil];
+                    }
                 } else {
-                    [request addResourceWithType:PHAssetResourceTypePhoto data:urlOrData options:nil];
+                    if ([urlOrData isKindOfClass:[NSURL class]]) {
+                         [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:urlOrData];
+                    } else if ([urlOrData isKindOfClass:[NSData class]]) {
+                        NSString *filePath = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.gif", [NSUUID UUID].UUIDString];
+                        [(NSData *)urlOrData writeToFile:filePath atomically:NO];
+                        [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:[NSURL fileURLWithPath:filePath]];
+                    }
                 }
             } completionHandler:^(BOOL success, NSError * _Nullable error) {
                 if (completion) {

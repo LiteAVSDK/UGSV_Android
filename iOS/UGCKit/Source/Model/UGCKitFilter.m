@@ -53,10 +53,6 @@ UGCKitFilterIdentifier const UGCKitFilterIdentifierRixi      = @"rixi";
     self = [super init];
     if (self) {
         NSBundle *bundle = [NSBundle mainBundle];
-        NSString *ugcBundlePath = [bundle pathForResource:@"UGCKitResources" ofType:@"bundle"];
-        if (ugcBundlePath) {
-            bundle = [NSBundle bundleWithPath:ugcBundlePath];
-        }
         NSString *path = [bundle pathForResource:@"FilterResource" ofType:@"bundle"];
         NSFileManager *manager = [[NSFileManager alloc] init];
         if ([manager fileExistsAtPath:path]) {

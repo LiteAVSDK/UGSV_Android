@@ -29,7 +29,8 @@ UGCKit 的开发环境要求如下:
    <img src="https://main.qcloudimg.com/raw/f58b5a64a5074b334b2c97ec010800fc.jpg" width=800px />
    在Finder中打开 SDK 目录，将 SDK 拖动到 Link Binary With Libraries 中。
    <img src="https://main.qcloudimg.com/raw/217de0d27d3fc67152a71d2a1e800647.jpg" width=800px />
-
+   将 SDK 目录下的 FilterResource.bundle 拖动到工程中并勾选 App Target。
+   
 4. 导入资源
    点击工程的Target, 选择 Build Phase 标签， 展开 Copy Bundle Resources。然后在左侧目录中依次展开UGCKit.xcodeproj、Products，拖动 UGCKitResources.bundle 到 Copy Bundle Resources 中。
    <img src="https://main.qcloudimg.com/raw/fbca78b281f8e87cbbaa036c4f208725.jpg" width=800px />

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4500A6D12382793300147B05 /* UGCKitMediaPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2F6237945DC0083E759 /* UGCKitMediaPicker.storyboard */; };
 		451E4DD3238D1F52000EFC80 /* bubbleText.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 451E4DD0238D1F52000EFC80 /* bubbleText.bundle */; };
-		451E4DD4238D1F52000EFC80 /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 451E4DD1238D1F52000EFC80 /* FilterResource.bundle */; };
 		451E4DD5238D1F52000EFC80 /* AnimatedPaster.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 451E4DD2238D1F52000EFC80 /* AnimatedPaster.bundle */; };
 		453DE33A237945DD0083E759 /* UGCKitProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE2E3237945DC0083E759 /* UGCKitProgressHUD.m */; };
 		453DE33B237945DD0083E759 /* UGCKitProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE2E4237945DC0083E759 /* UGCKitProgressHUD.h */; };
@@ -200,7 +199,6 @@
 		4500A7372383DC7C00147B05 /* ioapi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
 		4500A7382383DC7C00147B05 /* ZipArchive.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
 		451E4DD0238D1F52000EFC80 /* bubbleText.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = bubbleText.bundle; sourceTree = "<group>"; };
-		451E4DD1238D1F52000EFC80 /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
 		451E4DD2238D1F52000EFC80 /* AnimatedPaster.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AnimatedPaster.bundle; sourceTree = "<group>"; };
 		453DE2D6237945B10083E759 /* UGCKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UGCKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		453DE2E3237945DC0083E759 /* UGCKitProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitProgressHUD.m; sourceTree = "<group>"; };
@@ -745,7 +743,6 @@
 				45D52F5C238D53F9006F71FA /* jump */,
 				451E4DD2238D1F52000EFC80 /* AnimatedPaster.bundle */,
 				451E4DD0238D1F52000EFC80 /* bubbleText.bundle */,
-				451E4DD1238D1F52000EFC80 /* FilterResource.bundle */,
 				454616CF23797CA5009CDF83 /* Localizable.strings */,
 				45B53F7923868FA600E1B18B /* VideoEffects */,
 				453DE339237945DC0083E759 /* UGCKit.xcassets */,
@@ -1056,7 +1053,6 @@
 				451E4DD5238D1F52000EFC80 /* AnimatedPaster.bundle in Resources */,
 				45B53F7A23868FA700E1B18B /* VideoEffects in Resources */,
 				45D52F10238D2227006F71FA /* Localizable.strings in Resources */,
-				451E4DD4238D1F52000EFC80 /* FilterResource.bundle in Resources */,
 				F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */,
 				451E4DD3238D1F52000EFC80 /* bubbleText.bundle in Resources */,
 				457BFD382395089D004017FE /* Paster.bundle in Resources */,
