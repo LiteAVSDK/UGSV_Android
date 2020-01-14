@@ -189,6 +189,7 @@ static BOOL ShouldReport = YES;
     //初始化manager对象：
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc]initWithSessionConfiguration:configuration];
+    __weak AFURLSessionManager* weakManager = manager;
     NSURL *url = [NSURL URLWithString:videoUrl];
     //开始请求数据
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -208,6 +209,7 @@ static BOOL ShouldReport = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             completeHandler(filePath.path);
         });
+        [weakManager invalidateSessionCancelingTasks:YES];
     }];
     
     //开始下载

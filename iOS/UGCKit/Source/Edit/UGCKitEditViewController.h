@@ -13,6 +13,11 @@ typedef NS_ENUM(NSInteger, TCEditRotation) {
     TCEditRotation270
 };
 
+typedef NS_ENUM(NSInteger, UGCKitGenerateMode) {
+    UGCKitGenerateModeDefault,
+    UGCKitGenerateModeTwoPass
+};
+
 enum TXVideoCompressed : NSInteger;
 
 /// 视频编辑参数
@@ -27,12 +32,16 @@ enum TXVideoCompressed : NSInteger;
 @property (strong, nonatomic) UGCKitWatermark *watermark;
 /// 片尾水印
 @property (strong, nonatomic) UGCKitWatermark *tailWatermark;
+/// 生成模式
+@property (assign, nonatomic) UGCKitGenerateMode generateMode;
 /// 以默认配置初始化
 - (instancetype)init;
 @end
 
 /// 视频编辑器
 @interface UGCKitEditViewController : UIViewController
+@property (assign, nonatomic) UGCKitGenerateMode generateMode;
+
 - (instancetype)initWithMedia:(UGCKitMedia *)asset config:(UGCKitEditConfig *)config theme:(UGCKitTheme *)theme;
 
 /// 点击下一步时的回调，您可以在此进行业务的交互逻辑，如让用户选择是否保存等，

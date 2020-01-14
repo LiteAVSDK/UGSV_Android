@@ -11,10 +11,9 @@
 #import "HUDHelper.h"
 #import "TCMainViewController.h"
 #import "TCLoginViewController.h"
-#import <TXLiteAVSDK_Enterprise/TXLiteAVSDK.h>
 #import "TCUtil.h"
 #import <Bugly/Bugly.h>
-
+#import "SDKHeader.h"
 @interface AppDelegate ()
 
 @end

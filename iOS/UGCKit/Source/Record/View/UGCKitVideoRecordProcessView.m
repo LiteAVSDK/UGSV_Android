@@ -40,6 +40,14 @@
     return self;
 }
 
+- (void)setMinDuration:(NSTimeInterval)minDuration
+           maxDuration:(NSTimeInterval)maxDuration
+{
+    _minDuration = minDuration;
+    _maxDuration = maxDuration;
+    _minimumView.frame = CGRectMake(CGRectGetWidth(self.frame) * _minDuration / _maxDuration, 0, 2, self.frame.size.height);
+}
+
 - (void)setMinimumTimeTipHidden:(BOOL)minimumTimeTipHidden {
     _minimumTimeTipHidden = minimumTimeTipHidden;
     _minimumView.hidden = minimumTimeTipHidden;

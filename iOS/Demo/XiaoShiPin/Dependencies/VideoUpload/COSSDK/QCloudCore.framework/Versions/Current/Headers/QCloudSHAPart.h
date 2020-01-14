@@ -6,7 +6,6 @@
 //
 //
 
-#import <UIKit/UIKit.h>
 #import "QCloudModel.h"
 @interface QCloudSHAPart : QCloudModel
 

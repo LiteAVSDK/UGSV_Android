@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, TX_Enum_Type_RenderMode) {
 typedef NS_ENUM(NSInteger, TX_Enum_Type_BeautyStyle) {
     BEAUTY_STYLE_SMOOTH        = 0,    ///< 光滑，磨皮程度较高，更适合秀场直播类场景下使用。
     BEAUTY_STYLE_NATURE        = 1,    ///< 自然，磨皮算法会最大限度保留皮肤细节。
-    BEAUTY_STYLE_PITU          = 2,    ///< 天天P图版美颜, 需要商用企业版 SDK 才能支持，普通版本设置此选项无效。
+    BEAUTY_STYLE_PITU          = 2,    ///< 天天P图版美颜, 需要企业版 SDK 才能支持，普通版本设置此选项无效。
 };
 
 /**

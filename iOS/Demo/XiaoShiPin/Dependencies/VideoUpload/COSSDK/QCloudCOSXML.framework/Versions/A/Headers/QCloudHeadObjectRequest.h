@@ -64,6 +64,10 @@ resultError = error;
 存储桶名
 */
 @property (strong, nonatomic) NSString *bucket;
+/**
+如果HEAD指定版本的Object,请在该参数中指定versionID（在开启了多版本的情况才有）
+*/
+@property (strong, nonatomic) NSString *versionID;
 @property (strong, nonatomic) NSString *ifModifiedSince;
 
 

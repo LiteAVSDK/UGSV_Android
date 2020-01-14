@@ -30,6 +30,8 @@ typedef NS_ENUM(NSInteger, TXPublishEventCode)
     TVC_UPLOAD_EVENT_ID_INIT    = 10001,    //UGC发布请求上传
     TVC_UPLOAD_EVENT_ID_COS     = 20001,    //UGC发布调用COS上传
     TVC_UPLOAD_EVENT_ID_FINISH  = 10002,    //UGC发布结束上传
+    TVC_UPLOAD_EVENT_DAU        = 40001,    //短视频上传DAU上报
+
 };
 
 @interface TVCConfig : NSObject
@@ -65,4 +67,4 @@ typedef NS_ENUM(NSInteger, TXPublishEventCode)
 @end
 
 typedef void (^TVCResultBlock) (TVCUploadResponse *resp);
-typedef void (^TVCProgressBlock) (uint64_t bytesUpload, uint64_t bytesTotal);
+typedef void (^TVCProgressBlock) (NSInteger bytesUpload, NSInteger bytesTotal);

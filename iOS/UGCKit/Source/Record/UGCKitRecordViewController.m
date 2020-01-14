@@ -1,18 +1,20 @@
 // Copyright (c) 2019 Tencent. All rights reserved.
 #import "UGCKitRecordViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import <TCBeautyPanel/TCBeautyPanel.h>
 #import "SDKHeader.h"
+#import "UGCKitMem.h"
+#import "UGCKitMediaPickerViewController.h"
 #import "UGCKitEditViewController.h"
 #import "UGCKitVideoRecordMusicView.h"
 #import "UGCKitVideoRecordProcessView.h"
 #import "UGCKitProgressHUD.h"
 #import "UGCKitBGMListViewController.h"
-#import "UGCKitBeautySettingPanel.h"
 #import "UGCKitAudioEffectPanel.h"
 #import "UGCKitLabel.h"
 #import "UGCKitTheme.h"
 #import "UGCKitSlideButton.h"
-#import "UGCKitRecordView.h"
+#import "UGCKitRecordControlView.h"
 #import "UGCKitSmallButton.h"
 #import "UGCKit_UIViewAdditions.h"
 #import "UGCKitConstants.h"
@@ -23,12 +25,7 @@
 static const CGFloat BUTTON_CONTROL_SIZE = 40;
 static const CGFloat AudioEffectViewHeight = 150;
 
-typedef NS_ENUM(NSInteger,RecordType) {
-    RecordType_Normal,
-    RecordType_Chorus,
-};
-
-typedef NS_ENUM(NSInteger,CaptureMode) {
+typedef NS_ENUM(NSInteger, CaptureMode) {
     CaptureModeStill,
     CaptureModeTap,
     CaptureModePress
@@ -46,10 +43,42 @@ typedef NS_ENUM(NSInteger, RecordState) {
 #import "MCTip.h"
 #endif
 
+@interface UGCKitRecordPreviewController : NSObject
+
+@property (nonatomic, strong, readonly) NSArray<NSNumber *> *allVideoVolumes;
+
+@property (nonatomic, strong, readonly) NSArray<NSString *> *allVideoPaths;
+
+@property (nonatomic, strong, readonly) NSString *recordVideoPath;
+
+@property (nonatomic, strong, readonly) UIView *videoRecordView;
+
+- (instancetype)initWithContainerView:(UIView *)containerView
+                          recordStyle:(UGCKitRecordStyle)recordStyle
+                         chorusVideos:(NSArray<NSString *> *)chorusVideos
+                          recordVideo:(NSString *)recordVideo;
+
+- (void)changeChorusVideo:(NSString *)videoPath;
+
+- (void)startPlayChorusVideos:(CGFloat)startTime
+                       toTime:(CGFloat)endTime;
+- (void)stopPlayChorusVideos;
+
+- (void)seekChorusVideosToTime:(CGFloat)time;
+
+@end
+
+@interface UGCKitNavControllerPrivate : UINavigationController
+
+@property (nonatomic, assign) UIInterfaceOrientationMask supportedOrientations;
+
+@end
+
+
 @interface UGCKitRecordViewController()
 <TXUGCRecordListener, UIGestureRecognizerDelegate,
 MPMediaPickerControllerDelegate,TCBGMControllerListener,TXVideoJoinerListener,
-UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettingPanelDelegate,BeautyLoadPituDelegate
+UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPituDelegate
 #if POD_PITU
 , MCCameraDynamicDelegate
 #endif
@@ -57,7 +86,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 {
     UGCKitRecordConfig  *_config;      // 录制配置
     UGCKitTheme         *_theme;       // 主题配置
-    UGCKitRecordView    *_controlView; // 界面控件覆盖层
+    UGCKitRecordControlView *_controlView; // 界面控件覆盖层
     RecordState          _recordState; // 录制状态
     NSString            *_coverPath;   // 保存路径, 视频为<_coverPath>.mp4结尾, 封面图为<_coverPath>.png
 
@@ -65,10 +94,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     BOOL                            _vBeautyShow;
     BOOL                            _preloadingVideos;
     // Chorus
-    CGSize                          _size;
-    int                             _fps;
-    TXAudioSampleRate               _sampleRate;
-    UIView                         *_videoPlayView;
     TXVideoBeautyStyle              _beautyStyle;
     float                           _beautyDepth;
     float                           _whitenDepth;
@@ -78,7 +103,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     
     BOOL                            _isCameraPreviewOn;
     //    BOOL                            _videoRecording;
-    UIView *                        _videoRecordView;
     CGFloat                         _currentRecordTime;
     
     UGCKitAudioEffectPanel  *_soundMixView;
@@ -113,15 +137,12 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     UGCKitVideoRecordMusicView *  _musicView;
     SpeedMode                 _speedMode;
     
-    UGCKitBeautySettingPanel *      _vBeauty;
+    TCBeautyPanel *      _vBeauty;
     UGCKitProgressHUD*        _hud;
     CGFloat                   _bgmBeginTime;
     BOOL                      _bgmRecording;
     
-    TXVideoEditer *           _videoEditer;
     TXVideoJoiner *           _videoJoiner;
-    RecordType                _recordType;
-    NSString *                _recordVideoPath;
     NSString *                _joinVideoPath;
 
     TXVideoVoiceChangerType   _voiceChangerType; // 变声参数
@@ -130,8 +151,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 
 @property (strong, nonatomic) IBOutlet UIButton *btnNext;
 @property (strong, nonatomic) IBOutlet UIView *captureModeView;
+@property (strong, nonatomic) IBOutlet UIButton *btnChangeVideo;
 
 @property (assign, nonatomic) CaptureMode captureMode;
+
+@property (strong, nonatomic) UGCKitRecordPreviewController *previewController;
 
 @end
 
@@ -140,12 +164,13 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 
 - (instancetype)initWithConfig:(UGCKitRecordConfig *)config theme:(UGCKitTheme *)theme
 {
-    if (self = [self initWithNibName:nil bundle:nil]) {
+    if (self = [super initWithNibName:nil bundle:nil]) {
         _config = config ?: [[UGCKitRecordConfig alloc] init];
         _theme = theme ?: [UGCKitTheme sharedTheme];
         _preloadingVideos = _config.recoverDraft;
         [[TXUGCRecord shareInstance] setAspectRatio:_config.ratio];
         _coverPath = [NSTemporaryDirectory() stringByAppendingString:[[NSUUID UUID] UUIDString]];
+        [self _commonInit];
     }
     return self;
 }
@@ -157,36 +182,37 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     {
         _config = [[UGCKitRecordConfig alloc] init];
         _theme = [UGCKitTheme sharedTheme];
-
-        _appForeground = YES;
-        _isFrontCamera = YES;
-        _vBeautyShow = NO;
-        
-        _beautyStyle = VIDOE_BEAUTY_STYLE_SMOOTH;
-        _beautyDepth = 6.3;
-        _whitenDepth = 2.7;
-        
-        _isCameraPreviewOn = NO;
-        _recordState = RecordStateStopped;
-        
-        _currentRecordTime = 0;
-        _sampleRate = AUDIO_SAMPLERATE_48000;
-        
-        _speedMode = SpeedMode_Standard;
-        
-        _voiceChangerType = VIDOE_VOICECHANGER_TYPE_0; // 无变声
-        _revertType = VIDOE_REVERB_TYPE_0; // 无混音效果
-
-        [TXUGCRecord shareInstance].recordDelegate = self;
-        
-        _bgmListVC = [[UGCKitBGMListViewController alloc] initWithTheme:_theme];
-        [_bgmListVC setBGMControllerListener:self];
-        _recordVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputRecord.mp4"];
-        _joinVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputJoin.mp4"];
-        
-        self.captureMode = CaptureModeTap;
+        [self _commonInit];
     }
     return self;
+}
+
+- (void)_commonInit {
+    _appForeground = YES;
+    _isFrontCamera = YES;
+    _vBeautyShow = NO;
+
+    _beautyStyle = VIDOE_BEAUTY_STYLE_SMOOTH;
+    _beautyDepth = 6.3;
+    _whitenDepth = 2.7;
+
+    _isCameraPreviewOn = NO;
+    _recordState = RecordStateStopped;
+
+    _currentRecordTime = 0;
+
+    _speedMode = SpeedMode_Standard;
+
+    _voiceChangerType = VIDOE_VOICECHANGER_TYPE_0; // 无变声
+    _revertType = VIDOE_REVERB_TYPE_0; // 无混音效果
+
+    [TXUGCRecord shareInstance].recordDelegate = self;
+
+    _bgmListVC = [[UGCKitBGMListViewController alloc] initWithTheme:_theme];
+    [_bgmListVC setBGMControllerListener:self];
+    _joinVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputJoin.mp4"];
+
+    self.captureMode = CaptureModeTap;
 }
 
 - (void)didReceiveMemoryWarning
@@ -199,7 +225,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     [super viewDidLoad];
     [self initUI];
     [self initBeautyUI];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -212,7 +238,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     [super viewWillAppear:animated];
     
     _navigationBarHidden = self.navigationController.navigationBar.hidden;
-    [self.navigationController setNavigationBarHidden:YES];
+    self.navigationController.navigationBar.hidden = YES;
 
     if (_isCameraPreviewOn == NO) {
         [self startCameraPreview];
@@ -232,12 +258,21 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [self.navigationController setNavigationBarHidden:_navigationBarHidden];
+    self.navigationController.navigationBar.hidden = _navigationBarHidden;
 }
-- (UIStatusBarStyle)preferredStatusBarStyle {
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self stopCameraPreview];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
     return UIStatusBarStyleLightContent;
 }
+
 #pragma mark - Notification Handler
 - (void)onAudioSessionEvent:(NSNotification*)notification
 {
@@ -280,37 +315,62 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 {
     self.title = @"";
     self.view.backgroundColor = _theme.backgroundColor;
-
-    // 预览界面
-    _videoRecordView = [[UIView alloc] initWithFrame:self.view.bounds];
-    _videoRecordView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:_videoRecordView];
+    
+    if (0 == _config.chorusVideos.count
+        && UGCKitRecordStyleRecord != _config.recordStyle) {
+        _config.recordStyle = UGCKitRecordStyleRecord;
+    }
+    else if (_config.chorusVideos.count < 2
+               && UGCKitRecordStyleTrio == _config.recordStyle) {
+        _config.chorusVideos = @[_config.chorusVideos.firstObject,
+                                 _config.chorusVideos.firstObject];
+    }
+    // 视频界面
+    UIView *videoContainer = [[UIView alloc] initWithFrame:self.view.bounds];
+    videoContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                    | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:videoContainer];
+    
+    NSString *recordVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputRecord.mp4"];
+    _previewController = [[UGCKitRecordPreviewController alloc] initWithContainerView:videoContainer
+                                                                  recordStyle:_config.recordStyle
+                                                                 chorusVideos:_config.chorusVideos
+                                                                  recordVideo:recordVideoPath];
 
     CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 25;
     CGFloat centerY = top;
-
+    
+    UIButton *(^allocButtonBlock)(UIImage *, SEL, NSString *) = ^(UIImage *bgImage, SEL action, NSString *title) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.bounds = CGRectMake(0, 0, BUTTON_CONTROL_SIZE, BUTTON_CONTROL_SIZE);
+        button.titleLabel.font = [UIFont systemFontOfSize:12];
+        [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+        [button setTitleColor:self->_theme.titleColor forState:UIControlStateNormal];
+        [button setBackgroundImage:bgImage forState:UIControlStateNormal];
+        [button setTitle:title forState:UIControlStateNormal];
+        return button;
+    };
     // “下一步”按钮
-    _btnNext = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btnNext.bounds = CGRectMake(0, 0, BUTTON_CONTROL_SIZE, BUTTON_CONTROL_SIZE);
-    _btnNext.titleLabel.font = [UIFont systemFontOfSize:12];
-    [_btnNext setTitleColor:_theme.titleColor forState:UIControlStateNormal];
-    [_btnNext setBackgroundImage:_theme.nextIcon forState:UIControlStateNormal];
-    [_btnNext addTarget:self action:@selector(onNext:) forControlEvents:UIControlEventTouchUpInside];
-    [_btnNext setTitle:[_theme localizedString:@"UGCKit.Common.Next"]
-              forState:UIControlStateNormal];
-    _btnNext.enabled = NO;
+    _btnNext = allocButtonBlock(_theme.nextIcon, @selector(onNext:), [_theme localizedString:@"UGCKit.Common.Next"]);
+    _btnNext.hidden = YES;
     [_btnNext sizeToFit];
-    _btnNext.center = CGPointMake(CGRectGetWidth(self.view.bounds) - 25 - BUTTON_CONTROL_SIZE / 2 , centerY);
+    _btnNext.center = CGPointMake(CGRectGetWidth(self.view.bounds) - 10 - CGRectGetWidth(_btnNext.frame) / 2 , centerY);
     [self.view addSubview:_btnNext];
+    // "更换视频"按钮
+    _btnChangeVideo = allocButtonBlock(_theme.editChooseVideoIcon, @selector(onChangeVideo:), [_theme localizedString:@"UGCKit.Common.Choose"]);
+    _btnChangeVideo.bounds = CGRectMake(0, 0, 70, 30);
+    _btnChangeVideo.center = _btnNext.center;
+    _btnChangeVideo.hidden = YES;
+    [self.view addSubview:_btnChangeVideo];
 
     // 主界面控件浮层
-    _controlView = [[UGCKitRecordView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_btnNext.frame)+30,
-                                                                      CGRectGetWidth(self.view.bounds),
-                                                                      CGRectGetHeight(self.view.bounds) - CGRectGetMaxY(_btnNext.frame)-30)
-                                               minDuration:_config.minDuration
-                                               maxDuration:_config.maxDuration];
+    _controlView = [[UGCKitRecordControlView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_btnNext.frame)+30,
+                                                                             CGRectGetWidth(self.view.bounds),
+                                                                             CGRectGetHeight(self.view.bounds) - CGRectGetMaxY(_btnNext.frame)-30)
+                                                      minDuration:_config.minDuration
+                                                      maxDuration:_config.maxDuration];
     _controlView.theme = _theme;
-    _controlView.speedControlEnabled = _config.chorusVideo == nil;
+    _controlView.speedControlEnabled = UGCKitRecordStyleRecord == _config.recordStyle;
 #if UGC_SMART
     _controlView.musicButtonEnabled = NO;
     _controlView.speedControlEnabled = NO;
@@ -352,15 +412,20 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     UIPanGestureRecognizer* panGensture = [[UIPanGestureRecognizer alloc] initWithTarget:self action: @selector (onPanSlideFilter:)];
     panGensture.delegate = self;
     [self.view addGestureRecognizer:panGensture];
-
-
-    if (_config.chorusVideo) {
-        // 合唱
-        [self setupChrousUIWithTopMargin:CGRectGetMaxY(_btnNext.frame) + 20];
+    
+    if (UGCKitRecordStyleDuet == _config.recordStyle) { // 分屏合拍
+        videoContainer.frame = CGRectMake(0, CGRectGetMaxY(_btnNext.frame) + 20,
+                                          CGRectGetWidth(self.view.bounds),
+                                          CGRectGetHeight(self.view.bounds) / 2);
     }
+    [self refreshChrousUI];
+    [self refreshRecordDuration];
 }
 
-- (void)setupChrousUIWithTopMargin:(CGFloat)top {
+- (void)refreshChrousUI
+{
+    if (UGCKitRecordStyleRecord == _config.recordStyle) return;
+    
     // 合唱
     _controlView.speedControlEnabled = NO;
     _controlView.photoModeEnabled = NO;
@@ -372,49 +437,30 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     CGRect countDownFrame = _controlView.btnCountDown.frame;
     countDownFrame.origin.y = CGRectGetMinY(_controlView.btnRatioGroup.frame);
     _controlView.btnCountDown.frame = countDownFrame;
-    _controlView.btnCountDown.hidden = NO;
+    _controlView.countDownModeEnabled = YES;
 
-    CGRect playFrame = CGRectMake(CGRectGetMidX(self.view.bounds), top,
-                                  CGRectGetWidth(self.view.bounds)/2, CGRectGetHeight(self.view.bounds)/2);
-    CGRect recordFrame = playFrame; recordFrame.origin.x = 0;
-
-    _videoPlayView = [[UIView alloc] initWithFrame:playFrame];;
-    _videoPlayView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view insertSubview:_videoPlayView atIndex:0];
-
-    _videoRecordView.frame = recordFrame;
-
-    _videoRecordView.translatesAutoresizingMaskIntoConstraints = NO;
-    _videoPlayView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    TXVideoInfo *info = [TXVideoInfoReader getVideoInfo:_config.chorusVideo];
-    CGFloat duration = info.duration;
-    _fps = (int)(info.fps + 0.5);
-    if (info.audioSampleRate == 8000) {
-        _sampleRate = AUDIO_SAMPLERATE_8000;
-    }else if (info.audioSampleRate == 16000){
-        _sampleRate = AUDIO_SAMPLERATE_16000;
-    }else if (info.audioSampleRate == 32000){
-        _sampleRate = AUDIO_SAMPLERATE_32000;
-    }else if (info.audioSampleRate == 44100){
-        _sampleRate = AUDIO_SAMPLERATE_44100;
-    }else if (info.audioSampleRate == 48000){
-        _sampleRate = AUDIO_SAMPLERATE_48000;
-    }
-    _size = CGSizeMake(info.width, info.height);
-    _recordType = RecordType_Chorus;
-    _config.minDuration = duration;
-    _config.maxDuration = duration;
-
-    TXPreviewParam *param = [TXPreviewParam new];
-    param.videoView = _videoPlayView;
-    param.renderMode = PREVIEW_RENDER_MODE_FILL_EDGE;
-    //用于模仿视频播放
-    _videoEditer = [[TXVideoEditer alloc] initWithPreview:param];
-    [_videoEditer setVideoPath:_config.chorusVideo];
+    _btnChangeVideo.hidden = NO;
+    
     //用于模仿视频和录制视频的合成
     _videoJoiner = [[TXVideoJoiner alloc] initWithPreview:nil];
     _videoJoiner.joinerDelegate = self;
+}
+
+- (void)refreshRecordDuration
+{
+    if (UGCKitRecordStyleRecord == _config.recordStyle) return;
+    
+    TXVideoInfo *info = nil;
+    for (NSString *videoPath in _config.chorusVideos) {
+        TXVideoInfo *videoInfo = [TXVideoInfoReader getVideoInfo:videoPath];
+        if (!info || videoInfo.duration < info.duration) {
+            info = videoInfo;
+        }
+    }
+    _config.minDuration = info.duration;
+    _config.maxDuration = info.duration;
+    
+    [_controlView setMinDuration:info.duration maxDuration:info.duration];
 }
 
 #pragma mark - UI LazyLoaders
@@ -448,16 +494,16 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 #pragma mark ---- Video Beauty UI ----
 -(void)initBeautyUI
 {
-    NSUInteger controlHeight = [UGCKitBeautySettingPanel getHeight];
+    NSUInteger controlHeight = [ TCBeautyPanel getHeight];
     CGFloat offset = 0;
     if (@available(iOS 11, *)) {
         offset = [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom;
     }
-    _vBeauty = [[UGCKitBeautySettingPanel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - controlHeight - offset,
+    _vBeauty = [[ TCBeautyPanel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - controlHeight - offset,
                                                                     self.view.frame.size.width, controlHeight)
-                                                   theme:_theme];
+                                                   theme:_theme
+                                         actionPerformer:[TCBeautyPanelActionProxy proxyWithSDKObject:[TXUGCRecord shareInstance]]];
     _vBeauty.hidden = YES;
-    _vBeauty.delegate = self;
     _vBeauty.pituDelegate = self;
     _vBeauty.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.view addSubview:_vBeauty];
@@ -469,7 +515,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 }
 
 -(void)setSpeedBtnHidden:(BOOL)hidden{
-    if (_config.chorusVideo != nil) hidden = YES;
+    if (UGCKitRecordStyleRecord != _config.recordStyle) hidden = YES;
     _controlView.speedControlEnabled = !hidden;
 }
 
@@ -493,6 +539,13 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 
 -(IBAction)onTapBackButton:(id)sender
 {
+    __weak __typeof(self) wself = self;
+    [self pauseRecord:^{
+        [wself _goBack];
+    }];
+}
+
+- (void)_goBack {
     NSArray *videoPaths = [[TXUGCRecord shareInstance].partsManager getVideoPathList];
     if (videoPaths.count > 0) {
         UIAlertController *controller = [UIAlertController alertControllerWithTitle:[_theme localizedString:@"UGCKit.Record.AbandonRecord"]
@@ -523,9 +576,71 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     [[TXUGCRecord shareInstance] toggleTorch:_isFlash];
 }
 
-- (IBAction)onNext:(id)sender
+- (IBAction)onNext:(UIButton *)sender
 {
-    [self stopRecordAndComplete];
+    self.captureModeView.userInteractionEnabled = YES;
+    _controlView.btnCountDown.enabled = YES;
+    _controlView.recordButtonSwitchControl.enabled = YES;
+    
+    if (_captureMode != CaptureModePress) {
+        [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
+    }
+    _controlView.controlButtonsHidden = NO;
+    if (UGCKitRecordStyleRecord != _config.recordStyle) {
+        _controlView.btnMusic.hidden = YES;
+        _controlView.btnRatioGroup.hidden = YES;
+        _controlView.btnAudioEffect.hidden = YES;
+    }
+    
+    [self _finishRecord];
+}
+
+- (void)_finishRecord {
+    UIButton *nextButton = _btnNext;
+    nextButton.hidden = YES;
+    [self stopRecordAndComplete:^(int result){
+        nextButton.hidden = NO;
+    }];
+}
+
+- (IBAction)onChangeVideo:(UIButton *)sender
+{
+    UGCKitMediaPickerConfig *config = [[UGCKitMediaPickerConfig alloc] init];
+    config.mediaType = UGCKitMediaTypeVideo;
+    config.maxItemCount = 1;
+    
+    UGCKitMediaPickerViewController *pickerController = [[UGCKitMediaPickerViewController alloc] initWithConfig:config theme:_theme];
+    UGCKitNavControllerPrivate *navController = [[UGCKitNavControllerPrivate alloc] initWithRootViewController:pickerController];
+    navController.supportedOrientations  = self.supportedInterfaceOrientations;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    WEAKIFY(self);
+    pickerController.completion = ^(UGCKitResult *result) {
+        if (!result.cancelled && result.code == 0) {
+            [weak_self doChangeVideo:result];
+        } else {
+            NSLog(@"isCancelled: %c, failed: %@", result.cancelled ? 'y' : 'n', result.info[NSLocalizedDescriptionKey]);
+        }
+        [weak_self dismissViewControllerAnimated:YES completion:nil];
+    };
+    [self presentViewController:navController animated:YES completion:NULL];
+}
+
+- (void)doChangeVideo:(UGCKitResult *)result
+{
+    if (![result.media.videoAsset isKindOfClass:[AVURLAsset class]]) return;
+    
+    NSString *videoPath = ((AVURLAsset *)result.media.videoAsset).URL.path;
+    if (!videoPath) {
+        videoPath = @"";
+    }
+    [self.previewController changeChorusVideo:videoPath];
+    
+    if (UGCKitRecordStyleDuet == _config.recordStyle) {
+        _config.chorusVideos = @[videoPath];
+    } else if (UGCKitRecordStyleTrio == _config.recordStyle) {
+        _config.chorusVideos = @[videoPath, videoPath];
+    }
+    [self refreshRecordDuration];
 }
 
 - (IBAction)onBtnMusicClicked:(id)sender
@@ -564,6 +679,10 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     if (_recordState == RecordStateRecording) {
         [self pauseRecord];
     }
+    if (0 == [TXUGCRecord shareInstance].partsManager.getVideoPathList.count) {
+        return;
+    }
+    
     if (0 == _deleteCount) {
         [_controlView.progressView prepareDeletePart];
     }else{
@@ -623,6 +742,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 
 
 - (void)_configButtonToPause {
+    _controlView.controlButtonsHidden = YES;
     [_controlView setRecordButtonStyle:UGCKitRecordButtonStylePause];
 }
 
@@ -680,7 +800,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
         [self hideBottomView:NO];
     }
 }
-
+#pragma mark - Control Visibility
 #pragma mark - Properties
 -(void)syncSpeedRateToSDK{
     switch (_speedMode) {
@@ -743,31 +863,63 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
         [self setSpeedBtnHidden:YES];
 
         [self _configButtonToPause];
-        if (_recordType == RecordType_Chorus) {
-            [_videoEditer startPlayFromTime:_recordTime toTime:_config.maxDuration];
+        if (UGCKitRecordStyleRecord != _config.recordStyle) {
+            [self.previewController startPlayChorusVideos:_recordTime
+                                                   toTime:_config.maxDuration];
         }
     }
 }
 
+- (void)_pauseAndAddMark:(void(^)(void))completion {
+    NSUInteger countBefore = [TXUGCRecord shareInstance].partsManager.getVideoPathList.count;
+    UGCKitRecordControlView *controlView = _controlView;
+    void (^afterPause)(void)= ^{
+        NSUInteger count = [TXUGCRecord shareInstance].partsManager.getVideoPathList.count;
+        if (count != countBefore) {
+            [controlView.progressView pause];
+        }
+        if (completion) {
+            completion();
+        }
+    };
+    if ([[TXUGCRecord shareInstance] pauseRecord:afterPause] < 0)  {
+        afterPause();
+    }
+}
+
 - (void)pauseRecord {
+    [self pauseRecord:nil];
+}
+- (void)pauseRecord:(void(^)(void))completion {
     self.captureModeView.userInteractionEnabled = YES;
     _controlView.btnCountDown.enabled = YES;
     _controlView.recordButtonSwitchControl.enabled = YES;
     __weak __typeof(self) weakSelf = self;
-    [[TXUGCRecord shareInstance] pauseRecord:^{
+    UGCKitRecordControlView *controlView = _controlView;
+    controlView.btnStartRecord.enabled = NO;
+    [self _pauseAndAddMark:^{
         [weakSelf saveVideoClipPathToPlist];
+        controlView.btnStartRecord.enabled = YES;
+        if (completion) {
+            completion();
+        }
     }];
     [self pauseBGM];
     if (_captureMode != CaptureModePress) {
         [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
     }
-
-    [_controlView.progressView pause];
+    _controlView.controlButtonsHidden = NO;
+    if (UGCKitRecordStyleRecord != _config.recordStyle) {
+        _controlView.btnMusic.hidden = YES;
+        _controlView.btnRatioGroup.hidden = YES;
+        _controlView.btnAudioEffect.hidden = YES;
+    }
+    
     [self setSpeedBtnHidden:NO];
-
+    
     _recordState = RecordStatePaused;
-
-    [_videoEditer stopPlay];
+    
+    [self.previewController stopPlayChorusVideos];
 }
 
 - (void)startRecord {
@@ -803,31 +955,40 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     [self setSpeedBtnHidden:YES];
     _controlView.recordButtonSwitchControl.enabled = NO;
     _recordState = RecordStateRecording;
-    [_videoEditer startPlayFromTime:_recordTime toTime:_config.maxDuration];
+    [self.previewController startPlayChorusVideos:_recordTime
+                                           toTime:_config.maxDuration];
 }
 
--(void)stopRecordAndComplete
+-(void)stopRecordAndComplete:(void(^)(int))completion
 {
-    _btnNext.enabled = NO;
+    _btnNext.hidden = YES;
     _controlView.btnCountDown.enabled = YES;
     _controlView.recordButtonSwitchControl.enabled = YES;
     [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
     [self setSpeedBtnHidden:NO];
-    [_videoEditer stopPlay];
+    [self.previewController stopPlayChorusVideos];
     //调用partsManager快速合成视频，不破坏录制状态，下次返回后可以接着录制（注意需要先暂停视频录制）
     __weak __typeof(self) weakSelf = self;
     if (_recordState == RecordStateRecording) {
-        [[TXUGCRecord shareInstance] pauseRecord:^{
+        [self _pauseAndAddMark:^{
             __strong __typeof(weakSelf) self = weakSelf; if (self == nil) { return; }
             self->_recordState = RecordStatePaused;
             [self saveVideoClipPathToPlist];
 
-            [[TXUGCRecord shareInstance].partsManager joinAllParts:self->_recordVideoPath complete:^(int result) {
+            [[TXUGCRecord shareInstance].partsManager joinAllParts:self.previewController.recordVideoPath
+                                                          complete:^(int result) {
+                if (completion){
+                    completion(result);
+                }
                 [weakSelf onFinishRecord:result];
             }];
         }];
     } else {
-        [[TXUGCRecord shareInstance].partsManager joinAllParts:self->_recordVideoPath complete:^(int result) {
+        [[TXUGCRecord shareInstance].partsManager joinAllParts:self.previewController.recordVideoPath
+                                                      complete:^(int result) {
+            if (completion){
+                completion(result);
+            }
             [weakSelf onFinishRecord:result];
         }];
     }
@@ -888,7 +1049,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 }
 
 - (BOOL)shouldAutorotate {
-    return NO;
+    return YES;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -902,17 +1063,19 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
         //简单设置
         //        TXUGCSimpleConfig * param = [[TXUGCSimpleConfig alloc] init];
         //        param.videoQuality = VIDEO_QUALITY_MEDIUM;
-        //        [[TXUGCRecord shareInstance] startCameraSimple:param preview:_videoRecordView];
+        //        [[TXUGCRecord shareInstance] startCameraSimple:param preview:_previewController.videoRecordView];
         //自定义设置
         TXUGCCustomConfig * param = [[TXUGCCustomConfig alloc] init];
         param.videoResolution = _config.resolution;
         param.videoFPS = _config.fps;
         param.videoBitratePIN = _config.videoBitrate;
         param.GOP = _config.gop;
-        param.audioSampleRate = AUDIO_SAMPLERATE_48000;
+        param.audioSampleRate = _config.audioSampleRate;
         param.minDuration = _config.minDuration;
         param.maxDuration = _config.maxDuration + 2;
-        [[TXUGCRecord shareInstance] startCameraCustom:param preview:_videoRecordView];
+        param.frontCamera = _isFrontCamera;
+        param.enableAEC = _config.AECEnabled;
+        [[TXUGCRecord shareInstance] startCameraCustom:param preview:_previewController.videoRecordView];
 
         TXBeautyManager *beautyManager = [[TXUGCRecord shareInstance] getBeautyManager];
         [beautyManager setBeautyStyle:(TXBeautyStyle)_beautyStyle];
@@ -920,7 +1083,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
         [beautyManager setWhitenessLevel:_whitenDepth];
         [beautyManager setRuddyLevel:_ruddinessDepth];
 
-        [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_ADJUST_RESOLUTION];
+        if (UGCKitRecordStyleRecord == _config.recordStyle) {
+            [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_ADJUST_RESOLUTION];
+        } else {
+            [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_FULL_FILL_SCREEN];
+        }
 
         [beautyManager setEyeScaleLevel:_eye_level];
         [beautyManager setFaceSlimLevel:_face_level];
@@ -977,23 +1144,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 }
 
 - (void)resetBeautySettings {
-    [_vBeauty resetValues];
-    TXBeautyManager *manager = [[TXUGCRecord shareInstance] getBeautyManager];
-    unsigned int methodCount = 0;
-    Method *list = class_copyMethodList([TXBeautyManager class], &methodCount);
-    for (int i = 0; i < methodCount; ++i) {
-        SEL action = method_getName(list[i]);
-        NSString *name = NSStringFromSelector(action);
-        if ([name hasPrefix:@"set"] && [name hasSuffix:@"Level:"]) {
-            IMP imp = method_getImplementation(list[i]);
-            void (*setter)(id,SEL,float) = (void (*)(id,SEL,float))imp;
-            setter(manager, action, 0.0);
-        }
-    }
-    [manager setBeautyStyle:_vBeauty.beautyStyle];
-    [manager setBeautyLevel:_vBeauty.beautyLevel];
-    [manager setWhitenessLevel:_vBeauty.whiteLevel];
-    [manager setMotionTmpl:nil inDir:nil];
+    [_vBeauty resetAndApplyValues];
 
     [[TXUGCRecord shareInstance] setFilter:nil];
     [[TXUGCRecord shareInstance] setGreenScreenFile:nil];
@@ -1010,7 +1161,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 
 - (void)saveVideoClipPathToPlist
 {
-    if (_recordType == RecordType_Chorus) {
+    if (UGCKitRecordStyleRecord != _config.recordStyle) {
         // 合唱暂不支持草稿
         return;
     }
@@ -1024,55 +1175,75 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 
 -(void)onFinishRecord:(int)result
 {
-    _btnNext.enabled = YES;
+    _btnNext.hidden = NO;
     if(0 == result){
-        if (_recordType == RecordType_Normal) {
+        if (UGCKitRecordStyleRecord == _config.recordStyle) {
             [self stopCameraPreview];
             if (self.completion) {
+                NSAssert(self.previewController.recordVideoPath != nil, @"unexpected");
                 UGCKitResult *result = [[UGCKitResult alloc] init];;
-                result.media = [UGCKitMedia mediaWithVideoPath: _recordVideoPath];
+                result.media = [UGCKitMedia mediaWithVideoPath:self.previewController.recordVideoPath];
                 result.coverImage = [[UIImage alloc] initWithContentsOfFile:[_coverPath stringByAppendingString:@".png"]];
                 if (self.completion) {
                     self.completion(result);
                 }
             }
-        }else{
-            CGFloat width = 720;
-            CGFloat height = 1280;
-            CGRect recordScreen = CGRectMake(0, 0, width, height);
-            //播放视频所占画布的大小这里要计算下，防止视频拉伸
-            CGRect playScreen = CGRectZero;
-            if (_size.height / _size.width >= height / width) {
-                CGFloat playScreen_w = height * _size.width / _size.height;
-                playScreen = CGRectMake(width + (width - playScreen_w) / 2.0, 0, playScreen_w, height);
-            }else{
-                CGFloat playScreen_h = width * _size.height / _size.width;
-                playScreen = CGRectMake(width, (height - playScreen_h) / 2.0, width, playScreen_h);
-            }
-            if (_recordVideoPath
-                && _config.chorusVideo
-                && [[NSFileManager defaultManager] fileExistsAtPath:_recordVideoPath]
-                && [[NSFileManager defaultManager] fileExistsAtPath:_config.chorusVideo]) {
-                if (0 == [_videoJoiner setVideoPathList:@[_recordVideoPath,_config.chorusVideo]]) {
-                    [_videoJoiner setSplitScreenList:@[[NSValue valueWithCGRect:recordScreen],[NSValue valueWithCGRect:playScreen]] canvasWidth:720 * 2 canvasHeight:1280];
-                    [_videoJoiner splitJoinVideo:VIDEO_COMPRESSED_720P videoOutputPath:_joinVideoPath];
-                    _hud = [UGCKitProgressHUD showHUDAddedTo:self.view animated:YES];
-                    _hud.mode = UGCKitProgressHUDModeText;
-                    _hud.label.text = [_theme localizedString:@"UGCKit.Media.VideoSynthesizing"];
-                }else{
-                    [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"]
-                            msg:[_theme localizedString:@"UGCKit.Record.VideoChorusNotSupported"]];
-                }
-            }else{
-                [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"]
-                        msg:[_theme localizedString:@"UGCKit.Record.TryAgain"]];
-            }
+        } else {
+            _btnNext.hidden = YES;
+            [self joinVideos];
         }
         [UGCKitReporter report:UGCKitReportItem_videorecord userName:nil code:0 msg:@"视频录制成功"];
     }else{
+        NSString * message = [NSString stringWithFormat:@"%@(%d)",
+                              [_theme localizedString:@"UGCKit.Record.TryAgain"],
+                              result];
+        [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"]
+                msg:message];
+        [UGCKitReporter report:UGCKitReportItem_videorecord userName:nil code:-1 msg:@"视频录制失败"];
+    }
+}
+
+- (void)joinVideos
+{
+    NSString * recordVideoPath = self.previewController.recordVideoPath;
+    if (0 == recordVideoPath.length
+        || 0 == _config.chorusVideos.count
+        || ![[NSFileManager defaultManager] fileExistsAtPath:recordVideoPath]
+        || ![[NSFileManager defaultManager] fileExistsAtPath:_config.chorusVideos.firstObject]
+        || (UGCKitRecordStyleTrio == _config.recordStyle
+            && (_config.chorusVideos.count < 2 || ![[NSFileManager defaultManager] fileExistsAtPath:_config.chorusVideos[1]]))) {
         [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"]
                 msg:[_theme localizedString:@"UGCKit.Record.TryAgain"]];
-        [UGCKitReporter report:UGCKitReportItem_videorecord userName:nil code:-1 msg:@"视频录制失败"];
+        return;
+    }
+    
+    CGFloat canvasWidth = 720 * 2, canvasHeight = 1280;
+    CGFloat halfWidth   = canvasWidth / 2;
+    NSArray *displayRects = @[[NSValue valueWithCGRect:CGRectMake(0, 0, halfWidth, canvasHeight)],
+                              [NSValue valueWithCGRect:CGRectMake(halfWidth, 0, halfWidth, canvasHeight)]];
+    if (UGCKitRecordStyleTrio == _config.recordStyle) {
+        canvasWidth = 720;
+        CGFloat oneThirdHeight = canvasHeight / 3;
+        displayRects = @[[NSValue valueWithCGRect:CGRectMake(0, 0, canvasWidth, oneThirdHeight)],
+                         [NSValue valueWithCGRect:CGRectMake(0, oneThirdHeight, canvasWidth, oneThirdHeight)],
+                         [NSValue valueWithCGRect:CGRectMake(0, canvasHeight - oneThirdHeight, canvasWidth, oneThirdHeight)]];
+    }
+    
+    if (0 == [_videoJoiner setVideoPathList:self.previewController.allVideoPaths]) {
+        [_videoJoiner setSplitScreenList:displayRects canvasWidth:canvasWidth canvasHeight:canvasHeight];
+        [_videoJoiner setVideoVolumes:self.previewController.allVideoVolumes];
+        [_videoJoiner splitJoinVideo:VIDEO_COMPRESSED_720P videoOutputPath:_joinVideoPath];
+        if (nil == _hud) {
+            _hud = [UGCKitProgressHUD showHUDAddedTo:self.view animated:YES];
+        } else {
+            [self.view addSubview:_hud];
+            [_hud showAnimated:YES];
+        }
+        _hud.mode = UGCKitProgressHUDModeText;
+        _hud.label.text = [_theme localizedString:@"UGCKit.Media.VideoSynthesizing"];
+    } else {
+        [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"]
+                msg:[_theme localizedString:@"UGCKit.Record.VideoChorusNotSupported"]];
     }
 }
 
@@ -1127,21 +1298,31 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 -(void) onRecordProgress:(NSInteger)milliSecond;
 {
     _recordTime =  milliSecond / 1000.0;
-    if (_recordTime >= _config.maxDuration) {
-        [self pauseRecord];
-    }
+    BOOL shouldPause = _recordTime >= _config.maxDuration;
     [self updateRecordProgressLabel: _recordTime];
     
     BOOL isEmpty = milliSecond == 0;
-    //录制过程中不能切换BGM, 不能改变声音效果
+    //录制过程中不能切换BGM, 不能改变声音效果，不能更换合拍视频
+    if (UGCKitRecordStyleRecord == _config.recordStyle) {
+        _btnChangeVideo.hidden = YES;
+    } else {
+        _btnChangeVideo.hidden = !isEmpty;
+    }
+    _controlView.btnRatioGroup.enabled = isEmpty;
 
     _controlView.btnMusic.enabled = isEmpty;
-    _btnNext.enabled = milliSecond / 1000.0 >= _config.minDuration;
+    _btnNext.hidden = milliSecond / 1000.0 < _config.minDuration;
     _controlView.btnAudioEffect.enabled = _controlView.btnMusic.enabled;
     //回删之后被模仿视频进度回退
-    if (_isBackDelete && _recordType == RecordType_Chorus) {
-        [_videoEditer previewAtTime:_recordTime];
+    if (_isBackDelete && UGCKitRecordStyleRecord != _config.recordStyle) {
+        [self.previewController seekChorusVideosToTime:_recordTime];
         _isBackDelete = NO;
+    }
+    if (shouldPause) {
+        [self pauseRecord];
+        if (_config.autoComplete) {
+            [self _finishRecord];
+        }
     }
 }
 
@@ -1179,6 +1360,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
 }
 -(void) onJoinComplete:(TXJoinerResult *)result
 {
+    _btnNext.hidden = NO;
     [_hud hideAnimated:YES];
     if (_appForeground && result.retCode == RECORD_RESULT_OK) {
         [self stopCameraPreview];
@@ -1187,17 +1369,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
             result.media = [UGCKitMedia mediaWithVideoPath:_joinVideoPath];
             self.completion(result);
         }
-        /*UGCKitEditViewController *vc = [[UGCKitEditViewController alloc] initWithMedia:[UGCKitMedia mediaWithVideoPath:_joinVideoPath]
-                                                                                config:nil
-                                                                                 theme:nil];
-        __weak UINavigationController *nav = self.navigationController;
-        vc.completion = ^(UGCKitResult *result) {
-            [nav popToRootViewControllerAnimated:YES];
-        };
-        [self.navigationController pushViewController:vc animated:YES];
-         */
     }else{
-        [self alert:[_theme localizedString:@"UGCKit.Record.VideoJoinerFailed"] msg:result.descMsg];
+        [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"] msg:result.descMsg];
     }
     [UGCKitReporter report:UGCKitReportItem_videojoiner userName:nil code:result.retCode msg:result.descMsg];
 }
@@ -1247,52 +1420,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
         [self->_hud hideAnimated:YES afterDelay:1];
     });
 }
-
-#pragma mark - BeautySettingPanelDelegate
-- (void)onSetBeautyStyle:(TXVideoBeautyStyle)beautyStyle beautyLevel:(float)beautyLevel whitenessLevel:(float)whitenessLevel ruddinessLevel:(float)ruddinessLevel{
-    _beautyStyle = beautyStyle;
-    _beautyDepth = beautyLevel;
-    _whitenDepth = whitenessLevel;
-    _ruddinessDepth = ruddinessLevel;
-
-    TXBeautyManager *beautyManager = [[TXUGCRecord shareInstance] getBeautyManager];
-    [beautyManager setBeautyStyle:(TXBeautyStyle)_beautyStyle];
-    [beautyManager setBeautyLevel:_beautyDepth];
-    [beautyManager setWhitenessLevel:_whitenDepth];
-    [beautyManager setRuddyLevel:_ruddinessDepth];
-}
-
-- (BOOL)respondsToSelector:(SEL)aSelector {
-    if ([super respondsToSelector:aSelector]) {
-        return YES;
-    }
-    return [[[TXUGCRecord shareInstance] getBeautyManager] respondsToSelector:aSelector];
-}
-
-- (id)forwardingTargetForSelector:(SEL)aSelector {
-    return [[TXUGCRecord shareInstance] getBeautyManager];
-}
-
-- (void)onSetFilterMixLevel:(float)mixLevel{
-    [[TXUGCRecord shareInstance] setSpecialRatio:mixLevel / 10.0];
-}
-
-- (void)onSetFilter:(UIImage*)filterImage
-{
-    [[TXUGCRecord shareInstance] setFilter:filterImage];
-}
-
-- (void)onSetGreenScreenFile:(NSURL *)file
-{
-    [[TXUGCRecord shareInstance] setGreenScreenFile:file];
-}
-
-- (void)onSelectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir
-{
-    [[[TXUGCRecord shareInstance] getBeautyManager] setMotionTmpl:tmplName inDir:tmplDir];
-}
-
-
 
 #pragma mark TCBGMControllerListener
 -(void) onBGMControllerPlay:(NSObject*) path{
@@ -1460,13 +1587,13 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     float ratio = translation.x / self.view.frame.size.width;
     float leftRatio = ratio;
     NSInteger index = [_vBeauty currentFilterIndex];
-    UIImage* curFilterImage = [_vBeauty filterImageByIndex:index];
+    UIImage* curFilterImage = [_vBeauty filterImageByMenuOptionIndex:index];
     UIImage* filterImage1 = nil;
     UIImage* filterImage2 = nil;
     CGFloat filter1Level = 0.f;
     CGFloat filter2Level = 0.f;
     if (leftRatio > 0) {
-        filterImage1 = [_vBeauty filterImageByIndex:index - 1];
+        filterImage1 = [_vBeauty filterImageByMenuOptionIndex:index - 1];
         filter1Level = [_vBeauty filterMixLevelByIndex:index - 1] / 10;
         filterImage2 = curFilterImage;
         filter2Level = [_vBeauty filterMixLevelByIndex:index] / 10;
@@ -1474,7 +1601,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
     else {
         filterImage1 = curFilterImage;
         filter1Level = [_vBeauty filterMixLevelByIndex:index] / 10;
-        filterImage2 = [_vBeauty filterImageByIndex:index + 1];
+        filterImage2 = [_vBeauty filterImageByMenuOptionIndex:index + 1];
         filter2Level = [_vBeauty filterMixLevelByIndex:index + 1] / 10;
         leftRatio = 1 + leftRatio;
     }
@@ -1507,8 +1634,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
             filterTipLabel.alpha = 0.1;
             [filterTipLabel sizeToFit];
             CGSize viewSize = self.view.frame.size;
-            CGFloat centerX = self->_config.chorusVideo == nil ? viewSize.width / 2 : viewSize.width / 4;
-            filterTipLabel.center = CGPointMake(centerX, viewSize.height / 3);
+            CGFloat centerX = UGCKitRecordStyleDuet != self->_config.recordStyle ? viewSize.width / 2 : viewSize.width / 4;
+            CGFloat centerY = UGCKitRecordStyleTrio != self->_config.recordStyle ? viewSize.height / 3 : viewSize.height / 2;
+            filterTipLabel.center = CGPointMake(centerX, centerY);
             [self.view addSubview:filterTipLabel];
 
             [UIView animateWithDuration:0.25 animations:^{
@@ -1589,7 +1717,206 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautySettin
         _fps = 30;
         _gop = 3;
         _AECEnabled = YES;
+        _autoComplete = YES;
     }
     return self;
 }
+@end
+
+
+@implementation UGCKitRecordPreviewController
+{
+    NSArray<NSString *> *_allVideoPaths;
+    
+    NSString *_recordVideoPath;
+    
+    UIView *_containerView;
+    
+    UIView *_videoRecordView;
+    
+    UGCKitRecordStyle _recordStyle;
+    
+    NSArray<TXVideoEditer *> *_videoPlayers;
+}
+
+- (instancetype)initWithContainerView:(UIView *)containerView
+                          recordStyle:(UGCKitRecordStyle)recordStyle
+                         chorusVideos:(NSArray<NSString *> *)chorusVideos
+                          recordVideo:(NSString *)recordVideo
+{
+    if (!containerView) {
+        return nil;
+    }
+    
+    if (self = [super init]) {
+        _containerView   = containerView;
+        _recordStyle     = recordStyle;
+        
+        _recordVideoPath = recordVideo ? recordVideo : @"";
+        
+        _videoRecordView = [[UIView alloc] initWithFrame:containerView.bounds];
+        _videoRecordView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                          | UIViewAutoresizingFlexibleHeight;
+        [containerView addSubview:_videoRecordView];
+        
+        [self initChildViews:chorusVideos];
+        
+        [containerView bringSubviewToFront:_videoRecordView];
+    }
+    return self;
+}
+
+- (void)initChildViews:(NSArray<NSString *> *)chorusVideos
+{
+    if (UGCKitRecordStyleRecord == _recordStyle) {
+        return;
+    }
+    
+    NSMutableArray<TXVideoEditer *> *videoPlayers = [NSMutableArray arrayWithCapacity:chorusVideos.count];
+    void (^allocVideoPlayer)(UIView *, CGRect, NSString *, UIViewAutoresizing) = ^(UIView *containerView,
+                                                                                   CGRect frame, NSString *videoPath,
+                                                                                   UIViewAutoresizing autoresizingMask) {
+        UIView *playerView = [[UIView alloc] initWithFrame:frame];
+        playerView.autoresizingMask = autoresizingMask;
+        [containerView addSubview:playerView];
+        
+        TXPreviewParam *param = [[TXPreviewParam alloc] init];
+        param.renderMode = PREVIEW_RENDER_MODE_FILL_SCREEN;
+        param.videoView = playerView;
+        
+        TXVideoEditer *videoPlayer = [[TXVideoEditer alloc] initWithPreview:param];
+        [videoPlayer setVideoPath:videoPath];
+        [videoPlayers addObject:videoPlayer];
+    };
+    
+    NSMutableArray<NSString *> *allVideoPaths = [NSMutableArray arrayWithCapacity:chorusVideos.count + 1];
+    [allVideoPaths addObject:_recordVideoPath];
+    
+    if (UGCKitRecordStyleDuet == _recordStyle) { /// 分屏合拍模式
+        CGRect viewRect = CGRectMake(0, 0,
+                                     CGRectGetWidth(_containerView.frame) / 2,
+                                     CGRectGetHeight(_containerView.frame));
+        _videoRecordView.translatesAutoresizingMaskIntoConstraints = NO;
+        _videoRecordView.frame = viewRect;
+        _videoRecordView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                          | UIViewAutoresizingFlexibleHeight
+                                          | UIViewAutoresizingFlexibleRightMargin;
+        
+        UIViewAutoresizing autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                            | UIViewAutoresizingFlexibleHeight
+                                            | UIViewAutoresizingFlexibleLeftMargin;
+        viewRect.origin.x = CGRectGetMaxX(viewRect);
+        NSString *videoPath = chorusVideos.firstObject;
+        allocVideoPlayer(_containerView, viewRect, videoPath, autoresizingMask);
+        [allVideoPaths addObject:(videoPath ? videoPath : @"")];
+    } else if (UGCKitRecordStyleTrio == _recordStyle) { /// 三屏合拍模式
+        CGRect viewRect = CGRectMake(0,
+                                     CGRectGetHeight(_containerView.frame) / 3,
+                                     CGRectGetWidth(_containerView.frame),
+                                     CGRectGetHeight(_containerView.frame) / 3);
+        _videoRecordView.translatesAutoresizingMaskIntoConstraints = NO;
+        _videoRecordView.frame = viewRect;
+        _videoRecordView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                          | UIViewAutoresizingFlexibleHeight
+                                          | UIViewAutoresizingFlexibleTopMargin
+                                          | UIViewAutoresizingFlexibleBottomMargin;
+        
+        for (NSUInteger idx = 0; idx < 2; idx++) {
+            NSString *videoPath = idx < chorusVideos.count ? chorusVideos[idx] : chorusVideos.firstObject;
+            if (0 == idx) {
+                CGRect playerRect = CGRectMake(0, CGRectGetMaxY(viewRect), viewRect.size.width, viewRect.size.height);
+                UIViewAutoresizing autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                                    | UIViewAutoresizingFlexibleHeight
+                                                    | UIViewAutoresizingFlexibleBottomMargin;
+                allocVideoPlayer(_containerView, playerRect, videoPath, autoresizingMask);
+                [allVideoPaths insertObject:(videoPath ? videoPath : @"") atIndex:0];
+                
+            } else {
+                CGRect playerRect = CGRectMake(0, 0, viewRect.size.width, viewRect.size.height);
+                UIViewAutoresizing autoresizingMask = UIViewAutoresizingFlexibleWidth
+                                                    | UIViewAutoresizingFlexibleHeight
+                                                    | UIViewAutoresizingFlexibleTopMargin;
+                allocVideoPlayer(_containerView, playerRect, videoPath, autoresizingMask);
+                [videoPlayers.lastObject setVideoVolume:0];
+                [allVideoPaths addObject:(videoPath ? videoPath : @"")];
+            }
+        }
+    }
+    _videoPlayers  = videoPlayers;
+    _allVideoPaths = allVideoPaths;
+}
+
+- (instancetype)init
+{
+    return nil;
+}
+
+- (NSArray<NSNumber *> *)allVideoVolumes
+{
+    if (UGCKitRecordStyleRecord == _recordStyle) {
+        return @[@1];
+    } else if (UGCKitRecordStyleDuet == _recordStyle) {
+        return @[@0, @1];
+    } else {
+        return @[@1, @0, @0];
+    }
+}
+
+- (void)changeChorusVideo:(NSString *)videoPath
+{
+    if (UGCKitRecordStyleRecord == _recordStyle || 0 == videoPath.length) {
+        return;
+    }
+    
+    for (TXVideoEditer *videoPlayer in _videoPlayers) {
+        [videoPlayer stopPlay];
+        [videoPlayer setVideoPath:videoPath];
+        [videoPlayer previewAtTime:0];
+    }
+    
+    if (UGCKitRecordStyleDuet == _recordStyle) {
+        _allVideoPaths = @[_recordVideoPath, videoPath];
+    } else if (UGCKitRecordStyleTrio == _recordStyle) {
+        _allVideoPaths = @[videoPath, _recordVideoPath, videoPath];
+    }
+}
+
+#pragma mark - start/stop play chorus videos
+
+- (void)startPlayChorusVideos:(CGFloat)startTime toTime:(CGFloat)endTime
+{
+    for (TXVideoEditer *videoPlayer in _videoPlayers) {
+        [videoPlayer startPlayFromTime:startTime toTime:endTime];
+    }
+}
+
+- (void)stopPlayChorusVideos
+{
+    for (TXVideoEditer *videoPlayer in _videoPlayers) {
+        [videoPlayer stopPlay];
+    }
+}
+
+- (void)seekChorusVideosToTime:(CGFloat)time
+{
+    for (TXVideoEditer *videoPlayer in _videoPlayers) {
+        [videoPlayer previewAtTime:time];
+    }
+}
+
+@end
+
+
+@implementation UGCKitNavControllerPrivate
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return self.supportedOrientations;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end

@@ -32,6 +32,7 @@ FOUNDATION_EXTERN   NSString* QCloudDocumentsTempFilePathWithExcentsion(NSString
 FOUNDATION_EXTERN  NSString * QCloudApplicationDocumentsPath();
 FOUNDATION_EXTERN  NSString * QCloudApplicationLibaryPath();
 FOUNDATION_EXTERN  NSString * QCloudApplicationTempPath();
+FOUNDATION_EXTERN  NSString * QCloudApplicationDirectory();
 FOUNDATION_EXTERN  NSString * QCloudFilteLocalPath(NSString * originPath);
 FOUNDATION_EXTERN  NSString * QCloudGenerateLocalPath(NSString * pathCompents);
 FOUNDATION_EXTERN  NSURL * QCloudMediaURL(NSString * path);

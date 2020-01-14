@@ -318,52 +318,52 @@
 // 以下接口均不支持精简版
 
 /** 
-  设置大眼级别（增值版本有效，普通版本设置此参数无效） [仅限商业版Pro]
+  设置大眼级别（增值版本有效，普通版本设置此参数无效） [仅限企业版Pro]
   @param eyeScaleLevel 大眼级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 -(void) setEyeScaleLevel:(float)eyeScaleLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
-  设置瘦脸级别（增值版本有效，普通版本设置此参数无效）[仅限商业版Pro]
+  设置瘦脸级别（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
   @param faceScaleLevel 瘦脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 -(void) setFaceScaleLevel:(float)faceScaleLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
-  设置V脸（增值版本有效，普通版本设置此参数无效）[仅限商业版Pro]
+  设置V脸（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
   @param faceVLevel V脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setFaceVLevel:(float)faceVLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置下巴拉伸或收缩（增值版本有效，普通版本设置此参数无效）[仅限商业版Pro]
+/** 设置下巴拉伸或收缩（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
  * @param chinLevel 下巴拉伸或收缩取值范围 -9 ~ 9； 0 表示关闭 -9收缩 ~ 9拉伸。
  */
 - (void) setChinLevel:(float)chinLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置短脸（增值版本有效，普通版本设置此参数无效）[仅限商业版Pro]
+/** 设置短脸（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
  * @param faceShortlevel 短脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setFaceShortLevel:(float)faceShortlevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置瘦鼻（增值版本有效，普通版本设置此参数无效）[仅限商业版Pro]
+/** 设置瘦鼻（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
  * @param noseSlimLevel 瘦鼻级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setNoseSlimLevel:(float)noseSlimLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置绿幕文件（增值版本有效，普通版本设置此参数无效）[仅限商业版Pro]
+/** 设置绿幕文件（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
  * @param file 绿幕文件路径
  */
 -(void) setGreenScreenFile:(NSURL *)file;
 
 /**
- * 设置动效 （增值版本有效，普通版本设置此参数无效）[仅限商业版及商业版Pro]
+ * 设置动效 （增值版本有效，普通版本设置此参数无效）[仅限企业版及企业版Pro]
  * @param tmplName 动效名称 
  * @param tmplDir  动效上层文件路径
  */
 - (void) selectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 设置动效静音 （增值版本有效，普通版本设置此参数无效）[仅限商业版及商业版Pro]
+ * 设置动效静音 （增值版本有效，普通版本设置此参数无效）[仅限企业版及企业版Pro]
  * @param motionMute YES 静音, NO 不静音
  */
 - (void)setMotionMute:(BOOL)motionMute TXUGC_DEPRECAETD_BEAUTY_API;

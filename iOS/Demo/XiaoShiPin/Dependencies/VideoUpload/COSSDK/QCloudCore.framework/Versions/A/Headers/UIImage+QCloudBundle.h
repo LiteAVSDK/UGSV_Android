@@ -5,7 +5,7 @@
 //  Created by Dong Zhao on 2017/3/20.
 //
 //
-
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 
 
@@ -15,3 +15,4 @@
 @interface UIImage (QCloudBunle)
 + (UIImage*) qcloudImageNamed:(NSString *)name class:(Class)cla;
 @end
+#endif

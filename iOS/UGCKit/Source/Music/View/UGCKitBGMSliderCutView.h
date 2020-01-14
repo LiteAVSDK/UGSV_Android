@@ -18,6 +18,7 @@
 @property (nonatomic) UIImage*  rightPigImage;
 @property (nonatomic) UIImage*  leftCorverImage;
 @property (nonatomic) UIImage*  rightCoverImage;
+@property (nonatomic) UIColor*  borderColor;
 - (id)initWithTheme:(UGCKitTheme *)theme;
 @end
 

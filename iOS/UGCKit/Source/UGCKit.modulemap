@@ -1,4 +1,4 @@
-module UGCKit {
+framework module UGCKit {
     umbrella header "Headers/UGCKit.h"
     export *
 }

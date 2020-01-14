@@ -76,7 +76,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     
     // Configure navigation item
     self.navigationItem.title = [_theme localizedString:@"UGCKit.MediaPicker.Title"];
-    self.navigationItem.prompt = self.imagePickerController.prompt;
+    self.navigationItem.prompt = self.imagePickerController.config.prompt;
     
     // Show/hide 'Done' button
     if (self.imagePickerController.allowsMultipleSelection) {

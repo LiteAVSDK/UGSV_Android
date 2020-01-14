@@ -28,6 +28,18 @@ static NSString * const HomePageURL = @"https://cloud.tencent.com/product/ugsv";
 
 extern BOOL g_bNeedEnterPushSettingView;
 
+@interface TCAccountInfoViewController () < UIPickerViewDataSource, UIPickerViewDelegate >
+
+@property (nonatomic, strong) NSMutableArray *logFilesArray;
+
+@property (nonatomic, strong) UIView *logUploadView;
+
+@property (nonatomic, strong) UIPickerView *logPickerView;
+
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
+
+@end
+
 @implementation TCAccountInfoViewController
 {
     UIButton *_loginBtn;
@@ -119,6 +131,36 @@ extern BOOL g_bNeedEnterPushSettingView;
     [wrapper addSubview:_loginBtn];
     _loginBtn.bottom = wrapper.height;
     _dataTable.tableFooterView = wrapper;
+    
+    _logUploadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
+    _logUploadView.backgroundColor = RGBA(0, 0, 0, 0.6);
+    _logUploadView.hidden = YES;
+    
+    CGFloat yPosition = CGRectGetHeight(_logUploadView.frame) * 0.3;
+    UIView *logUploadPanel = [[UIView alloc] initWithFrame:CGRectMake(0, yPosition, CGRectGetWidth(_logUploadView.frame), CGRectGetHeight(_logUploadView.frame) - yPosition)];
+    logUploadPanel.backgroundColor = [UIColor whiteColor];
+    [_logUploadView addSubview:logUploadPanel];
+    
+    _logPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(logUploadPanel.frame), 200)];
+    _logPickerView.dataSource = self;
+    _logPickerView.delegate = self;
+    [logUploadPanel addSubview:_logPickerView];
+    
+    UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    uploadButton.frame = CGRectMake(0, CGRectGetMaxY(_logPickerView.frame), CGRectGetWidth(logUploadPanel.frame), 40);
+    [uploadButton setTitle:@"分享上传日志" forState:UIControlStateNormal];
+    [uploadButton addTarget:self action:@selector(onSharedUploadLog:) forControlEvents:UIControlEventTouchUpInside];
+    [logUploadPanel addSubview:uploadButton];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onLogUploadViewTapped:)];
+    tapGesture.enabled = YES;
+    _logUploadView.userInteractionEnabled = YES;
+    [_logUploadView addGestureRecognizer:tapGesture];
+    
+    [self.view addSubview:_logUploadView];
+    
+    _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    _longPressGesture.enabled = YES;
 }
 
 #pragma mark 与view界面相关
@@ -168,10 +210,15 @@ extern BOOL g_bNeedEnterPushSettingView;
 {
     TCUserInfoCellItem *item = _userInfoUISetArry[indexPath.row];
     TCUserInfoTableViewCell *cell = (TCUserInfoTableViewCell*)[tableView  dequeueReusableCellWithIdentifier:@"cell"];
-    if(cell == nil)
-    {
-         cell = [[TCUserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    if(cell == nil) {
+        cell = [[TCUserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         [cell initUserinfoViewCellData:item];
+        if (TCUserInfo_View == item.type
+            && NO == [cell.gestureRecognizers containsObject:_longPressGesture]) {
+            [cell addGestureRecognizer:_longPressGesture];
+        } else {
+            [cell removeGestureRecognizer:_longPressGesture];
+        }
     }
     
     [cell drawRichCell:item];
@@ -252,6 +299,79 @@ extern BOOL g_bNeedEnterPushSettingView;
     next.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:next animated:YES];
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://cloud.tencent.com/product/UGSV"]];
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)longPressGesture
+{
+    if (longPressGesture.state == UIGestureRecognizerStateBegan) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *logDoc = [NSString stringWithFormat:@"%@%@", paths[0], @"/log"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSArray* fileArray = [fileManager contentsOfDirectoryAtPath:logDoc error:nil];
+        fileArray = [fileArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSString* file1 = (NSString*)obj1;
+            NSString* file2 = (NSString*)obj2;
+            return [file1 compare:file2] == NSOrderedDescending;
+        }];
+        self.logFilesArray = [NSMutableArray new];
+        for (NSString* logName in fileArray) {
+            if ([logName hasSuffix:@"xlog"]) {
+                [self.logFilesArray addObject:logName];
+            }
+        }
+        
+        _logUploadView.alpha = 0.1;
+        [UIView animateWithDuration:0.5 animations:^{
+            _logUploadView.hidden = NO;
+            _logUploadView.alpha = 1;
+        }];
+        [_logPickerView reloadAllComponents];
+    }
+}
+
+- (void)onLogUploadViewTapped:(UITapGestureRecognizer *)tapGesture
+{
+    if (!_logUploadView.hidden) {
+        _logUploadView.hidden = YES;
+    }
+}
+
+- (void)onSharedUploadLog:(UIButton*)sender
+{
+    NSInteger row = [_logPickerView selectedRowInComponent:0];
+    if (row < self.logFilesArray.count) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *logDoc = [NSString stringWithFormat:@"%@%@", paths[0], @"/log"];
+        NSString* logPath = [logDoc stringByAppendingPathComponent:self.logFilesArray[row]];
+        NSURL *shareobj = [NSURL fileURLWithPath:logPath];
+        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:@[shareobj] applicationActivities:nil];
+        [self presentViewController:activityView animated:YES completion:^{
+            _logUploadView.hidden = YES;
+        }];
+    }
+}
+
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+// returns the # of rows in each component..
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return self.logFilesArray.count;
+}
+
+#pragma mark - UIPickerViewDelegate
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (row < self.logFilesArray.count) {
+        return (NSString*)self.logFilesArray[row];
+    }
+    return @"";
 }
 
 @end

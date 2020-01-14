@@ -5,16 +5,18 @@
 #import "UGCKitTheme.h"
 
 /*用来辅助定制外观*/
-@interface RangeContentConfig : NSObject
+@interface UGCKitRangeContentConfig : NSObject
 @property (nonatomic) NSInteger imageCount;
 @property (nonatomic) NSInteger pinWidth;
 @property (nonatomic) NSInteger thumbHeight;
 @property (nonatomic) NSInteger borderHeight;
 @property (nonatomic) UIImage*  leftPinImage;
 @property (nonatomic) UIImage*  centerPinImage;
+@property (nonatomic) UIImage*  indicatorImage;
 @property (nonatomic) UIImage*  rightPigImage;
 @property (nonatomic) UIImage*  leftCorverImage;
 @property (nonatomic) UIImage*  rightCoverImage;
+@property (nonatomic) UIColor*  borderColor;
 - (instancetype)initWithTheme:(UGCKitTheme *)theme;
 @end
 
@@ -53,7 +55,7 @@
 @property (nonatomic, readonly) CGFloat centerScale; //中间拉条的位置比例
 
 - (instancetype)initWithImageList:(NSArray *)images;
-- (instancetype)initWithImageList:(NSArray *)images config:(RangeContentConfig*)config;
+- (instancetype)initWithImageList:(NSArray *)images config:(UGCKitRangeContentConfig*)config;
 - (void)unpdateBorder;
 @end
 

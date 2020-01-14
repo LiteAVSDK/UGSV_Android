@@ -240,7 +240,7 @@ static NSString *tvc_combineTwoFingerPrint(unsigned char *fp1,unsigned char *fp2
         
         const char *c_str_simulateIDFA = [simulateIDFA UTF8String];
         unsigned char md5_simulateIDFA[CC_MD5_DIGEST_LENGTH];
-        CC_MD5( c_str_simulateIDFA, (CC_LONG)strlen(c_str_simulateIDFA), md5_simulateIDFA);
+        CC_MD5( c_str_simulateIDFA, strlen(c_str_simulateIDFA), md5_simulateIDFA);
         devUuid = tvc_combineTwoFingerPrint(md5_simulateIDFA, md5_simulateIDFA+(CC_MD5_DIGEST_LENGTH/2));
         [TVCUtils tvc_keyChainSave:devUuid];
     }
@@ -345,6 +345,17 @@ static NSString *tvc_combineTwoFingerPrint(unsigned char *fp1,unsigned char *fp2
     return NetworkType;
 }
 
++ (NSString *) tvc_getAppName {
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *appname = [infoDict objectForKey:@"CFBundleDisplayName"];
+    return appname;
+}
+
++ (NSString *) tvc_getPackageName {
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *packname = [infoDict objectForKey:@"CFBundleIdentifier"];
+    return packname;
+}
 
 + (NSString *)tvc_deviceModelName
 {

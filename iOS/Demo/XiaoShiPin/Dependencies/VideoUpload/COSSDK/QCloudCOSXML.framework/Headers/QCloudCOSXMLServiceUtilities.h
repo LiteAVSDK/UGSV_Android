@@ -8,4 +8,4 @@
 
 #import <Foundation/Foundation.h>
 #import <QCloudCore/QCloudCore.h>
-FOUNDATION_EXTERN NSString* QCloudCOSXMLObjectLocation(QCloudEndPoint* endpoint , NSString* appID,NSString* bucket, NSString* object);
+FOUNDATION_EXTERN NSString* QCloudCOSXMLObjectLocation(QCloudEndPoint* endpoint , NSString* appID,NSString* bucket, NSString* object,NSString *regionName);

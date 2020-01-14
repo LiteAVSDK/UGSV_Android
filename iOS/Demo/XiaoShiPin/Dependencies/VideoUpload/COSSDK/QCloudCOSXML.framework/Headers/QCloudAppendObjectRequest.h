@@ -65,7 +65,7 @@ RFC 2616 中定义的过期时间，将作为 Object 元数据返回
 @property (strong, nonatomic) NSString *contentSHA1;
 @property (assign, nonatomic) QCloudCOSStorageClass storageClass;
 /**
-定义 Object 的 ACL 属性。有效值：private，public-read-write，public-read；默认值：private
+定义 Object 的 ACL 属性。有效值：private，public-read-write，public-read,默认值：private
 */
 @property (strong, nonatomic) NSString *accessControlList;
 /**

@@ -64,6 +64,10 @@ request.object = @"objectName";
  对象名
 */
 @property (strong, nonatomic) NSString *object;
+/**
+  指定多版本中的 Version ID
+*/
+@property (strong, nonatomic) NSString *versionID;
 
 
 - (void) setFinishBlock:(void (^)(QCloudACLPolicy* result, NSError * error))QCloudRequestFinishBlock;

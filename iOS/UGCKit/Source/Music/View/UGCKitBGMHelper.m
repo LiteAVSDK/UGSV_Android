@@ -118,7 +118,7 @@ typedef void(^DownLoadCallback)(float percent, NSString* url);
         pthread_mutex_unlock(&_lock);
     }
     NSData *data = [[NSFileManager defaultManager] contentsAtPath:localListPath];
-    _configs = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    _configs = data ? [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil] : nil;
     if(_configs == nil){
         [_delegate onBGMListLoad:nil];
     }

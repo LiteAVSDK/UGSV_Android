@@ -22,7 +22,6 @@ FOUNDATION_EXPORT const unsigned char UGCKitVersionString[];
 #import <UGCKit/UGCKitResult.h>
 #import <UGCKit/UGCKitMedia.h>
 #import <UGCKit/UGCKitWatermark.h>
-#import <UGCKit/UGCKitFilter.h>
 
 #import <UGCKit/UGCKitPlayerView.h>
 #import <UGCKit/UGCKitVerticalButton.h>

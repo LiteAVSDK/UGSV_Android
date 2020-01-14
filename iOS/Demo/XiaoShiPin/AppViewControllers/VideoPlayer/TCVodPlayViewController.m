@@ -586,7 +586,8 @@ typedef NS_ENUM(NSInteger,DragDirection){
 -(void)onloadVideoComplete:(NSString *)videoPath {
     if (videoPath) {
         UGCKitRecordConfig *config = [[UGCKitRecordConfig alloc] init];
-        config.chorusVideo = videoPath;
+        config.chorusVideos = @[videoPath];
+        config.recordStyle = UGCKitRecordStyleDuet;
         [self.ugcWrapper showRecordViewControllerWithConfig:config];
 //        UGCKitRecordViewController *vc = [[UGCKitRecordViewController alloc] initWithConfig:config theme:nil];
 //        [self.navigationController pushViewController:vc animated:YES];

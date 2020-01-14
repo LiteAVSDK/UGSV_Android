@@ -224,7 +224,8 @@ static TCLoginModel *_sharedInstance = nil;
 
 - (void)getVodSign:(void (^)(int, NSString *, NSDictionary *))completion
 {
-    NSDictionary* params = @{@"userid": _loginParam.identifier, @"timestamp":@([[NSDate date] timeIntervalSince1970] * 1000), @"expires":@(_loginParam.expires)};
+    NSString *userId = (_loginParam.identifier ? _loginParam.identifier : @"");
+    NSDictionary* params = @{@"userid": userId, @"timestamp":@([[NSDate date] timeIntervalSince1970] * 1000), @"expires":@(_loginParam.expires)};
     [TCUtil asyncSendHttpRequest:@"get_vod_sign" token:_loginParam.token params:params handler:^(int resultCode, NSString *message, NSDictionary *resultDict) {
         completion(resultCode, message, resultDict);
     }];

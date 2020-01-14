@@ -781,49 +781,49 @@
 
 #if TARGET_OS_IPHONE
 /**
- * 6.6 设置大眼级别（商用企业版有效，其它版本设置此参数无效）
+ * 6.6 设置大眼级别（企业版有效，其它版本设置此参数无效）
  *
  * @param eyeScaleLevel 大眼级别，取值范围0 - 9；0表示关闭，1 - 9值越大，效果越明显。
  */
 - (void)setEyeScaleLevel:(float)eyeScaleLevel TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.7 设置瘦脸级别（商用企业版有效，其它版本设置此参数无效）
+ * 6.7 设置瘦脸级别（企业版有效，其它版本设置此参数无效）
  *
  *  @param faceScaleLevel 瘦脸级别，取值范围0 - 9；0表示关闭，1 - 9值越大，效果越明显。
  */
 - (void)setFaceScaleLevel:(float)faceScaleLevel TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.8 设置V脸级别（商用企业版有效，其它版本设置此参数无效）
+ * 6.8 设置V脸级别（企业版有效，其它版本设置此参数无效）
  *
  * @param faceVLevel V脸级别，取值范围0 - 9；0表示关闭，1 - 9值越大，效果越明显。
  */
 - (void)setFaceVLevel:(float)faceVLevel TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.9 设置下巴拉伸或收缩（商用企业版有效，其它版本设置此参数无效）
+ * 6.9 设置下巴拉伸或收缩（企业版有效，其它版本设置此参数无效）
  *
  * @param chinLevel 下巴拉伸或收缩级别，取值范围 -9 - 9；0 表示关闭，小于0表示收缩，大于0表示拉伸。
  */
 - (void)setChinLevel:(float)chinLevel TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.10 设置短脸级别（商用企业版有效，其它版本设置此参数无效）
+ * 6.10 设置短脸级别（企业版有效，其它版本设置此参数无效）
  *
  * @param faceShortlevel 短脸级别，取值范围0 - 9；0表示关闭，1 - 9值越大，效果越明显。
  */
 - (void)setFaceShortLevel:(float)faceShortlevel TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.11 设置瘦鼻级别（商用企业版有效，其它版本设置此参数无效）
+ * 6.11 设置瘦鼻级别（企业版有效，其它版本设置此参数无效）
  *
  * @param noseSlimLevel 瘦鼻级别，取值范围0 - 9；0表示关闭，1 - 9值越大，效果越明显。
  */
 - (void)setNoseSlimLevel:(float)noseSlimLevel TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.12 设置绿幕背景视频（商用企业版有效，其它版本设置此参数无效）
+ * 6.12 设置绿幕背景视频（企业版有效，其它版本设置此参数无效）
  *
  * 此处的绿幕功能并非智能抠背，需要被拍摄者的背后有一块绿色的幕布来辅助产生特效
  *
@@ -832,14 +832,14 @@
 - (void)setGreenScreenFile:(NSURL *)file;
 
 /**
- * 6.13 选择使用哪一款 AI 动效挂件（商用企业版有效，其它版本设置此参数无效）
+ * 6.13 选择使用哪一款 AI 动效挂件（企业版有效，其它版本设置此参数无效）
  *
  * @param tmplPath 动效文件路径
  */
 - (void)selectMotionTmpl:(NSString *)tmplPath TRTC_DEPRECAETD_BEAUTY_API;
 
 /**
- * 6.14 设置动效静音（商用企业版有效，其它版本设置此参数无效）
+ * 6.14 设置动效静音（企业版有效，其它版本设置此参数无效）
  *
  * 部分挂件本身会有声音特效，通过此 API 可以关闭特效播放时所带的声音效果。
  *

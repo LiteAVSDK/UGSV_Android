@@ -20,7 +20,7 @@
     BOOL            _thumbnailRequestCancelled;
 }
 
-- (id)initWithFrame:(CGRect)frame videoPath:(NSString *)videoPath  videoAsset:(AVAsset *)videoAsset config:(RangeContentConfig *)config
+- (id)initWithFrame:(CGRect)frame videoPath:(NSString *)videoPath  videoAsset:(AVAsset *)videoAsset config:(UGCKitRangeContentConfig *)config
 {
     if (self = [super initWithFrame:frame]) {
         _videoPath = videoPath;
@@ -79,7 +79,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame pictureList:(NSArray *)pictureList  duration:(CGFloat)duration fps:(float)fps config:(RangeContentConfig *)config
+- (id)initWithFrame:(CGRect)frame pictureList:(NSArray *)pictureList  duration:(CGFloat)duration fps:(float)fps config:(UGCKitRangeContentConfig *)config
 {
     if (self = [super initWithFrame:frame]) {
         _duration   = duration;
@@ -152,9 +152,9 @@
     [_videoRangeSlider setRightPanFrame:time];
 }
 
-- (void)setColorType:(ColorType)colorType
+- (void)setColorType:(UGCKitRangeColorType)UGCKitRangeColorType
 {
-    [_videoRangeSlider setColorType:colorType];
+    [_videoRangeSlider setColorType:UGCKitRangeColorType];
 }
 
 - (void)startColoration:(UIColor *)color alpha:(CGFloat)alpha
@@ -167,14 +167,14 @@
     [_videoRangeSlider stopColoration];
 }
 
-- (VideoColorInfo *)removeLastColoration:(ColorType)colorType
+- (UGCKitVideoColorInfo *)removeLastColoration:(UGCKitRangeColorType)UGCKitRangeColorType
 {
-    return [_videoRangeSlider removeLastColoration:colorType];
+    return [_videoRangeSlider removeLastColoration:UGCKitRangeColorType];
 }
 
-- (void)removeColoration:(ColorType)colorType index:(NSInteger)index
+- (void)removeColoration:(UGCKitRangeColorType)UGCKitRangeColorType index:(NSInteger)index
 {
-    [_videoRangeSlider removeColoration:colorType index:index];
+    [_videoRangeSlider removeColoration:UGCKitRangeColorType index:index];
 }
 
 #pragma mark - VideoRangeDelegate

@@ -4,7 +4,7 @@
 #import "UGCKit_UIViewAdditions.h"
 #import "UGCKitVideoRangeConst.h"
 
-@implementation VideoColorInfo
+@implementation UGCKitVideoColorInfo
 
 @end
 
@@ -16,9 +16,9 @@
 
 @implementation UGCKitVideoRangeSlider
 {
-    NSMutableArray <VideoColorInfo *> *_colorInfos;
-    ColorType       _colorType;
-    VideoColorInfo *_selectColorInfo;
+    NSMutableArray <UGCKitVideoColorInfo *> *_colorInfos;
+    UGCKitRangeColorType       _colorType;
+    UGCKitVideoColorInfo *_selectColorInfo;
     BOOL          _startColor;
 }
 
@@ -63,9 +63,10 @@
 }
 
 
-- (void)setAppearanceConfig:(RangeContentConfig *)appearanceConfig
+- (void)setAppearanceConfig:(UGCKitRangeContentConfig *)appearanceConfig
 {
     _appearanceConfig = appearanceConfig;
+    self.middleLine.image = appearanceConfig.indicatorImage;
 }
 
 - (void)setImageList:(NSArray *)images
@@ -133,10 +134,10 @@
     [self.rangeContent unpdateBorder];
 }
 
-- (void)setColorType:(ColorType)colorType
+- (void)setColorType:(UGCKitRangeColorType)UGCKitRangeColorType
 {
-    _colorType = colorType;
-    if (_colorType == ColorType_Cut) {
+    _colorType = UGCKitRangeColorType;
+    if (_colorType == UGCKitRangeColorType_Cut) {
         [self setLeftPanHidden:NO];
         [self setRightPanHidden:NO];
     }else{
@@ -148,8 +149,8 @@
         self.rangeContent.leftCover.hidden = YES;
         self.rangeContent.rightCover.hidden = YES;
     }
-    for (VideoColorInfo *info in _colorInfos) {
-        if (info.colorType != _colorType) {
+    for (UGCKitVideoColorInfo *info in _colorInfos) {
+        if (info.UGCKitRangeColorType != _colorType) {
             info.colorView.hidden = YES;
         }else{
             info.colorView.hidden = NO;
@@ -160,13 +161,13 @@
 
 - (void)startColoration:(UIColor *)color alpha:(CGFloat)alpha
 {
-    VideoColorInfo *info = [[VideoColorInfo alloc] init];
+    UGCKitVideoColorInfo *info = [[UGCKitVideoColorInfo alloc] init];
     info.colorView = [UIView new];
     info.colorView.backgroundColor = color;
     info.colorView.alpha = alpha;
-    info.colorType = _colorType;
+    info.UGCKitRangeColorType = _colorType;
     [_colorInfos addObject:info];
-    if (_colorType == ColorType_Effect) {
+    if (_colorType == UGCKitRangeColorType_Effect) {
         info.startPos = _currentPos;
     }else{
         info.startPos = _leftPos;
@@ -184,8 +185,8 @@
 
 - (void)stopColoration
 {
-    if (_colorType == ColorType_Effect) {
-        VideoColorInfo *info = [_colorInfos lastObject];
+    if (_colorType == UGCKitRangeColorType_Effect) {
+        UGCKitVideoColorInfo *info = [_colorInfos lastObject];
         info.endPos = _currentPos;
         
         if (_currentPos + 1.5/ _fps >= _durationMs) {
@@ -198,11 +199,11 @@
     _startColor = NO;
 }
 
-- (VideoColorInfo *)removeLastColoration:(ColorType)colorType;
+- (UGCKitVideoColorInfo *)removeLastColoration:(UGCKitRangeColorType)UGCKitRangeColorType;
 {
     for (NSInteger i = _colorInfos.count - 1; i >= 0; i --) {
-        VideoColorInfo *info = (VideoColorInfo *)_colorInfos[i];
-        if (info.colorType == colorType) {
+        UGCKitVideoColorInfo *info = (UGCKitVideoColorInfo *)_colorInfos[i];
+        if (info.UGCKitRangeColorType == UGCKitRangeColorType) {
             [info.colorView removeFromSuperview];
             [_colorInfos removeObject:info];
             return info;
@@ -211,12 +212,12 @@
     return nil;
 }
 
-- (void)removeColoration:(ColorType)colorType index:(NSInteger)index;
+- (void)removeColoration:(UGCKitRangeColorType)UGCKitRangeColorType index:(NSInteger)index;
 {
     NSInteger count = 0;
     for (NSInteger i = 0; i < _colorInfos.count; i ++) {
-        VideoColorInfo *info = (VideoColorInfo *)_colorInfos[i];
-        if (info.colorType == colorType) {
+        UGCKitVideoColorInfo *info = (UGCKitVideoColorInfo *)_colorInfos[i];
+        if (info.UGCKitRangeColorType == UGCKitRangeColorType) {
             if (count == index) {
                 [info.colorView removeFromSuperview];
                 [_colorInfos removeObject:info];
@@ -235,7 +236,7 @@
 - (void)setDurationMs:(CGFloat)durationMs {
     //duration 发生变化的时候，更新下特效所在的位置
     if (_durationMs != durationMs) {
-        for (VideoColorInfo *info in _colorInfos) {
+        for (UGCKitVideoColorInfo *info in _colorInfos) {
             CGFloat x = self.rangeContent.pinWidth + info.startPos * self.rangeContent.imageListWidth / durationMs;
             CGFloat width = fabs(info.endPos - info.startPos) * self.rangeContent.imageListWidth / durationMs;
             info.colorView.frame = CGRectMake(x, 0, width, self.ugckit_height);
@@ -265,8 +266,8 @@
     self.disableSeek = YES;
     self.bgScrollView.contentOffset = CGPointMake(off, 0);
     
-    VideoColorInfo *info = [_colorInfos lastObject];
-    if (_colorType == ColorType_Effect && _startColor) {
+    UGCKitVideoColorInfo *info = [_colorInfos lastObject];
+    if (_colorType == UGCKitRangeColorType_Effect && _startColor) {
         CGRect frame;
         if (_currentPos > info.startPos) {
             frame = [self coloredFrameForStartTime:info.startPos endTime:_currentPos];
@@ -283,8 +284,8 @@
     if (gesture.state == UIGestureRecognizerStateEnded) {
         CGPoint point = [gesture locationInView:self.rangeContent];
         CGFloat tapTime = (point.x - self.rangeContent.pinWidth) / self.rangeContent.imageListWidth * _durationMs;
-        for (VideoColorInfo *info in _colorInfos) {
-            if (info.colorType == _colorType && tapTime >= info.startPos && tapTime <= info.endPos) {
+        for (UGCKitVideoColorInfo *info in _colorInfos) {
+            if (info.UGCKitRangeColorType == _colorType && tapTime >= info.startPos && tapTime <= info.endPos) {
                 _selectColorInfo = info;
                 break;
             }
@@ -302,7 +303,7 @@
     
     [self.delegate onVideoRangeLeftChanged:self];
     
-    if (_colorType == ColorType_Paster || _colorType == ColorType_Text) {
+    if (_colorType == UGCKitRangeColorType_Paster || _colorType == UGCKitRangeColorType_Text) {
         CGFloat x = self.rangeContent.pinWidth + _leftPos * self.rangeContent.imageListWidth / _durationMs;
         CGFloat width = fabs(_leftPos - _rightPos) * self.rangeContent.imageListWidth / _durationMs;
         _selectColorInfo.startPos = _leftPos;
@@ -342,7 +343,7 @@
     
     [self.delegate onVideoRangeRightChanged:self];
     
-    if (_colorType == ColorType_Paster || _colorType == ColorType_Text) {
+    if (_colorType == UGCKitRangeColorType_Paster || _colorType == UGCKitRangeColorType_Text) {
         CGFloat x = self.rangeContent.pinWidth + _leftPos * self.rangeContent.imageListWidth / _durationMs;
         CGFloat width = fabs(_leftPos - _rightPos) * self.rangeContent.imageListWidth / _durationMs;
         _selectColorInfo.endPos = _rightPos;

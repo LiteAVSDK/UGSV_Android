@@ -19,23 +19,23 @@ typedef NS_ENUM(NSInteger, QCloudSupervisoryRecordType) {
 @end
 
 @interface QCloudSupervisoryNetworkRecord : QCloudSupervisoryRecord
-@property (nonatomic, assign) NSTimeInterval rtt;
-@property (nonatomic, assign) NSTimeInterval connection;
-@property (nonatomic, assign) NSTimeInterval securetyConnection;
-@property (nonatomic, assign) NSTimeInterval upload;
-@property (nonatomic, assign) NSTimeInterval request;
-@property (nonatomic, assign) NSTimeInterval download;
-@property (nonatomic, assign) NSTimeInterval response;
-@property (nonatomic, assign) NSTimeInterval dns;
-@property (nonatomic, assign) NSTimeInterval server;
-@property (nonatomic, assign) int64_t uploadHeaderSize;
-@property (nonatomic, assign) int64_t uploadBodySize;
-@property (nonatomic, assign) int64_t downloadHeaderSize;
-@property (nonatomic, assign) int64_t downloadBodySize;
+@property (nonatomic, assign) NSTimeInterval taskTookTime;
+@property (nonatomic, assign) NSTimeInterval calculateMD5STookTime;
+@property (nonatomic, assign) NSTimeInterval signRequestTookTime;
+@property (nonatomic, assign) NSTimeInterval dnsLookupTookTime;
+@property (nonatomic, assign) NSTimeInterval connectTookTime;
+@property (nonatomic, assign) NSTimeInterval secureConnectTookTime;
+@property (nonatomic, assign) NSTimeInterval writeRequestBodyTookTime;
+@property (nonatomic, assign) NSTimeInterval readResponseHeaderTookTime;
+@property (nonatomic, assign) NSTimeInterval readResponseBodyTookTime;
+
+
 @property (nonatomic, strong) NSString* service;
 @property (nonatomic, strong) NSString* method;
 @property (nonatomic, assign) int errorCode;
 @property (nonatomic, strong) NSString* errorMessage;
 @property (nonatomic, assign) QCloudNetworkStatus networkStatus;
 @property (nonatomic, strong) NSString* userAgent;
+@property (nonatomic,assign) NSTimeInterval caculateMD5;
+@property (nonatomic,assign) NSTimeInterval sign;
 @end

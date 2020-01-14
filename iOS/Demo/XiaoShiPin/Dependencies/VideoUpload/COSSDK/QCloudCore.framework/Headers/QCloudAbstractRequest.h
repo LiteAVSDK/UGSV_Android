@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QCloudHTTPRequestDelegate.h"
-#import "RNAsyncBenchMark.h"
+#import "QCloudHttpMetrics.h"
 
 typedef double QCloudAbstractRequestPriority;
 
@@ -30,8 +30,9 @@ typedef void (^QCloudRequestDownProcessBlock)(int64_t bytesDownload, int64_t tot
 @property (atomic, assign, readonly) BOOL canceled;
 @property (nonatomic, assign, readonly) int64_t requestID;
 @property (nonatomic, assign) QCloudAbstractRequestPriority priority;
-@property (nonatomic, strong, readonly) RNAsyncBenchMark* benchMarkMan;
+@property (nonatomic, strong, readonly) QCloudHttpMetrics* benchMarkMan;
 @property (atomic, assign, readonly) BOOL finished;
+
 /**
   协议执行结果向外通知的委托（delegate）主要包括成功和失败两种情况。与Block方式并存，当两者都设置的时候都会通知。
  */
@@ -48,8 +49,6 @@ typedef void (^QCloudRequestDownProcessBlock)(int64_t bytesDownload, int64_t tot
 
 
 - (void) setFinishBlock:(void(^)(id outputObject, NSError* error))QCloudRequestFinishBlock;
-
-
 - (void) setDownProcessBlock:(void(^)(int64_t bytesDownload, int64_t totalBytesDownload, int64_t totalBytesExpectedToDownload))downloadProcessBlock;
 - (void) setSendProcessBlock:(void (^)(int64_t bytesSent , int64_t totalBytesSent , int64_t totalBytesExpectedToSend))sendProcessBlock;
 /**
@@ -74,4 +73,5 @@ typedef void (^QCloudRequestDownProcessBlock)(int64_t bytesDownload, int64_t tot
                       totalBytesSend:(int64_t)totalBytesSend
             totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend;
 - (void) cancel;
+
 @end

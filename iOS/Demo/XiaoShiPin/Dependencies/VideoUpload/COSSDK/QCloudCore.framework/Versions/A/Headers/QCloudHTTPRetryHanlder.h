@@ -7,9 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "QCloudURLSessionTaskData.h"
 typedef void (^QCloudHTTPRetryFunction)(void);
+@protocol QCloudHttpRetryHandlerProtocol <NSObject>
 
+-(BOOL)shouldRetry:(QCloudURLSessionTaskData *)task error:(NSError *)error;
+
+@end
 
 @interface QCloudHTTPRetryHanlder : NSObject
 {
@@ -18,6 +22,7 @@ typedef void (^QCloudHTTPRetryFunction)(void);
 }
 + (QCloudHTTPRetryHanlder*) defaultRetryHandler;
 @property (nonatomic, assign) NSInteger maxCount;
+@property (nonatomic,weak)id <QCloudHttpRetryHandlerProtocol> delegate;
 /**
    sleeptime = sleepStep * 1^2 ，
  */

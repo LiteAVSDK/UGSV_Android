@@ -145,7 +145,7 @@
 }
 
 -(void) onBGMListLoad:(NSDictionary*)dict{
-    BOOL useLocalMusic = NO;
+    BOOL foundKeyBGMToLoadRemote = NO;
     if(dict){
         BGMLog(@"BGM List 加载成功");
         _bgmDict = dict;
@@ -161,13 +161,13 @@
             }
             // 没有青花瓷时用本地音乐，AppStore审核用
             NSRange range = [ele.name rangeOfString:@"青花瓷"]; //
-            if (range.location == NSNotFound) {
-                useLocalMusic = YES;
+            if (range.location != NSNotFound) {
+                foundKeyBGMToLoadRemote = YES;
             }
         }
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (!useLocalMusic) {
+        if (foundKeyBGMToLoadRemote) {
             self->_useLocalMusic = NO;
             [self.tableView reloadData];
         }else{
@@ -222,8 +222,10 @@ static void *mpcKey = &mpcKey;
     mpc.modalPresentationStyle = UIModalPresentationFullScreen;
     objc_setAssociatedObject(mpc, mpcKey, self, OBJC_ASSOCIATION_RETAIN);
 
+    UINavigationController *nav = self.navigationController;
     self.navigationController.navigationBar.hidden = YES;
     [self.navigationController setViewControllers:@[mpc] animated:NO];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 #pragma mark - BGM

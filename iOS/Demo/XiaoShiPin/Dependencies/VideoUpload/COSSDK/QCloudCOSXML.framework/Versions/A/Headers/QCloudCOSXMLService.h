@@ -28,17 +28,18 @@
 
 #import <Foundation/Foundation.h>
 #import <QCloudCore/QCloudService.h>
+#import <QCloudCore/QCloudCore.h>
+
 
 @interface QCloudCOSXMLService : QCloudService
-
 #pragma hidden super selectors
-- (int) performRequest:(QCloudBizHTTPRequest *)httpRequst NS_UNAVAILABLE;
-- (int) performRequest:(QCloudBizHTTPRequest *)httpRequst withFinishBlock:(QCloudRequestFinishBlock)block NS_UNAVAILABLE;
+- (int) performRequest:(QCloudBizHTTPRequest *)httpRequst isHaveBody:(BOOL)body NS_UNAVAILABLE;
+- (int) performRequest:(QCloudBizHTTPRequest *)httpRequst isHaveBody:(BOOL)body withFinishBlock:(QCloudRequestFinishBlock)block NS_UNAVAILABLE;
 
 #pragma Factory
 + (QCloudCOSXMLService*) defaultCOSXML;
 + (QCloudCOSXMLService*) cosxmlServiceForKey:(NSString*)key;
-
+#pragma hidden super selectors
 /**
  检查是否存在key对应的service
 
@@ -64,7 +65,6 @@
  @param withAuthorization 是否需要签名，如果是私有读的Bucket，那么该URL需要带上签名才能访问
  @return object URL
  */
-- (NSString*)getURLWithBucket:(NSString*)bucket object:(NSString*)object withAuthorization:(BOOL)withAuthorization;
-
+- (NSString*)getURLWithBucket:(NSString*)bucket object:(NSString*)object withAuthorization:(BOOL)withAuthorization regionName:(NSString *)regionName;
 
 @end

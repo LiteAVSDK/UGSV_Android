@@ -405,7 +405,7 @@ typedef BOOL(^sampleProcess)(int number , UIImage * image);
  * 调用之后在TXVideoGenerateListener里面监听结果回调
  * @param videoCompressed 视频压缩质量
  * @param videoOutputPath 视频操作之后存储路径
- * 
+ *
  */
 - (void) generateVideo:(TXVideoCompressed)videoCompressed videoOutputPath:(NSString *)videoOutputPath;
 
@@ -432,7 +432,7 @@ typedef BOOL(^sampleProcess)(int number , UIImage * image);
 
 /**
   暂停视频生成，仅适用于generateVideo，quickGenerateVideo调用无效
-  @discussion 
+  @discussion
   SDK生成视频默认采用的是硬编码（编码效率高，编码出来的图像效果好），硬编码器在程序进后台后会停止工作，从而导致视频生成失败，
   这里新增了两个接口pauseGenerate，resumeGenerate，程序进后台后您可以调用pauseGenerate暂停视频生成，程序重新进前台后，
   您可以调用resumeGenerate 继续视频生成，这里需要注意的是，调用resumeGenerate，sdk会重启硬编码器，会有一定的概率重启失败，
@@ -488,6 +488,12 @@ typedef BOOL(^sampleProcess)(int number , UIImage * image);
  *         -3 视频列表里面有不支持合成的视频 (声道数>2暂不支持合成)
  */
 - (int)setVideoAssetList:(NSArray<AVAsset *> *)videoAssetList;
+
+/**
+ * 设置视频文件列表中每个视频的声音大小（只针对分屏合成有效果）
+ * @param volumes 视频音量值列表, 每一个音量值的取值范围 0.0 ~ 1.0
+ */
+- (void)setVideoVolumes:(NSArray<NSNumber *> *)volumes;
 
 /// 开启视频播放，会从视频的起始位置开始播放 （需要在setVideoPathList之后调用）
 - (void)startPlay;

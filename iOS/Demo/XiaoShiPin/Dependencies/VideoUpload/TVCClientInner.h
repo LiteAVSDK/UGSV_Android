@@ -8,8 +8,12 @@
 
 #import "TVCHeader.h"
 
-#define UCG_HTTP_URL    @"http://vod2.qcloud.com/v3/index.php"
-#define UCG_HTTPS_URL   @"https://vod2.qcloud.com/v3/index.php"
+
+#define UGC_HOST        @"vod2.qcloud.com"
+#define UGC_HOST_BAK    @"vod2.dnsv1.com"
+
+// 最大请求次数
+#define kMaxRequestCount 2
 
 #pragma mark - UCG rsp parse
 
@@ -17,13 +21,13 @@
 #define kMessage        @"message"
 #define kData           @"data"
 
-#define TVCVersion @"1.0.5.1"
+#define TVCVersion @"1.1.1.0"
 
 #pragma mark - COS config
 //字段废弃，作为InitUploadUGC的占位字段
 #define kRegion @"gz"
 //超时时间
-#define kTimeoutInterval 8
+#define kTimeoutInterval 10
 
 //log
 #ifndef __OPTIMIZE__
@@ -31,12 +35,6 @@
 #else
 #define NSLog(...){}
 #endif
-
-@interface TVCHttpsDelegate : NSObject <NSURLSessionTaskDelegate>
-
-
-
-@end
 
 @interface TVCUGCResult : NSObject
 
@@ -64,6 +62,10 @@
 @property(nonatomic,strong) NSString * uploadRegion;
 
 @property(nonatomic,strong) NSString * domain;
+
+@property(atomic,assign) int useCosAcc;
+
+@property(nonatomic,strong) NSString * cosAccDomain;
 
 @property(nonatomic,strong) NSString * userAppid;           // 用户appid，用于数据上报
 
@@ -117,6 +119,8 @@
 
 @property(nonatomic,assign) BOOL isShouldRetry;     // 由于临时签名过期导致的上传失败，重试
 
+@property(nonatomic,assign) int vodCmdRequestCount;   // vod信令请求次数
+
 @property(nonatomic,strong) NSData * resumeData;    // cos分片上传resumeData
 
 @end
@@ -127,6 +131,10 @@
 @property(atomic,assign) int reqType;
 
 @property(atomic,assign) int errCode;
+
+@property(atomic,assign) int vodErrCode;
+
+@property(nonatomic,strong) NSString * cosErrCode;
 
 @property(nonatomic,strong) NSString * errMsg;
 
@@ -152,8 +160,20 @@
 
 @property(nonatomic,strong) NSString * vodSessionKey;
 
+@property(atomic,assign) int useHttpDNS;
+
+@property(nonatomic,strong) NSString * cosRegion;
+
+@property(atomic,assign) int useCosAcc;
+
+@property(atomic,assign) uint64_t tcpConnTimeCost;
+
+@property(atomic,assign) uint64_t recvRespTimeCost;
+
 @property(atomic,assign) int retryCount;
 
 @property(nonatomic,assign) BOOL reporting;
+
+@property(nonatomic,strong) NSString * requestId;
 
 @end

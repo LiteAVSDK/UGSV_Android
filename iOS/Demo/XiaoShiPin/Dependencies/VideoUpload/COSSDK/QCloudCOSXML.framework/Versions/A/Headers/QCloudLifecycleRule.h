@@ -54,7 +54,7 @@ Filter 用于描述规则影响的 Object 集合
 */
 @property (strong, nonatomic) QCloudLifecycleAbortIncompleteMultipartUpload *abortIncompleteMultipartUpload;
 /**
-规则转换属性，对象何时转换被转换为 Standard_IA 或 Nearline
+规则转换属性，对象何时转换被转换为 Standard_IA 等
 */
 @property (strong, nonatomic) QCloudLifecycleTransition *transition;
 /**
@@ -64,10 +64,10 @@ Filter 用于描述规则影响的 Object 集合
 /**
 指明非当前版本对象何时过期
 */
-@property (strong, nonatomic) QCloudNoncurrentVersionTransition *noncurrentVersionExpiration;
+@property (strong, nonatomic) QCloudNoncurrentVersionTransition *noncurrentVersionTransition;
 /**
-指明非当前版本对象何时转换被转换为 Standard_IA或 Nearline
+指明非当前版本对象何时转换被转换为 Standard_IA 等
 */
-@property (strong, nonatomic) QCloudNoncurrentVersionExpiration *noncurrentVersionTransition;
+@property (strong, nonatomic) QCloudNoncurrentVersionExpiration *noncurrentVersionExpiration;
 @end
 NS_ASSUME_NONNULL_END

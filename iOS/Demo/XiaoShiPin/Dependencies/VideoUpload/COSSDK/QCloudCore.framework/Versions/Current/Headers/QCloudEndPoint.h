@@ -58,5 +58,5 @@ typedef NSString* QCloudServiceName;
  @param appID appid
  @return 对指称的用户的存储桶提供服务的服务器地址
  */
-- (NSURL*) serverURLWithBucket:(NSString*)bucket appID:(NSString*)appID;
+- (NSURL*) serverURLWithBucket:(NSString*)bucket appID:(NSString*)appID regionName:(NSString *)regionName;
 @end

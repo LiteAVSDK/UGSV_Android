@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (strong, nonatomic) NSString *transitionDate;
 /**
-指定 Object 转储到的目标存储类型，枚举值： Standard_IA, Nearline
+指定 Object 转储到的目标存储类型，枚举值： Standard_IA
 */
 @property (assign, nonatomic) QCloudCOSStorageClass storageClass;
 @end

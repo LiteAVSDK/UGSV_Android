@@ -17,7 +17,7 @@
 #import "UGCKitAssetCell.h"
 #import "UGCKitVideoIndicatorView.h"
 #import "UGCKitAssetLoadingController.h"
-
+#import "UGCKitMem.h"
 static const CGFloat DefaultSelectionHeight = 110;
 
 static CGSize CGSizeScale(CGSize size, CGFloat scale) {
@@ -62,6 +62,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 
 @interface UGCKitAssetsViewController () <PHPhotoLibraryChangeObserver, UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UGCKitAssetLoader *loader;
+@property (nonatomic, copy) NSArray<AVAsset *> *exportedAssets;
 
 @property (nonatomic, strong) PHFetchResult *fetchResult;
 @property (nonatomic, strong) NSArray<PHAssetCollection*> *assetCollections;
@@ -103,7 +104,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 }
 
 - (void)setTheme:(UGCKitTheme *)theme {
-    _theme = [UGCKitTheme sharedTheme];
+    _theme = theme;
     _descriptionLabel.textColor = _theme.titleColor;
     _timeLabel.textColor = _theme.titleColor;
 }
@@ -132,8 +133,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     
     // Configure navigation item
     self.navigationItem.title = self.assetCollection.localizedTitle;
-    self.navigationItem.prompt = self.imagePickerController.prompt;
-    
+    self.navigationItem.prompt = self.imagePickerController .config.prompt;
+    self.navigationController.navigationBar.hidden = NO;
     // Configure collection view
     self.collectionView.allowsMultipleSelection = self.imagePickerController.allowsMultipleSelection;
     
@@ -217,19 +218,23 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 #pragma mark - Delegate Methods
 - (void)tellDelegateWithAssets:(NSArray<PHAsset *> *)assets {
     UGCKitAssetLoadingController *loadvc = [[UGCKitAssetLoadingController alloc] initWithTheme:_theme];
-    loadvc.completion = self.imagePickerController.completion;
+    WEAKIFY(self);
+    WEAKIFY(loadvc);
+    loadvc.completion = ^(UGCKitResult *result) {
+        STRONGIFY(self);
+        self.exportedAssets = weak_loadvc.avAssets;
+        if (self.imagePickerController.completion) {
+            self.imagePickerController.completion(result);
+        }
+    };
+    loadvc.combineVideos = self.imagePickerController.config.combineVideos;
     UGCKitMediaType mediaType = self.imagePickerController.mediaType;
     if (mediaType == UGCKitMediaTypeVideo) {
-        loadvc.composeMode = (assets.count > 1);
         [loadvc exportAssetList:assets assetType:AssetType_Video];
     }else{
-        loadvc.composeMode = ComposeMode_Edit;
         [loadvc exportAssetList:assets assetType:AssetType_Image];
     }
     [self.navigationController pushViewController:loadvc animated:YES];
-//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loadvc];
-//    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-//    [self presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - Actions
@@ -718,9 +723,9 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 {
     NSUInteger numberOfColumns;
     if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-        numberOfColumns = self.imagePickerController.numberOfColumnsInPortrait;
+        numberOfColumns = self.imagePickerController.config.numberOfColumnsInPortrait;
     } else {
-        numberOfColumns = self.imagePickerController.numberOfColumnsInLandscape;
+        numberOfColumns = self.imagePickerController.config.numberOfColumnsInLandscape;
     }
     
     CGFloat width = (CGRectGetWidth(self.view.frame) - 2.0 * (numberOfColumns - 1)) / numberOfColumns;

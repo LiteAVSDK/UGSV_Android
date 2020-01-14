@@ -29,6 +29,7 @@
 #import "UGCKitVideoEffectManager.h"
 #import "UGCKitLocalization.h"
 #import "SDKHeader.h"
+#import "UGCKitMem.h"
 
 typedef  NS_ENUM(NSInteger,TimeType)
 {
@@ -123,6 +124,9 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     // 选中的滤镜与速度，用于恢复状态
     NSInteger _filterIndex;
     NSInteger _timeIndex;
+    
+    BOOL _isShowingEffectView;
+    BOOL _isHidingEffectView;
 }
 
 
@@ -133,7 +137,8 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         _videoAsset = asset.videoAsset;
         NSAssert(_videoAsset, @"asset is nil");
         _config = config ?: [[UGCKitEditConfig alloc] init];
-        _theme = _theme ?: [UGCKitTheme sharedTheme];
+        _theme = theme ?: [UGCKitTheme sharedTheme];
+        _generateMode = _config.generateMode;
         _effectType = -1;
         _cutPathList = [NSMutableArray array];
         _videoOutputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputCut.mp4"];
@@ -176,7 +181,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 {
     [super viewWillAppear:animated];
     _navigationBarHidden = self.navigationController.navigationBar.hidden;
-    self.navigationController.navigationBar.translucent  =  NO;
     self.navigationController.navigationBar.hidden = YES;
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -204,8 +208,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [_ugcEdit pauseGenerate];
     }else{
         [UGCKitProgressHUD hideHUDForView:self.view animated:YES];
-        [_ugcEdit pausePlay];
-        [self setPlayBtn:NO];
+        [self pausePlay];
     }
 }
 
@@ -216,6 +219,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     }else{
         [_ugcEdit resumePlay];
         [self setPlayBtn:YES];
+        _isPlay = YES;
     }
 }
 
@@ -297,6 +301,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height + 5;
     // 特效取消及后退按钮
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
     [backBtn setImage:_theme.backIcon forState:UIControlStateNormal];
     backBtn.frame = CGRectMake(10, top, 50, 44);
     [backBtn addTarget:self action:@selector(onTapCloseButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -308,10 +313,9 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_effectConfirmBtn setTitle:[_theme localizedString:@"UGCKit.Common.Done"] forState:UIControlStateNormal];
     _effectConfirmBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [_effectConfirmBtn setBackgroundImage:_theme.nextIcon forState:UIControlStateNormal];
-    [_effectConfirmBtn setBackgroundImage:_theme.roundCornerHighlightedIcon forState:UIControlStateHighlighted];
     _effectConfirmBtn.frame = CGRectMake(CGRectGetWidth(self.view.bounds) - 15 - btnConfirmWidth, CGRectGetMidY(backBtn.frame)-btnConfirmHeight/2,
                                          btnConfirmWidth, btnConfirmHeight);
-    _effectConfirmBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIStackViewAlignmentBottom;
+    _effectConfirmBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;;
     [_effectConfirmBtn addTarget:self action:@selector(goFinish) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_effectConfirmBtn];
     
@@ -346,7 +350,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_effectView addSubview:_deleteBtn];
 
     CGFloat cutViewHeight = 34 * kScaleY;
-    RangeContentConfig *config = [[RangeContentConfig alloc] initWithTheme:_theme];
+    UGCKitRangeContentConfig *config = [[UGCKitRangeContentConfig alloc] initWithTheme:_theme];
     config.pinWidth = PIN_WIDTH;
     config.thumbHeight = cutViewHeight;
     config.borderHeight = 0;
@@ -442,8 +446,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 -(void)onPlayVideo
 {
     if (_isPlay) {
-        [_ugcEdit pausePlay];
-        _isPlay = NO;
+        [self pausePlay];
     }else{
         CGFloat currentPos = _videoCutView.videoRangeSlider.currentPos;
         if(_isReverse && currentPos != 0){
@@ -459,9 +462,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             [self removeAllTextFieldFromSuperView];
             [self setVideoSubtitlesToSDK];
         }
-        _isPlay = YES;
     }
-    [self setPlayBtn:_isPlay];
 }
 
 - (void)setPlayBtn:(BOOL)isPlay
@@ -512,8 +513,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         }
         if (findEffect) {
             [_ugcEdit previewAtTime:_playTime];
-            [_ugcEdit pausePlay];
-            [self setPlayBtn:NO];
+            [self pausePlay];
         }
     }else{
         _musicView.hidden = YES;
@@ -533,7 +533,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [_effectConfirmBtn setTitle:[_theme localizedString:@"UGCKit.Common.Done"] forState:UIControlStateNormal];
         _effectConfirmBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         [_effectConfirmBtn setBackgroundImage:_theme.nextIcon forState:UIControlStateNormal];
-        [_effectConfirmBtn setBackgroundImage:_theme.roundCornerHighlightedIcon forState:UIControlStateHighlighted];
         _effectConfirmBtn.frame = CGRectMake(self.view.ugckit_width - 15 * kScaleX - 70, y, 70, 30);
     }
 }
@@ -623,8 +622,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 {
     _generationView.hidden = YES;
     [_ugcEdit cancelGenerate];
-    [_ugcEdit startPlayFromTime:0 toTime:_duration];
-    [self setPlayBtn:YES];
+    [self startPlayFromTime:0 toTime:_duration];
 }
 
 - (void)onSelectMusic
@@ -645,24 +643,44 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 /// 特效入口点击事件响应函数
 - (void)onShowEffectView
 {
+    _isHidingEffectView = NO;
+    _isShowingEffectView = YES;
+    [_effectView.layer removeAllAnimations];
+    [_coverImageView.layer removeAllAnimations];
+    
     [self resetVideoProgress];
     _coverImageView.hidden = NO;
     _coverImageView.image = [TXVideoInfoReader getSampleImage:_playTime videoAsset:_videoAsset];
-    _videoPreview.hidden = YES;
+    _videoPreview.hidden   = YES;
     
     [UIView animateWithDuration:0.3 animations:^{
         self->_coverImageView.frame = CGRectMake(0, 54 * kScaleY, self.view.ugckit_width, 410 * kScaleY);
         self->_effectView.frame = CGRectMake(0, self.view.ugckit_height - 205 * kScaleY, self->_effectView.ugckit_width, self->_effectView.ugckit_height);
     } completion:^(BOOL finished) {
         self->_videoPreview.frame = self->_coverImageView.frame;
-        self->_videoPreview.hidden = NO;
-        self->_coverImageView.hidden = YES;
-        self->_bottomMenu.hidden = YES;
+        if (self->_isShowingEffectView) {
+            self->_bottomMenu.hidden = YES;
+        }
     }];
+    
+    WEAKIFY(self);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        STRONGIFY_OR_RETURN(self);
+        if (self->_isShowingEffectView) {
+            self->_isShowingEffectView = NO;
+            self->_videoPreview.hidden = NO;
+            self->_coverImageView.hidden = YES;
+        }
+    });
 }
 
 - (void)onHideEffectView
 {
+    _isHidingEffectView = YES;
+    _isShowingEffectView = NO;
+    [_effectView.layer removeAllAnimations];
+    [_coverImageView.layer removeAllAnimations];
+    
     _coverImageView.hidden = NO;
     _coverImageView.image =  [TXVideoInfoReader getSampleImage:_playTime videoAsset:_videoAsset];
     _videoPreview.hidden = YES;
@@ -673,18 +691,25 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         self->_effectView.frame = CGRectMake(0, self.view.ugckit_height, self->_effectView.ugckit_width, self->_effectView.ugckit_height);
     } completion:^(BOOL finished) {
         self->_videoPreview.frame = self->_coverImageView.frame;
-        self->_videoPreview.hidden = NO;
-        self->_coverImageView.hidden = YES;
+        [self startPlayFromTime:0 toTime:self->_duration];
     }];
-    [self startPlayFromTime:0 toTime:_duration];
-    [self setPlayBtn:YES];
+    
+    WEAKIFY(self);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        STRONGIFY_OR_RETURN(self);
+        if (self->_isHidingEffectView) {
+            self->_isHidingEffectView = NO;
+            self->_videoPreview.hidden = NO;
+            self->_coverImageView.hidden = YES;
+        }
+    });
 }
 
 -(void)onDeleteEffect
 {
     CGFloat endTime = 0;
     if (_effectSelectType == EffectSelectType_Effect) {
-        VideoColorInfo *info = [_videoCutView removeLastColoration:ColorType_Effect];
+        UGCKitVideoColorInfo *info = [_videoCutView removeLastColoration:UGCKitRangeColorType_Effect];
         if (info) {
             float time = _isReverse ? MAX(info.endPos, info.startPos) : MIN(info.endPos, info.startPos);
             [_videoCutView setPlayTime:time];
@@ -701,7 +726,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [_videoPasterInfoList removeLastObject];
         [_pasterEffectArray removeObjectAtIndex:_pasterEffectArray.count - 2];
         [_effectSelectView setEffectList:_pasterEffectArray];
-        [_videoCutView removeLastColoration:ColorType_Paster];
+        [_videoCutView removeLastColoration:UGCKitRangeColorType_Paster];
         if (_videoPasterInfoList.count > 0) {
             UGCKitVideoPasterInfo *info = [_videoPasterInfoList lastObject];
             [self setLeftPanFrame:info.startTime rightPanFrame:info.endTime];
@@ -722,7 +747,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [_videoTextInfoList removeLastObject];
         [_textEffectArray removeObjectAtIndex:_textEffectArray.count - 2];
         [_effectSelectView setEffectList:_textEffectArray];
-        [_videoCutView removeLastColoration:ColorType_Text];
+        [_videoCutView removeLastColoration:UGCKitRangeColorType_Text];
         if (_videoTextInfoList.count > 0) {
             UGCKitVideoTextInfo *info = [_videoTextInfoList lastObject];
             [self setLeftPanFrame:info.startTime rightPanFrame:info.endTime];
@@ -760,7 +785,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_videoPasterInfoList removeObjectAtIndex:_effectSelectIndex];
     [_pasterEffectArray removeObjectAtIndex:_effectSelectIndex];
     [_effectSelectView setEffectList:_pasterEffectArray];
-    [_videoCutView removeColoration:ColorType_Paster index:_effectSelectIndex];
+    [_videoCutView removeColoration:UGCKitRangeColorType_Paster index:_effectSelectIndex];
     
     if (_videoPasterInfoList.count > 0) {
         UGCKitVideoPasterInfo *info = [_videoPasterInfoList lastObject];
@@ -783,7 +808,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_videoTextInfoList removeObjectAtIndex:_effectSelectIndex];
     [_textEffectArray removeObjectAtIndex:_effectSelectIndex];
     [_effectSelectView setEffectList:_textEffectArray];
-    [_videoCutView removeColoration:ColorType_Text index:_effectSelectIndex];
+    [_videoCutView removeColoration:UGCKitRangeColorType_Text index:_effectSelectIndex];
     
     if (_videoTextInfoList.count > 0) {
         UGCKitVideoTextInfo *info = [_videoTextInfoList lastObject];
@@ -836,7 +861,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         {
             NSInteger i = _videoPasterInfoList.count;
             while (i > 0) {
-                [_videoCutView removeLastColoration:ColorType_Paster];
+                [_videoCutView removeLastColoration:UGCKitRangeColorType_Paster];
                 i -- ;
             }
             [self removeAllPasterViewFromSuperView];
@@ -850,7 +875,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         {
             NSInteger i = _videoTextInfoList.count;
             while (i > 0) {
-                [_videoCutView removeLastColoration:ColorType_Text];
+                [_videoCutView removeLastColoration:UGCKitRangeColorType_Text];
                 i -- ;
             }
             [self removeAllTextFieldFromSuperView];
@@ -892,23 +917,32 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     }
 }
 
--(void)startPlayFromTime:(CGFloat)startTime toTime:(CGFloat)endTime
+- (void)startPlayFromTime:(CGFloat)startTime toTime:(CGFloat)endTime
 {
     [_ugcEdit startPlayFromTime:startTime toTime:endTime];
     _isSeek = NO;
     _isPlay = YES;
+    [self setPlayBtn:YES];
 }
+
+- (void)pausePlay
+{
+    [_ugcEdit pausePlay];
+    [self setPlayBtn:NO];
+    _isPlay = NO;
+}
+
 #pragma mark - To SDK
 
 - (void)generateVideo
 {
-    [_ugcEdit pausePlay];
-    [self setPlayBtn:NO];
+    [self pausePlay];
     [self confirmGenerateVideo];
 }
 
 - (void)confirmGenerateVideo
 {
+    [_videoPreview stopObservingAudioNotification];
     _generationView = [self generatingView];
     _generationView.hidden = NO;
     _generateCannelBtn.hidden = NO;
@@ -916,8 +950,11 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     if (_config.videoBitrate > 0) {
         [_ugcEdit setVideoBitrate:_config.videoBitrate];
     }
-
-    [_ugcEdit generateVideo:_config.compressResolution videoOutputPath:_videoOutputPath];
+    if (self.generateMode == UGCKitGenerateModeTwoPass) {
+        [_ugcEdit generateVideoWithTwoPass:_config.compressResolution videoOutputPath:_videoOutputPath];
+    } else {
+        [_ugcEdit generateVideo:_config.compressResolution videoOutputPath:_videoOutputPath];
+    }
 }
 
 //设置贴纸（静态/动态贴纸）
@@ -982,7 +1019,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     if (index == 0) {
         [_ugcEdit setFilter:nil];
     } else {
-        UGCKitFilter *filter = [UGCKitFilterManager defaultManager].allFilters[index-1];
+        TCFilter *filter = [TCFilterManager defaultManager].allFilters[index-1];
         UIImage *image = [UIImage imageWithContentsOfFile:filter.lookupImagePath];
         [_ugcEdit setFilter:image];
 
@@ -1063,13 +1100,12 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     _bottomMenu.hidden = YES;
     _deleteBtn.hidden = NO;
     [self resetConfirmBtn];
-    [self resetVideoProgress];
     [self onShowEffectView];
     [self removeAllTextFieldFromSuperView];
     [self removeAllPasterViewFromSuperView];
     [self setLeftPanFrame:0 rightPanFrame:0];
     _effectSelectType = EffectSelectType_Effect;
-    [_videoCutView setColorType:ColorType_Effect];
+    [_videoCutView setColorType:UGCKitRangeColorType_Effect];
     [_videoCutView setCenterPanHidden:YES];
     __block NSArray <UGCKitEffectInfo *> *effectArray = nil;
     dispatch_barrier_sync(_imageLoadingQueue, ^{
@@ -1083,13 +1119,12 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     _bottomMenu.hidden = YES;
     _deleteBtn.hidden = YES;
     [self resetConfirmBtn];
-    [self resetVideoProgress];
     [self onShowEffectView];
     [self removeAllTextFieldFromSuperView];
     [self removeAllPasterViewFromSuperView];
     [self setLeftPanFrame:0 rightPanFrame:0];
     _effectSelectType = EffectSelectType_Time;
-    [_videoCutView setColorType:ColorType_Time];
+    [_videoCutView setColorType:UGCKitRangeColorType_Time];
 
 //    dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSMutableArray <UGCKitEffectInfo *> *effectArray = [NSMutableArray array];
@@ -1133,19 +1168,18 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     _bottomMenu.hidden = YES;
     _deleteBtn.hidden = YES;
     [self resetConfirmBtn];
-    [self resetVideoProgress];
     [self onShowEffectView];
     [self setLeftPanFrame:0 rightPanFrame:0];
 
-    NSArray<UGCKitFilter *> *filters = [[UGCKitFilterManager defaultManager] allFilters];
+    NSArray<TCFilter *> *filters = [[TCFilterManager defaultManager] allFilters];
     NSMutableArray <UGCKitEffectInfo *> *effectArray = [NSMutableArray arrayWithCapacity:filters.count + 1];
     UGCKitEffectInfo *info = [[UGCKitEffectInfo alloc]init];
     info.name = [_theme localizedString:@"UGCKit.Common.None"];
     info.icon = [_theme iconForFilter:nil];
     info.selectIcon = _theme.editFilterSelectionIcon;
     [effectArray addObject:info];
-    for (UGCKitFilter *filter in filters) {
-        NSString *key = [NSString stringWithFormat:@"UGCKit.Common.Filter_%@", filter.identifier];
+    for (TCFilter *filter in filters) {
+        NSString *key = [NSString stringWithFormat:@"TC.Common.Filter_%@", filter.identifier];
         UGCKitEffectInfo * v= [UGCKitEffectInfo new];
         v.name = [_theme localizedString:key];
         v.icon = [_theme iconForFilter:filter.identifier];
@@ -1156,7 +1190,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_effectSelectView setEffectList:effectArray];
     _effectSelectType = EffectSelectType_Filter;
     _effectSelectView.selectedIndex = _filterIndex;
-    [_videoCutView setColorType:ColorType_Filter];
+    [_videoCutView setColorType:UGCKitRangeColorType_Filter];
     [_videoCutView setCenterPanHidden:YES];
     [self removeAllTextFieldFromSuperView];
     [self removeAllPasterViewFromSuperView];
@@ -1167,12 +1201,11 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     _bottomMenu.hidden = YES;
     _deleteBtn.hidden = NO;
     [self resetConfirmBtn];
-    [self resetVideoProgress];
     [self onShowEffectView];
     [self removeAllTextFieldFromSuperView];
     [self setLeftPanFrame:0 rightPanFrame:0];
     [_effectSelectView setEffectList:_pasterEffectArray];
-    [_videoCutView setColorType:ColorType_Paster];
+    [_videoCutView setColorType:UGCKitRangeColorType_Paster];
     [_videoCutView setCenterPanHidden:YES];
     _effectSelectType = EffectSelectType_Paster;
 }
@@ -1182,12 +1215,11 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     _bottomMenu.hidden = YES;
     _deleteBtn.hidden = NO;
     [self resetConfirmBtn];
-    [self resetVideoProgress];
     [self onShowEffectView];
     [self removeAllPasterViewFromSuperView];
     [self setLeftPanFrame:0 rightPanFrame:0];
     [_effectSelectView setEffectList:_textEffectArray];
-    [_videoCutView setColorType:ColorType_Text];
+    [_videoCutView setColorType:UGCKitRangeColorType_Text];
     [_videoCutView setCenterPanHidden:YES];
     _effectSelectType = EffectSelectType_Text;
 }
@@ -1208,7 +1240,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     }else{
         [self startPlayFromTime:0 toTime:_playTime];
     }
-    [self setPlayBtn:YES];
 }
 
 -(void)onEffectBtnEndSelect:(UIButton *)btn
@@ -1216,9 +1247,8 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     if (_effectType != -1) {
         [_videoCutView stopColoration];
         [_ugcEdit stopEffect:_effectType endTime:_playTime];
-        [_ugcEdit pausePlay];
+        [self pausePlay];
         _effectType = -1;
-        [self setPlayBtn:NO];
     }
 }
 
@@ -1249,17 +1279,16 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         case EffectSelectType_Filter:
         {
             [self setFilter:_effectSelectIndex];
-            if (!_isPlay) {
-                [_ugcEdit resumePlay];
-                [self setPlayBtn:YES];
-                _isPlay = YES;
-                _isSeek = NO;
-            }
+//            if (!_isPlay) {
+//                [_ugcEdit resumePlay];
+//                [self setPlayBtn:YES];
+//                _isPlay = YES;
+//                _isSeek = NO;
+//            }
         } break;
         case EffectSelectType_Paster:
         {
-            [_ugcEdit pausePlay];
-            [self setPlayBtn:NO];
+            [self pausePlay];
             [self removeAllPasterViewFromSuperView];
             if (_effectSelectIndex == _pasterEffectArray.count - 1) {
                 _pasterAddView.hidden = NO;
@@ -1273,8 +1302,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         } break;
         case EffectSelectType_Text:
         {
-            [_ugcEdit pausePlay];
-            [self setPlayBtn:NO];
+            [self pausePlay];
             [self removeAllTextFieldFromSuperView];
             if (_effectSelectIndex == _textEffectArray.count - 1) {
                 _pasterAddView.hidden = NO;
@@ -1301,7 +1329,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_ugcEdit setSpeedList:nil];
     [self startPlayFromTime:0 toTime:_duration];
     
-    [self setPlayBtn:YES];
     [_videoCutView setCenterPanHidden:YES];
 }
 - (void)onVideoTimeEffectsBackPlay
@@ -1313,7 +1340,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_ugcEdit setSpeedList:nil];
     [self startPlayFromTime:0 toTime:_duration];
     
-    [self setPlayBtn:YES];
     [_videoCutView setCenterPanHidden:YES];
 }
 - (void)onVideoTimeEffectsRepeat
@@ -1329,7 +1355,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_ugcEdit setRepeatPlay:@[repeat]];
     [self startPlayFromTime:0 toTime:_duration];
     
-    [self setPlayBtn:YES];
     [_videoCutView setCenterPanHidden:NO];
     [_videoCutView setCenterPanFrame:repeat.startTime];
 }
@@ -1356,7 +1381,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_ugcEdit setSpeedList:@[speed1,speed2,speed3]];
     
     [self startPlayFromTime:0 toTime:_duration];
-    [self setPlayBtn:YES];
     [_videoCutView setCenterPanHidden:NO];
     [_videoCutView setCenterPanFrame:speed1.startTime];
 }
@@ -1626,7 +1650,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     }else{
         [self startPlayFromTime:sender.centerPos toTime:_duration];
     }
-    [self setPlayBtn:YES];
 }
 
 - (void)onVideoSeekChange:(UGCKitVideoRangeSlider *)sender seekToPos:(CGFloat)pos
@@ -1652,7 +1675,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         _bottomMenu.hidden = NO;
         [self resetConfirmBtn];
         [self startPlayFromTime:0 toTime:_duration];
-        [self setPlayBtn:YES];
         return;
     }else{
         _BGMPath = path;
@@ -1695,7 +1717,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [self->_ugcEdit setBGMVolume:self->_BGMVolume];
         [self->_ugcEdit setVideoVolume:self->_videoVolume];
         [self startPlayFromTime:0 toTime:self->_duration];
-        [self setPlayBtn:YES];
         self->_musicView.hidden = NO;
         self->_bottomMenu.hidden = YES;
         [self resetConfirmBtn];

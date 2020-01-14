@@ -101,7 +101,10 @@ FOUNDATION_EXTERN void  DZEnsureMainThread(void(^mainSafeBlock)());
 
 #define  DZEnsureMainThreadEnd  });
 
+//定义block中使用的变量
 
+#define WeakSelf(type) __weak typeof(type) weak##type = type
+#define StrongSelf(type) __strong typeof(weak##type) strong##type = weak##type
 
 #pragma mark ----
 

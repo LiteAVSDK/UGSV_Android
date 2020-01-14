@@ -3,23 +3,23 @@
 #import <UIKit/UIKit.h>
 #import "UGCKitRangeContent.h"
 
-typedef NS_ENUM(NSInteger,ColorType){
-    ColorType_Cut,
-    ColorType_Effect,
-    ColorType_Time,
-    ColorType_Filter,
-    ColorType_Paster,
-    ColorType_Text
+typedef NS_ENUM(NSInteger,UGCKitRangeColorType){
+    UGCKitRangeColorType_Cut,
+    UGCKitRangeColorType_Effect,
+    UGCKitRangeColorType_Time,
+    UGCKitRangeColorType_Filter,
+    UGCKitRangeColorType_Paster,
+    UGCKitRangeColorType_Text
 };
 
 /**
  视频缩略条拉条
  */
-@interface VideoColorInfo : NSObject
+@interface UGCKitVideoColorInfo : NSObject
 @property (nonatomic,strong) UIView *colorView;
 @property (nonatomic,assign) CGFloat startPos;
 @property (nonatomic,assign) CGFloat endPos;
-@property (nonatomic,assign) ColorType colorType;
+@property (nonatomic,assign) UGCKitRangeColorType UGCKitRangeColorType;
 @end
 
 @protocol VideoRangeSliderDelegate;
@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger,ColorType){
 
 @property (nonatomic) UIScrollView  *bgScrollView;
 @property (nonatomic) UIImageView   *middleLine;
-@property (nonatomic) RangeContentConfig* appearanceConfig;
+@property (nonatomic) UGCKitRangeContentConfig* appearanceConfig;
 @property (nonatomic) UGCKitRangeContent *rangeContent;
 @property (nonatomic) CGFloat        durationMs;
 @property (nonatomic) CGFloat        currentPos;
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger,ColorType){
 @property (readonly)  CGFloat        centerPos;
 @property (nonatomic) float          fps;
 
-- (void)setAppearanceConfig:(RangeContentConfig *)appearanceConfig;
+- (void)setAppearanceConfig:(UGCKitRangeContentConfig *)appearanceConfig;
 - (void)setImageList:(NSArray *)images;
 - (void)updateImage:(UIImage *)image atIndex:(NSUInteger)index;
 
@@ -52,13 +52,13 @@ typedef NS_ENUM(NSInteger,ColorType){
 - (void)setRightPanFrame:(CGFloat)time;
 
 //左右滑块选择涂色
-- (void)setColorType:(ColorType)colorType;
+- (void)setColorType:(UGCKitRangeColorType)UGCKitRangeColorType;
 - (void)startColoration:(UIColor *)color alpha:(CGFloat)alpha;
 - (void)stopColoration;
 
 //删除一段涂色
-- (VideoColorInfo *)removeLastColoration:(ColorType)colorType;
-- (void)removeColoration:(ColorType)colorType index:(NSInteger)index;
+- (UGCKitVideoColorInfo *)removeLastColoration:(UGCKitRangeColorType)UGCKitRangeColorType;
+- (void)removeColoration:(UGCKitRangeColorType)UGCKitRangeColorType index:(NSInteger)index;
 @end
 
 

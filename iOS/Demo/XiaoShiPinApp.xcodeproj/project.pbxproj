@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34D94BF93DF500D95ACD1426 /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC4AD4FCF289E435D11A0B8D /* TXLiteAVSDK_UGC.framework */; };
 		4500A694238247B100147B05 /* NSBezierPath+RoundedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 4500A6922382472300147B05 /* NSBezierPath+RoundedCorners.m */; };
 		4500A695238247B100147B05 /* SDAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4500A6912382472300147B05 /* SDAsyncBlockOperation.m */; };
 		4500A696238247B100147B05 /* SDDeviceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4500A68B2382472300147B05 /* SDDeviceHelper.m */; };
@@ -159,7 +160,9 @@
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
 		45E9FFB42399F4C400CEC8F1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		AD293E3E7222F8593F080F7C /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4359EB44F0542B1233DD6C7F /* TXLiteAVSDK_UGC.framework */; };
+		FD1C9BB323BDDC440034C2EC /* libmtasdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD1C9BB123BDDC440034C2EC /* libmtasdk.a */; };
+		FD1C9BB623BDDC780034C2EC /* TXUGCPublishOptCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1C9BB423BDDC780034C2EC /* TXUGCPublishOptCenter.m */; };
+		FD1C9BB923BDDC800034C2EC /* TVCHttpMessageURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1C9BB823BDDC800034C2EC /* TVCHttpMessageURLProtocol.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,7 +190,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4359EB44F0542B1233DD6C7F /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 		4500A67F2382472300147B05 /* SDDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDeviceHelper.h; sourceTree = "<group>"; };
 		4500A6802382472300147B05 /* SDWeakProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDWeakProxy.h; sourceTree = "<group>"; };
 		4500A6812382472300147B05 /* SDImageCachesManagerOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDImageCachesManagerOperation.m; sourceTree = "<group>"; };
@@ -486,6 +488,12 @@
 		45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitWrapper.m; sourceTree = "<group>"; };
 		45E829492384EB7800702418 /* TCNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCNavigationController.h; sourceTree = "<group>"; };
 		45E8294A2384EB7800702418 /* TCNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCNavigationController.m; sourceTree = "<group>"; };
+		EC4AD4FCF289E435D11A0B8D /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
+		FD1C9BB123BDDC440034C2EC /* libmtasdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmtasdk.a; sourceTree = "<group>"; };
+		FD1C9BB423BDDC780034C2EC /* TXUGCPublishOptCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXUGCPublishOptCenter.m; sourceTree = "<group>"; };
+		FD1C9BB523BDDC780034C2EC /* TXUGCPublishOptCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCPublishOptCenter.h; sourceTree = "<group>"; };
+		FD1C9BB723BDDC800034C2EC /* TVCHttpMessageURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCHttpMessageURLProtocol.h; sourceTree = "<group>"; };
+		FD1C9BB823BDDC800034C2EC /* TVCHttpMessageURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCHttpMessageURLProtocol.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,6 +501,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD1C9BB323BDDC440034C2EC /* libmtasdk.a in Frameworks */,
 				455AB05E237BED1800AF4A3C /* AssetsLibrary.framework in Frameworks */,
 				455AAEF1237ABBB900AF4A3C /* libsqlite3.tbd in Frameworks */,
 				457BFD6A239791D3004017FE /* Bugly.framework in Frameworks */,
@@ -502,7 +511,7 @@
 				45C56CD5237AA264009BDB9F /* QCloudCore.framework in Frameworks */,
 				45C56CD4237AA264009BDB9F /* QCloudCOSXML.framework in Frameworks */,
 				453DE42423795B620083E759 /* UGCKit.framework in Frameworks */,
-				AD293E3E7222F8593F080F7C /* TXLiteAVSDK_UGC.framework in Frameworks */,
+				34D94BF93DF500D95ACD1426 /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,7 +616,7 @@
 				455AAEEE237ABBB300AF4A3C /* OpenAL.framework */,
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
-				4359EB44F0542B1233DD6C7F /* TXLiteAVSDK_UGC.framework */,
+				EC4AD4FCF289E435D11A0B8D /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1044,6 +1053,10 @@
 				45C56CCC237AA264009BDB9F /* TVCClient.m */,
 				45C56CCD237AA264009BDB9F /* TVCCommon.h */,
 				45C56CCE237AA264009BDB9F /* TVCClientInner.m */,
+				FD1C9BB523BDDC780034C2EC /* TXUGCPublishOptCenter.h */,
+				FD1C9BB423BDDC780034C2EC /* TXUGCPublishOptCenter.m */,
+				FD1C9BB723BDDC800034C2EC /* TVCHttpMessageURLProtocol.h */,
+				FD1C9BB823BDDC800034C2EC /* TVCHttpMessageURLProtocol.m */,
 			);
 			path = VideoUpload;
 			sourceTree = "<group>";
@@ -1061,6 +1074,7 @@
 		45C56CC6237AA264009BDB9F /* COSSDK */ = {
 			isa = PBXGroup;
 			children = (
+				FD1C9BB123BDDC440034C2EC /* libmtasdk.a */,
 				45C56CC7237AA264009BDB9F /* QCloudCOSXML.framework */,
 				45C56CC8237AA264009BDB9F /* QCloudCore.framework */,
 			);
@@ -1200,7 +1214,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ -e ../init.sh && ]; then\n. ../init.sh\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ -e ../init.sh ]; then\nbash ../init.sh\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1268,6 +1282,7 @@
 				45C56CA8237AA21F009BDB9F /* UIScrollView+MJExtension.m in Sources */,
 				455AAEDB237AB69600AF4A3C /* QCloudAuthentationHeadV5Creator.m in Sources */,
 				455AAF9D237BA91200AF4A3C /* SDImageGIFCoder.m in Sources */,
+				FD1C9BB923BDDC800034C2EC /* TVCHttpMessageURLProtocol.m in Sources */,
 				455AAFAC237BA91200AF4A3C /* SDWebImageOptionsProcessor.m in Sources */,
 				45C56CB5237AA21F009BDB9F /* MJRefreshHeader.m in Sources */,
 				455AAF81237BA91200AF4A3C /* SDWebImageManager.m in Sources */,
@@ -1301,6 +1316,7 @@
 				45C56CB6237AA21F009BDB9F /* MJRefreshBackFooter.m in Sources */,
 				455AAF8A237BA91200AF4A3C /* SDImageLoader.m in Sources */,
 				455AAF82237BA91200AF4A3C /* SDImageIOAnimatedCoder.m in Sources */,
+				FD1C9BB623BDDC780034C2EC /* TXUGCPublishOptCenter.m in Sources */,
 				45C56C45237A9CC1009BDB9F /* AFNetworkReachabilityManager.m in Sources */,
 				455AAFA8237BA91200AF4A3C /* UIImage+MemoryCacheCost.m in Sources */,
 				455AAF87237BA91200AF4A3C /* SDAnimatedImagePlayer.m in Sources */,
@@ -1530,12 +1546,15 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoShiPin/Dependencies";
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XiaoShiPin/Dependencies/VideoUpload/COSSDK",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1563,12 +1582,15 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoShiPin/Dependencies";
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XiaoShiPin/Dependencies/VideoUpload/COSSDK",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.liteav.ugc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1649,12 +1671,15 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoShiPin/Dependencies";
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XiaoShiPin/Dependencies/VideoUpload/COSSDK",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
 				PRODUCT_NAME = "$(TARGET_NAME)";

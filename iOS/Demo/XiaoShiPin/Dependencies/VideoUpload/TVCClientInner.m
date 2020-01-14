@@ -8,48 +8,6 @@
 
 #import "TVCClientInner.h"
 
-@implementation TVCHttpsDelegate
-
-//- (void)dealloc
-//{
-//    NSLog(@"dealloc TVCHttpsDelegate");
-//}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
-{
-    //1)获取trust object
-    SecTrustRef trust = challenge.protectionSpace.serverTrust;
-    SecTrustResultType result;
-    
-    NSString *host = [[task currentRequest] valueForHTTPHeaderField:@"host"];
-    if (host.length > 0) {
-        //指定域名
-        SecPolicyRef policyOverride = SecPolicyCreateSSL(true, (__bridge CFStringRef)host);
-        NSMutableArray *policies = [NSMutableArray array];
-        [policies addObject:(__bridge_transfer id)policyOverride];
-        SecTrustSetPolicies(trust, (__bridge CFArrayRef)policies);
-    }
-    
-    //2)SecTrustEvaluate对trust进行验证
-    OSStatus status = SecTrustEvaluate(trust, &result);
-    if (status == errSecSuccess &&
-        (result == kSecTrustResultProceed ||
-         result == kSecTrustResultUnspecified)) {
-            
-            //3)验证成功，生成NSURLCredential凭证cred，告知challenge的sender使用这个凭证来继续连接
-            NSURLCredential *cred = [NSURLCredential credentialForTrust:trust];
-            //        [challenge.sender useCredential:cred forAuthenticationChallenge:challenge];
-            completionHandler(NSURLSessionAuthChallengeUseCredential, cred);
-        } else {
-            
-            //5)验证失败，取消这次验证流程
-            //        [challenge.sender cancelAuthenticationChallenge:challenge];
-            completionHandler(NSURLSessionAuthChallengeUseCredential, nil);
-        }
-}
-
-@end
-
 @implementation TVCUGCResult
 
 - (instancetype)init
@@ -70,6 +28,8 @@
         _tmpSecretKey = @"";
         _tmpToken = @"";
         _tmpExpiredTime = 0;
+        _useCosAcc = 0;
+        _cosAccDomain = @"";
         _currentTS = 0;
     }
     return self;
@@ -104,6 +64,7 @@
         _initReqTime = 0;
         _isShouldRetry = NO;
         _resumeData = nil;
+        _vodCmdRequestCount = 0;
     }
     return self;
 }
@@ -123,6 +84,8 @@
     if (self) {
         _reqType = 0;
         _errCode = 0;
+        _vodErrCode = 0;
+        _cosErrCode = @"";
         _errMsg = @"";
         _reqTime = 0;
         _reqTimeCost = 0;
@@ -135,8 +98,14 @@
         _reportId = @"";
         _reqKey = @"";
         _vodSessionKey = @"";
+        _useHttpDNS = 0;
+        _cosRegion = @"";
+        _useCosAcc = 0;
+        _tcpConnTimeCost = 0;
+        _recvRespTimeCost = 0;
         _retryCount = 0;
         _reporting = NO;
+        _requestId = @"";
     }
     return self;
 }

@@ -92,7 +92,18 @@
 {
     return _videoIsPlay;
 }
+- (void)stopObservingAudioNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionInterruptionNotification object:nil];
+}
 
+- (void)startObservingAudioNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onAudioSessionEvent:)
+                                                 name:AVAudioSessionInterruptionNotification
+                                               object:nil];
+}
 - (void)removeNotification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

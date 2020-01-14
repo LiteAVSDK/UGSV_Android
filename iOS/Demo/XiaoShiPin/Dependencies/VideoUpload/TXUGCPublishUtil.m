@@ -251,7 +251,7 @@
     if ([manager fileExistsAtPath:videoPath]) {
         BOOL success =  [manager removeItemAtPath:videoPath error:nil];
         if (success) {
-            //LOGD("Already exist. Removed!");
+            //NSLog(@"Already exist. Removed!");
         }
     }
 }

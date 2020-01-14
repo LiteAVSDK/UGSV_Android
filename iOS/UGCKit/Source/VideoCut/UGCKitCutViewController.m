@@ -14,6 +14,7 @@
 #import "UGCKitMem.h"
 #import "UGCKitTheme.h"
 #import "UGCKitReporterInternal.h"
+#import "UGCKitSmallButton.h"
 
 typedef  NS_ENUM(NSInteger,VideoType)
 {
@@ -52,22 +53,21 @@ typedef  NS_ENUM(NSInteger,VideoType)
     
     UGCKitVideoCutView*    _videoCutView;
     UGCKitPhotoTransitionToolbar*  _photoTransitionToolbar;
-    RangeContentConfig *_config;
+    UGCKitRangeContentConfig *_config;
     int              _renderRotation;
     
     CGFloat bottomToolbarHeight;
     CGFloat bottomInset;
-
 }
 
 - (instancetype)initWithMedia:(UGCKitMedia *)media theme:(UGCKitTheme *)theme;
 {
     if (self = [super init]) {
-        _theme = theme;
+        _theme = theme ?: [UGCKitTheme sharedTheme];
         _media = media;
         _cutPathList = [NSMutableArray array];
         _videoOutputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputCut.mp4"];
-        _config = [[RangeContentConfig alloc] initWithTheme:_theme];
+        _config = [[UGCKitRangeContentConfig alloc] initWithTheme:_theme];
         _config.pinWidth = PIN_WIDTH;
         _config.thumbHeight = 50;
         _config.borderHeight = BORDER_HEIGHT;
@@ -79,24 +79,15 @@ typedef  NS_ENUM(NSInteger,VideoType)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _barTintColor =  self.navigationController.navigationBar.barTintColor;
-    self.navigationController.navigationBar.barTintColor =  [UIColor colorWithWhite:0x18/255.0 alpha:1];
-    self.navigationController.navigationBar.translucent  =  NO;
     _navigationBarHidden = self.navigationController.navigationBar.hidden;
     self.navigationController.navigationBar.hidden = YES;
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]){
-        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    }
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.barTintColor =  _barTintColor;
-    self.navigationController.navigationBar.translucent  =  YES;
     self.navigationController.navigationBar.hidden = _navigationBarHidden;
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -143,7 +134,7 @@ typedef  NS_ENUM(NSInteger,VideoType)
     self.navigationItem.titleView = barTitleLabel;
     self.view.backgroundColor = UIColor.blackColor;
     
-    UIButton *goBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *goBackButton = [UGCKitSmallButton buttonWithType:UIButtonTypeCustom];
     [goBackButton setImage:_theme.backIcon forState:UIControlStateNormal];
     [goBackButton addTarget:self action:@selector(onBtnPopClicked) forControlEvents:UIControlEventTouchUpInside];
     goBackButton.frame = CGRectMake(15, 5 + top, 14 , 23);
@@ -222,7 +213,7 @@ typedef  NS_ENUM(NSInteger,VideoType)
         _generateProgressView = [UIProgressView new];
         _generateProgressView.center = CGPointMake(_generationView.ugckit_width / 2, _generationView.ugckit_height / 2);
         _generateProgressView.bounds = CGRectMake(0, 0, 225, 20);
-        _generateProgressView.progressTintColor = RGB(238, 100, 85);
+        _generateProgressView.progressTintColor = _theme.progressColor;
         [_generateProgressView setTrackImage:_theme.progressTrackImage];
         //_generateProgressView.trackTintColor = UIColor.whiteColor;
         //_generateProgressView.transform = CGAffineTransformMakeScale(1.0, 2.0);
@@ -288,9 +279,16 @@ typedef  NS_ENUM(NSInteger,VideoType)
 - (void)onBtnPopClicked
 {
     [self pause];
-    [self dismissViewControllerAnimated:YES completion:^{
-        //to do
-    }];
+    [self _goBack];
+}
+
+- (void)_goBack {
+    UINavigationController *nav = self.navigationController;
+    if (nav.presentedViewController) {
+        [nav.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [nav popToRootViewControllerAnimated:YES];
+    }
 }
 
 -(void)onBtnNextClicked
@@ -309,7 +307,6 @@ typedef  NS_ENUM(NSInteger,VideoType)
                 result.media = _media;
                 self.completion(result, _renderRotation);
             }
-            _ugcEdit = nil;
         }else{
             _generationView = [self generatingView];
             _generationView.hidden = NO;
@@ -409,17 +406,6 @@ typedef  NS_ENUM(NSInteger,VideoType)
             if (self.completion) {
                 self.completion(result, 0);
             }
-
-//            UGCKitEditViewController *vc = [[UGCKitEditViewController alloc] initWithMedia:[UGCKitMedia mediaWithVideoPath:_videoOutputPath]
-//                                                                                    config:nil
-//                                                                                     theme:nil];
-//            __weak UINavigationController *nav = self.navigationController;
-//            vc.completion = ^(UGCKitResult *result) {
-//                [nav.parentViewController dismissViewControllerAnimated:YES completion:nil];
-//            };
-//            [self.navigationController pushViewController:vc animated:YES];
-            //销毁掉编辑器，减少内存占用
-            _ugcEdit = nil;
         }
     }else{
         //系统剪切如果失败，这里使用SDK正常剪切，设置高码率，保留图像更多的细节

@@ -10,8 +10,7 @@
 #import "QCloudCopyObjectResult.h"
 #import "QCloudCOSTransferMangerService.h"
 typedef void(^CopyProgressBlock)(int64_t partsSent, int64_t totalPartsExpectedToSent) ;
-
-
+typedef void(^RequestsMetricArrayBlock)(NSMutableArray *requstMetricArray);
 @interface QCloudCOSXMLCopyObjectRequest : QCloudAbstractRequest
 /**
  对象名
@@ -92,21 +91,19 @@ typedef void(^CopyProgressBlock)(int64_t partsSent, int64_t totalPartsExpectedTo
 
 
 @property (nonatomic, weak) QCloudCOSTransferMangerService* transferManager;
-
-
+/*
+ 在进行HTTP请求的时候，可以通过设置该参数来设置自定义的一些头部信息。
+ 通常情况下，携带特定的额外HTTP头部可以使用某项功能，如果是这类需求，可以通过设置该属性来实现。
+ */
+@property (strong, nonatomic) NSMutableDictionary* customHeaders;
+@property (strong,nonatomic) NSString *regionName;
 /**
  在对大文件进行复制的过程中，会通过分片的方式进行复制。从该进度回调里可以获取当前已经复制了多少分片。
 
  @param copyProgressBlock 进度回调block
  */
 - (void)setCopyProgressBlock:(void(^)(int64_t partsSent, int64_t totalPartsExpectedToSent))copyProgressBlock;
-
-/*
- 在进行HTTP请求的时候，可以通过设置该参数来设置自定义的一些头部信息。
- 通常情况下，携带特定的额外HTTP头部可以使用某项功能，如果是这类需求，可以通过设置该属性来实现。
- 例如使用加密等功能时，可以通过设置自定义头部来实现。对于小文件直接复制，该头文件将直接加载生成的 CopyObject 请求中。如果是大文件采用了分块复制的方式，那么该头部会加在 InitialMultipartUpload 和 UploadPartCopy 请求中。
- */
-@property (strong, nonatomic) NSDictionary* customHeaders;
+@property (nonatomic,copy) RequestsMetricArrayBlock requstsMetricArrayBlock;
 
 
 /**
@@ -115,4 +112,6 @@ typedef void(^CopyProgressBlock)(int64_t partsSent, int64_t totalPartsExpectedTo
  @param QCloudRequestFinishBlock 完成回调
  */
 - (void) setFinishBlock:(void (^)(QCloudCopyObjectResult* result, NSError * error))QCloudRequestFinishBlock;
+-(void)setCOSServerSideEncyption;
+-(void)setCOSServerSideEncyptionWithCustomerKey:(NSString *)customerKey;
 @end

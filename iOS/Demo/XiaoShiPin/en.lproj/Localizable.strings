@@ -108,6 +108,7 @@
 "TCMainTabView.EditVideo" = "Edit Video";
 "TCMainTabView.EditImage" = "Edit Image";
 "TCMainTabView.Chorus" = "Duet";
+"TCMainTabView.Trio" = "Trio";
 "TCUserAgreement.TitleUserProtocol" = "User Agreement";
 "TCUserAgreement.TitleAgree" = "Agree";
 "TCUserAgreement.TitleDisagree" = "Disagree";

@@ -10,6 +10,9 @@
                  minDuration:(NSTimeInterval)minDuration
                  maxDuration:(NSTimeInterval)maxDuration;
 
+- (void)setMinDuration:(NSTimeInterval)minDuration
+           maxDuration:(NSTimeInterval)maxDuration;
+
 -(void)update:(CGFloat)progress;
 
 -(void)pause;

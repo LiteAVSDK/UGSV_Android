@@ -102,6 +102,10 @@ RFC 2616 中定义的指定文件下载范围，以字节（bytes）为单位
 */
 @property (strong, nonatomic) NSString *ifNoneMatch;
 /**
+指定 Object 的 VersionID (在开启多版本的情况下)
+*/
+@property (strong, nonatomic) NSString *versionID;
+/**
 对象名
 */
 @property (strong, nonatomic) NSString *object;
@@ -110,11 +114,7 @@ RFC 2616 中定义的指定文件下载范围，以字节（bytes）为单位
 */
 @property (strong, nonatomic) NSString *bucket;
 
-/*
-在进行HTTP请求的时候，可以通过设置该参数来设置自定义的一些头部信息。
-通常情况下，携带特定的额外HTTP头部可以使用某项功能，如果是这类需求，可以通过设置该属性来实现。
-*/
-@property (strong, nonatomic) NSDictionary* customHeaders;
+
 
 @end
 NS_ASSUME_NONNULL_END

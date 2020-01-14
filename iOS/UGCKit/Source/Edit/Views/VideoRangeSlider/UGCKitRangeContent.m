@@ -5,7 +5,7 @@
 #import "UGCKitVideoRangeConst.h"
 
 
-@implementation RangeContentConfig
+@implementation UGCKitRangeContentConfig
 - (instancetype)initWithTheme:(UGCKitTheme *)theme
 {
     if (self = [super init]) {
@@ -13,8 +13,10 @@
         _thumbHeight = THUMB_HEIGHT;
         _borderHeight = BORDER_HEIGHT;
         _leftPinImage = theme.editCutSliderLeftIcon;
-        _centerPinImage = theme.editCutSliderCenterIcon;
+        _centerPinImage = theme.editTimeEffectIndicatorIcon;
         _rightPigImage = theme.editCutSliderRightIcon;
+        _indicatorImage = theme.editTimelineIndicatorIcon;
+        _borderColor = theme.editCutSliderBorderColor;
     }
     
     return self;
@@ -28,14 +30,14 @@
 
 @implementation UGCKitRangeContent {
     CGFloat _imageWidth;
-    RangeContentConfig* _appearanceConfig;
+    UGCKitRangeContentConfig* _appearanceConfig;
 }
 
 
 - (instancetype)initWithImageList:(NSArray *)images
 {
     _imageList = images;
-    _appearanceConfig = [RangeContentConfig new];
+    _appearanceConfig = [UGCKitRangeContentConfig new];
     
     CGRect frame = {.origin = CGPointZero, .size = [self intrinsicContentSize]};
     self = [super initWithFrame:frame];
@@ -46,7 +48,7 @@
 }
 
 
-- (instancetype)initWithImageList:(NSArray *)images config:(RangeContentConfig *)config
+- (instancetype)initWithImageList:(NSArray *)images config:(UGCKitRangeContentConfig *)config
 {
     _imageList = images;
     _appearanceConfig = config;
@@ -86,7 +88,7 @@
     //        view.accessibilityIdentifier = @"center";
     //        view;
     //    });
-    
+
     if (_appearanceConfig.leftCorverImage) {
         self.leftCover = [[UIImageView alloc] initWithImage:_appearanceConfig.leftCorverImage];
         self.leftCover.contentMode = UIViewContentModeCenter;
@@ -150,18 +152,18 @@
         [imageView addGestureRecognizer:panGes];
         imageView;
     });
-    
+
     self.topBorder = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
         [self addSubview:view];
-        view.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:100 / 255.0 blue:85 / 255.0 alpha:1];
+        view.backgroundColor = _appearanceConfig.borderColor;
         view;
     });
     
     self.bottomBorder = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
         [self addSubview:view];
-        view.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:100 / 255.0 blue:85 / 255.0 alpha:1];
+        view.backgroundColor = _appearanceConfig.borderColor;
         view;
     });
     

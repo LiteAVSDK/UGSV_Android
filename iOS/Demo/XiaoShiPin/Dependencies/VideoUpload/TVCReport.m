@@ -43,6 +43,8 @@ static TVCReport *_shareInstance = nil;
     TVCReportInfo* copy = [[TVCReportInfo alloc] init];
     copy.reqType = info.reqType;
     copy.errCode = info.errCode;
+    copy.vodErrCode = info.vodErrCode;
+    copy.cosErrCode = info.cosErrCode;
     copy.errMsg = info.errMsg;
     copy.reqTime = info.reqTime;
     copy.reqTimeCost = info.reqTimeCost;
@@ -57,6 +59,12 @@ static TVCReport *_shareInstance = nil;
     copy.vodSessionKey = info.vodSessionKey;
     copy.retryCount = info.retryCount;
     copy.reporting = info.reporting;
+    copy.requestId = info.requestId;
+    copy.useHttpDNS = info.useHttpDNS;
+    copy.cosRegion = info.cosRegion;
+    copy.useCosAcc = info.useCosAcc;
+    copy.tcpConnTimeCost = info.tcpConnTimeCost;
+    copy.recvRespTimeCost = info.recvRespTimeCost;
     
     @synchronized (self.reportCaches) {
         if (self.reportCaches.count > MAXCACHES) {
@@ -91,6 +99,8 @@ static TVCReport *_shareInstance = nil;
     [dictParam setValue:TVCVersion forKey:@"version"];
     [dictParam setValue:[NSNumber numberWithInt:info.reqType] forKey:@"reqType"];
     [dictParam setValue:[NSNumber numberWithInt:info.errCode]  forKey:@"errCode"];
+    [dictParam setValue:[NSNumber numberWithInt:info.vodErrCode] forKey:@"vodErrCode"];
+    [dictParam setValue:info.cosErrCode forKey:@"cosErrCode"];
     [dictParam setValue:info.errMsg forKey:@"errMsg"];
     [dictParam setValue:[NSNumber numberWithLongLong:info.reqTimeCost] forKey:@"reqTimeCost"];
     [dictParam setValue:[NSNumber numberWithLongLong:info.reqTime]  forKey:@"reqTime"];
@@ -109,6 +119,15 @@ static TVCReport *_shareInstance = nil;
     [dictParam setValue:info.vodSessionKey forKey:@"vodSessionKey"];
     [dictParam setValue:info.fileId forKey:@"fileId"];
     
+    [dictParam setValue:info.requestId forKey:@"requestId"];
+    [dictParam setValue:[NSNumber numberWithInt:info.useHttpDNS] forKey:@"useHttpDNS"];
+    [dictParam setValue:info.cosRegion forKey:@"cosRegion"];
+    [dictParam setValue:[NSNumber numberWithInt:info.useCosAcc] forKey:@"useCosAcc"];
+    [dictParam setValue:[NSNumber numberWithLongLong:info.tcpConnTimeCost] forKey:@"tcpConnTimeCost"];
+    [dictParam setValue:[NSNumber numberWithLongLong:info.recvRespTimeCost] forKey:@"recvRespTimeCost"];
+    [dictParam setValue:[TVCUtils tvc_getPackageName] forKey:@"packageName"];
+    [dictParam setValue:[TVCUtils tvc_getAppName] forKey:@"appName"];
+
     NSError *error = nil;
     NSData *bodyData = [NSJSONSerialization dataWithJSONObject:dictParam options:0 error:&error];
     if (error) {
@@ -116,7 +135,7 @@ static TVCReport *_shareInstance = nil;
     }
     
     // set url
-    NSString *baseUrl = @"https://vodreport.qcloud.com/ugcupload";
+    NSString *baseUrl = @"https://vodreport.qcloud.com/ugcupload_new";
     
     // create request
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:baseUrl]];

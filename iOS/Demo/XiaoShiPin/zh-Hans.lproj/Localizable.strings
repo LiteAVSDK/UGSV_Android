@@ -118,6 +118,7 @@
 "TCMainTabView.EditVideo" = "视频编辑";
 "TCMainTabView.EditImage" = "图片编辑";
 "TCMainTabView.Chorus" = "合唱";
+"TCMainTabView.Trio" = "三屏合拍";
 "TCUserAgreement.TitleUserProtocol" = "用户协议";
 "TCUserAgreement.TitleAgree" = "同意";
 "TCUserAgreement.TitleDisagree" = "不同意";

@@ -5,8 +5,7 @@
 //  Created by erichmzhang(张恒铭) on 03/04/2018.
 //
 
-#import <QCloudCOSXML/QCloudCOSXML.h>
-
+#import "QCloudListAllMyBucketsResult.h"
 @interface QCloudListAllMyBucketsResult (CustomModelTransfer)
 
 @end

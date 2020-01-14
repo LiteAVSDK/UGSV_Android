@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     */
 @property (strong, nonatomic) NSString *bucket;
 /**
-    存储级别，枚举值：Standard, Standard_IA, Nearline；默认值：原存储桶级别
+    存储级别，枚举值：Standard, Standard_IA；默认值：原存储桶级别
     */
 @property (assign, nonatomic) QCloudCOSStorageClass storageClass;
 @end

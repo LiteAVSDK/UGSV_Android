@@ -7,6 +7,12 @@ enum TXVideoAspectRatio : NSInteger;
 enum TXVideoResolution : NSInteger;
 enum TXAudioSampleRate : NSInteger;
 
+typedef NS_ENUM(NSUInteger, UGCKitRecordStyle) {
+    UGCKitRecordStyleRecord,    /// 纯录制模式
+    UGCKitRecordStyleDuet,      /// 分屏合拍模式
+    UGCKitRecordStyleTrio       /// 三屏合拍模式
+};
+
 @interface UGCKitRecordConfig : NSObject
 /// 画面比例，默认为9:16
 @property (assign, nonatomic) enum TXVideoAspectRatio ratio;
@@ -27,11 +33,15 @@ enum TXAudioSampleRate : NSInteger;
 /// 视频水印
 @property (strong, nonatomic) UGCKitWatermark *watermark;
 /// 合唱视频
-@property (strong, nonatomic) NSString *chorusVideo;
+@property (strong, nonatomic) NSArray<NSString *> *chorusVideos;
+/// 合拍模式（纯录制 / 分屏合拍 / 三屏合拍），默认是纯录制模式
+@property (assign, nonatomic) UGCKitRecordStyle recordStyle;
 /// 是否开启回声消除, 默认开启
 @property (assign, nonatomic) BOOL AECEnabled;
 /// 是否载入草稿
 @property (assign, nonatomic) BOOL recoverDraft;
+/// 录满时长后是否直接调用complete回调, 默认为YES
+@property (assign, nonatomic) BOOL autoComplete;
 @end
 
 

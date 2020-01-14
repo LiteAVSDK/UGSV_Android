@@ -42,4 +42,10 @@
  * 获取上报信息
  */
 -(NSDictionary *)getStatusInfo;
+
+/**
+ * 设置点播appId
+ * 作用是方便定位上传过程中出现的问题
+ */
+- (void)setAppId:(int)appId;
 @end

@@ -41,8 +41,6 @@
         self.minimumNumberOfSelection = config.minItemCount;
         self.maximumNumberOfSelection = config.maxItemCount;
         self.allowsMultipleSelection = config.minItemCount != config.maxItemCount;
-        self.numberOfColumnsInPortrait = 4;
-        self.numberOfColumnsInLandscape = 7;
         
         _selectedAssets = [NSMutableOrderedSet orderedSet];
         
@@ -108,7 +106,9 @@
     [self.navigationController.navigationBar setItems:@[assetViewController.navigationItem]];
     self.assetViewController = assetViewController;
 }
-
+- (NSArray<AVAsset *> *)exportedAssets {
+    return self.assetViewController.exportedAssets;
+}
 @end
 
 @implementation UGCKitMediaPickerConfig
@@ -119,6 +119,9 @@
         _minItemCount = 1;
         _maxItemCount = 1;
         _mediaType = UGCKitMediaTypeVideo;
+        _numberOfColumnsInPortrait = 4;
+        _numberOfColumnsInLandscape = 7;
+        _combineVideos = YES;
     }
     return self;
 }

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QCloudLogModel.h"
+#import "QCloudLoggerOutput.h"
 
 #define QCloudLog(level, frmt, ...) \
 [[QCloudLogger sharedLogger] logMessageWithLevel:level  cmd:__PRETTY_FUNCTION__ line:__LINE__ file:__FILE__ format:(frmt), ##__VA_ARGS__]
@@ -46,16 +47,19 @@ QCloudLog(QCloudLogLevelDebug,@"%@",[NSThread callStackSymbols])
 @property (nonatomic, assign) uint64_t maxStoarageSize;
 
 @property (nonatomic, assign) float keepDays;
+
+
+
 ///--------------------------------------
 #pragma mark - Shared Logger
 ///--------------------------------------
 
 /**
- A shared instance of `PFLogger` that should be used for all logging.
+ A shared instance of `QCloudLogger` that should be used for all logging.
  
- @return An shared singleton instance of `PFLogger`.
+ @return An shared singleton instance of `QCloudLogger`.
  */
-+ (instancetype)sharedLogger; //TODO: (nlutsenko) Convert to use an instance everywhere instead of a shared singleton.
++ (instancetype)sharedLogger; 
 
 ///--------------------------------------
 #pragma mark - Logging Messages
@@ -67,4 +71,21 @@ QCloudLog(QCloudLogLevelDebug,@"%@",[NSThread callStackSymbols])
                        line:(int)line
                        file:(const char*)file
                      format:(NSString *)format, ...;
+
+
+
+/**
+ 增加一个输出源
+
+ @param output 输出源
+ */
+- (void) addLogger:(QCloudLoggerOutput*)output;
+
+
+/**
+ 删除一个输出源
+
+ @param output 删除一个输出源
+ */
+- (void) removeLogger:(QCloudLoggerOutput*)output;
 @end

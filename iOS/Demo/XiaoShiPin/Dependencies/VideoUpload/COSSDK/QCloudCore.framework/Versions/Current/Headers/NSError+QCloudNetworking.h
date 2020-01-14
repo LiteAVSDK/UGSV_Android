@@ -19,16 +19,29 @@
 
 
 typedef NS_ENUM(int,QCloudNetworkErrorCode) {
-    QCloudNetworkErrorCodeContentError = -34005,
+    //InvalidArgument 参数错误
+    QCloudNetworkErrorCodeParamterInvalid = 10000,
+    //InvalidCredentials 证书无效
+    QCloudNetworkErrorCodeCredentialNotReady = 10001,
+    //10004 UnsupportOperation: 无法支持的操作
+    QCloudNetworkErrorCodeContentError = 10004,
+    //ServerError 服务器返回了不合法的数据
+    QCloudNetworkErrorCodeResponseDataTypeInvalid = 20001,
+    //PoorNetwork 网络异常
+    QCloudNetworkErrorCodeNoNetwork = 20003,
+    //数据完整性校验失败
+    QCloudNetworkErrorCodeMD5NotMatch = 20004,
+    //UserCancelled 用户取消
+    QCloudNetworkErrorCodeCanceled  = 30000,
+    //AlreadyFinished 任务已完成
+     QCloudNetworkErrorCodeAlreadyFinish = 30001,
+    
     QCloudNetworkErrorCodeDecodeError = -30005,
-    QCloudNetworkErrorCodeParamterInvalid = -34003,
-    QCloudNetworkErrorCodeNoNetwork = -34004,
-    QCloudNetworkErrorCodeResponseDataTypeInvalid = -34008,
-    QCloudNetworkErrorCodeCanceled  = -34009,
     QCloudNetworkErrorCodeAborted = -340010,
-    QCloudNetworkErrorCodeAlreadyFinish = -340011,
-    QCloudNetworkErrorCodeCredentialNotReady = -340012,
-    QCloudNetworkErrorCodeMD5NotMatch = -340013
+    //无法解析域名
+    QCloudNetworkErrorCodeCannotResloveDomain = -340014,
+    //获取签名超时
+    QCloudNetworkErrorCodeSignatureTimeOut = -340015
 };
 
 @protocol QCloudNetworkError <NSObject>

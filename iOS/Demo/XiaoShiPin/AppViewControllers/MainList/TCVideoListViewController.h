@@ -19,5 +19,6 @@
  */
 @interface TCVideoListViewController : UIViewController
 @property(nonatomic,retain) TCBasePlayViewController *playVC;
+@property (copy, nonatomic) void (^loginHandler)(TCVideoListViewController *);
 @property(nonatomic, weak)  id<TCLiveListViewControllerListener> listener;
 @end

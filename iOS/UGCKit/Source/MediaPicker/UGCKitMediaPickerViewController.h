@@ -5,6 +5,8 @@
 #import "UGCKitTheme.h"
 #import "UGCKitResult.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class UGCKitMediaPickerViewController;
 
 @protocol UGCKitMediaPickerControllerDelegate <NSObject>
@@ -24,31 +26,36 @@ typedef NS_OPTIONS(NSInteger, UGCKitMediaType) {
 };
 
 @interface UGCKitMediaPickerConfig : NSObject
-
+/// 导航栏提示，默认 nil
+@property (nullable, nonatomic, copy) NSString *prompt;
 /// 最少选取个数，默认值为1
 @property (assign, nonatomic) NSUInteger minItemCount;
-
 /// 最多选取个数，默认值为1
 @property (assign, nonatomic) NSUInteger maxItemCount;
-
 /// 选取的媒体类型，支持 PHAssetMediaTypeImage 和 PHAssetMediaTypeVideo，默认为 PHAssetMediaTypeVideo
 @property (assign, nonatomic) UGCKitMediaType mediaType;
+/// 竖屏列数，默认为4
+@property (nonatomic, assign) NSUInteger numberOfColumnsInPortrait;
+/// 横屏列数，默认为7
+@property (nonatomic, assign) NSUInteger numberOfColumnsInLandscape;
+/// 获取视频后是否拼接视频，默认为 YES
+@property (nonatomic, assign) BOOL combineVideos;
 @end
 
 @interface UGCKitMediaPickerViewController : UIViewController
+@property (readonly, nonatomic) UGCKitMediaPickerConfig *config;
 @property (copy, nonatomic) void(^completion)(UGCKitResult *result);
-- (instancetype)initWithConfig:(UGCKitMediaPickerConfig *)config theme:(UGCKitTheme *)theme;
+- (instancetype)initWithConfig:(nullable UGCKitMediaPickerConfig *)config
+                         theme:(nullable UGCKitTheme *)theme;
 
 @property (nonatomic, weak) id<UGCKitMediaPickerControllerDelegate> delegate;
 
-@property (nonatomic, strong, readonly) NSMutableOrderedSet *selectedAssets;
+@property (nonatomic, strong, readonly) NSMutableOrderedSet<PHAsset*> *selectedAssets;
+// 仅在 completion 回调时有值
+@property (nonatomic, strong, readonly) NSArray<AVAsset *> *exportedAssets;
 
 @property (nonatomic, copy) NSArray *assetCollectionSubtypes;
 
-
-@property (nonatomic, copy) NSString *prompt;
-
-@property (nonatomic, assign) NSUInteger numberOfColumnsInPortrait;
-@property (nonatomic, assign) NSUInteger numberOfColumnsInLandscape;
-
 @end
+
+NS_ASSUME_NONNULL_END

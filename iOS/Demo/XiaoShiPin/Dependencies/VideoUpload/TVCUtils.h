@@ -20,6 +20,9 @@
  */
 + (int) tvc_getNetWorkType;
 
++ (NSString *) tvc_getAppName;
+
++ (NSString *) tvc_getPackageName;
 
 + (NSString *)tvc_getDevUUID;
 

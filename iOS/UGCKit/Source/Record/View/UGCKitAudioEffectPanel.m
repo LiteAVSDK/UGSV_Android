@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Tencent. All rights reserved.
 
 #import "UGCKitAudioEffectPanel.h"
-#import "UGCKitMenuView.h"
+@import TCBeautyPanel;
 
 #define L(x) [_theme localizedString:x]
 
@@ -10,17 +10,18 @@ typedef NS_ENUM(NSInteger, AudioEffectMenu) {
     AudioEffectMenuMix,
 };
 
-@interface UGCKitAudioEffectPanelMenuItem : NSObject <UGCKitMenuItem>
+@interface UGCKitAudioEffectPanelMenuItem : NSObject <TCMenuItem>
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) UIImage *icon;
 @property (assign, nonatomic) NSInteger effectID;
 + (instancetype)itemWithTitle:(NSString *)title icon:(UIImage *)icon ID:(NSInteger)effectID;
 @end
 
-@interface UGCKitAudioEffectPanel() <UGCKitMenuViewDelegate>
+@interface UGCKitAudioEffectPanel() <TCMenuViewDataSource, TCMenuViewDelegate>
 {
     UGCKitTheme *_theme;
-    UGCKitMenuView *_menu;
+    TCMenuView *_menu;
+    NSArray<NSString *> *_menuArray;
     NSArray<UGCKitAudioEffectPanelMenuItem *> *_reverbOptions;
     NSArray<UGCKitAudioEffectPanelMenuItem *> *_voiceChangerOptions;
 }
@@ -60,10 +61,10 @@ typedef NS_ENUM(NSInteger, AudioEffectMenu) {
         [UGCKitAudioEffectPanelMenuItem itemWithTitle:L(@"UGCKit.AudioEffect.Metal") icon:_theme.audioEffectReverbMetalIcon ID:REVERB_TYPE_6],
         [UGCKitAudioEffectPanelMenuItem itemWithTitle:L(@"UGCKit.AudioEffect.Magnetic") icon:_theme.audioEffectReverbMagneticIcon ID:REVERB_TYPE_7],
     ];
-
-    UGCKitMenuView *menu = [[UGCKitMenuView alloc] initWithFrame:self.bounds
-                                            menus:@[[_theme localizedString:@"UGCKit.AudioEffect.Foice"], [_theme localizedString:@"UGCKit.AudioEffect.Mix"]]
-                                      menuOptions:@[_voiceChangerOptions, _reverbOptions]];
+    _menuArray = @[[_theme localizedString:@"UGCKit.AudioEffect.Foice"],
+                   [_theme localizedString:@"UGCKit.AudioEffect.Mix"]];
+    TCMenuView *menu = [[TCMenuView alloc] initWithFrame:self.bounds
+                                                      dataSource:self];
     menu.minSubMenuWidth = 54;
     menu.minMenuWidth = 54;
     menu.menuTitleColor = _theme.beautyPanelTitleColor;
@@ -75,7 +76,7 @@ typedef NS_ENUM(NSInteger, AudioEffectMenu) {
 }
 
 
-- (void)menu:(UGCKitMenuView *)menu didChangeToIndex:(NSInteger)menuIndex option:(NSInteger)optionIndex {
+- (void)menu:(TCMenuView *)menu didChangeToIndex:(NSInteger)menuIndex option:(NSInteger)optionIndex {
     if (menuIndex == AudioEffectMenuVoiceChanger) {
         if ([self.delegate respondsToSelector:@selector(audioEffectPanel:didSelectVoiceChangerType:)]) {
             [self.delegate audioEffectPanel:self didSelectVoiceChangerType:(TXVideoVoiceChangerType)_voiceChangerOptions[optionIndex].effectID];
@@ -86,8 +87,22 @@ typedef NS_ENUM(NSInteger, AudioEffectMenu) {
         }
     }
 }
-
-
+#pragma mark - TCMenuDataSource
+- (NSInteger)numberOfMenusInMenu:(TCMenuView *)menu {
+    return _menuArray.count;
+}
+- (NSString *)titleOfMenu:(TCMenuView *)menu atIndex:(NSInteger)index {
+    return _menuArray[index];
+}
+- (NSUInteger)numberOfOptionsInMenu:(TCMenuView *)menu menuIndex:(NSInteger)index {
+    return index == AudioEffectMenuVoiceChanger ? _voiceChangerOptions.count : _reverbOptions.count;
+}
+- (id<TCMenuItem>)menu:(TCMenuView *)menu
+           itemAtMenuIndex:(NSInteger)index
+               optionIndex:(NSInteger)optionIndex {
+    NSArray *container = index == AudioEffectMenuVoiceChanger ? _voiceChangerOptions : _reverbOptions;
+    return container[optionIndex];
+}
 @end
 
 @implementation UGCKitAudioEffectPanelMenuItem

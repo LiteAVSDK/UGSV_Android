@@ -22,6 +22,7 @@
 #import "SDKHeader.h"
 #import "TCUserInfoModel.h"
 #import "UGCKitWrapper.h"
+#import "Mem.h"
 
 #define BOTTOM_VIEW_HEIGHT              225
 
@@ -132,15 +133,21 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
 }
 
 - (void)setupViewControllers {
+    WEAKIFY(self);
     _showVC = [TCVideoListViewController new];
+    _showVC.loginHandler = ^(TCVideoListViewController *_) {
+        STRONGIFY_OR_RETURN(self);
+        if (self.loginHandler) {
+            self.loginHandler(self);
+        }
+    };
     _showVC.listener = self;
     UIViewController *_ = [UIViewController new];
     TCAccountInfoViewController *accountInfoViewController = [[TCAccountInfoViewController alloc] init];
-    __weak __typeof(self) wself = self;
     accountInfoViewController.onLogout = ^(TCAccountInfoViewController * _Nonnull controller) {
-        // TODO: goto login view
-        if (wself.loginHandler) {
-            wself.loginHandler(wself);
+        STRONGIFY_OR_RETURN(self);
+        if (self.loginHandler) {
+            self.loginHandler(self);
         }
 //        [wself showlog
     };
@@ -209,9 +216,8 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
         UGCKitVerticalButton * button = [[UGCKitVerticalButton alloc] initWithFrame:CGRectMake(0, 0, btnSize, btnSize)];
         button.verticalSpacing = 5;
         [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:[imageName stringByAppendingString:@"-press"]] forState:UIControlStateSelected];
         [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-        button.titleLabel.font = [UIFont systemFontOfSize:13];
+        button.titleLabel.font = [UIFont systemFontOfSize:12];
         [button setTitle:NSLocalizedString(title, nil) forState:UIControlStateNormal];
         [button sizeToFit];
         return button;
@@ -221,8 +227,9 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
     UIButton * btnChorus = createButton(@"TCMainTabView.Chorus", @"tab_chorus", @selector(onVideoChorusSelectClicked));
     UIButton * btnVideo = createButton(@"TCMainTabView.EditVideo", @"tab_video", @selector(onVideoSelectClicked));
     UIButton * btnPhoto = createButton(@"TCMainTabView.EditImage", @"tab_photo", @selector(onPictureSelectClicked));
+    UIButton * btnTrio  = createButton(@"TCMainTabView.Trio", @"tab_trio", @selector(onVideoTrioSelectClicked));
 
-    CGFloat centerDiff = self.view.width / 4;
+    CGFloat centerDiff = self.view.width / 5;
     CGFloat centerX = centerDiff / 2;
     CGFloat centerY = _botttomView.height / 2 - 20;
 
@@ -230,6 +237,9 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
     centerX += centerDiff;
     
     btnChorus.center = CGPointMake(centerX, centerY);
+    centerX += centerDiff;
+    
+    btnTrio.center = CGPointMake(centerX, centerY);
     centerX += centerDiff;
     
     btnVideo.center = CGPointMake(centerX, centerY);
@@ -241,6 +251,7 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
     [_botttomView.contentView addSubview:btnVideo];
     [_botttomView.contentView addSubview:btnPhoto];
     [_botttomView.contentView addSubview:btnChorus];
+    [_botttomView.contentView addSubview:btnTrio];
 }
 
 // 添加中间的加号按钮
@@ -339,11 +350,12 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
 - (void)_showVideoCutView:(UGCKitResult *)result inNavigationController:(UINavigationController *)nav {
     UGCKitCutViewController *vc = [[UGCKitCutViewController alloc] initWithMedia:result.media theme:_theme];
     __weak __typeof(self) wself = self;
+    __weak UINavigationController *weakNavigation = nav;
     vc.completion = ^(UGCKitResult *result, int rotation) {
         if ([result isCancelled]) {
             [wself dismissViewControllerAnimated:YES completion:nil];
         } else {
-            [wself.ugcWrapper showEditViewController:result rotation:rotation inNavigationController:nav backMode:TCBackModePop];
+            [wself.ugcWrapper showEditViewController:result rotation:rotation inNavigationController:weakNavigation backMode:TCBackModePop];
         }
     };
     [nav pushViewController:vc animated:YES];
@@ -364,7 +376,18 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
             [wself _showVideoCutView:result inNavigationController:navigationController];
         } else {
             NSLog(@"isCancelled: %c, failed: %@", result.cancelled ? 'y' : 'n', result.info[NSLocalizedDescriptionKey]);
-            [wself dismissViewControllerAnimated:YES completion:nil];
+            [wself dismissViewControllerAnimated:YES completion:^{
+                if (!result.cancelled) {
+                    UIAlertController *alert =
+                    [UIAlertController alertControllerWithTitle:result.info[NSLocalizedDescriptionKey]
+                                                        message:nil
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:[UIAlertAction actionWithTitle:@"确定"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:nil]];
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
+            }];
         }
     };
     [self presentViewController:nav animated:YES completion:NULL];
@@ -408,12 +431,37 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
     NSString *ducumentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *cachePath = [ducumentPath stringByAppendingPathComponent: @"Chorus.mp4"];
     if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]){
-        [self onloadVideoComplete:cachePath];
+        [self onloadVideoComplete:@[cachePath] recordStyle:UGCKitRecordStyleDuet];
     }else{
         [TCUtil downloadVideo:DEFAULT_CHORUS_URL cachePath:cachePath  process:^(CGFloat process) {
             [weakSelf onloadVideoProcess:process];
         } complete:^(NSString *videoPath) {
-            [weakSelf onloadVideoComplete:videoPath];
+            [weakSelf onloadVideoComplete:@[videoPath] recordStyle:UGCKitRecordStyleDuet];
+        }];
+    }
+    _botttomView.hidden = YES;
+}
+
+-(void)onVideoTrioSelectClicked
+{
+    if(![self checkLoginStatus]){
+        return;
+    }
+    [TCUtil report:xiaoshipin_videotrio userName:nil code:0 msg:@"三屏合唱事件"];
+    _hub = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _hub.mode = MBProgressHUDModeText;
+    _hub.label.text = NSLocalizedString(@"TCVodPlay.VideoLoading", nil);
+    
+    __weak __typeof(self) weakSelf = self;
+    NSString *ducumentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *cachePath = [ducumentPath stringByAppendingPathComponent: @"Chorus.mp4"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]){
+        [self onloadVideoComplete:@[cachePath, cachePath] recordStyle:UGCKitRecordStyleTrio];
+    }else{
+        [TCUtil downloadVideo:DEFAULT_CHORUS_URL cachePath:cachePath  process:^(CGFloat process) {
+            [weakSelf onloadVideoProcess:process];
+        } complete:^(NSString *videoPath) {
+            [weakSelf onloadVideoComplete:@[videoPath, videoPath] recordStyle:UGCKitRecordStyleTrio];
         }];
     }
     _botttomView.hidden = YES;
@@ -423,10 +471,14 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
     _hub.label.text = [NSString stringWithFormat:NSLocalizedString(@"TCVodPlay.VideoLoadingFmt", nil),(int)(process * 100)];
 }
 
--(void)onloadVideoComplete:(NSString *)videoPath {
-    if (videoPath) {
+-(void)onloadVideoComplete:(NSArray<NSString *> *)videoPaths recordStyle:(UGCKitRecordStyle)recordStyle {
+    if (videoPaths.count) {
         UGCKitRecordConfig *config = [[UGCKitRecordConfig alloc] init];
-        config.chorusVideo = videoPath;
+        config.chorusVideos = videoPaths;
+        config.recordStyle = recordStyle;
+        if (UGCKitRecordStyleTrio == recordStyle) {
+            config.ratio = VIDEO_ASPECT_RATIO_4_3;
+        }
         [self.ugcWrapper showRecordViewControllerWithConfig:config];
         [_hub hideAnimated:YES];
     }else{

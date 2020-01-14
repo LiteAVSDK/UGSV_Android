@@ -32,11 +32,11 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface QCloudNoncurrentVersionTransition : NSObject
 /**
-指明非当前版本对象何时转换被转换为 Standard_IA或 Nearline
+指明非当前版本对象何时转换被转换为 Standard_IA 等
 */
 @property (assign, nonatomic) int noncurrentDays;
 /**
-指定 Object 转储到的目标存储类型，枚举值： Standard_IA, Nearline
+指定 Object 转储到的目标存储类型，枚举值： Standard_IA 等
 */
 @property (assign, nonatomic) QCloudCOSStorageClass storageClass;
 @end

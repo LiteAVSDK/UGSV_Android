@@ -17,7 +17,6 @@
 @property (nonatomic, strong) QCloudHTTPRequest* httpRequest;
 @property (nonatomic, assign, readonly) NSUInteger totalRecivedLength;
 @property (nonatomic, strong, readonly) NSData* data;
-@property (nonatomic, strong) NSURL* downdingURL;
 @property (nonatomic, strong) NSHTTPURLResponse* response;
 @property (nonatomic, strong, readonly) NSString* uploadTempFilePath;
 @property (nonatomic, assign) BOOL forbidenWirteToFile;
@@ -25,4 +24,5 @@
 - (instancetype) initWithDowndingFileHandler:(NSFileHandle*)fileHandler;
 - (void) restData;
 - (void) appendData:(NSData*)data;
+- (void) closeWrite;
 @end

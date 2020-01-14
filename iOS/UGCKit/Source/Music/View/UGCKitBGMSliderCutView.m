@@ -12,6 +12,7 @@
         _borderHeight = BORDER_HEIGHT;
         _leftPinImage = theme.editMusicSliderLeftIcon;
         _rightPigImage = theme.editMusicSliderRightIcon;
+        _borderColor = theme.editMusicSliderBorderColor;
         _durationUnit = 15;
         _labelDurationInternal = 5;
     }
@@ -137,14 +138,14 @@
     self.topBorder = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
         [self addSubview:view];
-        view.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:100 / 255.0 blue:85 / 255.0 alpha:1];
+        view.backgroundColor = _appearanceConfig.borderColor;
         view;
     });
     
     self.bottomBorder = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
         [self addSubview:view];
-        view.backgroundColor = [UIColor colorWithRed:239 / 255.0 green:100 / 255.0 blue:85 / 255.0 alpha:1];
+        view.backgroundColor = _appearanceConfig.borderColor;
         view;
     });
     

@@ -5,6 +5,7 @@
 #import "UGCKitReporterInternal.h"
 #import "UGCKitMem.h"
 #import "SDKHeader.h"
+#import "UGCKitPieProgressView.h"
 @interface UGCKitAssetLoadingController () <TXVideoJoinerListener> {
     BOOL  _loadingIsInterrupt;
     AssetType _assetType;
@@ -14,10 +15,9 @@
     float _prevLoadingProgress;
 }
 
-@property IBOutlet UIImageView *loadingImageView;
+@property (nonatomic, strong) UGCKitPieProgressView *loadingProgressView;
 @property (nonatomic, strong) IBOutlet UILabel *loadingLabel;
 @property (nonatomic, strong) NSArray        *assets;
-@property (nonatomic, strong) NSMutableArray     *videosToEditAssets;
 @property (nonatomic, strong) NSMutableArray     *imagesToEdit;
 @property (nonatomic, strong) AVMutableComposition *mutableComposition;
 @property (nonatomic, strong) AVMutableVideoComposition *mutableVideoComposition;
@@ -35,20 +35,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _progressCache = [[NSMutableDictionary alloc] init];
-    _loadingImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 78, 78)];
-    _loadingImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    _loadingProgressView = [[UGCKitPieProgressView alloc] initWithFrame:CGRectMake(0, 0, 78, 78)];
+    _loadingProgressView.tintColor = _theme.progressColor;
+    [_loadingProgressView addConstraint:[NSLayoutConstraint constraintWithItem:_loadingProgressView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:nil
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                    multiplier:1
+                                                                      constant:78]];
+    [_loadingProgressView addConstraint:[NSLayoutConstraint constraintWithItem:_loadingProgressView
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:nil
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                    multiplier:1
+                                                                      constant:78]];
+    _loadingProgressView.translatesAutoresizingMaskIntoConstraints = NO;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(onCancel:)];
-    [self.view addSubview:_loadingImageView];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_loadingImageView
+    [self.view addSubview:_loadingProgressView];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_loadingProgressView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1
                                                            constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_loadingImageView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_loadingProgressView
                                                           attribute:NSLayoutAttributeCenterY
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
@@ -71,7 +86,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_loadingLabel
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:_loadingImageView
+                                                             toItem:_loadingProgressView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1
                                                            constant:20]];
@@ -127,12 +142,12 @@
 }
 
 
-- (void)exportAssetList:(NSArray *)assets assetType:(AssetType)assetType;
+- (void)exportAssetList:(NSArray<PHAsset *> *)assets assetType:(AssetType)assetType;
 {
     _assets = assets;
     _assetType = assetType;
     if (_assetType == AssetType_Video) {
-        _videosToEditAssets = [NSMutableArray array];
+        _avAssets = [NSMutableArray array];
     }else{
         _imagesToEdit = [NSMutableArray array];
     }
@@ -203,17 +218,22 @@
     for (NSInteger i = 0; i < _assets.count; ++i) {
         _progressCache[@(i)] = @0;
     }
+    __block NSError *blockError = nil;
     dispatch_group_t grp = dispatch_group_create();
     for (NSInteger i = 0; i < _assets.count; ++i) {
         PHAsset *asset = _assets[i];
+        if (blockError) {
+            break;
+        }
         dispatch_group_enter(grp);
         if (_assetType == AssetType_Video) {
             [self _exportVideo:asset index:i completion:^(AVAsset *asset, NSError *error) {
                 if (error) {
+                    blockError = error;
                     NSLog(@"Error: %@", error);
                 } else {
-                    @synchronized (self->_videosToEditAssets) {
-                        [self->_videosToEditAssets addObject:asset];
+                    @synchronized (self->_avAssets) {
+                        [self->_avAssets addObject:asset];
                     }
                 }
                 dispatch_group_leave(grp);
@@ -221,6 +241,7 @@
         } else {
             [self _exportPhoto:asset index:i completion:^(UIImage *image, NSError *error) {
                 if (error) {
+                    blockError = error;
                     NSLog(@"Error: %@", error);
                 } else {
                     @synchronized (self->_imagesToEdit) {
@@ -232,9 +253,22 @@
         }
     }
     dispatch_group_notify(grp, dispatch_get_main_queue(), ^{
+        if (blockError) {
+            UGCKitResult *result = [[UGCKitResult alloc] init];
+            if (blockError.code == 3072 /* PHPhotosErrorUserCancelled */) {
+                result.cancelled = YES;
+            } else {
+                result.code = blockError.code;
+                result.info = blockError.userInfo;
+            }
+            if (self.completion) {
+                self.completion(result);
+            }
+            return;
+        }
         if (self->_assetType == AssetType_Video) {
-            if (self->_videosToEditAssets.count == 1){
-                UGCKitMedia *media = [UGCKitMedia mediaWithAVAsset:self->_videosToEditAssets.firstObject];
+            if (self->_avAssets.count == 1 || !self.combineVideos){
+                UGCKitMedia *media = [UGCKitMedia mediaWithAVAsset:self->_avAssets.firstObject];
                 UGCKitResult *result = [[UGCKitResult alloc] init];
                 result.media = media;
                 if (self.completion) {
@@ -283,7 +317,8 @@
     NSString *progressText = [_theme localizedString:@"UGCKit.MediaPicker.VideoDownloadingFromiCloud"];
     dispatch_async(dispatch_get_main_queue(), ^{
         self.loadingLabel.text = progressText;
-        self.loadingImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"video_record_share_loading_%d", (int)(total * 8)]];
+        self.loadingProgressView.progress = total;
+//        self.loadingProgressView.image = [UIImage imageNamed:[NSString stringWithFormat:@"video_record_share_loading_%d", (int)(total * 8)]];
     });
 }
 
@@ -447,7 +482,7 @@
 - (void)joinVideoAssets {
     _joinedVideoPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputJoin.mp4"];
     int ret = 0;
-    NSArray *videoAssets = _videosToEditAssets;
+    NSArray *videoAssets = _avAssets;
     if ([videoAssets.firstObject isKindOfClass:[NSString class]]) {
         ret = [_videoJoiner setVideoPathList:videoAssets];
     } else {
@@ -457,7 +492,8 @@
     if (ret == 0) {
         [_videoJoiner joinVideo:VIDEO_COMPRESSED_720P videoOutputPath:_joinedVideoPath];
         _loadingLabel.text = [_theme localizedString:@"UGCKit.Media.VideoSynthesizing"];
-        self.loadingImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"video_record_share_loading_%d", 0]];
+        self.loadingProgressView.progress = 0;
+//        self.loadingProgressView.image = [UIImage imageNamed:[NSString stringWithFormat:@"video_record_share_loading_%d", 0]];
     } else {
         if (self.completion) {
             UGCKitResult *result = [[UGCKitResult alloc] init];
@@ -471,7 +507,7 @@
 #pragma mark TXVideoJoinerListener
 -(void) onJoinProgress:(float)progress
 {
-    self.loadingImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"video_record_share_loading_%d", (int)(progress * 8)]];
+    self.loadingProgressView.progress = progress;
 }
 
 -(void) onJoinComplete:(TXJoinerResult *)joinResult

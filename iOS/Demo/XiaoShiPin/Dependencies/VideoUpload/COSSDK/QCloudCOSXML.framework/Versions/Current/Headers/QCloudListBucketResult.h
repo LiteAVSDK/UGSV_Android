@@ -45,10 +45,15 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (strong, nonatomic) NSString *marker;
 /**
+ 假如返回条目被截断，则返回 NextMarker 就是下一个条目的起点
+ */
+@property (strong, nonatomic) NSString *nextMarker;
+/**
 单次响应请求内返回结果的最大条目数量
 */
 @property (assign, nonatomic) int maxKeys;
 @property (strong, nonatomic) NSString *delimiter;
+
 /**
 响应请求条目是否被截断
 */
@@ -58,5 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 将 Prefix 到 delimiter 之间的相同路径归为一类，定义为 Common Prefix
 */
 @property (strong, nonatomic) NSArray<QCloudCommonPrefixes*> *commonPrefixes;
+
+
 @end
 NS_ASSUME_NONNULL_END

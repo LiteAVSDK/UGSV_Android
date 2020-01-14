@@ -47,6 +47,7 @@ static NSString * const xiaoshipin_videosign = @"videosign";
 static NSString * const xiaoshipin_videouploadvod = @"videouploadvod";
 static NSString * const xiaoshipin_videouploadserver = @"videouploadserver";
 static NSString * const xiaoshipin_videochorus = @"videochorus";
+static NSString * const xiaoshipin_videotrio = @"videotrio";
 static NSString * const xiaoshipin_about_sdk = @"about_sdk";
 
 #ifndef NSStringCheck

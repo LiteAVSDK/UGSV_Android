@@ -60,9 +60,8 @@
     _sldVolumeForVoice.maximumValue = 2;
     _sldVolumeForVoice.value = 1;
     _sldVolumeForVoice.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_sldVolumeForVoice setThumbImage:_theme.recordMusicVolumeThumbIcon forState:UIControlStateNormal];
-    [_sldVolumeForVoice setMinimumTrackTintColor:RGB(238, 100, 85)];
-    [_sldVolumeForVoice setMaximumTrackImage:[UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
+    [_sldVolumeForVoice setThumbImage:_theme.sliderThumbImage forState:UIControlStateNormal];
+    [_sldVolumeForVoice setMinimumTrackTintColor:_theme.sliderMinColor]; //  RGB(238, 100, 85)];
     [_sldVolumeForVoice addTarget:self action:@selector(onVoiceValueChange:) forControlEvents:UIControlEventValueChanged];
     
     UILabel *labVolumeForBGM = [[UILabel alloc] initWithFrame:CGRectMake(labVolumeForVoice.ugckit_left, _sldVolumeForVoice.ugckit_bottom + 20 , 80 , 16)];
@@ -75,9 +74,8 @@
     _sldVolumeForBGM.maximumValue = 2;
     _sldVolumeForBGM.value = 1;
     _sldVolumeForBGM.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_sldVolumeForBGM setThumbImage:_theme.recordMusicVolumeThumbIcon forState:UIControlStateNormal];
-    [_sldVolumeForBGM setMinimumTrackTintColor:RGB(238, 100, 85)];
-    [_sldVolumeForBGM setMaximumTrackImage:[UIImage imageNamed:@"gray"] forState:UIControlStateNormal];
+    [_sldVolumeForBGM setThumbImage:_theme.sliderThumbImage forState:UIControlStateNormal];
+    [_sldVolumeForBGM setMinimumTrackTintColor:_theme.sliderMinColor];
     [_sldVolumeForBGM addTarget:self action:@selector(onBGMValueChange:) forControlEvents:UIControlEventValueChanged];
     
     _startTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15,_sldVolumeForBGM.ugckit_bottom + 20,200,16)];
@@ -99,7 +97,7 @@
     [_musicCutSlider removeFromSuperview];
     //1.thumbHeight + 2* borderHeight =_musicCutSlider.frame.y;
     //2._musicCutSlider.frame.y目前只支持40
-    sliderConfig = [[UGCKitBGMSliderCutViewConfig alloc] initWithTheme:[UGCKitTheme new]];;
+    sliderConfig = [[UGCKitBGMSliderCutViewConfig alloc] initWithTheme:_theme];;
     sliderConfig.duration = duration;
     sliderConfig.frame = CGRectMake(15, _startTimeLabel.ugckit_bottom + 10, self.ugckit_width - 30, 54);
     _musicCutSlider = [[UGCKitBGMSliderCutView alloc] initWithImage:_theme.recordMusicSampleImage config:sliderConfig];

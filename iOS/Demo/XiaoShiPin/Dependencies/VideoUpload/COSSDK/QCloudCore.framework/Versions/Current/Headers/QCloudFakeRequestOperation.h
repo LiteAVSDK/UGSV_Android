@@ -6,7 +6,7 @@
 //
 //
 
-#import <QCloudCore/QCloudCore.h>
+#import "QCloudCore.h"
 
 @interface QCloudFakeRequestOperation : QCloudRequestOperation
 

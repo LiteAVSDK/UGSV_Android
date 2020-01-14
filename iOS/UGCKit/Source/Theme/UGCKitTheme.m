@@ -10,12 +10,17 @@ alpha:1.0]
 
 #define RGB(r,g,b) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1]
 
-@implementation UGCKitTheme
+@interface UGCKitTheme ()
 {
     NSMutableDictionary<NSString *, UIImage *> *_imageDict;
     NSMutableDictionary<NSString *, UIImage *> *_filterIconDictionary;
     NSBundle *_resourceBundle;
+    NSBundle *_beautyPanelResourceBundle;
 }
+@property (strong, nonatomic) NSBundle *beautyPanelResourceBundle;
+@end
+
+@implementation UGCKitTheme
 @dynamic closeIcon, progressTrackImage, rightArrowIcon;
 @dynamic transitionLeftRightIcon;
 @dynamic transitionUpDownIcon;
@@ -23,12 +28,11 @@ alpha:1.0]
 @dynamic transitionZoomOutIcon;
 @dynamic transitionRotateIcon;
 @dynamic transitionFadeInOutIcon;
-@dynamic recordMusicVolumeThumbIcon;
 @dynamic recordMusicDownloadIcon;
 @dynamic nextIcon,backIcon,recordAspect43Icon,recordAspect34Icon,recordAspect11Icon,recordAspect169Icon,recordAspect916Icon,\
 recordMusicIcon,recordBeautyIcon,recordAudioEffectIcon,recordCountDownIcon,recordTorchOnIcon,recordTorchOnHighlightedIcon,recordTorchOffIcon;
 @dynamic recordTorchOffHighlightedIcon, recordTorchDisabledIcon,recordButtonTapModeIcon,recordButtonPhotoModeIcon,recordButtonPhotoModeBackgroundImage,\
-pauseInnerIcon,pauseBackgroundImage,recordSwitchCameraIcon, \
+recordButtonPauseInnerIcon,recordButtonPauseBackgroundImage,recordSwitchCameraIcon, \
 recordDeleteHighlightedIcon, recordDeleteIcon, recordButtonModeSwitchIndicatorIcon;
 @dynamic recordSpeedCenterIcon;
 @dynamic recordSpeedLeftIcon;
@@ -39,14 +43,14 @@ recordDeleteHighlightedIcon, recordDeleteIcon, recordButtonModeSwitchIndicatorIc
 @dynamic editPanelAddPasterIcon,editPanelCloseIcon,editPanelConfirmIcon,\
 editPanelMusicIcon,editPanelEffectIcon,editPanelSpeedIcon,editPanelFilterIcon,editPanelPasterIcon,editPanelSubtitleIcon,editPanelMusicHighlightedIcon,\
 editPanelEffectHighlightedIcon,editPanelSpeedHighlightedIcon,editPanelFilterHighlightedIcon,editPanelPasterHighlightedIcon,editPanelSubtitleHighlightedIcon,\
-editPanelDeleteIcon,editPanelDeleteHighlightedIcon,editPlayIcon,editPlayHighlightedIcon,editPauseIcon,editPauseHighlightedIcon,confirmIcon,\
-confirmHighlightedIcon,editTimelineIndicatorIcon,roundCornerHighlightedIcon;
+editPanelDeleteIcon,editPanelDeleteHighlightedIcon,editPlayIcon,editPlayHighlightedIcon,editPauseIcon,editPauseHighlightedIcon,editChooseVideoIcon,confirmIcon,\
+confirmHighlightedIcon,editTimelineIndicatorIcon;
+@dynamic editTimeEffectIndicatorIcon;
 @dynamic editCutSliderLeftIcon;
 @dynamic editCutSliderRightIcon;
 @dynamic editCutSliderCenterIcon;
 @dynamic editMusicSliderRightIcon;
 @dynamic editMusicSliderLeftIcon;
-
 @dynamic editPasterDeleteIcon;
 @dynamic editTextPasterRotateIcon;
 @dynamic editTextPasterEditIcon;
@@ -101,12 +105,45 @@ confirmHighlightedIcon,editTimelineIndicatorIcon,roundCornerHighlightedIcon;
 @dynamic audioEffectReverbMagneticIcon;
 @dynamic audioEffectReverbSonorousIcon;
 
+static BOOL isBeuatyPanelThemeMethod(SEL selector) {
+    static NSMutableDictionary<NSString*, NSNumber*> *cache = nil;
+    if (nil == cache) {
+        cache = [NSMutableDictionary dictionary];
+    }
+    NSString *name = NSStringFromSelector(selector);
+    NSNumber *val = cache[name];
+    if (val) {
+        return val.boolValue;
+    }
+
+    unsigned int outCount = 0;
+    struct objc_method_description *descriptions
+    = protocol_copyMethodDescriptionList(@protocol(TCBeautyPanelThemeProtocol),
+                                         YES,
+                                         YES,
+                                         &outCount);
+    for (unsigned int i = 0; i < outCount; ++i) {
+        if (descriptions[i].name == selector) {
+            free(descriptions);
+            cache[name] = @(YES);
+            return YES;
+        }
+    }
+    free(descriptions);
+    cache[name] = @(NO);
+    return NO;
+}
+
 static UIImage *getImageByName(UGCKitTheme *self, SEL selector) {
     NSString *selName = NSStringFromSelector(selector);
     NSString *key = [[[selName substringToIndex:1] lowercaseString] stringByAppendingString:[selName substringFromIndex:1]];
     UIImage *image = [self imageForKey:key];
     if (nil == image) {
-        image = [UIImage imageNamed:NSStringFromSelector(selector) inBundle:self->_resourceBundle compatibleWithTraitCollection:nil];
+        NSBundle *bundle = self.resourceBundle;
+        if (isBeuatyPanelThemeMethod(selector)) {
+            bundle = self.beautyPanelResourceBundle;
+        }
+        image = [UIImage imageNamed:NSStringFromSelector(selector) inBundle:bundle compatibleWithTraitCollection:nil];
     }
     if (nil == image) {
         NSLog(@"%@ %@ image not found", NSStringFromClass([self class]), key);
@@ -116,20 +153,23 @@ static UIImage *getImageByName(UGCKitTheme *self, SEL selector) {
 
 static void setImageForKey(id self, SEL selector, UIImage *image) {
     NSString *selName = NSStringFromSelector(selector);
-    NSString *attrName = [selName substringFromIndex:3];
+    NSString *attrName = [[selName substringFromIndex:3] stringByTrimmingCharactersInSet:
+                          [NSCharacterSet characterSetWithCharactersInString:@":"]];
     NSString *key = [[[attrName substringToIndex:1] lowercaseString] stringByAppendingString:[attrName substringFromIndex:1]];
     [self setImage:image forKey:key];
 }
 
+
 + (BOOL)resolveInstanceMethod:(SEL)sel
 {
     NSString *selName = NSStringFromSelector(sel);
-    if ([selName hasSuffix:@"Icon"] || [selName hasSuffix:@"Image"]) {
-        if ([selName hasPrefix:@"set"]) {
-            class_addMethod([UGCKitTheme class], sel, (IMP)setImageForKey, "@@:@");
-        } else {
-            class_addMethod([UGCKitTheme class], sel, (IMP)getImageByName, "@@:");
+    if ([selName hasPrefix:@"set"]) {
+        if ([selName hasSuffix:@"Icon:"] || [selName hasSuffix:@"Image:"]) {
+            class_addMethod([self class], sel, (IMP)setImageForKey, "@@:@");
+            return YES;
         }
+    } else if ([selName hasSuffix:@"Icon"] || [selName hasSuffix:@"Image"]) {
+        class_addMethod([self class], sel, (IMP)getImageByName, "@@:");
         return YES;
     }
     return [super resolveInstanceMethod:sel];
@@ -146,9 +186,13 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
 
 - (instancetype)init {
     if (self = [super init]) {
-        NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"UGCKitResources" ofType:@"bundle"];
+        NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"UGCKitResources"
+                                                                 ofType:@"bundle"];
         NSBundle *bundle = [NSBundle bundleWithPath:resourcePath];
         _resourceBundle = bundle ?: [NSBundle mainBundle];
+        NSString *beautyPanelResPath = [bundle pathForResource:@"TCBeautyPanelResources"
+                                                        ofType:@"bundle"];
+        _beautyPanelResourceBundle = [NSBundle bundleWithPath:beautyPanelResPath];
 
         _backgroundColor = [UIColor colorWithRed:0.12 green:0.15 blue:0.19 alpha:1];
         _editPanelBackgroundColor = [UIColor blackColor];
@@ -161,10 +205,14 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
 
         _beautyPanelTitleColor = [UIColor whiteColor];
         _beautyPanelSelectionColor = [UIColor colorWithRed:0xff/255.0 green:0x58/255.0 blue:0x4c/255.0 alpha:1];
-        _sliderMinColor = RGB(166, 166, 165);
+        _sliderMinColor =  RGB(238, 100, 85);// RGB(166, 166, 165);
+        _sliderValueColor = [UIColor colorWithRed:1.0 green:0x58/255.0 blue:0x4c/255.0 alpha:1];
         _progressColor = RGB(238, 100, 85);
         _pickerSelectionBorderColor = RGB(255, 88, 76);
         _editPasterBorderColor = [UIColor whiteColor];
+        _imageDict = [NSMutableDictionary dictionary];
+        _editCutSliderBorderColor = RGB(239, 100, 85);
+        _editMusicSliderBorderColor = _editCutSliderBorderColor;
     }
     return self;
 }
@@ -185,21 +233,31 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     if (image) {
         return image;
     }
-
+    NSString *imageName = filter;
     if (nil == filter) {
-        return [UIImage imageNamed:@"original" inBundle:_resourceBundle compatibleWithTraitCollection:nil];
+        imageName = @"original";
     } else if ([filter isEqualToString:@"white"]) {
-        return [UIImage imageNamed:@"fwhite" inBundle:_resourceBundle compatibleWithTraitCollection:nil];
-    } else {
-        return [UIImage imageNamed:filter inBundle:_resourceBundle compatibleWithTraitCollection:nil];
+        imageName = @"fwhite";
     }
+    return [UIImage imageNamed:imageName
+                      inBundle:_beautyPanelResourceBundle
+ compatibleWithTraitCollection:nil];
 }
 
 - (UIImage *)imageNamed:(NSString *)name {
-    return [UIImage imageNamed:name inBundle:_resourceBundle compatibleWithTraitCollection:nil];
+    UIImage *image = [UIImage imageNamed:name
+                                inBundle:_beautyPanelResourceBundle
+           compatibleWithTraitCollection:nil];
+    if (nil == image) {
+        image = [UIImage imageNamed:name
+                           inBundle:_resourceBundle
+      compatibleWithTraitCollection:nil];
+
+    }
+    return image;
 }
 
-- (void)setIcon:(UIImage *)icon forFilter:(UGCKitFilterIdentifier)identifier
+- (void)setIcon:(UIImage *)icon forFilter:(TCFilterIdentifier)identifier
 {
     if (_filterIconDictionary == nil) {
         _filterIconDictionary = [NSMutableDictionary dictionaryWithObject:icon forKey:identifier];
@@ -310,7 +368,7 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
 }
 
 - (NSURL *)goodLuckVideoFileURL {
-    return [_resourceBundle URLForResource:@"goodluck" withExtension:@"mp4"];
+    return [_beautyPanelResourceBundle URLForResource:@"goodluck" withExtension:@"mp4"];
 }
 
 @end

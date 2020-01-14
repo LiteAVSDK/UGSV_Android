@@ -10,6 +10,8 @@
 #import "TVCCommon.h"
 #import "TVCClientInner.h"
 #import "TVCReport.h"
+#import "TVCHttpMessageURLProtocol.h"
+#import "TXUGCPublishOptCenter.h"
 #import <AVFoundation/AVFoundation.h>
 #import <QCloudCore/QCloudCore.h>
 #import <QCloudCore/QCloudAuthentationV5Creator.h>
@@ -27,13 +29,19 @@
 
 #define TVCUGCUploadCosKey             @"ugc_upload"
 
-@interface TVCClient () <QCloudSignatureProvider>
+#define VIRTUAL_TOTAL_PERCENT          10
+
+@interface TVCClient () <QCloudSignatureProvider, NSURLSessionTaskDelegate>
 @property(nonatomic, strong) TVCConfig *config;
 @property(nonatomic, strong) QCloudAuthentationV5Creator* creator;
 @property(nonatomic, strong) NSString* reqKey;
 @property(nonatomic, strong) NSString* serverIP;
 @property (nonatomic, strong) QCloudCOSXMLUploadObjectRequest* uploadRequest;
 @property(nonatomic, strong) TVCReportInfo* reportInfo;
+@property (nonatomic, strong) NSURLSession* session;
+@property (nonatomic, weak) NSTimer* timer;
+@property(atomic,assign) int virtualPercent;
+@property(atomic,assign) BOOL realProgressFired;
 @end
 
 @implementation TVCClient
@@ -49,6 +57,11 @@
         self.reqKey = @"";
         self.serverIP = @"";
         self.reportInfo = [[TVCReportInfo alloc] init];
+        self.timer = nil;
+        self.virtualPercent = 0;
+        self.realProgressFired = NO;
+        
+        [[TXUGCPublishOptCenter shareInstance] prepareUpload:self.config.signature];
     }
     return self;
 }
@@ -101,24 +114,24 @@
                 coverSize = [[manager attributesOfItemAtPath:param.coverPath error:nil] fileSize];
                 uploadContext.coverSize = coverSize;
             } else {
-                [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:TVC_ERR_FILE_NOT_EXIST errInfo:@"coverPath is not exist" reqTime:reqTime reqTimeCost:0 reqKey:@"" appId:0 fileSize:0 fileType:[self getFileType:param.coverPath] fileName:[self getFileName:param.coverPath] sessionKey:@"" fileId:@""];
+                [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:TVC_ERR_FILE_NOT_EXIST vodErrCode:0 cosErrCode:@"" errInfo:@"coverPath is not exist" reqTime:reqTime reqTimeCost:0 reqKey:@"" appId:0 fileSize:0 fileType:[self getFileType:param.coverPath] fileName:[self getFileName:param.coverPath] sessionKey:@"" fileId:@"" cosRegion:@"" useCosAcc:0 cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
                 NSLog(@"coverPath is not exist");
+                TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
+                rsp.retCode = TVC_ERR_FILE_NOT_EXIST;
+                rsp.descMsg = @"coverPath is not exist";
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
-                    rsp.retCode = TVC_ERR_FILE_NOT_EXIST;
-                    rsp.descMsg = @"coverPath is not exist";
                     result(rsp);
                 });
                 return;
             }
         }
     } else {
-        [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:TVC_ERR_FILE_NOT_EXIST errInfo:@"videoPath is not exist" reqTime:reqTime reqTimeCost:0 reqKey:@"" appId:0 fileSize:0 fileType:[self getFileType:param.videoPath] fileName:[self getFileName:param.videoPath] sessionKey:@"" fileId:@""];
+        [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:TVC_ERR_FILE_NOT_EXIST vodErrCode:0 cosErrCode:@"" errInfo:@"videoPath is not exist" reqTime:reqTime reqTimeCost:0 reqKey:@"" appId:0 fileSize:0 fileType:[self getFileType:param.videoPath] fileName:[self getFileName:param.videoPath] sessionKey:@"" fileId:@"" cosRegion:@"" useCosAcc:0 cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
         NSLog(@"videoPath is not exist");
+        TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
+        rsp.retCode = TVC_ERR_FILE_NOT_EXIST;
+        rsp.descMsg = @"videoPath is not exist";
         dispatch_async(dispatch_get_main_queue(), ^{
-            TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
-            rsp.retCode = TVC_ERR_FILE_NOT_EXIST;
-            rsp.descMsg = @"videoPath is not exist";
             result(rsp);
         });
         return;
@@ -126,10 +139,11 @@
 
     //1.获取cos参数
     NSString* vodSessionKey = nil;
-    if (self.config.enableResume == YES) {
+    if ([[TXUGCPublishOptCenter shareInstance] isPublishingPublishing:param.videoPath] == NO && self.config.enableResume == YES) {
         vodSessionKey = [self getSessionFromFilepath:uploadContext];
     }
-    [self getCosInitParam:uploadContext withVodSessionKey:vodSessionKey];
+    [[TXUGCPublishOptCenter shareInstance] addPublishing:param.videoPath];
+    [self applyUploadUGC:uploadContext withVodSessionKey:vodSessionKey];
 }
 
 - (BOOL)cancleUploadVideo {
@@ -179,18 +193,8 @@
     return rsp;
 }
 
-- (NSMutableURLRequest *)getCosInitURLRequest:(TVCUploadContext *)uploadContext withVodSessionKey:(NSString *)vodSessionKey {
+- (NSMutableURLRequest *)getCosInitURLRequest:(NSString *)domain withContext:(TVCUploadContext *)uploadContext withVodSessionKey:(NSString *)vodSessionKey {
     TVCUploadParam *param = uploadContext.uploadParam;
-    // set url
-    NSString *baseUrl = nil;
-    if (YES) {
-        baseUrl = UCG_HTTPS_URL;
-    } else {
-        baseUrl = UCG_HTTP_URL;
-    }
-    baseUrl = [baseUrl stringByAppendingString:@"?Action="];
-    baseUrl = [baseUrl stringByAppendingString:@"ApplyUploadUGC"];
-
     // set body
     NSMutableDictionary *dictParam = [[NSMutableDictionary alloc] init];
     [dictParam setValue:self.config.signature forKey:@"signature"];
@@ -198,22 +202,42 @@
     // 有vodSessionKey的话表示是断点续传
     if (vodSessionKey && vodSessionKey.length) {
         [dictParam setValue:vodSessionKey forKey:@"vodSessionKey"];
-    } else {
-        [dictParam setValue:param.videoName forKey:@"videoName"];
-        [dictParam setValue:[self getFileType:param.videoPath] forKey:@"videoType"];
-        [dictParam setValue:@(uploadContext.videoSize) forKey:@"videoSize"];
-        if (uploadContext.isUploadCover) {
-            [dictParam setValue:[self getFileName:param.coverPath] forKey:@"coverName"];
-            [dictParam setValue:[self getFileType:param.coverPath] forKey:@"coverType"];
-            [dictParam setValue:@(uploadContext.coverSize) forKey:@"coverSize"];
-        }
     }
+    
+    [dictParam setValue:param.videoName forKey:@"videoName"];
+    [dictParam setValue:[self getFileType:param.videoPath] forKey:@"videoType"];
+    [dictParam setValue:@(uploadContext.videoSize) forKey:@"videoSize"];
+    if (uploadContext.isUploadCover) {
+        [dictParam setValue:[self getFileName:param.coverPath] forKey:@"coverName"];
+        [dictParam setValue:[self getFileType:param.coverPath] forKey:@"coverType"];
+        [dictParam setValue:@(uploadContext.coverSize) forKey:@"coverSize"];
+    }
+    
+    [dictParam setValue:self.config.userID forKey:@"clientReportId"];
+    [dictParam setValue:TVCVersion forKey:@"clientVersion"];
+    NSString *region = [[TXUGCPublishOptCenter shareInstance] getCosRegion];
+    if ([region length] > 0) {
+        [dictParam setValue:region forKey:@"storageRegion"];
+    }
+    
     NSError *error = nil;
     NSData *bodyData = [NSJSONSerialization dataWithJSONObject:dictParam options:0 error:&error];
     if (error) {
         return nil;
     }
 
+    NSString* host = domain;
+    NSArray *ipLists = [[TXUGCPublishOptCenter shareInstance] query:host];
+    NSString *ip = ([ipLists count] > 0 ? ipLists[0] : nil);
+    if (ip != nil) {
+        host = ip;
+        self.serverIP = ip;
+    } else {
+        [self queryIpWithDomain:host];
+    }
+    // set url
+    NSString *baseUrl = [[@"https://" stringByAppendingString:host] stringByAppendingString:@"/v3/index.php?Action=ApplyUploadUGC"];
+    
     // create request
     NSURL *url =[NSURL URLWithString:baseUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -221,23 +245,22 @@
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    [request setHTTPBody:bodyData];
-    self.serverIP = [self queryIpWithDomain:url.host];
+    [request setValue:UGC_HOST forHTTPHeaderField:@"host"];
+    if (ip != nil) {
+        [request addValue:[[NSString alloc]initWithData:bodyData encoding:NSUTF8StringEncoding] forHTTPHeaderField:@"originalBody"];
+    } else {
+        [request setHTTPBody:bodyData];
+    }
     
+    NSLog(@"cos begin req : %s", [baseUrl UTF8String]);
+
     return request;
 }
 
-- (NSMutableURLRequest *)getCosEndURLRequest:(TVCUploadContext *)uploadContext {
+- (NSMutableURLRequest *)getCosEndURLRequest:(NSString *)domain withContext:(TVCUploadContext *)uploadContext {
     NSString *baseUrl;;
-//    TVCUploadParam *param = uploadContext.uploadParam;
+    TVCUploadParam *param = uploadContext.uploadParam;
     TVCUGCResult *ugc = uploadContext.cugResult;
-//    if (YES) {
-        baseUrl = [NSString stringWithFormat:@"https://%@/v3/index.php?Action=CommitUploadUGC", ugc.domain];
-//    } else {
-//        baseUrl = [NSString stringWithFormat:@"http://%@/v3/index.php?Action=CommitUploadUGC", ugc.domain];
-//    }
-    
-    self.serverIP = [self queryIpWithDomain:ugc.domain];
 
     // set body
     NSMutableDictionary *dictParam = [[NSMutableDictionary alloc] init];
@@ -250,38 +273,52 @@
     }
 
     // create request
+    NSString* host = domain;
+    NSArray * ipLists = [[TXUGCPublishOptCenter shareInstance] query:host];
+    NSString *ip = ([ipLists count] > 0 ? ipLists[0] : nil);
+    if (ip != nil) {
+        host = ip;
+        self.serverIP = ip;
+    } else {
+        [self queryIpWithDomain:host];
+    }
+    
+    baseUrl = [NSString stringWithFormat:@"https://%@/v3/index.php?Action=CommitUploadUGC", host];
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:baseUrl]];
     [request setValue:[NSString stringWithFormat:@"%ld", (long) [bodyData length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    [request setHTTPBody:bodyData];
+    
+    if (ip != nil) {
+        [request addValue:[[NSString alloc]initWithData:bodyData encoding:NSUTF8StringEncoding] forHTTPHeaderField:@"originalBody"];
+    } else {
+        [request setHTTPBody:bodyData];
+    }
+    
+    [request setValue:ugc.domain forHTTPHeaderField:@"host"];
 
     NSLog(@"cos end req : %s", [baseUrl UTF8String]);
 
     return request;
 }
 
-- (void)getCosInitParam:(TVCUploadContext *)uploadContext withVodSessionKey:(NSString *)vodSessionKey {
-    TVCResultBlock result = uploadContext.resultBlock;
-
+// 去点播申请上传：获取 COS 上传信息
+-(void)applyUploadUGC:(TVCUploadContext *)uploadContext withVodSessionKey:(NSString *)vodSessionKey {
+    if (self.timer == nil) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setObject:uploadContext forKey:@"uploadContext"];
+    
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0f/VIRTUAL_TOTAL_PERCENT target:self selector:@selector(postVirtualProgress:) userInfo:dict repeats:YES];
+        });
+    }
+    
     uploadContext.reqTime = [[NSDate date] timeIntervalSince1970] * 1000;
     uploadContext.initReqTime = uploadContext.reqTime;
     self.reqKey = [NSString stringWithFormat:@"%lld;%lld", uploadContext.videoLastModTime, uploadContext.initReqTime];
-
-    NSMutableURLRequest *cosRequest = [self getCosInitURLRequest:uploadContext withVodSessionKey:vodSessionKey];
-    if (cosRequest == nil) {
-        if (uploadContext.resultBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                TVCUploadResponse *initResp = [[TVCUploadResponse alloc] init];
-                initResp.retCode = TVC_ERR_UGC_REQUEST_FAILED;
-                initResp.descMsg = @"create ugc publish request failed";
-                result(initResp);
-            });
-            return;
-        }
-    }
-
+    
     NSURLSessionConfiguration *initCfg = [NSURLSessionConfiguration defaultSessionConfiguration];
     [initCfg setRequestCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     if (self.config.timeoutInterval > 0) {
@@ -289,179 +326,218 @@
     } else {
         [initCfg setTimeoutIntervalForRequest:kTimeoutInterval];
     }
-    NSURLSession *initSess = [NSURLSession sessionWithConfiguration:initCfg delegate:[[TVCHttpsDelegate alloc] init] delegateQueue:nil];
+    NSArray *protocolArray = @[[TVCHttpMessageURLProtocol class]];
+    initCfg.protocolClasses = protocolArray;
+    self.session = [NSURLSession sessionWithConfiguration:initCfg delegate:self delegateQueue:nil];
+    
+    [self getCosInitParam:uploadContext withVodSessionKey:vodSessionKey withDomain:UGC_HOST];
+}
+
+- (void)getCosInitParam:(TVCUploadContext *)uploadContext withVodSessionKey:(NSString *)vodSessionKey withDomain:(NSString *)domain{
+    TVCResultBlock result = uploadContext.resultBlock;
+    NSMutableURLRequest *cosRequest = [self getCosInitURLRequest:domain withContext:uploadContext withVodSessionKey:vodSessionKey];
+    if (cosRequest == nil) {
+        [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+        if (uploadContext.resultBlock) {
+            TVCUploadResponse *initResp = [[TVCUploadResponse alloc] init];
+            initResp.retCode = TVC_ERR_UGC_REQUEST_FAILED;
+            initResp.descMsg = @"create ugc publish request failed";
+            [self notifyResult:result resp:initResp];
+            return;
+        }
+    }
 
     __weak TVCClient *ws = self;
-    __weak NSURLSession *wis = initSess;
-    NSURLSessionTask *initTask = [initSess dataTaskWithRequest:cosRequest completionHandler:^(NSData *_Nullable initData, NSURLResponse *_Nullable response, NSError *_Nullable error) {
-        //invalid NSURLSession
-        [wis invalidateAndCancel];
-
-        TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
-        unsigned long long reqTimeCost = 0;
-
+    NSURLSessionTask *initTask = [self.session dataTaskWithRequest:cosRequest completionHandler:^(NSData *_Nullable initData, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-        if (error || httpResponse.statusCode != 200 || initData == nil) {
-            // 删除session
-            [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
+        if (error || httpResponse.statusCode != 200 || initData == nil) { // 失败
+            if ([domain isEqualToString:UGC_HOST]) { // 原域名
+                if (++uploadContext.vodCmdRequestCount < kMaxRequestCount) {
+                    [ws getCosInitParam:uploadContext withVodSessionKey:vodSessionKey withDomain:UGC_HOST];
+                } else {
+                    uploadContext.vodCmdRequestCount = 0;
+                    [ws getCosInitParam:uploadContext withVodSessionKey:vodSessionKey withDomain:UGC_HOST_BAK];
+                }
+            } else if ([domain isEqualToString:UGC_HOST_BAK]) { // 备份域名
+                if (++uploadContext.vodCmdRequestCount < kMaxRequestCount) {
+                    [ws getCosInitParam:uploadContext withVodSessionKey:vodSessionKey withDomain:UGC_HOST_BAK];
+                } else {
+                    
+                    // 删除session
+                    [ws setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
+                    [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
 
-            //1步骤出错
-            NSLog(@"ugc init http req fail : error=%ld response=%s", (long)error.code, [httpResponse.description UTF8String]);
-            rsp.retCode = TVC_ERR_UGC_REQUEST_FAILED;
-            rsp.descMsg = [NSString stringWithFormat:@"ugc code:%ld, ugc desc:%@", (long)error.code, @"ugc init http req fail"];
-            
-            reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-            [ws txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:0 fileSize:uploadContext.videoSize fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@""];
-            if (result) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    result(rsp);
-                });
-            }
-            return;
-        }
-        NSError *jsonErr = nil;
-        NSDictionary *initDict = [NSJSONSerialization JSONObjectWithData:initData options:NSJSONReadingAllowFragments error:&jsonErr];
-        if (jsonErr || ![initDict isKindOfClass:[NSDictionary class]]) {
-            // 删除session
-            [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
-            
-            rsp.retCode = TVC_ERR_UGC_PARSE_FAILED;
-            rsp.descMsg = [NSString stringWithFormat:@"ugc code:%ld, ugc desc:%@", (long)jsonErr.code, @"ugc parse init http fail"];
-            
-            reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-            [ws txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:0 fileSize:uploadContext.videoSize
-                fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@""];
-            
-            if (result) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    result(rsp);
-                });
+                    TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
+                    //1步骤出错
+                    NSLog(@"ugc init http req fail : error=%d response=%s", error.code, [httpResponse.description UTF8String]);
+                    rsp.retCode = TVC_ERR_UGC_REQUEST_FAILED;
+                    rsp.descMsg = [NSString stringWithFormat:@"ugc code:%d, ugc desc:%@", error.code, @"ugc init http req fail"];
+                    
+                    unsigned long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+                    [ws txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode vodErrCode:error.code cosErrCode:@"" errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:0 fileSize:uploadContext.videoSize fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@""  cosRegion:@"" useCosAcc:0 cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+                    if (result) {
+                        [ws notifyResult:result resp:rsp];
+                    }
+                    return;
+                }
             }
             return;
         }
 
-		int code = -1;
-        if ([[initDict objectForKey:kCode] isKindOfClass:[NSNumber class]]) {
-            code = [[initDict objectForKey:kCode] intValue];
-        }
-        NSString *msg;;
-        if ([[initDict objectForKey:kMessage] isKindOfClass:[NSString class]]) {
-            msg = [initDict objectForKey:kMessage];
-        }
-		
-		if (code != TVC_OK) {
-            // 删除session
-            [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
-            
-            rsp.retCode = TVC_ERR_UGC_REQUEST_FAILED;
-            rsp.descMsg = [NSString stringWithFormat:@"ugc code:%d, ugc desc:%@", code, msg];
-            
-            reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-            [ws txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:0 fileSize:uploadContext.videoSize
-                fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@""];
-
-            //1步骤出错
-            if (result) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    result(rsp);
-                });
-            }
-            return;
-        }
-		
-        NSDictionary *dataDict = nil;
-        if ([[initDict objectForKey:kData] isKindOfClass:[NSDictionary class]]) {
-            dataDict = [initDict objectForKey:kData];
-        }
-        if (!dataDict) {
-            // 删除session
-            [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
-            
-            rsp.retCode = TVC_ERR_UGC_PARSE_FAILED;
-            rsp.descMsg = @"data is not json string";
-            
-            reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-            [ws txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:0 fileSize:uploadContext.videoSize
-                fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@""];
-
-            if (result) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    result(rsp);
-                });
-            }
-            return;
-        }
-
-        // print json log
-        NSError *parseError = nil;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:initDict options:NSJSONWritingPrettyPrinted error:&parseError];
-        NSString *initDictStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"init cos dic : %s", [initDictStr UTF8String]);
-
-        TVCUGCResult *ugc = [[TVCUGCResult alloc] init];
-
-        if ([[dataDict objectForKey:@"video"] isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *videoDict = [dataDict objectForKey:@"video"];
-            ugc.videoSign = [videoDict objectForKey:@"storageSignature"];
-            ugc.videoPath = [videoDict objectForKey:@"storagePath"];
-        }
-        
-        if ([[dataDict objectForKey:@"cover"] isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *coverDict = [dataDict objectForKey:@"cover"];
-            ugc.imageSign = [coverDict objectForKey:@"storageSignature"];
-            ugc.imagePath = [coverDict objectForKey:@"storagePath"];
-        }
-
-        if ([[dataDict objectForKey:@"appId"] isKindOfClass:[NSNumber class]]) {
-            ugc.userAppid = [[dataDict objectForKey:@"appId"] stringValue];
-        }
-        
-        if ([[dataDict objectForKey:@"tempCertificate"] isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *cosTmp = [dataDict objectForKey:@"tempCertificate"];
-            ugc.tmpSecretId = [cosTmp objectForKey:@"secretId"];
-            ugc.tmpSecretKey = [cosTmp objectForKey:@"secretKey"];
-            ugc.tmpToken = [cosTmp objectForKey:@"token"];
-            ugc.tmpExpiredTime = [[cosTmp objectForKey:@"expiredTime"] longLongValue];
-        }
-        if ([[dataDict objectForKey:@"timestamp"] isKindOfClass:[NSNumber class]]) {
-            ugc.currentTS = [[dataDict objectForKey:@"timestamp"] longLongValue];
-        }
-
-        if ([[dataDict objectForKey:@"storageAppId"] isKindOfClass:[NSNumber class]]) {
-            ugc.uploadAppid = [[dataDict objectForKey:@"storageAppId"] stringValue];
-        }
-        if ([[dataDict objectForKey:@"storageBucket"] isKindOfClass:[NSString class]]) {
-            ugc.uploadBucket = [dataDict objectForKey:@"storageBucket"];
-        }
-        if ([[dataDict objectForKey:@"vodSessionKey"] isKindOfClass:[NSString class]]) {
-            ugc.uploadSession = [dataDict objectForKey:@"vodSessionKey"];
-        }
-        if ([[dataDict objectForKey:@"storageRegionV5"] isKindOfClass:[NSString class]]) {
-            ugc.uploadRegion = [dataDict objectForKey:@"storageRegionV5"];
-        }
-        if ([[dataDict objectForKey:@"domain"] isKindOfClass:[NSString class]]) {
-            ugc.domain = [dataDict objectForKey:@"domain"];
-        }
-
-        uploadContext.cugResult = ugc;
-
-        NSLog(@"init cugResult %s", [[uploadContext.cugResult description] UTF8String]);
-
-        reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-        [ws txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:TVC_OK errInfo:@"" reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:ugc.userAppid fileSize:uploadContext.videoSize
-            fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:ugc.uploadSession fileId:@""];
-        
-        [ws setupCOSXMLShareService:uploadContext];
-        
-        //2.开始上传
-        uploadContext.reqTime = [[NSDate date] timeIntervalSince1970] * 1000;
-        if (vodSessionKey && vodSessionKey.length) {
-            [ws commitCosUpload:uploadContext withResumeUpload:YES];
-        } else {
-            [ws commitCosUpload:uploadContext withResumeUpload:NO];
-        }
+        uploadContext.vodCmdRequestCount = 0;
+        [ws parseInitRsp:initData withContex:uploadContext withVodSessionKey:vodSessionKey];
     }];
     [initTask resume];
+}
+
+-(void) parseInitRsp:(NSData *)initData withContex:(TVCUploadContext *)uploadContext withVodSessionKey:(NSString *)vodSessionKey {
+    TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
+    TVCResultBlock result = uploadContext.resultBlock;
+    unsigned long long reqTimeCost = 0;
+    NSError *jsonErr = nil;
+    NSDictionary *initDict = [NSJSONSerialization JSONObjectWithData:initData options:NSJSONReadingAllowFragments error:&jsonErr];
+    if (jsonErr || ![initDict isKindOfClass:[NSDictionary class]]) {
+        // 删除session
+        [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
+        [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+        
+        rsp.retCode = TVC_ERR_UGC_PARSE_FAILED;
+        rsp.descMsg = [NSString stringWithFormat:@"ugc code:%ld, ugc desc:%@", jsonErr.code, @"ugc parse init http fail"];
+        
+        reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+        [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode vodErrCode:jsonErr.code cosErrCode:@"" errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:self.reqKey appId:0 fileSize:uploadContext.videoSize
+            fileType:[self getFileType:uploadContext.uploadParam.videoPath] fileName:[self getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@"" cosRegion:@"" useCosAcc:0 cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+        
+        if (result) {
+            [self notifyResult:result resp:rsp];
+        }
+        return;
+    }
+
+    int code = -1;
+    if ([[initDict objectForKey:kCode] isKindOfClass:[NSNumber class]]) {
+        code = [[initDict objectForKey:kCode] intValue];
+    }
+    NSString *msg;;
+    if ([[initDict objectForKey:kMessage] isKindOfClass:[NSString class]]) {
+        msg = [initDict objectForKey:kMessage];
+    }
+    
+    if (code != TVC_OK) {
+        // 删除session
+        [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
+        [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+        
+        rsp.retCode = TVC_ERR_UGC_REQUEST_FAILED;
+        rsp.descMsg = [NSString stringWithFormat:@"ugc code:%d, ugc desc:%@", code, msg];
+        
+        reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+        [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode vodErrCode:code cosErrCode:@"" errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:self.reqKey appId:0 fileSize:uploadContext.videoSize
+            fileType:[self getFileType:uploadContext.uploadParam.videoPath] fileName:[self getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@"" cosRegion:@"" useCosAcc:0 cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+
+        //1步骤出错
+        if (result) {
+            [self notifyResult:result resp:rsp];
+        }
+        return;
+    }
+    
+    NSDictionary *dataDict = nil;
+    if ([[initDict objectForKey:kData] isKindOfClass:[NSDictionary class]]) {
+        dataDict = [initDict objectForKey:kData];
+    }
+    if (!dataDict) {
+        // 删除session
+        [self setSession:nil resumeData:nil lastModTime:0 withFilePath:uploadContext.uploadParam.videoPath];
+        [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+        
+        rsp.retCode = TVC_ERR_UGC_PARSE_FAILED;
+        rsp.descMsg = @"data is not json string";
+        
+        reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+        [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:rsp.retCode vodErrCode:3 cosErrCode:@"" errInfo:rsp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:self.reqKey appId:0 fileSize:uploadContext.videoSize
+            fileType:[self getFileType:uploadContext.uploadParam.videoPath] fileName:[self getFileName:uploadContext.uploadParam.videoPath] sessionKey:@"" fileId:@"" cosRegion:@"" useCosAcc:0 cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+
+        if (result) {
+            [self notifyResult:result resp:rsp];
+        }
+        return;
+    }
+
+    // print json log
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:initDict options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSString *initDictStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSLog(@"init cos dic : %s", [initDictStr UTF8String]);
+
+    TVCUGCResult *ugc = [[TVCUGCResult alloc] init];
+
+    if ([[dataDict objectForKey:@"video"] isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *videoDict = [dataDict objectForKey:@"video"];
+        ugc.videoSign = [videoDict objectForKey:@"storageSignature"];
+        ugc.videoPath = [videoDict objectForKey:@"storagePath"];
+    }
+    
+    if ([[dataDict objectForKey:@"cover"] isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *coverDict = [dataDict objectForKey:@"cover"];
+        ugc.imageSign = [coverDict objectForKey:@"storageSignature"];
+        ugc.imagePath = [coverDict objectForKey:@"storagePath"];
+    }
+
+    if ([[dataDict objectForKey:@"appId"] isKindOfClass:[NSNumber class]]) {
+        ugc.userAppid = [[dataDict objectForKey:@"appId"] stringValue];
+    }
+    
+    if ([[dataDict objectForKey:@"tempCertificate"] isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *cosTmp = [dataDict objectForKey:@"tempCertificate"];
+        ugc.tmpSecretId = [cosTmp objectForKey:@"secretId"];
+        ugc.tmpSecretKey = [cosTmp objectForKey:@"secretKey"];
+        ugc.tmpToken = [cosTmp objectForKey:@"token"];
+        ugc.tmpExpiredTime = [[cosTmp objectForKey:@"expiredTime"] longLongValue];
+    }
+    if ([[dataDict objectForKey:@"timestamp"] isKindOfClass:[NSNumber class]]) {
+        ugc.currentTS = [[dataDict objectForKey:@"timestamp"] longLongValue];
+    }
+
+    if ([[dataDict objectForKey:@"storageAppId"] isKindOfClass:[NSNumber class]]) {
+        ugc.uploadAppid = [[dataDict objectForKey:@"storageAppId"] stringValue];
+    }
+    if ([[dataDict objectForKey:@"storageBucket"] isKindOfClass:[NSString class]]) {
+        //从5.4.10升级到5.4.20之后，废除了setAppIdAndRegion接口，需要自行拼接保证costBucket格式为 bucket-appId
+        ugc.uploadBucket = [NSString stringWithFormat:@"%@-%@", [dataDict objectForKey:@"storageBucket"], ugc.uploadAppid];
+    }
+    if ([[dataDict objectForKey:@"vodSessionKey"] isKindOfClass:[NSString class]]) {
+        ugc.uploadSession = [dataDict objectForKey:@"vodSessionKey"];
+    }
+    if ([[dataDict objectForKey:@"storageRegionV5"] isKindOfClass:[NSString class]]) {
+        ugc.uploadRegion = [dataDict objectForKey:@"storageRegionV5"];
+    }
+    if ([[dataDict objectForKey:@"domain"] isKindOfClass:[NSString class]]) {
+        ugc.domain = [dataDict objectForKey:@"domain"];
+    }
+    if ([[dataDict objectForKey:@"cosAcc"] isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *cosAcc = [dataDict objectForKey:@"cosAcc"];
+        ugc.useCosAcc = [[cosAcc objectForKey:@"isOpen"] intValue];
+        ugc.cosAccDomain = [cosAcc objectForKey:@"domain"];
+    }
+
+    uploadContext.cugResult = ugc;
+
+    NSLog(@"init cugResult %s", [[uploadContext.cugResult description] UTF8String]);
+
+    reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+    [self txReport:TVC_UPLOAD_EVENT_ID_INIT errCode:TVC_OK vodErrCode:0 cosErrCode:@"" errInfo:@"" reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:self.reqKey appId:ugc.userAppid fileSize:uploadContext.videoSize
+        fileType:[self getFileType:uploadContext.uploadParam.videoPath] fileName:[self getFileName:uploadContext.uploadParam.videoPath] sessionKey:ugc.uploadSession fileId:@"" cosRegion:ugc.uploadRegion useCosAcc:ugc.useCosAcc cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+    
+    [self setupCOSXMLShareService:uploadContext];
+    
+    //2.开始上传
+    uploadContext.reqTime = [[NSDate date] timeIntervalSince1970] * 1000;
+    if (vodSessionKey && vodSessionKey.length) {
+        [self commitCosUpload:uploadContext withResumeUpload:YES];
+    } else {
+        [self commitCosUpload:uploadContext withResumeUpload:NO];
+    }
 }
 
 - (void) signatureWithFields:(QCloudSignatureFields*)fileds
@@ -495,15 +571,32 @@
     configuration.appID = uploadContext.cugResult.uploadAppid;
     configuration.signatureProvider = self;
     
-    QCloudCOSXMLEndPoint* endpoint = [[QCloudCOSXMLEndPoint alloc] init];
-    endpoint.regionName = uploadContext.cugResult.uploadRegion;
+    QCloudCOSXMLEndPoint* endpoint;
+    // 是否开启动态加速
+    if (uploadContext.cugResult.useCosAcc == 1) {
+        NSString *accDomain = uploadContext.cugResult.cosAccDomain;
+        NSString *accUrl = accDomain;
+        if (![accUrl hasPrefix:@"http"]) {
+            if(self.config.enableHttps) {
+                accUrl = [@"https://" stringByAppendingString:accDomain];
+            } else {
+                accUrl = [@"http://" stringByAppendingString:accDomain];
+            }
+        }
+        endpoint = [[QCloudCOSXMLEndPoint alloc] initWithLiteralURL:[NSURL URLWithString:accUrl]];
+        endpoint.regionName = uploadContext.cugResult.uploadRegion;
+        [self queryIpWithDomain:accUrl];
+    } else {
+        endpoint = [[QCloudCOSXMLEndPoint alloc] init];
+        endpoint.regionName = uploadContext.cugResult.uploadRegion;
+        [self queryIpWithDomain:[endpoint serverURLWithBucket:uploadContext.cugResult.uploadBucket appID:uploadContext.cugResult.uploadAppid regionName:uploadContext.cugResult.uploadRegion].host];
+    }
+    
     endpoint.useHTTPS = self.config.enableHttps;
     configuration.endpoint = endpoint;
     
-    self.serverIP = [self queryIpWithDomain:[endpoint serverURLWithBucket:uploadContext.cugResult.uploadBucket appID:uploadContext.cugResult.uploadAppid].host];
-    
-    [QCloudCOSXMLService registerCOSXMLWithConfiguration:configuration withKey:TVCUGCUploadCosKey];
-    [QCloudCOSTransferMangerService registerCOSTransferMangerWithConfiguration:configuration withKey:TVCUGCUploadCosKey];
+    [QCloudCOSXMLService registerCOSXMLWithConfiguration:configuration withKey:uploadContext.uploadParam.videoPath];
+    [QCloudCOSTransferMangerService registerCOSTransferMangerWithConfiguration:configuration withKey:uploadContext.uploadParam.videoPath];
 }
 
 - (void)commitCosUpload:(TVCUploadContext *)uploadContext withResumeUpload:(BOOL)isResumeUpload {
@@ -519,6 +612,8 @@
     
     NSLog(@"uploadCosVideo begin : cosBucket:%@ ,cos videoPath:%@, path:%@", cug.uploadBucket, cug.videoPath, param.videoPath);
     
+    __block uint64_t tcpConenctionTimeCost = 0;
+    __block uint64_t recvRspTimeCost = 0;
     __block long long reqTimeCost = 0;
     __weak TVCClient *ws = self;
     if (uploadContext.isUploadVideo) {
@@ -532,6 +627,19 @@
                 videoUpload.body = [NSURL fileURLWithPath:param.videoPath];
                 videoUpload.bucket = cug.uploadBucket;
                 videoUpload.object = cug.videoPath;
+                
+                [videoUpload setRequstsMetricArrayBlock:^(NSMutableArray *requstMetricArray) {
+                    if ([requstMetricArray count] > 0 && [requstMetricArray[0] isKindOfClass:[NSDictionary class]]) {
+                        if ([[requstMetricArray[0] allValues] count] > 0) {
+                            NSDictionary *dic = [requstMetricArray[0] allValues][0];
+                            tcpConenctionTimeCost = ([dic[@"kDnsLookupTookTime"] doubleValue] + [dic[@"kConnectTookTime"] doubleValue] +
+                                                     [dic[@"kSignRequestTookTime"] doubleValue]) * 1000;
+                            recvRspTimeCost = ([dic[@"kTaskTookTime"] doubleValue] + [dic[@"kReadResponseHeaderTookTime"] doubleValue] +
+                                               [dic[@"kReadResponseBodyTookTime"] doubleValue]) * 1000;
+                        }
+                    }
+                }];
+                
                 [videoUpload setInitMultipleUploadFinishBlock:^(QCloudInitiateMultipartUploadResult *multipleUploadInitResult, QCloudCOSXMLUploadObjectResumeData resumeData) {
                     if (multipleUploadInitResult != nil && resumeData != nil) {
                         [self setSession:cug.uploadSession resumeData:resumeData lastModTime:uploadContext.videoLastModTime withFilePath:param.videoPath];
@@ -541,61 +649,93 @@
             
             [videoUpload setFinishBlock:^(QCloudUploadObjectResult *result, NSError * error) {
                 NSLog(@"uploadCosVideo finish : cosBucket:%@ ,cos videoPath:%@, path:%@, size:%lld", cug.uploadBucket, cug.videoPath, param.videoPath, uploadContext.videoSize);
+                reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+                NSString *requestId = [result.__originHTTPURLResponse__.allHeaderFields objectForKey:@"x-cos-request-id"];
+                
                 if (error) {
-                    reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
                     NSString * errInfo = error.description;
                     NSString * cosErrorCode = @"";
                     if (error.userInfo != nil) {
                         errInfo = error.userInfo.description;
-                        cosErrorCode = error.userInfo[@"Code"];
                     }
+                    cosErrorCode = [NSString stringWithFormat:@"%d", error.code];
                     
-                    if ([cosErrorCode isEqualToString:@"RequestTimeTooSkewed"]) {
-                        uploadContext.isShouldRetry = YES;
-                    }
-                    [ws txReport:TVC_UPLOAD_EVENT_ID_COS errCode:TVC_ERR_VIDEO_UPLOAD_FAILED errInfo:errInfo reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:cug.userAppid fileSize:uploadContext.videoSize
-                        fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:cug.uploadSession fileId:@""];
-                    // 取消的情况不清除session缓存
-                    if (error.code == -34009) {
+                    // 取消的情况不清除session缓存，错误码定义见 https://cloud.tencent.com/document/product/436/30443
+                    if (error.code == 30000) {
                         uploadContext.lastStatus = TVC_ERR_USER_CANCLE;
                         uploadContext.desc = [NSString stringWithFormat:@"upload video, user cancled"];
+                        
+                        [ws txReport:TVC_UPLOAD_EVENT_ID_COS errCode:TVC_ERR_USER_CANCLE vodErrCode:0 cosErrCode:cosErrorCode errInfo:errInfo reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:cug.userAppid fileSize:uploadContext.videoSize
+                            fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:cug.uploadSession fileId:@""  cosRegion:cug.uploadRegion useCosAcc:cug.useCosAcc cosRequestId:requestId cosTcpConnTimeCost:tcpConenctionTimeCost cosRecvRespTimeCost:recvRspTimeCost];
                     } else {
                         uploadContext.lastStatus = TVC_ERR_VIDEO_UPLOAD_FAILED;
-                        uploadContext.desc = [NSString stringWithFormat:@"upload video, cos code:%ld, cos desc:%@", (long)error.code, error.description];
+                        uploadContext.desc = [NSString stringWithFormat:@"upload video, cos code:%d, cos desc:%@", error.code, error.description];
                         //网络断开，不清除session缓存
-                        if (error.code != -34004) {
+                        if (error.code != -1009) {
                             [ws setSession:nil resumeData:nil lastModTime:0 withFilePath:param.videoPath];
                         }
+                        
+                        [ws txReport:TVC_UPLOAD_EVENT_ID_COS errCode:TVC_ERR_VIDEO_UPLOAD_FAILED vodErrCode:0 cosErrCode:cosErrorCode errInfo:errInfo reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:cug.userAppid fileSize:uploadContext.videoSize
+                            fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:cug.uploadSession fileId:@""  cosRegion:cug.uploadRegion useCosAcc:cug.useCosAcc cosRequestId:requestId cosTcpConnTimeCost:tcpConenctionTimeCost cosRecvRespTimeCost:recvRspTimeCost];
+                    }
+                    dispatch_semaphore_signal(semaphore);
+                    if (uploadContext.isUploadCover) {
                         dispatch_semaphore_signal(semaphore);
                     }
                 } else {
                     NSLog(@"upload video succ");
-                    //视频上传完成，清除session缓存
+                    //视频上传完成，上报视频上传信息，清除session缓存
+                    [ws txReport:TVC_UPLOAD_EVENT_ID_COS errCode:0 vodErrCode:0 cosErrCode:@"" errInfo:@"" reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:cug.userAppid fileSize:uploadContext.videoSize
+                         fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:cug.uploadSession fileId:@""  cosRegion:cug.uploadRegion useCosAcc:cug.useCosAcc cosRequestId:requestId cosTcpConnTimeCost:tcpConenctionTimeCost cosRecvRespTimeCost:recvRspTimeCost];
                     [ws setSession:nil resumeData:nil lastModTime:0 withFilePath:param.videoPath];
                     //2-2.开始上传封面
                     if (uploadContext.isUploadCover) {
                         uploadContext.reqTime = [[NSDate date] timeIntervalSince1970] * 1000;
-                        
+
                         QCloudCOSXMLUploadObjectRequest* coverUpload = [QCloudCOSXMLUploadObjectRequest new];
                         coverUpload.body = [NSURL fileURLWithPath:param.coverPath];
                         coverUpload.bucket = cug.uploadBucket;
                         coverUpload.object = cug.imagePath;
                         
+                        __block uint64_t tcpConenctionTimeCost = 0;
+                        __block uint64_t recvRspTimeCost = 0;
+                        
+                        [coverUpload setRequstsMetricArrayBlock:^(NSMutableArray *requstMetricArray) {
+                            if ([requstMetricArray count] > 0 && [requstMetricArray[0] isKindOfClass:[NSDictionary class]]) {
+                                if ([[requstMetricArray[0] allValues] count] > 0) {
+                                    NSDictionary *dic = [requstMetricArray[0] allValues][0];
+                                    tcpConenctionTimeCost = ([dic[@"kDnsLookupTookTime"] doubleValue] + [dic[@"kConnectTookTime"] doubleValue] +
+                                                             [dic[@"kSignRequestTookTime"] doubleValue]) * 1000;
+                                    recvRspTimeCost = ([dic[@"kTaskTookTime"] doubleValue] + [dic[@"kReadResponseHeaderTookTime"] doubleValue] +
+                                                       [dic[@"kReadResponseBodyTookTime"] doubleValue]) * 1000;
+                                }
+                            }
+                        }];
+                        
                         [coverUpload setFinishBlock:^(QCloudUploadObjectResult *result, NSError * error) {
+                            NSString * cosErrorCode = @"";
+                            NSString *requestId = [result.__originHTTPURLResponse__.allHeaderFields objectForKey:@"x-cos-request-id"];
+                            
                             if (error) {
                                 //2-2步骤出错
-                                NSLog(@"upload cover fail : %ld", (long)error.code);
+                                NSLog(@"upload cover fail : %d", error.code);
                                 NSString * errInfo = error.description;
                                 if (error.userInfo != nil) {
                                     errInfo = error.userInfo.description;
                                 }
-                                uploadContext.lastStatus = TVC_ERR_COVER_UPLOAD_FAILED;
-                                uploadContext.desc = errInfo;
+                                cosErrorCode = [NSString stringWithFormat:@"%d", error.code];
+                                
+                                if (error.code == 30000) {
+                                    uploadContext.lastStatus = TVC_ERR_USER_CANCLE;
+                                } else {
+                                    uploadContext.lastStatus = TVC_ERR_COVER_UPLOAD_FAILED;
+                                    uploadContext.desc = errInfo;
+                                }
                             } else {
                                 NSLog(@"upload cover succ");
                             }
                             reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-                            [ws txReport:TVC_UPLOAD_EVENT_ID_COS errCode:uploadContext.lastStatus errInfo:uploadContext.desc reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:cug.userAppid fileSize:uploadContext.coverSize fileType:[ws getFileType:uploadContext.uploadParam.coverPath] fileName:[ws getFileName:uploadContext.uploadParam.coverPath] sessionKey:cug.uploadSession fileId:@""];
+                            [ws txReport:TVC_UPLOAD_EVENT_ID_COS errCode:uploadContext.lastStatus vodErrCode:0 cosErrCode:cosErrorCode errInfo:uploadContext.desc reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:cug.userAppid fileSize:uploadContext.coverSize fileType:[ws getFileType:uploadContext.uploadParam.coverPath] fileName:[ws getFileName:uploadContext.uploadParam.coverPath] sessionKey:cug.uploadSession fileId:@"" cosRegion:cug.uploadRegion useCosAcc:cug.useCosAcc cosRequestId:requestId cosTcpConnTimeCost:tcpConenctionTimeCost cosRecvRespTimeCost:recvRspTimeCost];
                             dispatch_semaphore_signal(semaphore);
                         }];
                         
@@ -603,15 +743,18 @@
                         [coverUpload setSendProcessBlock:^(int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
                             if (progress) {
                                 uint64_t total = uploadContext.videoSize + uploadContext.coverSize;
-                                uploadContext.currentUpload += totalBytesSent;
+                                uploadContext.currentUpload += bytesSent;
                                 if (uploadContext.currentUpload > total) {
                                     uploadContext.currentUpload = total;
+                                    ws.virtualPercent = 100 - VIRTUAL_TOTAL_PERCENT;
+                                    [ws.timer setFireDate:[NSDate date]]; //上传完成，启动结束虚拟进度
+                                } else {
+                                    progress(uploadContext.currentUpload*(100 - 2 * VIRTUAL_TOTAL_PERCENT)/100 + VIRTUAL_TOTAL_PERCENT*total/100, total);
                                 }
-                                progress(uploadContext.currentUpload, total);
                             }
                         }];
                         ws.uploadRequest = coverUpload;
-                        [[QCloudCOSTransferMangerService costransfermangerServiceForKey:TVCUGCUploadCosKey] UploadObject:coverUpload];
+                        [[QCloudCOSTransferMangerService costransfermangerServiceForKey:param.videoPath] UploadObject:coverUpload];
                     }
                 }
                 dispatch_semaphore_signal(semaphore);
@@ -619,17 +762,25 @@
             
             TVCProgressBlock progress = uploadContext.progressBlock;
             [videoUpload setSendProcessBlock:^(int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
+                if (!ws.realProgressFired) {
+                    [ws.timer setFireDate:[NSDate distantFuture]];
+                    ws.realProgressFired = YES;
+                }
+                
                 if (progress) {
                     uint64_t total = uploadContext.videoSize + uploadContext.coverSize;
                     uploadContext.currentUpload = totalBytesSent;
                     if (uploadContext.currentUpload > total) {
                         uploadContext.currentUpload = total;
+                        ws.virtualPercent = 100 - VIRTUAL_TOTAL_PERCENT;
+                        [ws.timer setFireDate:[NSDate date]]; //上传完成，启动结束虚拟进度
+                    } else {
+                        progress(uploadContext.currentUpload*(100 - 2 * VIRTUAL_TOTAL_PERCENT)/100 + VIRTUAL_TOTAL_PERCENT*total/100, total);
                     }
-                    progress(uploadContext.currentUpload, total);
                 }
             }];
             ws.uploadRequest = videoUpload;
-            [[QCloudCOSTransferMangerService costransfermangerServiceForKey:TVCUGCUploadCosKey] UploadObject:videoUpload];
+            [[QCloudCOSTransferMangerService costransfermangerServiceForKey:param.videoPath] UploadObject:videoUpload];
         });
     }
     
@@ -656,135 +807,148 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //1.获取cos参数
                     NSString* vodSessionKey = nil;
-                    if (self.config.enableResume == YES) {
-                        vodSessionKey = [self getSessionFromFilepath:uploadContext];
+                    if (ws.config.enableResume == YES) {
+                        vodSessionKey = [ws getSessionFromFilepath:uploadContext];
                     }
-                    [self getCosInitParam:uploadContext withVodSessionKey:vodSessionKey];
+                    [self applyUploadUGC:uploadContext withVodSessionKey:vodSessionKey];
                 });
             } else if (result) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
-                    rsp.retCode = uploadContext.lastStatus;
-                    rsp.descMsg = uploadContext.desc;
-                    result(rsp);
-                });
+                [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+                TVCUploadResponse *rsp = [[TVCUploadResponse alloc] init];
+                rsp.retCode = uploadContext.lastStatus;
+                rsp.descMsg = uploadContext.desc;
+                [ws notifyResult:result resp:rsp];
                 return;
             }
         } else {
-            //3.完成上传
-            NSLog(@"complete upload task");
-            NSMutableURLRequest *cosFiniURLRequest = [ws getCosEndURLRequest:uploadContext];
-            NSURLSessionConfiguration *finishCfg = [NSURLSessionConfiguration defaultSessionConfiguration];
-            [finishCfg setRequestCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-            if (self.config.timeoutInterval > 0) {
-                [finishCfg setTimeoutIntervalForRequest:self.config.timeoutInterval];
-            } else {
-                [finishCfg setTimeoutIntervalForRequest:kTimeoutInterval];
-            }
-            NSURLSession *finishSess = [NSURLSession sessionWithConfiguration:finishCfg delegate:[[TVCHttpsDelegate alloc] init] delegateQueue:nil];
-
-            __weak NSURLSession *wfs = finishSess;
-            NSURLSessionTask *finiTask = [finishSess dataTaskWithRequest:cosFiniURLRequest completionHandler:^(NSData *_Nullable finiData, NSURLResponse *_Nullable response, NSError *_Nullable error) {
-
-                //invalid NSURLSession
-                [wfs invalidateAndCancel];
-
-                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-                if (error || httpResponse.statusCode != 200 || finiData == nil) {
-                    //3步骤出错
-                    NSLog(@"cos end http req fail : error=%ld response=%s", (long)error.code, [httpResponse.description UTF8String]);
-                    if (result) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            TVCUploadResponse *initResp = [[TVCUploadResponse alloc] init];
-                            initResp.retCode = TVC_ERR_UGC_FINISH_REQ_FAILED;
-                            initResp.descMsg = [NSString stringWithFormat:@"ugc code:%ld, ugc desc:%@", (long)error.code, @"ugc finish http req fail"];
-                            result(initResp);
-
-                            long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-                            [ws txReport:TVC_UPLOAD_EVENT_ID_FINISH errCode:initResp.retCode errInfo:initResp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:uploadContext.cugResult.userAppid fileSize:uploadContext.videoSize fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:uploadContext.cugResult.uploadSession fileId:@""];
-                        });
-                    }
-                    return;
-                }
-                NSDictionary *finiDict = [NSJSONSerialization JSONObjectWithData:finiData options:(NSJSONReadingMutableLeaves) error:nil];
-
-                NSError *parseError = nil;
-                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:finiDict options:NSJSONWritingPrettyPrinted error:&parseError];
-                NSString *finiDictStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
-                NSLog(@"end cos dic : %@", finiDictStr);
-
-                int code = -1;
-                if ([[finiDict objectForKey:kCode] isKindOfClass:[NSNumber class]]) {
-                    code = [[finiDict objectForKey:kCode] intValue];
-                }
-                NSString *msg;;
-                if ([[finiDict objectForKey:kMessage] isKindOfClass:[NSString class]]) {
-                    msg = [finiDict objectForKey:kMessage];
-                }
-
-                NSDictionary *dataDict = nil;
-                NSString *videoURL = @"";
-                NSString *coverURL = @"";
-                NSString *videoID = @"";
-                if ([[finiDict objectForKey:kData] isKindOfClass:[NSDictionary class]]) {
-                    dataDict = [finiDict objectForKey:kData];
-
-                    NSDictionary *videoDic = nil;
-                    NSDictionary *coverDic = nil;
-                    if ([[dataDict objectForKey:@"video"] isKindOfClass:[NSDictionary class]]) {
-                        videoDic = [dataDict objectForKey:@"video"];
-                        if (ws.config.enableHttps == YES) {
-                            videoURL = [[videoDic objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http:" withString:@"https:"];
-                        } else {
-                            videoURL = [videoDic objectForKey:@"url"];
-                        }
-                    }
-                    if ([[dataDict objectForKey:@"cover"] isKindOfClass:[NSDictionary class]]) {
-                        coverDic = [dataDict objectForKey:@"cover"];
-                        if (ws.config.enableHttps == YES) {
-                            coverURL = [[coverDic objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http:" withString:@"https:"];
-                        } else {
-                            coverURL = [coverDic objectForKey:@"url"];
-                        }
-                    }
-                    if ([[dataDict objectForKey:@"fileId"] isKindOfClass:[NSString class]]) {
-                        videoID = [dataDict objectForKey:@"fileId"];
-                    }
-                }
-
-                TVCUploadResponse *finiResp = [[TVCUploadResponse alloc] init];
-                if (code != TVC_OK) {
-                    //3步骤出错
-                    finiResp.retCode = TVC_ERR_UGC_FINISH_RSP_FAILED;
-                    finiResp.descMsg = [NSString stringWithFormat:@"ugc code:%d, ugc desc:%@ ugc finish http rsp fail", code, msg];
-                    if (result) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            result(finiResp);
-                            long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-                            [ws txReport:TVC_UPLOAD_EVENT_ID_FINISH errCode:finiResp.retCode errInfo:finiResp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:uploadContext.cugResult.userAppid fileSize:uploadContext.videoSize fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:uploadContext.cugResult.uploadSession fileId:@""];
-                        });
-                    }
-                    return;
-                } else {
-                    //所有步骤成功完成
-                    finiResp.retCode = TVC_OK;
-                    finiResp.videoId = videoID;
-                    finiResp.videoURL = videoURL;
-                    finiResp.coverURL = coverURL;
-                    if (result) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            result(finiResp);
-                            long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
-                            [ws txReport:TVC_UPLOAD_EVENT_ID_FINISH errCode:finiResp.retCode errInfo:finiResp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:uploadContext.cugResult.userAppid fileSize:uploadContext.videoSize fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:uploadContext.cugResult.uploadSession fileId:videoID];
-                        });
-                    }
-                    return;
-                }
-            }];
-            [finiTask resume];
+            uploadContext.reqTime = [[NSDate date] timeIntervalSince1970] * 1000;
+            [ws completeUpload:uploadContext withDomain:UGC_HOST];
         }
     });
+}
+
+- (void)completeUpload:(TVCUploadContext *)uploadContext withDomain:(NSString *)domain {
+    //3.完成上传
+    NSLog(@"complete upload task");
+    TVCResultBlock result = uploadContext.resultBlock;
+    __weak TVCClient *ws = self;
+    NSMutableURLRequest *cosFiniURLRequest = [self getCosEndURLRequest:domain withContext:uploadContext];
+    NSURLSessionTask *finiTask = [self.session dataTaskWithRequest:cosFiniURLRequest completionHandler:^(NSData *_Nullable finiData, NSURLResponse *_Nullable response, NSError *_Nullable error) {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+        if (error || httpResponse.statusCode != 200 || finiData == nil) {
+            if ([domain isEqualToString:UGC_HOST]) {
+                if (++uploadContext.vodCmdRequestCount < kMaxRequestCount) {
+                    [ws completeUpload:uploadContext withDomain:UGC_HOST];
+                } else {
+                    uploadContext.vodCmdRequestCount = 0;
+                    [ws completeUpload:uploadContext withDomain:UGC_HOST_BAK];
+                }
+            } else if ([domain isEqualToString:UGC_HOST_BAK]) {
+                if (++uploadContext.vodCmdRequestCount < kMaxRequestCount) {
+                    [ws completeUpload:uploadContext withDomain:UGC_HOST_BAK];
+                } else {
+                    [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+                    //3步骤出错
+                    NSLog(@"cos end http req fail : error=%d response=%s", error.code, [httpResponse.description UTF8String]);
+                    if (result) {
+                        long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+                        TVCUploadResponse *initResp = [[TVCUploadResponse alloc] init];
+                        initResp.retCode = TVC_ERR_UGC_FINISH_REQ_FAILED;
+                        initResp.descMsg = [NSString stringWithFormat:@"ugc code:%ld, ugc desc:%@", error.code, @"ugc finish http req fail"];
+                        
+                        [ws txReport:TVC_UPLOAD_EVENT_ID_FINISH errCode:error.code vodErrCode:error.code cosErrCode:@"" errInfo:initResp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:ws.reqKey appId:uploadContext.cugResult.userAppid fileSize:uploadContext.videoSize fileType:[ws getFileType:uploadContext.uploadParam.videoPath] fileName:[ws getFileName:uploadContext.uploadParam.videoPath] sessionKey:uploadContext.cugResult.uploadSession fileId:@""  cosRegion:uploadContext.cugResult.uploadRegion useCosAcc:uploadContext.cugResult.useCosAcc cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+                        
+                        [ws notifyResult:result resp:initResp];
+                    }
+                }
+            }
+            return;
+        }
+        [ws parseFinishRsp:finiData withContex:uploadContext];
+    }];
+    [finiTask resume];
+}
+
+-(void) parseFinishRsp:(NSData *)finiData withContex:(TVCUploadContext *)uploadContext {
+    TVCResultBlock result = uploadContext.resultBlock;
+    NSDictionary *finiDict = [NSJSONSerialization JSONObjectWithData:finiData options:(NSJSONReadingMutableLeaves) error:nil];
+
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:finiDict options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSString *finiDictStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"end cos dic : %@", finiDictStr);
+
+    int code = -1;
+    if ([[finiDict objectForKey:kCode] isKindOfClass:[NSNumber class]]) {
+        code = [[finiDict objectForKey:kCode] intValue];
+    }
+    NSString *msg;;
+    if ([[finiDict objectForKey:kMessage] isKindOfClass:[NSString class]]) {
+        msg = [finiDict objectForKey:kMessage];
+    }
+
+    NSDictionary *dataDict = nil;
+    NSString *videoURL = @"";
+    NSString *coverURL = @"";
+    NSString *videoID = @"";
+    if ([[finiDict objectForKey:kData] isKindOfClass:[NSDictionary class]]) {
+        dataDict = [finiDict objectForKey:kData];
+
+        NSDictionary *videoDic = nil;
+        NSDictionary *coverDic = nil;
+        if ([[dataDict objectForKey:@"video"] isKindOfClass:[NSDictionary class]]) {
+            videoDic = [dataDict objectForKey:@"video"];
+            if (self.config.enableHttps == YES) {
+                videoURL = [[videoDic objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http:" withString:@"https:"];
+            } else {
+                videoURL = [videoDic objectForKey:@"url"];
+            }
+        }
+        if ([[dataDict objectForKey:@"cover"] isKindOfClass:[NSDictionary class]]) {
+            coverDic = [dataDict objectForKey:@"cover"];
+            if (self.config.enableHttps == YES) {
+                coverURL = [[coverDic objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http:" withString:@"https:"];
+            } else {
+                coverURL = [coverDic objectForKey:@"url"];
+            }
+        }
+        if ([[dataDict objectForKey:@"fileId"] isKindOfClass:[NSString class]]) {
+            videoID = [dataDict objectForKey:@"fileId"];
+        }
+    }
+
+    [[TXUGCPublishOptCenter shareInstance] delPublishing:uploadContext.uploadParam.videoPath];
+    TVCUploadResponse *finiResp = [[TVCUploadResponse alloc] init];
+    if (code != TVC_OK) {
+        //3步骤出错
+        finiResp.retCode = TVC_ERR_UGC_FINISH_RSP_FAILED;
+        finiResp.descMsg = [NSString stringWithFormat:@"ugc code:%d, ugc desc:%@ ugc finish http rsp fail", code, msg];
+        if (result) {
+            long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+            [self txReport:TVC_UPLOAD_EVENT_ID_FINISH errCode:finiResp.retCode vodErrCode:code cosErrCode:@"" errInfo:finiResp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:self.reqKey appId:uploadContext.cugResult.userAppid fileSize:uploadContext.videoSize fileType:[self getFileType:uploadContext.uploadParam.videoPath] fileName:[self getFileName:uploadContext.uploadParam.videoPath] sessionKey:uploadContext.cugResult.uploadSession fileId:@"" cosRegion:uploadContext.cugResult.uploadRegion useCosAcc:uploadContext.cugResult.useCosAcc cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+            [self notifyResult:result resp:finiResp];
+        }
+        return;
+    } else {
+        TVCProgressBlock progress = uploadContext.progressBlock;
+        if (progress) {
+            uint64_t total = uploadContext.videoSize + uploadContext.coverSize;
+            progress(total, total);
+        }
+
+        //所有步骤成功完成
+        finiResp.retCode = TVC_OK;
+        finiResp.videoId = videoID;
+        finiResp.videoURL = videoURL;
+        finiResp.coverURL = coverURL;
+        if (result) {
+            long long reqTimeCost = [[NSDate date] timeIntervalSince1970] * 1000 - uploadContext.reqTime;
+            [self txReport:TVC_UPLOAD_EVENT_ID_FINISH errCode:finiResp.retCode vodErrCode:0 cosErrCode:@"" errInfo:finiResp.descMsg reqTime:uploadContext.reqTime reqTimeCost:reqTimeCost reqKey:self.reqKey appId:uploadContext.cugResult.userAppid fileSize:uploadContext.videoSize fileType:[self getFileType:uploadContext.uploadParam.videoPath] fileName:[self getFileName:uploadContext.uploadParam.videoPath] sessionKey:uploadContext.cugResult.uploadSession fileId:videoID cosRegion:uploadContext.cugResult.uploadRegion useCosAcc:uploadContext.cugResult.useCosAcc cosRequestId:@"" cosTcpConnTimeCost:0 cosRecvRespTimeCost:0];
+            [self notifyResult:result resp:finiResp];
+        }
+        return;
+    }
 }
 
 - (NSString *)getLastComponent:(NSString *)filePath {
@@ -995,7 +1159,21 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void) txReport:(int)eventId errCode:(int)errCode errInfo:(NSString*)errInfo reqTime:(int64_t)reqTime reqTimeCost:(int64_t)reqTimeCost reqKey:(NSString*)reqKey appId:(NSString*)appId fileSize:(int64_t)fileSize fileType:(NSString*)fileType fileName:(NSString*)fileName sessionKey:(NSString*)sessionKey fileId:(NSString*)fileId
+// 上传完成
+- (void) notifyResult:(TVCResultBlock)result resp:(TVCUploadResponse *)resp {
+    [self txReportDAU];
+    [self.timer setFireDate:[NSDate distantFuture]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        result(resp);
+    });
+}
+
+- (void) txReportDAU {
+    self.reportInfo.reqType = TVC_UPLOAD_EVENT_DAU;
+    [[TVCReport shareInstance] addReportInfo:self.reportInfo];
+}
+
+- (void) txReport:(int)eventId errCode:(int)errCode vodErrCode:(int)vodErrCode cosErrCode:(NSString*)cosErrCode errInfo:(NSString*)errInfo reqTime:(int64_t)reqTime reqTimeCost:(int64_t)reqTimeCost reqKey:(NSString*)reqKey appId:(NSString*)appId fileSize:(int64_t)fileSize fileType:(NSString*)fileType fileName:(NSString*)fileName sessionKey:(NSString*)sessionKey fileId:(NSString*)fileId cosRegion:(NSString*)cosRegion useCosAcc:(int)useCosAcc cosRequestId:(NSString*)cosRequestId cosTcpConnTimeCost:(int64_t)cosTcpConnTimeCost cosRecvRespTimeCost:(int64_t)cosRecvRespTimeCost
 {
     self.reportInfo.reqType = eventId;
     self.reportInfo.errCode = errCode;
@@ -1005,29 +1183,46 @@
     self.reportInfo.fileSize = fileSize;
     self.reportInfo.fileType = fileType;
     self.reportInfo.fileName = fileName;
-    self.reportInfo.appId = [appId longLongValue];
+    if (appId != 0) {
+        self.reportInfo.appId = [appId longLongValue];
+    }
     self.reportInfo.reqServerIp = self.serverIP;
     self.reportInfo.reportId = self.config.userID;
     self.reportInfo.reqKey = reqKey;
     self.reportInfo.vodSessionKey = sessionKey;
-    self.reportInfo.vodSessionKey = sessionKey;
     self.reportInfo.fileId = fileId;
+    self.reportInfo.vodErrCode = vodErrCode;
+    self.reportInfo.cosErrCode = (cosErrCode == nil? @"": cosErrCode);
+    self.reportInfo.cosRegion = (cosRegion == nil? @"": cosRegion);
+    self.reportInfo.useCosAcc = useCosAcc;
+
+    if (eventId == TVC_UPLOAD_EVENT_ID_COS) {
+        self.reportInfo.useHttpDNS = 0;
+        self.reportInfo.tcpConnTimeCost = cosTcpConnTimeCost;
+        self.reportInfo.recvRespTimeCost = cosRecvRespTimeCost;
+        self.reportInfo.requestId = (cosRequestId == nil ? @"" : cosRequestId);
+    } else {
+        self.reportInfo.useHttpDNS = [[TXUGCPublishOptCenter shareInstance] useHttpDNS:UGC_HOST]? 1: 0;
+    }
     
     [[TVCReport shareInstance] addReportInfo:self.reportInfo];
     
     return;
 }
 
-- (NSString *)queryIpWithDomain:(NSString *)domain
+- (void)queryIpWithDomain:(NSString *)domain
 {
-    struct hostent *hs;
-    struct sockaddr_in server;
-    if ((hs = gethostbyname([domain UTF8String])) != NULL)
-    {
-        server.sin_addr = *((struct in_addr*)hs->h_addr_list[0]);
-        return [NSString stringWithUTF8String:inet_ntoa(server.sin_addr)];
-    }
-    return domain;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        struct hostent *hs;
+        struct sockaddr_in server;
+        if ((hs = gethostbyname([domain UTF8String])) != NULL)
+        {
+            server.sin_addr = *((struct in_addr*)hs->h_addr_list[0]);
+            self.serverIP = [NSString stringWithUTF8String:inet_ntoa(server.sin_addr)];
+        } else {
+            self.serverIP =  domain;
+        }
+    });
 }
 
 -(NSDictionary *)getStatusInfo{
@@ -1047,6 +1242,40 @@
     [info setObject:self.reportInfo.reqKey forKey:@"reqKey"];
     [info setObject:self.reportInfo.vodSessionKey forKey:@"vodSessionKey"];
     
+    [info setObject:[NSString stringWithFormat:@"%d", self.reportInfo.vodErrCode] forKey:@"vodErrCode"];
+    [info setObject:self.reportInfo.cosErrCode forKey:@"cosErrCode"];
+    [info setObject:self.reportInfo.vodSessionKey forKey:@"cosRegion"];
+    [info setObject:[NSString stringWithFormat:@"%d", self.reportInfo.useCosAcc] forKey:@"useCosAcc"];
+    [info setObject:[NSString stringWithFormat:@"%d", self.reportInfo.useHttpDNS] forKey:@"useHttpDNS"];
+    [info setObject:[NSString stringWithFormat:@"%lld", self.reportInfo.tcpConnTimeCost] forKey:@"tcpConnTimeCost"];
+    [info setObject:[NSString stringWithFormat:@"%lld", self.reportInfo.recvRespTimeCost] forKey:@"recvRespTimeCost"];
+
     return info;
 }
+
+- (void)setAppId:(int)appId {
+    if (appId != 0) {
+        self.reportInfo.appId = appId;
+    }
+}
+
+// 收集连接建立耗时、收到首包耗时。走httpdns的收集不到。
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics  {
+    NSURLSessionTaskTransactionMetrics* metricsInfo = metrics.transactionMetrics[0];
+    self.reportInfo.tcpConnTimeCost = [metricsInfo.connectEndDate timeIntervalSinceDate:metricsInfo.fetchStartDate] * 1000;
+    self.reportInfo.recvRespTimeCost = [metricsInfo.responseStartDate timeIntervalSinceDate:metricsInfo.fetchStartDate] * 1000;
+}
+
+- (void)postVirtualProgress: (NSTimer *)timer {
+    TVCUploadContext* uploadContext = [[timer userInfo] objectForKey:@"uploadContext"];
+    TVCProgressBlock progress = uploadContext.progressBlock;
+    if (progress) {
+        long total = uploadContext.videoSize + uploadContext.coverSize;
+         if ((self.virtualPercent >= 0 && self.virtualPercent < 10) || (self.virtualPercent >=90 && self.virtualPercent <100)) {
+             ++self.virtualPercent;
+             progress(self.virtualPercent*total/100, total);
+         }
+    }
+}
+
 @end

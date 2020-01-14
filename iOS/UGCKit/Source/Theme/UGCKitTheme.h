@@ -1,11 +1,11 @@
 // Copyright (c) 2019 Tencent. All rights reserved.
 
 #import <UIKit/UIKit.h>
-#import "UGCKitFilter.h"
+#import <TCBeautyPanel/TCBeautyPanel.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UGCKitTheme : NSObject
+@interface UGCKitTheme : NSObject <TCBeautyPanelThemeProtocol>
 + (instancetype)sharedTheme;
 #pragma mark - Common
 /// 标题颜色
@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 滑杆配置
 @property (strong, nonatomic) UIColor *sliderMinColor;
 @property (strong, nonatomic) UIColor *sliderMaxColor;
+@property (strong, nonatomic) UIColor *sliderValueColor;
 @property (strong, nonatomic) UIImage *sliderThumbImage;
 @property (strong, nonatomic) UIImage *rightArrowIcon;
 #pragma mark - Media Picker
@@ -41,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *editPauseIcon;
 /// 暂停图标（高亮）
 @property (strong, nonatomic) UIImage *editPauseHighlightedIcon;
+/// 更换视频按钮背景图
+@property (strong, nonatomic) UIImage *editChooseVideoIcon;
 
 /// 按钮背景图
 @property (strong, nonatomic) UIImage *confirmIcon;
@@ -86,8 +89,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *confirmHighlightedIcon;
 /// 时间轴位置指示器图标
 @property (strong, nonatomic) UIImage *editTimelineIndicatorIcon;
-/// 圆角按钮背景图（高亮）
-@property (strong, nonatomic) UIImage *roundCornerHighlightedIcon;
 
 /// 编辑菜单-时间效果-无效果图标
 @property (strong, nonatomic) UIImage *editTimeEffectNormalIcon;
@@ -97,6 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *editTimeEffectRepeatIcon;
 /// 编辑菜单-时间效果-慢动作图标
 @property (strong, nonatomic) UIImage *editTimeEffectSlowMotionIcon;
+/// 视频裁剪条当前位置图标
+@property (strong, nonatomic) UIImage *editTimeEffectIndicatorIcon;
 
 #pragma mark Video Cut
 /// 视频裁剪条左边图标
@@ -105,10 +108,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *editCutSliderRightIcon;
 /// 视频裁剪条当前位置图标
 @property (strong, nonatomic) UIImage *editCutSliderCenterIcon;
+/// 视频裁剪条边界颜色
+@property (strong, nonatomic) UIColor *editCutSliderBorderColor;
 /// 音乐选取条左边图标
 @property (strong, nonatomic) UIImage *editMusicSliderRightIcon;
 /// 音乐选取条右边图标
 @property (strong, nonatomic) UIImage *editMusicSliderLeftIcon;
+/// 视频裁剪条边界颜色
+@property (strong, nonatomic) UIColor *editMusicSliderBorderColor;
 
 #pragma mark Paster
 /// 贴纸删除图标
@@ -184,8 +191,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *recordMusicSwitchIcon;
 /// 录制-音乐删除图标
 @property (strong, nonatomic) UIImage *recordMusicDeleteIcon;
-/// 录制-音乐音量滑杆中间滑动块图标
-@property (strong, nonatomic) UIImage *recordMusicVolumeThumbIcon;
 /// 录制-音乐下载图标
 @property (strong, nonatomic) UIImage *recordMusicDownloadIcon;
 /// 录制-点击录制按钮图标
@@ -195,9 +200,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 录制-录制按钮背景图片
 @property (strong, nonatomic) UIImage *recordButtonPhotoModeBackgroundImage;
 /// 录制-录制按钮暂停状态图标
-@property (strong, nonatomic) UIImage *pauseInnerIcon;
+@property (strong, nonatomic) UIImage *recordButtonPauseInnerIcon;
 /// 录制-录制按钮暂停状态背景
-@property (strong, nonatomic) UIImage *pauseBackgroundImage;
+@property (strong, nonatomic) UIImage *recordButtonPauseBackgroundImage;
 /// 录制进度条颜色
 @property (strong, nonatomic) UIColor *recordTimelineColor;
 /// 录制进度条高亮颜色
@@ -297,7 +302,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSBundle *resourceBundle;
 
 - (UIImage *)iconForFilter:(nullable NSString *)filter;
-- (void)setIcon:(UIImage *)icon forFilter:(UGCKitFilterIdentifier)identifier;
+- (void)setIcon:(UIImage *)icon forFilter:(TCFilterIdentifier)identifier;
 - (NSString *)localizedString:(NSString *)key __attribute__((annotate("returns_localized_nsstring")));
 - (UIImage *)imageNamed:(NSString *)name;
 /// 编辑 - 动效图标

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4500A6D12382793300147B05 /* UGCKitMediaPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2F6237945DC0083E759 /* UGCKitMediaPicker.storyboard */; };
+		4507F44E23AB707600804AD5 /* UGCKitPieProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4507F44C23AB707600804AD5 /* UGCKitPieProgressView.h */; };
+		4507F44F23AB707600804AD5 /* UGCKitPieProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4507F44D23AB707600804AD5 /* UGCKitPieProgressView.m */; };
 		451E4DD3238D1F52000EFC80 /* bubbleText.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 451E4DD0238D1F52000EFC80 /* bubbleText.bundle */; };
 		451E4DD5238D1F52000EFC80 /* AnimatedPaster.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 451E4DD2238D1F52000EFC80 /* AnimatedPaster.bundle */; };
 		453DE33A237945DD0083E759 /* UGCKitProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE2E3237945DC0083E759 /* UGCKitProgressHUD.m */; };
@@ -62,14 +64,12 @@
 		453DE373237945DD0083E759 /* UGCKitVideoCutView.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE322237945DC0083E759 /* UGCKitVideoCutView.h */; };
 		453DE375237945DD0083E759 /* UGCKitVideoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE324237945DC0083E759 /* UGCKitVideoInfo.m */; };
 		453DE376237945DD0083E759 /* UGCKitSlideButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE326237945DC0083E759 /* UGCKitSlideButton.m */; };
-		453DE377237945DD0083E759 /* UGCKitRecordView.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE327237945DC0083E759 /* UGCKitRecordView.h */; };
+		453DE377237945DD0083E759 /* UGCKitRecordControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE327237945DC0083E759 /* UGCKitRecordControlView.h */; };
 		453DE378237945DD0083E759 /* UGCKitSlideButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE328237945DC0083E759 /* UGCKitSlideButton.h */; };
-		453DE379237945DD0083E759 /* UGCKitRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE329237945DC0083E759 /* UGCKitRecordView.m */; };
+		453DE379237945DD0083E759 /* UGCKitRecordControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE329237945DC0083E759 /* UGCKitRecordControlView.m */; };
 		453DE37A237945DD0083E759 /* UGCKitResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE32B237945DC0083E759 /* UGCKitResult.m */; };
-		453DE37B237945DD0083E759 /* UGCKitFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE32C237945DC0083E759 /* UGCKitFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		453DE37C237945DD0083E759 /* UGCKitMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE32D237945DC0083E759 /* UGCKitMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		453DE37D237945DD0083E759 /* UGCKitWatermark.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE32E237945DC0083E759 /* UGCKitWatermark.m */; };
-		453DE37E237945DD0083E759 /* UGCKitFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE32F237945DC0083E759 /* UGCKitFilter.m */; };
 		453DE37F237945DD0083E759 /* UGCKitResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE330237945DC0083E759 /* UGCKitResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		453DE380237945DD0083E759 /* UGCKitWatermark.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE331237945DC0083E759 /* UGCKitWatermark.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		453DE381237945DD0083E759 /* UGCKitMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE332237945DC0083E759 /* UGCKitMedia.m */; };
@@ -79,10 +79,7 @@
 		453DE38F237947530083E759 /* UGCKitColorMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE38E237947530083E759 /* UGCKitColorMacro.h */; };
 		453DE3962379476C0083E759 /* UGCKitVerticalButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE3922379476C0083E759 /* UGCKitVerticalButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		453DE3972379476C0083E759 /* UGCKitVerticalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE3932379476C0083E759 /* UGCKitVerticalButton.m */; };
-		453DE3A62379487D0083E759 /* UGCKitBeautySettingPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE39F2379487D0083E759 /* UGCKitBeautySettingPanel.m */; };
 		453DE3A72379487D0083E759 /* UGCKitVideoRecordProcessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE3A02379487D0083E759 /* UGCKitVideoRecordProcessView.m */; };
-		453DE3A92379487D0083E759 /* UGCKitMenuItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE3A22379487D0083E759 /* UGCKitMenuItemCell.m */; };
-		453DE3AA2379487D0083E759 /* UGCKitBeautySettingPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE3A32379487D0083E759 /* UGCKitBeautySettingPanel.h */; };
 		453DE3AC2379487D0083E759 /* UGCKitVideoRecordProcessView.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE3A52379487D0083E759 /* UGCKitVideoRecordProcessView.h */; };
 		453DE3B6237949260083E759 /* UGCKitBGMListViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE3B4237949260083E759 /* UGCKitBGMListViewController.h */; };
 		453DE3B7237949260083E759 /* UGCKitBGMListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE3B5237949260083E759 /* UGCKitBGMListViewController.m */; };
@@ -98,13 +95,12 @@
 		453DE4182379594F0083E759 /* UGCKitSmallButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE4162379594F0083E759 /* UGCKitSmallButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		453DE41B237959D60083E759 /* UGCKitBGMProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE419237959D50083E759 /* UGCKitBGMProgressView.m */; };
 		453DE41C237959D60083E759 /* UGCKitBGMProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE41A237959D50083E759 /* UGCKitBGMProgressView.h */; };
-		4544C22F237D35F700587EBA /* UGCKitMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4544C22D237D35F700587EBA /* UGCKitMenuView.h */; };
-		4544C230237D35F700587EBA /* UGCKitMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4544C22E237D35F700587EBA /* UGCKitMenuView.m */; };
-		4544C233237D3D7600587EBA /* UGCKitMenuItemCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 4544C231237D3D7600587EBA /* UGCKitMenuItemCell.h */; };
 		455AAEE8237ABA7F00AF4A3C /* UGCKitCutViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 455AAEE6237ABA7F00AF4A3C /* UGCKitCutViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		455AAEE9237ABA7F00AF4A3C /* UGCKitCutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455AAEE7237ABA7F00AF4A3C /* UGCKitCutViewController.m */; };
 		455AB064237C1B3100AF4A3C /* UGCKitSlideOptionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 455AB062237C1B3100AF4A3C /* UGCKitSlideOptionControl.h */; };
 		455AB065237C1B3100AF4A3C /* UGCKitSlideOptionControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 455AB063237C1B3100AF4A3C /* UGCKitSlideOptionControl.m */; };
+		4579C3F523AC65E6005ECC1C /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4579C39623AC6507005ECC1C /* TCBeautyPanel.framework */; };
+		4579C41323AC7CFE005ECC1C /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4579C40923AC675E005ECC1C /* TCBeautyPanelResources.bundle */; };
 		457BFD382395089D004017FE /* Paster.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 457BFD372395089D004017FE /* Paster.bundle */; };
 		457BFD6D23979E4B004017FE /* UGCKitConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE40123794CCE0083E759 /* UGCKitConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45A105CD2385403D00EC2D86 /* UGCKitAssetLoadingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A105CA2385403C00EC2D86 /* UGCKitAssetLoadingController.m */; };
@@ -126,8 +122,6 @@
 		45D52F1E238D237E006F71FA /* UGCKitBGMSliderCutView.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D52F1C238D237E006F71FA /* UGCKitBGMSliderCutView.h */; };
 		45D52F21238D23B1006F71FA /* UGCKitVideoRecordMusicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F1F238D23B0006F71FA /* UGCKitVideoRecordMusicView.m */; };
 		45D52F22238D23B1006F71FA /* UGCKitVideoRecordMusicView.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D52F20238D23B1006F71FA /* UGCKitVideoRecordMusicView.h */; };
-		45D52F36238D2455006F71FA /* UGCKitPituMotionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D52F34238D2455006F71FA /* UGCKitPituMotionManager.h */; };
-		45D52F37238D2456006F71FA /* UGCKitPituMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F35238D2455006F71FA /* UGCKitPituMotionManager.m */; };
 		45D52F4B238D2ED2006F71FA /* UGCKit.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453DE339237945DC0083E759 /* UGCKit.xcassets */; };
 		45D52F5D238D53F9006F71FA /* jump in Resources */ = {isa = PBXBuildFile; fileRef = 45D52F5C238D53F9006F71FA /* jump */; };
 		45D52F78238E175E006F71FA /* UGCKitVideoEffectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D52F76238E175E006F71FA /* UGCKitVideoEffectManager.h */; };
@@ -136,11 +130,6 @@
 		45D52F7D238E178A006F71FA /* UGCKitEffectInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F7B238E178A006F71FA /* UGCKitEffectInfo.m */; };
 		45E8294E2384ED1200702418 /* UGCKitAudioEffectPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E8294C2384ED1200702418 /* UGCKitAudioEffectPanel.h */; };
 		45E8294F2384ED1200702418 /* UGCKitAudioEffectPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294D2384ED1200702418 /* UGCKitAudioEffectPanel.m */; };
-		45E90108239A4CB500CEC8F1 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4500A72F2383DC7C00147B05 /* unzip.c */; };
-		45E90109239A4CB500CEC8F1 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4500A7302383DC7C00147B05 /* zip.c */; };
-		45E9010A239A4CB500CEC8F1 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 4500A7312383DC7C00147B05 /* ioapi.c */; };
-		45E9010B239A4CB500CEC8F1 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 4500A7322383DC7C00147B05 /* mztools.c */; };
-		45E9010C239A4CB900CEC8F1 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4500A7382383DC7C00147B05 /* ZipArchive.mm */; };
 		45E90793239E253000CEC8F1 /* TXLivePush.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076A239E253000CEC8F1 /* TXLivePush.h */; };
 		45E90794239E253000CEC8F1 /* TXCAVRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076B239E253000CEC8F1 /* TXCAVRoom.h */; };
 		45E90795239E253000CEC8F1 /* TXUGCRecordTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076C239E253000CEC8F1 /* TXUGCRecordTypeDef.h */; };
@@ -182,22 +171,43 @@
 		45E907B9239E253000CEC8F1 /* TXVideoEditerTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90790239E253000CEC8F1 /* TXVideoEditerTypeDef.h */; };
 		45E907BA239E253000CEC8F1 /* TXLivePushListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90791239E253000CEC8F1 /* TXLivePushListener.h */; };
 		45E907BB239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90792239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h */; };
-		45E90833239E86E000CEC8F1 /* goodluck.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 45E90831239E86A900CEC8F1 /* goodluck.mp4 */; };
 		F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D52F12238D231A006F71FA /* UGCKitBGMCell.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4579C39523AC6507005ECC1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4579C38623AC64DC005ECC1C;
+			remoteInfo = TCBeautyPanel;
+		};
+		4579C40823AC675E005ECC1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4579C3FA23AC660C005ECC1C;
+			remoteInfo = TCBeautyPanelResources;
+		};
+		4579C40B23AC79CD005ECC1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C38523AC64DC005ECC1C;
+			remoteInfo = TCBeautyPanel;
+		};
+		4579C41123AC7CAC005ECC1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C3F923AC660C005ECC1C;
+			remoteInfo = TCBeautyPanelResources;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		4500A72D2383DC7C00147B05 /* ZipArchive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
-		4500A72F2383DC7C00147B05 /* unzip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
-		4500A7302383DC7C00147B05 /* zip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
-		4500A7312383DC7C00147B05 /* ioapi.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
-		4500A7322383DC7C00147B05 /* mztools.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
-		4500A7332383DC7C00147B05 /* crypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
-		4500A7342383DC7C00147B05 /* zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		4500A7352383DC7C00147B05 /* unzip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
-		4500A7362383DC7C00147B05 /* mztools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
-		4500A7372383DC7C00147B05 /* ioapi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
-		4500A7382383DC7C00147B05 /* ZipArchive.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
+		4507F44C23AB707600804AD5 /* UGCKitPieProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitPieProgressView.h; sourceTree = "<group>"; };
+		4507F44D23AB707600804AD5 /* UGCKitPieProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitPieProgressView.m; sourceTree = "<group>"; };
 		451E4DD0238D1F52000EFC80 /* bubbleText.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = bubbleText.bundle; sourceTree = "<group>"; };
 		451E4DD2238D1F52000EFC80 /* AnimatedPaster.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AnimatedPaster.bundle; sourceTree = "<group>"; };
 		453DE2D6237945B10083E759 /* UGCKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UGCKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,14 +268,12 @@
 		453DE323237945DC0083E759 /* UGCKitVideoPasterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitVideoPasterView.h; sourceTree = "<group>"; };
 		453DE324237945DC0083E759 /* UGCKitVideoInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitVideoInfo.m; sourceTree = "<group>"; };
 		453DE326237945DC0083E759 /* UGCKitSlideButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitSlideButton.m; sourceTree = "<group>"; };
-		453DE327237945DC0083E759 /* UGCKitRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitRecordView.h; sourceTree = "<group>"; };
+		453DE327237945DC0083E759 /* UGCKitRecordControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitRecordControlView.h; sourceTree = "<group>"; };
 		453DE328237945DC0083E759 /* UGCKitSlideButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitSlideButton.h; sourceTree = "<group>"; };
-		453DE329237945DC0083E759 /* UGCKitRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitRecordView.m; sourceTree = "<group>"; };
+		453DE329237945DC0083E759 /* UGCKitRecordControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitRecordControlView.m; sourceTree = "<group>"; };
 		453DE32B237945DC0083E759 /* UGCKitResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitResult.m; sourceTree = "<group>"; };
-		453DE32C237945DC0083E759 /* UGCKitFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitFilter.h; sourceTree = "<group>"; };
 		453DE32D237945DC0083E759 /* UGCKitMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitMedia.h; sourceTree = "<group>"; };
 		453DE32E237945DC0083E759 /* UGCKitWatermark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitWatermark.m; sourceTree = "<group>"; };
-		453DE32F237945DC0083E759 /* UGCKitFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitFilter.m; sourceTree = "<group>"; };
 		453DE330237945DC0083E759 /* UGCKitResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitResult.h; sourceTree = "<group>"; };
 		453DE331237945DC0083E759 /* UGCKitWatermark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitWatermark.h; sourceTree = "<group>"; };
 		453DE332237945DC0083E759 /* UGCKitMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitMedia.m; sourceTree = "<group>"; };
@@ -277,10 +285,7 @@
 		453DE3922379476C0083E759 /* UGCKitVerticalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitVerticalButton.h; sourceTree = "<group>"; };
 		453DE3932379476C0083E759 /* UGCKitVerticalButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitVerticalButton.m; sourceTree = "<group>"; };
 		453DE399237947890083E759 /* SDKHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDKHeader.h; sourceTree = "<group>"; };
-		453DE39F2379487D0083E759 /* UGCKitBeautySettingPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitBeautySettingPanel.m; sourceTree = "<group>"; };
 		453DE3A02379487D0083E759 /* UGCKitVideoRecordProcessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitVideoRecordProcessView.m; sourceTree = "<group>"; };
-		453DE3A22379487D0083E759 /* UGCKitMenuItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitMenuItemCell.m; sourceTree = "<group>"; };
-		453DE3A32379487D0083E759 /* UGCKitBeautySettingPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitBeautySettingPanel.h; sourceTree = "<group>"; };
 		453DE3A52379487D0083E759 /* UGCKitVideoRecordProcessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitVideoRecordProcessView.h; sourceTree = "<group>"; };
 		453DE3B4237949260083E759 /* UGCKitBGMListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitBGMListViewController.h; sourceTree = "<group>"; };
 		453DE3B5237949260083E759 /* UGCKitBGMListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitBGMListViewController.m; sourceTree = "<group>"; };
@@ -300,9 +305,6 @@
 		453DE4162379594F0083E759 /* UGCKitSmallButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitSmallButton.h; sourceTree = "<group>"; };
 		453DE419237959D50083E759 /* UGCKitBGMProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitBGMProgressView.m; sourceTree = "<group>"; };
 		453DE41A237959D50083E759 /* UGCKitBGMProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitBGMProgressView.h; sourceTree = "<group>"; };
-		4544C22D237D35F700587EBA /* UGCKitMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitMenuView.h; sourceTree = "<group>"; };
-		4544C22E237D35F700587EBA /* UGCKitMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitMenuView.m; sourceTree = "<group>"; };
-		4544C231237D3D7600587EBA /* UGCKitMenuItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitMenuItemCell.h; sourceTree = "<group>"; };
 		454616C223797C39009CDF83 /* UGCKitResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UGCKitResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		454616C423797C39009CDF83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		454616CE23797CA5009CDF83 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		455AAEF2237AD9E300AF4A3C /* UGCKitMem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitMem.h; sourceTree = "<group>"; };
 		455AB062237C1B3100AF4A3C /* UGCKitSlideOptionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitSlideOptionControl.h; sourceTree = "<group>"; };
 		455AB063237C1B3100AF4A3C /* UGCKitSlideOptionControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitSlideOptionControl.m; sourceTree = "<group>"; };
+		4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = TCBeautyPanel/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
 		457BFD372395089D004017FE /* Paster.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Paster.bundle; sourceTree = "<group>"; };
 		45A105CA2385403C00EC2D86 /* UGCKitAssetLoadingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitAssetLoadingController.m; sourceTree = "<group>"; };
 		45A105CC2385403C00EC2D86 /* UGCKitAssetLoadingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitAssetLoadingController.h; sourceTree = "<group>"; };
@@ -333,8 +336,6 @@
 		45D52F1C238D237E006F71FA /* UGCKitBGMSliderCutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitBGMSliderCutView.h; sourceTree = "<group>"; };
 		45D52F1F238D23B0006F71FA /* UGCKitVideoRecordMusicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitVideoRecordMusicView.m; sourceTree = "<group>"; };
 		45D52F20238D23B1006F71FA /* UGCKitVideoRecordMusicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitVideoRecordMusicView.h; sourceTree = "<group>"; };
-		45D52F34238D2455006F71FA /* UGCKitPituMotionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitPituMotionManager.h; sourceTree = "<group>"; };
-		45D52F35238D2455006F71FA /* UGCKitPituMotionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitPituMotionManager.m; sourceTree = "<group>"; };
 		45D52F5C238D53F9006F71FA /* jump */ = {isa = PBXFileReference; lastKnownFileType = folder; path = jump; sourceTree = "<group>"; };
 		45D52F76238E175E006F71FA /* UGCKitVideoEffectManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitVideoEffectManager.h; sourceTree = "<group>"; };
 		45D52F77238E175E006F71FA /* UGCKitVideoEffectManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitVideoEffectManager.m; sourceTree = "<group>"; };
@@ -383,7 +384,6 @@
 		45E90790239E253000CEC8F1 /* TXVideoEditerTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerTypeDef.h; sourceTree = "<group>"; };
 		45E90791239E253000CEC8F1 /* TXLivePushListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePushListener.h; sourceTree = "<group>"; };
 		45E90792239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveAudioSessionDelegate.h; sourceTree = "<group>"; };
-		45E90831239E86A900CEC8F1 /* goodluck.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = goodluck.mp4; sourceTree = "<group>"; };
 		45E9FFC52399FEAD00CEC8F1 /* UGCKitLocalization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitLocalization.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -392,6 +392,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4579C3F523AC65E6005ECC1C /* TCBeautyPanel.framework in Frameworks */,
 				453DE40C23794ECD0083E759 /* AssetsLibrary.framework in Frameworks */,
 				453DE40A23794E900083E759 /* OpenAL.framework in Frameworks */,
 			);
@@ -400,32 +401,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4500A72C2383DC7C00147B05 /* ZipArchive */ = {
-			isa = PBXGroup;
-			children = (
-				4500A72D2383DC7C00147B05 /* ZipArchive.h */,
-				4500A72E2383DC7C00147B05 /* minizip */,
-				4500A7382383DC7C00147B05 /* ZipArchive.mm */,
-			);
-			path = ZipArchive;
-			sourceTree = "<group>";
-		};
-		4500A72E2383DC7C00147B05 /* minizip */ = {
-			isa = PBXGroup;
-			children = (
-				4500A72F2383DC7C00147B05 /* unzip.c */,
-				4500A7302383DC7C00147B05 /* zip.c */,
-				4500A7312383DC7C00147B05 /* ioapi.c */,
-				4500A7322383DC7C00147B05 /* mztools.c */,
-				4500A7332383DC7C00147B05 /* crypt.h */,
-				4500A7342383DC7C00147B05 /* zip.h */,
-				4500A7352383DC7C00147B05 /* unzip.h */,
-				4500A7362383DC7C00147B05 /* mztools.h */,
-				4500A7372383DC7C00147B05 /* ioapi.h */,
-			);
-			path = minizip;
-			sourceTree = "<group>";
-		};
 		453DE2CC237945B10083E759 = {
 			isa = PBXGroup;
 			children = (
@@ -450,6 +425,7 @@
 		453DE2D8237945B10083E759 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4579C2DE23ABA2CF005ECC1C /* BeautyPanel */,
 				45B53F862387814500E1B18B /* Report */,
 				455AAEE1237AB8BD00AF4A3C /* VideoCut */,
 				453DE2E1237945DC0083E759 /* Common */,
@@ -472,7 +448,6 @@
 				453DE325237945DC0083E759 /* View */,
 				455AAEF2237AD9E300AF4A3C /* UGCKitMem.h */,
 				453DE40123794CCE0083E759 /* UGCKitConstants.h */,
-				4544C22C237D35E900587EBA /* Menu */,
 				453DE3AD2379489A0083E759 /* Label */,
 				453DE3902379476C0083E759 /* Button */,
 				453DE389237946C60083E759 /* Categories */,
@@ -587,6 +562,8 @@
 			children = (
 				453DE328237945DC0083E759 /* UGCKitSlideButton.h */,
 				453DE326237945DC0083E759 /* UGCKitSlideButton.m */,
+				4507F44C23AB707600804AD5 /* UGCKitPieProgressView.h */,
+				4507F44D23AB707600804AD5 /* UGCKitPieProgressView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -594,8 +571,6 @@
 		453DE32A237945DC0083E759 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				453DE32C237945DC0083E759 /* UGCKitFilter.h */,
-				453DE32F237945DC0083E759 /* UGCKitFilter.m */,
 				453DE32D237945DC0083E759 /* UGCKitMedia.h */,
 				453DE332237945DC0083E759 /* UGCKitMedia.m */,
 				453DE330237945DC0083E759 /* UGCKitResult.h */,
@@ -610,20 +585,10 @@
 			isa = PBXGroup;
 			children = (
 				453DE39E2379487D0083E759 /* View */,
-				453DE334237945DC0083E759 /* UGCKitRecordViewController.m */,
 				453DE335237945DC0083E759 /* UGCKitRecordViewController.h */,
-				453DE336237945DC0083E759 /* Model */,
+				453DE334237945DC0083E759 /* UGCKitRecordViewController.m */,
 			);
 			path = Record;
-			sourceTree = "<group>";
-		};
-		453DE336237945DC0083E759 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				45D52F34238D2455006F71FA /* UGCKitPituMotionManager.h */,
-				45D52F35238D2455006F71FA /* UGCKitPituMotionManager.m */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		453DE389237946C60083E759 /* Categories */ = {
@@ -650,10 +615,8 @@
 		453DE39E2379487D0083E759 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				453DE327237945DC0083E759 /* UGCKitRecordView.h */,
-				453DE329237945DC0083E759 /* UGCKitRecordView.m */,
-				453DE3A32379487D0083E759 /* UGCKitBeautySettingPanel.h */,
-				453DE39F2379487D0083E759 /* UGCKitBeautySettingPanel.m */,
+				453DE327237945DC0083E759 /* UGCKitRecordControlView.h */,
+				453DE329237945DC0083E759 /* UGCKitRecordControlView.m */,
 				453DE3A52379487D0083E759 /* UGCKitVideoRecordProcessView.h */,
 				453DE3A02379487D0083E759 /* UGCKitVideoRecordProcessView.m */,
 				455AB062237C1B3100AF4A3C /* UGCKitSlideOptionControl.h */,
@@ -707,7 +670,6 @@
 			isa = PBXGroup;
 			children = (
 				45E90769239E253000CEC8F1 /* SDKHeaders */,
-				4500A72C2383DC7C00147B05 /* ZipArchive */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -724,21 +686,9 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4544C22C237D35E900587EBA /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				4544C231237D3D7600587EBA /* UGCKitMenuItemCell.h */,
-				453DE3A22379487D0083E759 /* UGCKitMenuItemCell.m */,
-				4544C22D237D35F700587EBA /* UGCKitMenuView.h */,
-				4544C22E237D35F700587EBA /* UGCKitMenuView.m */,
-			);
-			path = Menu;
-			sourceTree = "<group>";
-		};
 		454616C323797C39009CDF83 /* UGCKitResources */ = {
 			isa = PBXGroup;
 			children = (
-				45E90831239E86A900CEC8F1 /* goodluck.mp4 */,
 				457BFD372395089D004017FE /* Paster.bundle */,
 				45D52F5C238D53F9006F71FA /* jump */,
 				451E4DD2238D1F52000EFC80 /* AnimatedPaster.bundle */,
@@ -758,6 +708,23 @@
 				455AAEE7237ABA7F00AF4A3C /* UGCKitCutViewController.m */,
 			);
 			path = VideoCut;
+			sourceTree = "<group>";
+		};
+		4579C2DE23ABA2CF005ECC1C /* BeautyPanel */ = {
+			isa = PBXGroup;
+			children = (
+				4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */,
+			);
+			path = BeautyPanel;
+			sourceTree = "<group>";
+		};
+		4579C39223AC6506005ECC1C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4579C39623AC6507005ECC1C /* TCBeautyPanel.framework */,
+				4579C40923AC675E005ECC1C /* TCBeautyPanelResources.bundle */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		45A105C92385403C00EC2D86 /* LoadingViewController */ = {
@@ -871,12 +838,12 @@
 				45E90794239E253000CEC8F1 /* TXCAVRoom.h in Headers */,
 				45D52F7C238E178A006F71FA /* UGCKitEffectInfo.h in Headers */,
 				453DE365237945DD0083E759 /* UGCKitEditBottomMenu.h in Headers */,
+				4507F44E23AB707600804AD5 /* UGCKitPieProgressView.h in Headers */,
 				45D52F78238E175E006F71FA /* UGCKitVideoEffectManager.h in Headers */,
 				45E907B4239E253000CEC8F1 /* TXLivePlayer.h in Headers */,
 				45E90793239E253000CEC8F1 /* TXLivePush.h in Headers */,
 				453DE34A237945DD0083E759 /* UGCKitSlomoIconView.h in Headers */,
 				45E907A0239E253000CEC8F1 /* TXCAVRoomListener.h in Headers */,
-				45D52F36238D2455006F71FA /* UGCKitPituMotionManager.h in Headers */,
 				455AAEE8237ABA7F00AF4A3C /* UGCKitCutViewController.h in Headers */,
 				453DE37C237945DD0083E759 /* UGCKitMedia.h in Headers */,
 				453DE33B237945DD0083E759 /* UGCKitProgressHUD.h in Headers */,
@@ -902,7 +869,6 @@
 				453DE35C237945DD0083E759 /* UGCKitEffectSelectView.h in Headers */,
 				457BFD6D23979E4B004017FE /* UGCKitConstants.h in Headers */,
 				45D52F1A238D234B006F71FA /* UGCKitCircleProgressView.h in Headers */,
-				4544C22F237D35F700587EBA /* UGCKitMenuView.h in Headers */,
 				45E9079F239E253000CEC8F1 /* TRTCCloud.h in Headers */,
 				453DE383237945DD0083E759 /* UGCKitRecordViewController.h in Headers */,
 				45E907BA239E253000CEC8F1 /* TXLivePushListener.h in Headers */,
@@ -916,7 +882,6 @@
 				45E907A5239E253000CEC8F1 /* TXVodPlayer.h in Headers */,
 				45E907B8239E253000CEC8F1 /* TXUGCPartsManager.h in Headers */,
 				45E907B6239E253000CEC8F1 /* TXVideoCustomProcessDelegate.h in Headers */,
-				453DE37B237945DD0083E759 /* UGCKitFilter.h in Headers */,
 				45E9079B239E253000CEC8F1 /* TXUGCBase.h in Headers */,
 				453DE362237945DD0083E759 /* UGCKitVideoRangeConst.h in Headers */,
 				453DE349237945DD0083E759 /* UGCKitAssetsViewController.h in Headers */,
@@ -939,12 +904,10 @@
 				453DE3B6237949260083E759 /* UGCKitBGMListViewController.h in Headers */,
 				453DE35B237945DD0083E759 /* UGCKitPlayerView.h in Headers */,
 				45E90796239E253000CEC8F1 /* TXImageSprite.h in Headers */,
-				453DE3AA2379487D0083E759 /* UGCKitBeautySettingPanel.h in Headers */,
 				453DE3DE237949860083E759 /* UGCKitBGMHelper.h in Headers */,
 				453DE378237945DD0083E759 /* UGCKitSlideButton.h in Headers */,
 				45E907AB239E253000CEC8F1 /* TXLiteAVSDK.h in Headers */,
 				45E907B2239E253000CEC8F1 /* TRTCStatistics.h in Headers */,
-				4544C233237D3D7600587EBA /* UGCKitMenuItemCell.h in Headers */,
 				453DE34F237945DD0083E759 /* UGCKitAssetCell.h in Headers */,
 				45E907A2239E253000CEC8F1 /* TXVodPlayListener.h in Headers */,
 				45E907AA239E253000CEC8F1 /* TXBitrateItem.h in Headers */,
@@ -958,7 +921,7 @@
 				453DE342237945DD0083E759 /* UGCKitAlbumCell.h in Headers */,
 				45E907B1239E253000CEC8F1 /* TXBeautyManager.h in Headers */,
 				45E8294E2384ED1200702418 /* UGCKitAudioEffectPanel.h in Headers */,
-				453DE377237945DD0083E759 /* UGCKitRecordView.h in Headers */,
+				453DE377237945DD0083E759 /* UGCKitRecordControlView.h in Headers */,
 				45E907AC239E253000CEC8F1 /* TXAudioCustomProcessDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -978,6 +941,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4579C40C23AC79CD005ECC1C /* PBXTargetDependency */,
 			);
 			name = UGCKit;
 			productName = UGCKit;
@@ -993,6 +957,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4579C41223AC7CAC005ECC1C /* PBXTargetDependency */,
 			);
 			name = UGCKitResources;
 			productName = UGCKitResources;
@@ -1028,6 +993,12 @@
 			mainGroup = 453DE2CC237945B10083E759;
 			productRefGroup = 453DE2D7237945B10083E759 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4579C39223AC6506005ECC1C /* Products */;
+					ProjectRef = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				453DE2D5237945B10083E759 /* UGCKit */,
@@ -1035,6 +1006,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4579C39623AC6507005ECC1C /* TCBeautyPanel.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = TCBeautyPanel.framework;
+			remoteRef = 4579C39523AC6507005ECC1C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4579C40923AC675E005ECC1C /* TCBeautyPanelResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TCBeautyPanelResources.bundle;
+			remoteRef = 4579C40823AC675E005ECC1C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		453DE2D4237945B10083E759 /* Resources */ = {
@@ -1056,7 +1044,7 @@
 				F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */,
 				451E4DD3238D1F52000EFC80 /* bubbleText.bundle in Resources */,
 				457BFD382395089D004017FE /* Paster.bundle in Resources */,
-				45E90833239E86E000CEC8F1 /* goodluck.mp4 in Resources */,
+				4579C41323AC7CFE005ECC1C /* TCBeautyPanelResources.bundle in Resources */,
 				4500A6D12382793300147B05 /* UGCKitMediaPicker.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1074,27 +1062,20 @@
 				453DE3D5237949860083E759 /* UGCKitBGMCutView.m in Sources */,
 				453DE37D237945DD0083E759 /* UGCKitWatermark.m in Sources */,
 				453DE414237959240083E759 /* UGCKitLabel.m in Sources */,
-				45E90108239A4CB500CEC8F1 /* unzip.c in Sources */,
 				453DE36C237945DD0083E759 /* UGCKitPasterAddView.m in Sources */,
 				453DE37A237945DD0083E759 /* UGCKitResult.m in Sources */,
 				453DE359237945DD0083E759 /* UGCKitEditViewController.m in Sources */,
-				45E9010C239A4CB900CEC8F1 /* ZipArchive.mm in Sources */,
 				453DE33D237945DD0083E759 /* UGCKitTheme.m in Sources */,
-				45E9010B239A4CB500CEC8F1 /* mztools.c in Sources */,
 				453DE375237945DD0083E759 /* UGCKitVideoInfo.m in Sources */,
 				453DE372237945DD0083E759 /* UGCKitEditBottomMenu.m in Sources */,
 				453DE33A237945DD0083E759 /* UGCKitProgressHUD.m in Sources */,
-				4544C230237D35F700587EBA /* UGCKitMenuView.m in Sources */,
-				453DE37E237945DD0083E759 /* UGCKitFilter.m in Sources */,
 				453DE343237945DD0083E759 /* UGCKitMediaPickerViewController.m in Sources */,
 				45D52F19238D234B006F71FA /* UGCKitCircleProgressView.m in Sources */,
 				453DE3A72379487D0083E759 /* UGCKitVideoRecordProcessView.m in Sources */,
 				455AB065237C1B3100AF4A3C /* UGCKitSlideOptionControl.m in Sources */,
 				453DE363237945DD0083E759 /* UGCKitRangeContent.m in Sources */,
 				453DE364237945DD0083E759 /* UGCKitVideoRangeSlider.m in Sources */,
-				453DE3A92379487D0083E759 /* UGCKitMenuItemCell.m in Sources */,
 				453DE376237945DD0083E759 /* UGCKitSlideButton.m in Sources */,
-				45E90109239A4CB500CEC8F1 /* zip.c in Sources */,
 				453DE344237945DD0083E759 /* UGCKitAssetCell.m in Sources */,
 				453DE382237945DD0083E759 /* UGCKitRecordViewController.m in Sources */,
 				453DE354237945DD0083E759 /* UGCKitAlbumsViewController.m in Sources */,
@@ -1114,13 +1095,11 @@
 				453DE35E237945DD0083E759 /* UGCKitVideoTextFiled.m in Sources */,
 				453DE3D6237949860083E759 /* UGCKitBGMHelper.m in Sources */,
 				45D52F1D238D237E006F71FA /* UGCKitBGMSliderCutView.m in Sources */,
-				45D52F37238D2456006F71FA /* UGCKitPituMotionManager.m in Sources */,
-				453DE3A62379487D0083E759 /* UGCKitBeautySettingPanel.m in Sources */,
+				4507F44F23AB707600804AD5 /* UGCKitPieProgressView.m in Sources */,
 				453DE381237945DD0083E759 /* UGCKitMedia.m in Sources */,
 				45B53F902387823D00E1B18B /* UGCKitReporter.m in Sources */,
-				45E9010A239A4CB500CEC8F1 /* ioapi.c in Sources */,
 				45B53FB2238794DB00E1B18B /* UGCKit_UIViewAdditions.m in Sources */,
-				453DE379237945DD0083E759 /* UGCKitRecordView.m in Sources */,
+				453DE379237945DD0083E759 /* UGCKitRecordControlView.m in Sources */,
 				453DE370237945DD0083E759 /* UGCKitPhotoTransitionToolbar.m in Sources */,
 				45B53F942387829400E1B18B /* UGCKitReportConstants.m in Sources */,
 				453DE351237945DD0083E759 /* UGCKitAlbumCell.m in Sources */,
@@ -1135,6 +1114,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4579C40C23AC79CD005ECC1C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBeautyPanel;
+			targetProxy = 4579C40B23AC79CD005ECC1C /* PBXContainerItemProxy */;
+		};
+		4579C41223AC7CAC005ECC1C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBeautyPanelResources;
+			targetProxy = 4579C41123AC7CAC005ECC1C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		454616CF23797CA5009CDF83 /* Localizable.strings */ = {
@@ -1276,9 +1268,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1303,9 +1296,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1328,7 +1322,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = UGCKitResources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.UGCKitResources;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1345,7 +1339,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = UGCKitResources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.UGCKitResources;
 				PRODUCT_NAME = "$(TARGET_NAME)";

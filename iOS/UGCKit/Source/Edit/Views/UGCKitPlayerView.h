@@ -33,4 +33,7 @@
 - (void)playVideo;
 
 - (void)removeNotification;
+- (void)stopObservingAudioNotification;
+- (void)startObservingAudioNotification;
+
 @end

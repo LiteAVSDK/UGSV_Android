@@ -8,6 +8,7 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 //IN THE SOFTWARE.
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "UGCKitTheme.h"
 
 @class UGCKitMediaPickerViewController;
@@ -21,4 +22,5 @@
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) UGCKitMediaPickerViewController *imagePickerController;
 @property (nonatomic, strong) PHAssetCollection *assetCollection;
+@property (nonatomic, readonly) NSArray<AVAsset *> *exportedAssets;
 @end

@@ -30,8 +30,8 @@
 @property (nonatomic, weak) id<VideoCutViewDelegate> delegate;
 @property (nonatomic, strong)  NSMutableArray  *imageList;         //缩略图列表
 
-- (id)initWithFrame:(CGRect)frame videoPath:(NSString *)videoPath  videoAsset:(AVAsset *)videoAsset config:(RangeContentConfig *)config;
-- (id)initWithFrame:(CGRect)frame pictureList:(NSArray *)pictureList  duration:(CGFloat)duration fps:(float)fps config:(RangeContentConfig *)config;
+- (id)initWithFrame:(CGRect)frame videoPath:(NSString *)videoPath  videoAsset:(AVAsset *)videoAsset config:(UGCKitRangeContentConfig *)config;
+- (id)initWithFrame:(CGRect)frame pictureList:(NSArray *)pictureList  duration:(CGFloat)duration fps:(float)fps config:(UGCKitRangeContentConfig *)config;
 - (void)updateFrame:(CGFloat)duration;
 - (void)stopGetImageList;
 
@@ -45,10 +45,10 @@
 - (void)setCenterPanFrame:(CGFloat)time;
 - (void)setRightPanFrame:(CGFloat)time;
 
-- (void)setColorType:(ColorType)colorType;
+- (void)setColorType:(UGCKitRangeColorType)UGCKitRangeColorType;
 - (void)startColoration:(UIColor *)color alpha:(CGFloat)alpha;
 - (void)stopColoration;
 
-- (VideoColorInfo *)removeLastColoration:(ColorType)colorType;
-- (void)removeColoration:(ColorType)colorType index:(NSInteger)index;
+- (UGCKitVideoColorInfo *)removeLastColoration:(UGCKitRangeColorType)UGCKitRangeColorType;
+- (void)removeColoration:(UGCKitRangeColorType)UGCKitRangeColorType index:(NSInteger)index;
 @end

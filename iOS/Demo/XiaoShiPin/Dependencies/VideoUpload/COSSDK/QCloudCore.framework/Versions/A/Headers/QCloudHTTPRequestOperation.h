@@ -7,6 +7,7 @@
 //
 
 #import "QCloudRequestOperation.h"
+@class QCloudHTTPSessionManager;
 @interface QCloudHTTPRequestOperation : QCloudRequestOperation
-
+@property (nonatomic, weak) QCloudHTTPSessionManager* sessionManager;
 @end

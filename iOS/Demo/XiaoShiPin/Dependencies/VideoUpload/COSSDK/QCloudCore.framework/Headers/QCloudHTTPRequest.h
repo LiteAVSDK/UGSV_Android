@@ -13,6 +13,9 @@
 #import "QCloudHTTPRequestDelegate.h"
 #import "QCloudAbstractRequest.h"
 @class QCloudHTTPRetryHanlder;
+@class QCloudHTTPSessionManager;
+@class QCloudService;
+
 
 typedef void(^QCloudHTTPRequestConfigure)(QCloudRequestSerializer* requestSerializer, QCloudResponseSerializer* responseSerializer);
 
@@ -33,11 +36,15 @@ typedef void(^QCloudHTTPRequestConfigure)(QCloudRequestSerializer* requestSerial
 @property (nonatomic, strong, readonly) QCloudResponseSerializer* responseSerializer;
 
 
+
+/**
+ 该任务所处的服务
+ */
+@property (nonatomic, weak) QCloudService* _Nullable runOnService;
 /**
  如果存在改参数，则数据会下载到改路径指名的地址下面，而不会写入内存中。
  */
 @property (nonatomic, strong) NSURL* downloadingURL;
-
 
 /**
  本地已经下载的数据偏移量，如果使用则会从改位置开始下载，如果不使用，则从头开始下载，如果您使用了Range参数，则需要注意改参数。

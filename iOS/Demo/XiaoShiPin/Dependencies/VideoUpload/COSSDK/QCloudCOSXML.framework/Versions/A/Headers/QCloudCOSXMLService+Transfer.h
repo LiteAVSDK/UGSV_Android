@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QCLoudCOSXMLService.h"
+#import "QCloudCOSXMLService.h"
 @class QCloudPutObjectRequest;
 @class QCloudGetObjectRequest;
 @class QCloudInitiateMultipartUploadRequest;

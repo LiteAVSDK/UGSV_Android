@@ -64,7 +64,7 @@ object名
 */
 @property (strong, nonatomic) NSString *object;
 /**
-定义 Object 的 ACL 属性。有效值：private，public-read-write，public-read；默认值：private
+定义 Object 的 ACL 属性。有效值：private，public-read-write，public-read，default(后台会清除原本设置在 Object 上的 ACL，改为继承 Bucket 的 ACL)；默认值：private
 */
 @property (strong, nonatomic) NSString *accessControlList;
 /**

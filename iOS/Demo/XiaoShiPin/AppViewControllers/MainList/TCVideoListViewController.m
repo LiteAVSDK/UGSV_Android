@@ -14,8 +14,10 @@
 //#import <MJExtension/MJExtension.h>
 //#import <BlocksKit/BlocksKit.h>
 #import "TCLiveListModel.h"
+#import "TCLoginParam.h"
 #import "TCVodPlayViewController.h"
 #import "ColorMacro.h"
+#import "Mem.h"
 #import "UIView+Additions.h"
 #import "AppDelegate.h"
 
@@ -305,6 +307,13 @@
                     _hasEnterplayVC = YES;
                 }
             }];
+            WEAKIFY(self);
+            ((TCVodPlayViewController *)_playVC).onTapChorus = ^(TCVodPlayViewController *controller) {
+                STRONGIFY_OR_RETURN(self);
+                if ([TCLoginParam shareInstance].isExpired && self.loginHandler) {
+                    self.loginHandler(self);
+                }
+            };
         }
     }
     [self performSelector:@selector(enterPlayVC:) withObject:_playVC afterDelay:0.5];
