@@ -3,16 +3,24 @@ package com.tencent.qcloud.ugckit.utils;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.UGCKit;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * 用于将视频保存到本地相册
@@ -20,6 +28,8 @@ import java.io.File;
 public class AlbumSaver {
 
     private static final String TAG = "AlbumSaver";
+    public static final String VOLUME_EXTERNAL_PRIMARY = "external_primary";
+    private static final String IS_PENDING = "is_pending";
     private static AlbumSaver sInstance;
     private final ContentResolver mContentResolver;
     private final Context mContext;
@@ -55,31 +65,106 @@ public class AlbumSaver {
     /**
      * 插入到本地相册
      */
-    public String saveVideoToDCIM() {
+    public void saveVideoToDCIM() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            saveVideoToDCIMOnAndroid10();
+        } else {
+            saveVideoToDCIMBelowAndroid10();
+        }
+    }
+
+    private void saveVideoToDCIMBelowAndroid10() {
         File file = new File(mVideoOutputPath);
         if (file.exists()) {
             try {
-                File newFile = new File(Environment.getExternalStorageDirectory()
-                        + File.separator + Environment.DIRECTORY_DCIM
-                        + File.separator + "Camera" + File.separator + file.getName());
-                file.renameTo(newFile);
-                mVideoOutputPath = newFile.getAbsolutePath();
-
-                ContentValues values = initCommonContentValues(newFile);
+                ContentValues values = initCommonContentValues(file);
                 values.put(MediaStore.Video.VideoColumns.DATE_TAKEN, System.currentTimeMillis());
                 values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
                 values.put(MediaStore.Video.VideoColumns.DURATION, mVideoDuration);
                 mContext.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
 
                 if (mCoverImagePath != null) {
-                    insertVideoThumb(newFile.getPath(), mCoverImagePath);
+                    insertVideoThumb(file.getPath(), mCoverImagePath);
                 }
-                ToastUtil.toastShortMessage("视频已保存到" + UGCKitConstants.DCIM_PATH);
+                ToastUtil.toastShortMessage("视频已保存到手机相册");
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Log.d(TAG, "file :" + mVideoOutputPath + " is not exists");
         }
-        return mVideoOutputPath;
+    }
+
+    /**
+     * Android 10(Q) 保存视频文件到本地的方法
+     */
+    private void saveVideoToDCIMOnAndroid10() {
+        File file = new File(mVideoOutputPath);
+        if (file.exists()) {
+            ContentValues values = new ContentValues();
+            long currentTimeInSeconds = System.currentTimeMillis();
+            values.put(MediaStore.MediaColumns.TITLE, file.getName());
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
+            values.put(MediaStore.MediaColumns.DATE_MODIFIED, currentTimeInSeconds);
+            values.put(MediaStore.MediaColumns.DATE_ADDED, currentTimeInSeconds);
+            values.put(MediaStore.MediaColumns.SIZE, file.length());
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+            // 时长
+            values.put(MediaStore.Video.VideoColumns.DURATION, mVideoDuration);
+            values.put(MediaStore.Video.VideoColumns.DATE_TAKEN, System.currentTimeMillis());
+            // Android 10 插入到图库标志位
+            values.put(IS_PENDING, 1);
+
+            Uri collection = MediaStore.Video.Media.getContentUri(VOLUME_EXTERNAL_PRIMARY);
+            Uri item = UGCKit.getAppContext().getContentResolver().insert(collection, values);
+            ParcelFileDescriptor pfd = null;
+            FileOutputStream fos = null;
+            FileInputStream fis = null;
+            try {
+                pfd = UGCKit.getAppContext().getContentResolver().openFileDescriptor(item, "w");
+                // Write data into the pending image.
+                fos = new FileOutputStream(pfd.getFileDescriptor());
+                fis = new FileInputStream(file);
+                byte[] data = new byte[1024];
+                int length = -1;
+                while ((length = fis.read(data)) != -1) {
+                    fos.write(data, 0, length);
+                }
+                fos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (pfd != null) {
+                    try {
+                        pfd.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // 插入成功后，更新状态，让其他 app 可以看到新的视频
+            values.clear();
+            values.put(IS_PENDING, 0);
+            UGCKit.getAppContext().getContentResolver().update(item, values, null, null);
+
+            ToastUtil.toastShortMessage("视频已保存到手机相册");
+        } else {
+            Log.d(TAG, "file :" + mVideoOutputPath + " is not exists");
+        }
     }
 
     @NonNull

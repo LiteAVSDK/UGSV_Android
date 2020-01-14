@@ -7,20 +7,16 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
+import com.tencent.qcloud.ugckit.R;
+import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.UGCKit;
-import com.tencent.qcloud.ugckit.UGCKitImpl;
-import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
+import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftInfo;
+import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftManager;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
-import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyParams;
-import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftManager;
 
-import com.tencent.qcloud.ugckit.module.followRecord.FollowRecordConfig;
-import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftInfo;
 import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
@@ -64,7 +60,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
      */
     public void initSDK() {
         if (mRecordSDK == null) {
-            mRecordSDK = TXUGCRecord.getInstance(UGCKitImpl.getAppContext());
+            mRecordSDK = TXUGCRecord.getInstance(UGCKit.getAppContext());
         }
         mCurrentState = STATE_STOP;
         TXLog.d(TAG, "initSDK");
@@ -72,13 +68,17 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
 
     @Nullable
     public TXUGCRecord getRecorder() {
-        TXLog.d(TAG, "getRecorder mRecordSDK:" + mRecordSDK);
+        TXLog.d(TAG, "getRecorder mTXUGCRecord:" + mRecordSDK);
         return mRecordSDK;
     }
 
     public void initConfig(@NonNull UGCKitRecordConfig config) {
         mUGCKitRecordConfig = config;
         Log.d(TAG, "initConfig mBeautyParam:" + mUGCKitRecordConfig.mBeautyParams);
+    }
+
+    public UGCKitRecordConfig getConfig() {
+        return mUGCKitRecordConfig;
     }
 
     public void startCameraPreview(TXCloudVideoView videoView) {
@@ -90,28 +90,19 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
 
         if (mUGCKitRecordConfig.mQuality >= 0) {
             // 推荐配置
-            TXRecordCommon.TXUGCCustomConfig customConfig = new TXRecordCommon.TXUGCCustomConfig();
-            customConfig.minDuration = mUGCKitRecordConfig.mMinDuration;
-            customConfig.maxDuration = mUGCKitRecordConfig.mMaxDuration;
-            customConfig.isFront = mUGCKitRecordConfig.mFrontCamera;
-            customConfig.touchFocus = mUGCKitRecordConfig.mTouchFocus;
+            TXRecordCommon.TXUGCSimpleConfig simpleConfig = new  TXRecordCommon.TXUGCSimpleConfig();
+            simpleConfig.videoQuality = mUGCKitRecordConfig.mQuality;
+            simpleConfig.minDuration = mUGCKitRecordConfig.mMinDuration;
+            simpleConfig.maxDuration = mUGCKitRecordConfig.mMaxDuration;
+            simpleConfig.isFront = mUGCKitRecordConfig.mFrontCamera;
+            simpleConfig.touchFocus = mUGCKitRecordConfig.mTouchFocus;
+            simpleConfig.needEdit = mUGCKitRecordConfig.mIsNeedEdit;
 
-            if (mUGCKitRecordConfig instanceof FollowRecordConfig) {
-                customConfig.videoFps = ((FollowRecordConfig) mUGCKitRecordConfig).videoInfo.fps;
-                customConfig.maxDuration = ((FollowRecordConfig) mUGCKitRecordConfig).videoInfo.duration;
-                customConfig.needEdit = false;
-                if (mRecordSDK != null) {
-                    mRecordSDK.setVideoRenderMode(TXRecordCommon.VIDEO_RENDER_MODE_FULL_FILL_SCREEN);
-                    mRecordSDK.setMute(true);
-                }
-            } else {
-                // 是否进行编辑
-                customConfig.needEdit = JumpActivityMgr.getInstance().getEditFlagFromRecord();
-                if (mRecordSDK != null) {
-                    mRecordSDK.setMute(false);
-                }
+            if (mRecordSDK != null) {
+                mRecordSDK.setVideoRenderMode(mUGCKitRecordConfig.mRecordMode);
+                mRecordSDK.setMute(mUGCKitRecordConfig.mIsMute);
             }
-            mRecordSDK.startCameraCustomPreview(customConfig, videoView);
+            mRecordSDK.startCameraSimplePreview(simpleConfig, videoView);
         } else {
             // 自定义配置
             TXRecordCommon.TXUGCCustomConfig customConfig = new TXRecordCommon.TXUGCCustomConfig();
@@ -123,12 +114,13 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             customConfig.videoFps = mUGCKitRecordConfig.mFPS;
             customConfig.isFront = mUGCKitRecordConfig.mFrontCamera;
             customConfig.touchFocus = mUGCKitRecordConfig.mTouchFocus;
-            customConfig.needEdit = JumpActivityMgr.getInstance().getEditFlagFromRecord();
+            customConfig.needEdit = mUGCKitRecordConfig.mIsNeedEdit;
 
             mRecordSDK.startCameraCustomPreview(customConfig, videoView);
         }
 
         if (mRecordSDK != null) {
+            mRecordSDK.setRecordSpeed(mUGCKitRecordConfig.mRecordSpeed);
             mRecordSDK.setHomeOrientation(mUGCKitRecordConfig.mHomeOrientation);
             mRecordSDK.setRenderRotation(mUGCKitRecordConfig.mRenderRotation);
             mRecordSDK.setAspectRatio(mUGCKitRecordConfig.mAspectRatio);
@@ -160,7 +152,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordSDK.getBeautyManager().setFaceVLevel(beautyParams.mFaceVLevel);
             mRecordSDK.getBeautyManager().setFaceShortLevel(beautyParams.mFaceShortLevel);
             mRecordSDK.getBeautyManager().setChinLevel(beautyParams.mChinSlimLevel);
-            mRecordSDK.getBeautyManager().setNoseSlimLevel(beautyParams.mNoseScaleLevel);
+            mRecordSDK.getBeautyManager().setNoseSlimLevel(beautyParams.mNoseSlimLevel);
             mRecordSDK.getBeautyManager().setMotionTmpl(beautyParams.mMotionTmplPath);
             mRecordSDK.getBeautyManager().setEyeLightenLevel(beautyParams.mEyeLightenLevel);
             mRecordSDK.getBeautyManager().setToothWhitenLevel(beautyParams.mToothWhitenLevel);
@@ -275,7 +267,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             if (mRecordSDK != null) {
                 mRecordSDK.getPartsManager().insertPart(recordPart.getPath(), i);
             }
-            TXVideoEditConstants.TXVideoInfo txVideoInfo = TXVideoInfoReader.getInstance().getVideoFileInfo(recordPart.getPath());
+            TXVideoEditConstants.TXVideoInfo txVideoInfo = TXVideoInfoReader.getInstance(context).getVideoFileInfo(recordPart.getPath());
             if (txVideoInfo != null) {
                 duration = duration + txVideoInfo.duration;
             }

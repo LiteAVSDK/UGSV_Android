@@ -2,6 +2,7 @@ package com.tencent.qcloud.ugckit;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Picture;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 腾讯云短视频TUIKit:图片转场动画控件</p>
+ * 腾讯云短视频UGCKit:图片转场动画控件</p>
  * <p>
  * PictureJoinLayout功能： <p>
  * 1、设置图片转场的的动画 <p>
@@ -95,8 +96,10 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
                 mProgressFragmentUtil.showLoadingProgress(new ProgressFragmentUtil.IProgressListener() {
                     @Override
                     public void onStop() {
+                        // 点击进度条"X"取消生成
                         mProgressFragmentUtil.dismissLoadingProgress();
                         PictureGenerateKit.getInstance().stopGenerate();
+                        PlayerManagerKit.getInstance().startPlay();
                     }
                 });
                 PlayerManagerKit.getInstance().stopPlay();
@@ -147,6 +150,10 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
 
     @Override
     public void setOnPictureJoinListener(@Nullable final IPictureJoinKit.OnPictureJoinListener listener) {
+        if (listener == null) {
+            PictureGenerateKit.getInstance().setOnUpdateUIListener(null);
+            return;
+        }
         // 设置生成的监听器，用来更新"UI控件" 和 Activity
         PictureGenerateKit.getInstance().setOnUpdateUIListener(new OnUpdateUIListener() {
             @Override
@@ -165,6 +172,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
                     ugcKitResult.errorCode = retCode;
                     ugcKitResult.descMsg = descMsg;
                     ugcKitResult.outputPath = PictureGenerateKit.getInstance().getVideoOutputPath();
+                    ugcKitResult.coverPath = PictureGenerateKit.getInstance().getCoverPath();
                     listener.onPictureJoinCompleted(ugcKitResult);
                 }
             }

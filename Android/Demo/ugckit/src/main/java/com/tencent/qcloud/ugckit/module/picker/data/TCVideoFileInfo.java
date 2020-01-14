@@ -1,11 +1,14 @@
 package com.tencent.qcloud.ugckit.module.picker.data;
 
 
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class TCVideoFileInfo implements Serializable {
+public class TCVideoFileInfo implements Parcelable {
     public static final int FILE_TYPE_VIDEO = 0;
     public static final int FILE_TYPE_PICTURE = 1;
     private int fileId;
@@ -15,6 +18,7 @@ public class TCVideoFileInfo implements Serializable {
     private boolean isSelected = false;
     private long duration;
     private int fileType = FILE_TYPE_VIDEO;
+    private Uri fileUri;
 
     public TCVideoFileInfo() {
     }
@@ -26,6 +30,54 @@ public class TCVideoFileInfo implements Serializable {
         this.thumbPath = thumbPath;
         this.duration = duration;
     }
+
+    public TCVideoFileInfo(int fileId, Uri fileUri, String fileName, String thumbPath, int duration) {
+        this.fileId = fileId;
+        this.fileUri = fileUri;
+        this.fileName = fileName;
+        this.thumbPath = thumbPath;
+        this.duration = duration;
+    }
+
+    protected TCVideoFileInfo(Parcel in) {
+        fileId = in.readInt();
+        filePath = in.readString();
+        fileName = in.readString();
+        thumbPath = in.readString();
+        isSelected = in.readByte() != 0;
+        duration = in.readLong();
+        fileType = in.readInt();
+        fileUri = in.readParcelable(Uri.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(fileId);
+        dest.writeString(filePath);
+        dest.writeString(fileName);
+        dest.writeString(thumbPath);
+        dest.writeByte((byte) (isSelected ? 1 : 0));
+        dest.writeLong(duration);
+        dest.writeInt(fileType);
+        dest.writeParcelable(fileUri, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TCVideoFileInfo> CREATOR = new Creator<TCVideoFileInfo>() {
+        @Override
+        public TCVideoFileInfo createFromParcel(Parcel in) {
+            return new TCVideoFileInfo(in);
+        }
+
+        @Override
+        public TCVideoFileInfo[] newArray(int size) {
+            return new TCVideoFileInfo[size];
+        }
+    };
 
     public int getFileId() {
         return this.fileId;
@@ -81,6 +133,14 @@ public class TCVideoFileInfo implements Serializable {
 
     public void setFileType(int fileType) {
         this.fileType = fileType;
+    }
+
+    public Uri getFileUri() {
+        return fileUri;
+    }
+
+    public void setFileUri(Uri fileUri) {
+        this.fileUri = fileUri;
     }
 
     @NonNull

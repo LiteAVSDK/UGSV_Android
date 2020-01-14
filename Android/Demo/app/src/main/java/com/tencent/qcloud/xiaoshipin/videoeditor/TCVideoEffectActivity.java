@@ -12,13 +12,21 @@ import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.R;
 
 
-/**
- * Created by hans on 2017/11/6.
- */
 public class TCVideoEffectActivity extends FragmentActivity {
     private static final String TAG = "TCVideoEffectActivity";
     private int mFragmentType;
     private UGCKitVideoEffect mUGCKitVideoEffect;
+    private IVideoEffectKit.OnVideoEffectListener mOnVideoEffectListener = new IVideoEffectKit.OnVideoEffectListener() {
+        @Override
+        public void onEffectApply() {
+            finish();
+        }
+
+        @Override
+        public void onEffectCancel() {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,17 +39,6 @@ public class TCVideoEffectActivity extends FragmentActivity {
 
         mUGCKitVideoEffect = (UGCKitVideoEffect) findViewById(R.id.video_effect_layout);
         mUGCKitVideoEffect.setEffectType(mFragmentType);
-        mUGCKitVideoEffect.setOnVideoEffectListener(new IVideoEffectKit.OnVideoEffectListener() {
-            @Override
-            public void onEffectApply() {
-                finish();
-            }
-
-            @Override
-            public void onEffectCancel() {
-                finish();
-            }
-        });
     }
 
     private void initWindowParam() {
@@ -52,6 +49,7 @@ public class TCVideoEffectActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mUGCKitVideoEffect.setOnVideoEffectListener(mOnVideoEffectListener);
         mUGCKitVideoEffect.start();
     }
 
@@ -59,6 +57,7 @@ public class TCVideoEffectActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         mUGCKitVideoEffect.stop();
+        mUGCKitVideoEffect.setOnVideoEffectListener(null);
     }
 
     @Override

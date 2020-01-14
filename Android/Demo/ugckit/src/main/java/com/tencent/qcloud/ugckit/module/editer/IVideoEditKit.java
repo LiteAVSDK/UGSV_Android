@@ -4,28 +4,28 @@ import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.module.cut.IVideoCutKit;
 
 /**
- * 腾讯云短视频TUIKit({@code IVideoEditKit}):视频编辑。
+ * 腾讯云短视频UGCKit({@code IVideoEditKit}):视频编辑。
  *
  * <p>
- * 如下演示了TUIKit视频录制模块简单用法：<br>
+ * 如下演示了UGCKit视频录制模块简单用法：<br>
  */
 public interface IVideoEditKit {
 
     /**
-     * 当Activity执行生命周期方法{@code onStart()}时，TUIKit需要执行{@link #start()}来完成如下功能<br>
+     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来完成如下功能<br>
      * 重新播放视频
      */
     void start();
 
     /**
-     * 当Activity执行生命周期方法{@code onStop()}时，TUIKit需要执行{@link #stop()}来完成如下功能<br>
+     * 当Activity执行生命周期方法{@code onStop()}时，UGCKit需要执行{@link #stop()}来完成如下功能<br>
      * 1、停止播放视频
      * 2、停止视频生成
      */
     void stop();
 
     /**
-     * 当Activity执行生命周期方法{@code onDestroy()}时，TUIKit需要执行{@link #release()}来释放资源<br>
+     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
      */
     void release();
 

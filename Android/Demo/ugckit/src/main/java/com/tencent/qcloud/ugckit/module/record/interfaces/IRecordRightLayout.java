@@ -22,17 +22,17 @@ public interface IRecordRightLayout {
         /**
          * 显示美颜面板
          */
-        void onShowBeautyPannel();
+        void onShowBeautyPanel();
 
         /**
          * 显示调整音量面板
          */
-        void onShowMusicPannel();
+        void onShowMusicPanel();
 
         /**
          * 显示音效面板（包括变声、混响）
          */
-        void onShowSoundEffectPannel();
+        void onShowSoundEffectPanel();
 
         /**
          * 切换屏比

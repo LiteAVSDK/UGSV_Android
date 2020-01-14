@@ -3,6 +3,7 @@ package com.tencent.qcloud.ugckit.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.tencent.qcloud.ugckit.R;
@@ -12,12 +13,16 @@ import java.util.List;
 
 public class VideoChecker {
 
-    public static boolean isVideoDamaged(TCVideoFileInfo info) {
+    public static boolean isVideoDamaged(Context context, TCVideoFileInfo info) {
         if (info.getDuration() == 0) {
             //数据库获取到的时间为0，使用Retriever再次确认是否损坏
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             try {
-                retriever.setDataSource(info.getFilePath());
+                if (Build.VERSION.SDK_INT >= 29) {
+                    retriever.setDataSource(context, info.getFileUri());
+                } else {
+                    retriever.setDataSource(info.getFilePath());
+                }
             } catch (Exception e) {
                 return true;//无法正常打开，也是错误
             }
@@ -30,9 +35,9 @@ public class VideoChecker {
         return false;
     }
 
-    public static boolean isVideoDamaged(List<TCVideoFileInfo> list) {
+    public static boolean isVideoDamaged(Context context, List<TCVideoFileInfo> list) {
         for (TCVideoFileInfo info : list) {
-            if (isVideoDamaged(info)) {
+            if (isVideoDamaged(context, info)) {
                 return true;
             }
         }

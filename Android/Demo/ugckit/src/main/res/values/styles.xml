@@ -255,4 +255,6 @@
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+
 </resources>

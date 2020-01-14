@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -28,13 +29,16 @@ import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.Config;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.rtmp.TXLog;
+import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
+import com.tencent.ugc.TXVideoInfoReader;
 
 public class UGCKitVideoEdit extends AbsVideoEditUI {
     private static final String TAG = "UGCKitVideoEdit";
     private ProgressFragmentUtil mProgressFragmentUtil;
     @Nullable
     private OnEditListener mOnEditListener;
+    private boolean isPublish;
 
     public UGCKitVideoEdit(Context context) {
         super(context);
@@ -102,6 +106,9 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        // 取消设置的特效
+                        VideoEditerSDK.getInstance().releaseSDK();
+                        VideoEditerSDK.getInstance().clear();
                         if (mOnEditListener != null) {
                             mOnEditListener.onEditCanceled();
                         }
@@ -124,17 +131,30 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
      */
     @Override
     public void setVideoPath(String videoPath) {
-        VideoEditerSDK.getInstance().initSDK();
+        // 获取TXVideoEditer，兼容"快速导入"之前没有初始化TXVideoEditer；"全功能导入"，裁剪时已经预处理了视频，此时初始化了TXVideoEditer
+        TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+        if (editer == null) {
+            VideoEditerSDK.getInstance().initSDK();
+        }
         VideoEditerSDK.getInstance().setVideoPath(videoPath);
 
-        // 初始化缩略图列表
+        // 获取TXVideoInfo，兼容"快速导入"新传入videoPath，之前没有获取视频信息;"全功能导入"，裁剪时已经获取视频基本信息。
+        TXVideoEditConstants.TXVideoInfo info = VideoEditerSDK.getInstance().getTXVideoInfo();
+        if (info == null) {
+            info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
+            VideoEditerSDK.getInstance().setTXVideoInfo(info);
+            VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
+        }
+
+        // 初始化缩略图列表，编辑缩略图1秒钟一张(先清空缩略图列表)
+        VideoEditerSDK.getInstance().clearThumbnails();
         VideoEditerSDK.getInstance().initThumbnailList(new TXVideoEditer.TXThumbnailListener() {
             @Override
             public void onThumbnail(final int index, long timeMs, final Bitmap bitmap) {
                 TXLog.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
                 VideoEditerSDK.getInstance().addThumbnailBitmap(timeMs, bitmap);
             }
-        });
+        }, 1000);
     }
 
     /**
@@ -153,15 +173,18 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                         startGenerate();
                     }
                 });
-        actionSheetDialog.addSheetItem(getResources().getString(R.string.tc_video_editer_activity_show_publish_dialog_publish),
-                ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        VideoEditerSDK.getInstance().setPublishFlag(true);
-                        startGenerate();
-                    }
 
-                });
+        if (isPublish) {
+            actionSheetDialog.addSheetItem(getResources().getString(R.string.tc_video_editer_activity_show_publish_dialog_publish),
+                    ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            VideoEditerSDK.getInstance().setPublishFlag(true);
+                            startGenerate();
+                        }
+
+                    });
+        }
         actionSheetDialog.show();
     }
 
@@ -180,6 +203,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         VideoGenerateKit.getInstance().saveVideoToDCIM(config.isSaveToDCIM);
         VideoGenerateKit.getInstance().setWaterMark(config.mWaterMarkConfig);
         VideoGenerateKit.getInstance().setTailWaterMark(config.mTailWaterMarkConfig);
+        isPublish = config.isPublish;
     }
 
     @Override
@@ -205,7 +229,13 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
 
     @Override
     public void setOnVideoEditListener(@Nullable final OnEditListener listener) {
+        if (listener == null) {
+            mOnEditListener = null;
+            VideoGenerateKit.getInstance().setOnUpdateUIListener(null);
+            return;
+        }
         mOnEditListener = listener;
+
         VideoGenerateKit.getInstance().setOnUpdateUIListener(new OnUpdateUIListener() {
             @Override
             public void onUIProgress(float progress) {

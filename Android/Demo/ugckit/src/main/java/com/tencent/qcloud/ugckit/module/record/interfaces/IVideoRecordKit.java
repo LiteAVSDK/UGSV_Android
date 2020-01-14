@@ -3,19 +3,15 @@ package com.tencent.qcloud.ugckit.module.record.interfaces;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
-import com.tencent.qcloud.ugckit.module.record.RecordBottomLayout;
 import com.tencent.qcloud.ugckit.module.record.RecordMusicPannel;
-import com.tencent.qcloud.ugckit.module.record.RecordRightLayout;
 import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyPannel;
-import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
 /**
- * 腾讯云短视频TUIKit({@code IVideoRecordKit}):视频录制。
+ * 腾讯云短视频UGCKit({@code IVideoRecordKit}):视频录制。
  * 本组件包含视频录制的所有SDK功能和UI展示，包括拍照，多段录制，草稿箱，美颜，变声和混响，添加背景音乐，多屏比录制，变速录制等等。<br>
- * 您可以通过TUIkit很简单搭建使用诸多视频录制功能，也可以定制视频录制的功能和UI
+ * 您可以通过UGCKit很简单搭建使用诸多视频录制功能，也可以定制视频录制的功能和UI
  * <p>
- * 如下演示了TUIKit视频录制模块简单用法：<br>
+ * 如下演示了UGCKit视频录制模块简单用法：<br>
  * 1、在xml中设置
  * <pre>
  * {@code
@@ -65,17 +61,17 @@ import com.tencent.qcloud.ugckit.component.TitleBarLayout;
  *     }
  * </pre>
  * <p>
- * TUIKit视频录制模块的生命周期方法<br>
- * 1、当Activity执行生命周期方法{@code onStart()}时，TUIKit需要执行{@link #start()}初始化录制配置，开始视频录制预览界面<br>
- * 2、当Activity执行生命周期方法{@code onStop()}时，TUIKit需要执行{@link #stop()}暂停视频录制，关闭视频录制预览界面，并更新视频录制界面<br>
- * 3、当Activity执行生命周期方法{@code onDestroy()}时，TUIKit需要执行{@link #release()}来释放资源<br>
+ * UGCKit视频录制模块的生命周期方法<br>
+ * 1、当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}初始化录制配置，开始视频录制预览界面<br>
+ * 2、当Activity执行生命周期方法{@code onStop()}时，UGCKit需要执行{@link #stop()}暂停视频录制，关闭视频录制预览界面，并更新视频录制界面<br>
+ * 3、当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
  * 4、当您开启Activity 的界面旋转后，Activity执行生命周期方法{@code onConfigurationChanged()}时，
- * TUIKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
- * 5、当Activity执行 {@code stopPlay()} 时，TUIKit需要执行{@link #backPressed()} 退出视频录制，返回上一界面
+ * UGCKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
+ * 5、当Activity执行 {@code stopPlay()} 时，UGCKit需要执行{@link #backPressed()} 退出视频录制，返回上一界面
  * <p>
- * TUIKit视频录制背景音乐设置<br>
+ * UGCKit视频录制背景音乐设置<br>
  * 1、通过 {@link #setOnMusicChooseListener(OnMusicChooseListener)} 监听点击音乐Icon，启动背景音乐Activity进行音乐选择。
- * 2、当Activity选择背景音乐后，通过{@link #setRecordMusicInfo(MusicInfo)} 设置给TUIKit。<br>
+ * 2、当Activity选择背景音乐后，通过{@link #setRecordMusicInfo(MusicInfo)} 设置给UGCKit。<br>
  * 其中必须设置的包括背景音乐名称{@link MusicInfo#name}，背景音乐路径{@link MusicInfo#path}，
  * 和背景音乐在列表中的位置{@link MusicInfo#position}<br>
  * <p>
@@ -97,7 +93,7 @@ import com.tencent.qcloud.ugckit.component.TitleBarLayout;
  * 6、定制化"美颜图标" {@link IRecordRightLayout} <br>
  * 7、定制化"音效图标" {@link IRecordRightLayout}
  * <p>
- * 如果您不使用TUIkit视频录制组件，自行搭建UI，调用SDK功能。<br>
+ * 如果您不使用UGCKit视频录制组件，自行搭建UI，调用SDK功能。<br>
  * 请参照文档
  * <a href="https://cloud.tencent.com/document/product/584/9369">拍照和录制(Android)</a>
  * <a href="https://cloud.tencent.com/document/product/584/20318">多段录制(Android)</a>
@@ -108,14 +104,14 @@ import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 public interface IVideoRecordKit {
 
     /**
-     * 当Activity执行生命周期方法{@code onStart()}时，TUIKit需要执行{@link #start()}来完成如下功能<br>
+     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来完成如下功能<br>
      * 1、初始化录制配置<br>
      * 2、开始视频录制预览界面
      */
     void start();
 
     /**
-     * 当Activity执行生命周期方法{@code onStop()}时，TUIKit需要执行{@link #stop()}来完成如下功能<br>
+     * 当Activity执行生命周期方法{@code onStop()}时，UGCKit需要执行{@link #stop()}来完成如下功能<br>
      * 1、暂停视频录制<br>
      * 2、关闭视频录制预览界面
      * 3、更新视频录制界面
@@ -123,12 +119,12 @@ public interface IVideoRecordKit {
     void stop();
 
     /**
-     * 当Activity执行生命周期方法{@code onDestroy()}时，TUIKit需要执行{@link #release()}来释放资源<br>
+     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
      */
     void release();
 
     /**
-     * 当Activity执行生命周期方法{@code onConfigurationChanged()}时，TUIKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
+     * 当Activity执行生命周期方法{@code onConfigurationChanged()}时，UGCKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
      */
     void screenOrientationChange();
 

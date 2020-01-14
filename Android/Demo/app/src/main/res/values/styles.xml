@@ -202,7 +202,7 @@
 <!--        <item name="editerPasterDelIcon">@drawable/ugc_record_music</item>-->
     </style>
 
-    <style name="FollowRecordActivityTheme" parent="FollowRecordStyle">
+    <style name="MixRecordActivityTheme" parent="MixRecordStyle">
 <!--        <item name="countDownIcon">@drawable/ugc_record_music</item>-->
 <!--        <item name="recordBeautyIcon">@drawable/ugc_record_music</item>-->
     </style>

@@ -1,14 +1,15 @@
 package com.tencent.qcloud.ugckit.module.picker.data;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import com.tencent.liteav.basic.log.TXCLog;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class PickerManagerKit {
@@ -17,6 +18,7 @@ public class PickerManagerKit {
     private static PickerManagerKit sInstance;
     private final ContentResolver mContentResolver;
     private final Context mContext;
+    private final Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
     public static PickerManagerKit getInstance(@NonNull Context context) {
         if (sInstance == null)
@@ -34,26 +36,23 @@ public class PickerManagerKit {
         ArrayList<TCVideoFileInfo> videos = new ArrayList<TCVideoFileInfo>();
         String[] mediaColumns = new String[]{
                 MediaStore.Video.VideoColumns._ID,
+                //DATA 数据在 Android Q 以前代表了文件的路径，但在 Android Q上该路径无法被访问。
                 MediaStore.Video.VideoColumns.DATA,
                 MediaStore.Video.VideoColumns.DISPLAY_NAME,
                 MediaStore.Video.VideoColumns.DURATION
         };
-        Cursor cursor = mContentResolver.query(
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                mediaColumns, null, null, null);
+        Cursor cursor = mContentResolver.query(uri, mediaColumns, null, null, null);
 
         if (cursor == null) return videos;
 
         if (cursor.moveToFirst()) {
             do {
                 TCVideoFileInfo fileItem = new TCVideoFileInfo();
+                // 兼容 Android 10以上
+                Uri uri = ContentUris.withAppendedId(
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI, cursor.getLong(cursor.getColumnIndexOrThrow((MediaStore.Video.Media._ID))));
+                fileItem.setFileUri(uri);
                 fileItem.setFilePath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
-                File file = new File(fileItem.getFilePath());
-                boolean canRead = file.canRead();
-                long length = file.length();
-                if (!canRead || length == 0) {
-                    continue;
-                }
                 fileItem.setFileName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)));
                 long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
                 if (duration < 0)
@@ -75,23 +74,21 @@ public class PickerManagerKit {
     public ArrayList<TCVideoFileInfo> getAllPictrue() {
         ArrayList<TCVideoFileInfo> pictureList = new ArrayList<TCVideoFileInfo>();
         String[] mediaColumns = new String[]{
+                MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
+                //DATA 数据在 Android Q 以前代表了文件的路径，但在 Android Q上该路径无法被访问。
                 MediaStore.Images.Media.DATA,
                 MediaStore.Images.Media.DESCRIPTION
         };
-        ContentResolver contentResolver = mContext.getApplicationContext().getContentResolver();
-
-        Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mediaColumns, null, null, null);
-        if(cursor!=null) {
+        Cursor cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mediaColumns, null, null, null);
+        if (cursor != null) {
             while (cursor.moveToNext()) {
                 TCVideoFileInfo fileItem = new TCVideoFileInfo();
+                // 兼容 Android 10以上
+                Uri uri = ContentUris.withAppendedId(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cursor.getLong(cursor.getColumnIndexOrThrow((MediaStore.Images.Media._ID))));
+                fileItem.setFileUri(uri);
                 fileItem.setFilePath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
-                File file = new File(fileItem.getFilePath());
-                boolean canRead = file.canRead();
-                long length = file.length();
-                if (!canRead || length == 0) {
-                    continue;
-                }
                 fileItem.setFileName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)));
                 fileItem.setFileType(TCVideoFileInfo.FILE_TYPE_PICTURE);
                 pictureList.add(fileItem);

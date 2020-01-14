@@ -1,5 +1,7 @@
 include ':app'
 
+include ':beauty'
+
 include ':ugckit'
 
 

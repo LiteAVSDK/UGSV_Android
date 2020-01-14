@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.tencent.liteav.demo.beauty.BeautyPanel;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyPannel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
@@ -21,7 +21,7 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
     private RecordRightLayout mRecordRightLayout;
     private RecordBottomLayout mRecordBottomLayout;
 
-    private BeautyPannel mBeautyPannel;
+    private BeautyPanel mBeautyPanel;
     private RecordMusicPannel mRecordMusicPannel;
     private SoundEffectsPannel mSoundEffectsPannel;
     private ImageSnapShotView mImageSnapShotView;
@@ -50,9 +50,9 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mRecordRightLayout = (RecordRightLayout) findViewById(R.id.record_right_layout);
         mRecordBottomLayout = (RecordBottomLayout) findViewById(R.id.record_bottom_layout);
 
-        mBeautyPannel = (BeautyPannel) findViewById(R.id.beauty_pannel);
+        mBeautyPanel = (BeautyPanel) findViewById(R.id.beauty_pannel);
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
-        mScrollFilterView.setBeautyPannel(mBeautyPannel);
+        mScrollFilterView.setBeautyPannel(mBeautyPanel);
 
         mRecordMusicPannel = (RecordMusicPannel) findViewById(R.id.record_music_pannel);
         mSoundEffectsPannel = (SoundEffectsPannel) findViewById(R.id.sound_effect_pannel);
@@ -84,8 +84,8 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         return mRecordBottomLayout;
     }
 
-    public BeautyPannel getBeautyPannel() {
-        return mBeautyPannel;
+    public BeautyPanel getBeautyPanel() {
+        return mBeautyPanel;
     }
 
     public RecordMusicPannel getRecordMusicPannel() {

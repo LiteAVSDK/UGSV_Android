@@ -13,12 +13,10 @@ import com.bumptech.glide.Glide;
 
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
-import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.timeline.SliderViewContainer;
-import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
@@ -34,21 +32,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TCTimeFragment";
     public static final long DEAULT_DURATION_MS = 1000; //默认重复时间段1s
-    private int mCurrentEffect = NONE_EFFECT;
-
-    public static final int NONE_EFFECT = -1;
-    private static final int SPEED_EFFECT = 1;
-    private static final int REPEAT_EFFECT = 2;
-    private static final int REVERSE_EFFECT = 3;
+    private int mCurrentEffect = TimeEffect.NONE_EFFECT;
 
     private ImageView mTvCancel, mTvSpeed, mTvRepeat, mTvReverse;
     private CircleImageView mTvCancelSelect, mTvSpeedSelect, mTvRepeatSelect, mTvReverseSelect;
 
     private TXVideoEditer mTXVideoEditer;
-    private VideoProgressController mVideoProgressController;
-    private SliderViewContainer mRepeatSlider;
-
-    private SliderViewContainer mSpeedSlider;
     private long mCurrentEffectStartMs;
 
     //定制化Gif
@@ -57,7 +46,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private int repeatGif = R.drawable.motion_time_repeat;
     private int reverseGif = R.drawable.motion_time_reverse;
     private int coverIcon = R.drawable.ic_effect5;
-    private int startProgressIcon = R.drawable.ic_repeate_range;
+    private TimeLineView.OnTimeLineListener mListener;
 
     @Nullable
     @Override
@@ -76,68 +65,27 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         initEffect();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        TimeLineView timeLineView = TimelineViewUtil.getInstance().getTimeLineView();
-        if (timeLineView != null) {
-            mVideoProgressController = timeLineView.getVideoProgressController();
-        }
-    }
-
     private void initEffect() {
         mCurrentEffect = TCTimeViewInfoManager.getInstance().getCurrentEffect();
         mCurrentEffectStartMs = TCTimeViewInfoManager.getInstance().getCurrentStartMs();
 
         switch (mCurrentEffect) {
-            case NONE_EFFECT:
+            case TimeEffect.NONE_EFFECT:
                 showNoneLayout();
                 break;
-            case SPEED_EFFECT:
-                mSpeedSlider = new SliderViewContainer(getContext());
-                mSpeedSlider.setSliderIcon(startProgressIcon);
-                mSpeedSlider.setStartTimeMs(mCurrentEffectStartMs);
-                mSpeedSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
-                    @Override
-                    public void onStartTimeMsChanged(long timeMs) {
-                        if (mCurrentEffect != SPEED_EFFECT)
-                            cancelSetEffect();
-                        mCurrentEffect = SPEED_EFFECT;
-                        setSpeed(timeMs);
-
-                        PlayerManagerKit.getInstance().previewAtTime(timeMs);
-                        // 进度条移动到当前位置
-                        mVideoProgressController.setCurrentTimeMs(timeMs);
-                        mCurrentEffectStartMs = timeMs;
-                    }
-                });
-                mVideoProgressController.addSliderView(mSpeedSlider);
+            case TimeEffect.SPEED_EFFECT:
+                if (mListener != null) {
+                    mListener.onAddSlider(TimeEffect.SPEED_EFFECT, mCurrentEffectStartMs);
+                }
                 mTvSpeedSelect.setVisibility(View.VISIBLE);
                 break;
-            case REPEAT_EFFECT:
-                mRepeatSlider = new SliderViewContainer(getContext());
-                mSpeedSlider.setSliderIcon(startProgressIcon);
-                mRepeatSlider.setStartTimeMs(mCurrentEffectStartMs);
-                mRepeatSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
-                    @Override
-                    public void onStartTimeMsChanged(long timeMs) {
-                        if (mCurrentEffect != REPEAT_EFFECT) {
-                            cancelSetEffect();
-                        }
-                        mCurrentEffect = REPEAT_EFFECT;
-
-                        setRepeatList(timeMs);
-
-                        PlayerManagerKit.getInstance().previewAtTime(timeMs);
-                        // 进度条移动到当前位置
-                        mVideoProgressController.setCurrentTimeMs(timeMs);
-                        mCurrentEffectStartMs = timeMs;
-                    }
-                });
-                mVideoProgressController.addSliderView(mRepeatSlider);
+            case TimeEffect.REPEAT_EFFECT:
+                if (mListener != null) {
+                    mListener.onAddSlider(TimeEffect.REPEAT_EFFECT, mCurrentEffectStartMs);
+                }
                 mTvRepeatSelect.setVisibility(View.VISIBLE);
                 break;
-            case REVERSE_EFFECT:
+            case TimeEffect.REVERSE_EFFECT:
                 showReverseLayout();
                 break;
         }
@@ -180,44 +128,19 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTvReverseSelect.setBackgroundResource(coverIcon);
     }
 
-    private void setRepeatSliderView() {
-        if (mRepeatSlider == null) {
-            // 第一次展示重复界面的时候，将重复的按钮移动到当前的进度
-            long currentPts = mVideoProgressController.getCurrentTimeMs();
+    private void initRepeatLayout() {
+        long currentTime = 0;
+        if (mListener != null) {
+            currentTime = mListener.getCurrentTime();
+            mListener.onAddSlider(TimeEffect.REPEAT_EFFECT, currentTime);
+        }
+        setRepeatList(currentTime);
+        PlayerManagerKit.getInstance().previewAtTime(currentTime);
+        mCurrentEffectStartMs = currentTime;
 
-            setRepeatList(currentPts);
-
-            PlayerManagerKit.getInstance().previewAtTime(currentPts);
-
-            mRepeatSlider = new SliderViewContainer(getContext());
-            mRepeatSlider.setStartTimeMs(currentPts);
-            mCurrentEffectStartMs = currentPts;
-            mRepeatSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
-                @Override
-                public void onStartTimeMsChanged(long timeMs) {
-                    if (mCurrentEffect != REPEAT_EFFECT) {
-                        cancelSetEffect();
-                    }
-                    mCurrentEffect = REPEAT_EFFECT;
-
-                    setRepeatList(timeMs);
-
-                    PlayerManagerKit.getInstance().previewAtTime(timeMs);
-
-                    // 进度条移动到当前位置
-                    mVideoProgressController.setCurrentTimeMs(timeMs);
-                    mCurrentEffectStartMs = timeMs;
-                }
-            });
-            mVideoProgressController.addSliderView(mRepeatSlider);
-            mRepeatSlider.setVisibility(View.GONE);
-        } else {
-            long currentPts = mVideoProgressController.getCurrentTimeMs();
-
-            setRepeatList(currentPts);
-            PlayerManagerKit.getInstance().previewAtTime(currentPts);
-            mRepeatSlider.setStartTimeMs(currentPts);
-            mCurrentEffectStartMs = currentPts;
+        mCurrentEffect = TimeEffect.REPEAT_EFFECT;
+        if (mListener != null) {
+            mListener.setCurrentTime(currentTime);
         }
     }
 
@@ -233,38 +156,18 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
 
 
     private void initSpeedLayout() {
-        if (mSpeedSlider == null) {
-            long currentPts = mVideoProgressController.getCurrentTimeMs();
-            setSpeed(currentPts);
-            mCurrentEffect = SPEED_EFFECT;
-            mVideoProgressController.setCurrentTimeMs(currentPts);
+        long currentTime = 0;
+        if (mListener != null) {
+            currentTime = mListener.getCurrentTime();
+            mListener.onAddSlider(TimeEffect.SPEED_EFFECT, currentTime);
+        }
+        setSpeed(currentTime);
+        PlayerManagerKit.getInstance().previewAtTime(currentTime);
+        mCurrentEffectStartMs = currentTime;
 
-            mSpeedSlider = new SliderViewContainer(getContext());
-            mSpeedSlider.setStartTimeMs(currentPts);
-            mCurrentEffectStartMs = currentPts;
-            mSpeedSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
-                @Override
-                public void onStartTimeMsChanged(long timeMs) {
-                    if (mCurrentEffect != SPEED_EFFECT)
-                        cancelSetEffect();
-                    mCurrentEffect = SPEED_EFFECT;
-                    setSpeed(timeMs);
-
-                    PlayerManagerKit.getInstance().previewAtTime(timeMs);
-                    // 进度条移动到当前位置
-                    mVideoProgressController.setCurrentTimeMs(timeMs);
-                    mCurrentEffectStartMs = timeMs;
-                }
-            });
-            mVideoProgressController.addSliderView(mSpeedSlider);
-        } else {
-            long currentPts = mVideoProgressController.getCurrentTimeMs();
-            setSpeed(currentPts);
-            mCurrentEffect = SPEED_EFFECT;
-            PlayerManagerKit.getInstance().previewAtTime(currentPts);
-            mSpeedSlider.setStartTimeMs(currentPts);
-            mVideoProgressController.setCurrentTimeMs(currentPts);
-            mCurrentEffectStartMs = currentPts;
+        mCurrentEffect = TimeEffect.SPEED_EFFECT;
+        if (mListener != null) {
+            mListener.setCurrentTime(currentTime);
         }
     }
 
@@ -298,14 +201,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (mRepeatSlider != null && mTvRepeat != null && mTvRepeat.isSelected()) {
-            mRepeatSlider.setVisibility(hidden ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
     public void onClick(@NonNull View v) {
         int i = v.getId();
         if (i == R.id.time_tv_cancel) {
@@ -318,11 +213,14 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
             showSpeedLayout();
 
         } else if (i == R.id.time_tv_reverse) {
-            if (mCurrentEffect == REVERSE_EFFECT) return;// 当前处于倒放状态 无视
+            // 当前处于倒放状态 无视
+            if (mCurrentEffect == TimeEffect.REVERSE_EFFECT) {
+                return;
+            }
             cancelSetEffect();
             showReverseLayout();
             mTXVideoEditer.setReverse(true);
-            mCurrentEffect = REVERSE_EFFECT;
+            mCurrentEffect = TimeEffect.REVERSE_EFFECT;
             VideoEditerSDK.getInstance().setReverse(true);
             PlayerManagerKit.getInstance().restartPlay();
         } else if (i == R.id.time_tv_repeat) {
@@ -337,30 +235,30 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
      */
     private void cancelSetEffect() {
         switch (mCurrentEffect) {
-            case SPEED_EFFECT:
+            case TimeEffect.SPEED_EFFECT:
                 cancelSpeedEffect();
                 break;
-            case REPEAT_EFFECT:
+            case TimeEffect.REPEAT_EFFECT:
                 cancelRepeatEffect();
                 break;
-            case REVERSE_EFFECT:
+            case TimeEffect.REVERSE_EFFECT:
                 cancelReverseEffect();
                 break;
         }
     }
 
     private void cancelSpeedEffect() {
-        mCurrentEffect = NONE_EFFECT;
+        mCurrentEffect = TimeEffect.NONE_EFFECT;
         mTXVideoEditer.setSpeedList(null);
     }
 
     private void cancelRepeatEffect() {
-        mCurrentEffect = NONE_EFFECT;
+        mCurrentEffect = TimeEffect.NONE_EFFECT;
         mTXVideoEditer.setRepeatPlay(null);
     }
 
     private void cancelReverseEffect() {
-        mCurrentEffect = NONE_EFFECT;
+        mCurrentEffect = TimeEffect.NONE_EFFECT;
         mTXVideoEditer.setReverse(false);
         VideoEditerSDK.getInstance().setReverse(false);
     }
@@ -370,10 +268,10 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTvSpeed.setSelected(false);
         mTvRepeat.setSelected(false);
         mTvReverse.setSelected(false);
-        if (mRepeatSlider != null)
-            mRepeatSlider.setVisibility(View.GONE);
-        if (mSpeedSlider != null) {
-            mSpeedSlider.setVisibility(View.GONE);
+
+        if (mListener != null) {
+            mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
+            mListener.onRemoveSlider(TimeEffect.REPEAT_EFFECT);
         }
         mTvCancelSelect.setVisibility(View.VISIBLE);
         mTvSpeedSelect.setVisibility(View.INVISIBLE);
@@ -387,10 +285,8 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTvRepeat.setSelected(false);
         mTvCancel.setSelected(false);
         mTvReverse.setSelected(false);
-        if (mRepeatSlider != null)
-            mRepeatSlider.setVisibility(View.GONE);
-        if (mSpeedSlider.getVisibility() == View.GONE) {
-            mSpeedSlider.setVisibility(View.VISIBLE);
+        if (mListener != null) {
+            mListener.onRemoveSlider(TimeEffect.REPEAT_EFFECT);
         }
         mTvCancelSelect.setVisibility(View.INVISIBLE);
         mTvSpeedSelect.setVisibility(View.VISIBLE);
@@ -399,18 +295,15 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showRepeatLayout() {
-        setRepeatSliderView();
+        initRepeatLayout();
         mTvCancel.setSelected(false);
         mTvSpeed.setSelected(false);
         mTvRepeat.setSelected(true);
         mTvReverse.setSelected(false);
-        if (mSpeedSlider != null && mSpeedSlider.getVisibility() == View.VISIBLE) {
-            mSpeedSlider.setVisibility(View.GONE);
+        if (mListener != null) {
+            mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
         }
-        if (mRepeatSlider.getVisibility() == View.GONE) {
-            mRepeatSlider.setVisibility(View.VISIBLE);
-        }
-        mCurrentEffect = REPEAT_EFFECT;
+        mCurrentEffect = TimeEffect.REPEAT_EFFECT;
 
         mTvCancelSelect.setVisibility(View.INVISIBLE);
         mTvSpeedSelect.setVisibility(View.INVISIBLE);
@@ -423,10 +316,9 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTvCancel.setSelected(false);
         mTvRepeat.setSelected(false);
         mTvReverse.setSelected(true);
-        if (mRepeatSlider != null)
-            mRepeatSlider.setVisibility(View.GONE);
-        if (mSpeedSlider != null) {
-            mSpeedSlider.setVisibility(View.GONE);
+        if (mListener != null) {
+            mListener.onRemoveSlider(TimeEffect.REPEAT_EFFECT);
+            mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
         }
         mTvCancelSelect.setVisibility(View.INVISIBLE);
         mTvSpeedSelect.setVisibility(View.INVISIBLE);
@@ -434,4 +326,40 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTvReverseSelect.setVisibility(View.VISIBLE);
     }
 
+    public void setOnTimeLineListener(TimeLineView.OnTimeLineListener listener) {
+        mListener = listener;
+    }
+
+    public void onTimeChange(int type, long timeMs) {
+        switch (type) {
+            case TimeEffect.REPEAT_EFFECT:
+                if (mCurrentEffect != TimeEffect.REPEAT_EFFECT) {
+                    cancelSetEffect();
+                }
+                mCurrentEffect = TimeEffect.REPEAT_EFFECT;
+
+                setRepeatList(timeMs);
+
+                PlayerManagerKit.getInstance().previewAtTime(timeMs);
+                if (mListener != null) {
+                    mListener.setCurrentTime(timeMs);
+                }
+                mCurrentEffectStartMs = timeMs;
+                break;
+            case TimeEffect.SPEED_EFFECT:
+                if (mCurrentEffect != TimeEffect.SPEED_EFFECT) {
+                    cancelSetEffect();
+                }
+                mCurrentEffect = TimeEffect.SPEED_EFFECT;
+                setSpeed(timeMs);
+
+                PlayerManagerKit.getInstance().previewAtTime(timeMs);
+                if (mListener != null) {
+                    mListener.setCurrentTime(timeMs);
+                }
+                mCurrentEffectStartMs = timeMs;
+                break;
+        }
+
+    }
 }

@@ -1,8 +1,10 @@
 package com.tencent.qcloud.ugckit.module;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
+import com.tencent.qcloud.ugckit.utils.CoverUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
@@ -11,15 +13,21 @@ import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
 
+/**
+ * 图片生成管理
+ */
 public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenerateListener {
     private int mCurrentState;
     private String mVideoOutputPath;
+    private String mCoverPath;
+    private boolean mCoverGenerate;
 
     @NonNull
     private static PictureGenerateKit instance = new PictureGenerateKit();
 
     private PictureGenerateKit() {
-
+        // 默认生成封面
+        mCoverGenerate = true;
     }
 
     @NonNull
@@ -69,6 +77,13 @@ public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenera
         return mVideoOutputPath;
     }
 
+    /**
+     * 获取视频封面路径
+     */
+    public String getCoverPath() {
+        return mCoverPath;
+    }
+
     @Override
     public void onGenerateProgress(float progress) {
         if (mOnUpdateUIListener != null) {
@@ -77,23 +92,45 @@ public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenera
     }
 
     @Override
-    public void onGenerateComplete(@NonNull TXVideoEditConstants.TXGenerateResult result) {
+    public void onGenerateComplete(@NonNull final TXVideoEditConstants.TXGenerateResult result) {
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_PICTURE_EDIT, result.retCode, result.descMsg);
 
         mCurrentState = PlayState.STATE_NONE;
         if (result.retCode == TXVideoEditConstants.GENERATE_RESULT_OK) {
-            // SDK释放资源
-            TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
-            if (editer != null) {
-                editer.release();
-            }
-            VideoEditerSDK.getInstance().clear();
+            if (mCoverGenerate) {
+                // 获取哪个视频的封面
+                CoverUtil.getInstance().setInputPath(mVideoOutputPath);
+                // 创建新的封面
+                CoverUtil.getInstance().createThumbFile(new CoverUtil.ICoverListener() {
+                    @Override
+                    public void onCoverPath(String coverPath) {
+                        mCoverPath = coverPath;
+                        release();
 
-            // UI更新
-            if (mOnUpdateUIListener != null) {
-                mOnUpdateUIListener.onUIComplete(result.retCode, result.descMsg);
+                        // UI更新
+                        if (mOnUpdateUIListener != null) {
+                            mOnUpdateUIListener.onUIComplete(result.retCode, result.descMsg);
+                        }
+                    }
+                });
+            } else {
+                release();
+
+                // UI更新
+                if (mOnUpdateUIListener != null) {
+                    mOnUpdateUIListener.onUIComplete(result.retCode, result.descMsg);
+                }
             }
         }
+    }
+
+    private void release() {
+        // SDK释放资源
+        TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+        if (editer != null) {
+            editer.release();
+        }
+        VideoEditerSDK.getInstance().clear();
     }
 
 }

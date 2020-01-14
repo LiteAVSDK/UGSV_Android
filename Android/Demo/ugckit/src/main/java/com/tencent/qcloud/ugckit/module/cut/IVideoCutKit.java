@@ -3,11 +3,11 @@ package com.tencent.qcloud.ugckit.module.cut;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 
 /**
- * 腾讯云短视频TUIKit({@code IVideoCutKit}):视频裁剪。
+ * 腾讯云短视频UGCKit({@code IVideoCutKit}):视频裁剪。
  * 本组建包含视频裁剪的SDK功能和UI展示，通过拖动裁剪范围，裁剪一个长视频为一个短视频。<br>
- * 您可以通过TUIkit很简单搭建使用视频裁剪功能，也可以定制视频裁剪UI
+ * 您可以通过UGCKit很简单搭建使用视频裁剪功能，也可以定制视频裁剪UI
  * <p>
- * 如下演示了TUIKit视频裁剪模块简单用法：<br>
+ * 如下演示了UGCKit视频裁剪模块简单用法：<br>
  * 1、在xml中设置
  * <pre>
  * {@code
@@ -63,7 +63,7 @@ import com.tencent.qcloud.ugckit.basic.UGCKitResult;
  * 视频裁剪UI定制化<br>
  * 1、定制化"裁剪View" {@link IVideoCutLayout} <br>
  * <p>
- * 如果您不使用TUIkit视频裁剪组件，自行搭建UI，调用SDK功能。<br>
+ * 如果您不使用UGCKit视频裁剪组件，自行搭建UI，调用SDK功能。<br>
  * 请参照文档<a href="https://cloud.tencent.com/document/product/584/9502">视频编辑(Android)</a> 中"压缩裁剪"
  */
 public interface IVideoCutKit {

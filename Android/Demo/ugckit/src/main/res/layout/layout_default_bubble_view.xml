@@ -5,10 +5,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
-    app:controlDrawable="@drawable/ic_input_rotate"
+    app:controlDrawable="@drawable/ic_word_rotation"
     app:controlLocation="right_bottom"
-    app:deleteDrawable="@drawable/ic_input_close"
-    app:editDrawable="@drawable/icon_word_edit"
+    app:deleteDrawable="@drawable/ic_word_close"
+    app:editDrawable="@drawable/ic_word_edit"
     app:frameColor="@color/white"
     app:frameWidth="0.5dp"
     app:scale="1.0" />

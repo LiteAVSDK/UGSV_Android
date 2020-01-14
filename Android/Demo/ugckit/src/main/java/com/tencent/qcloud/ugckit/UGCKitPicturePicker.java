@@ -23,7 +23,7 @@ import com.tencent.qcloud.ugckit.module.picker.view.PickedLayout;
 import java.util.ArrayList;
 
 /**
- * 腾讯云短视频TUIKit:图片选择控件
+ * 腾讯云短视频UGCKit:图片选择控件
  * <p>
  * 功能：用于实现相册图片的选择。<p/>
  * <p>

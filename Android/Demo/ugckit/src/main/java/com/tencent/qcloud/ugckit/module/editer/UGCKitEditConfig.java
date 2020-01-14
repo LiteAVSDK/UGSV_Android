@@ -22,6 +22,11 @@ public class UGCKitEditConfig {
     public boolean isSaveToDCIM = true;
 
     /**
+     * 是否需要发布视频
+     */
+    public boolean isPublish = true;
+
+    /**
      * 视频水印
      */
     public WaterMarkConfig mWaterMarkConfig;

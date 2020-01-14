@@ -39,6 +39,36 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
     private TCPasterFragment mPasterFragment;
     private TCBubbleSubtitleFragment mBubbleFragment;
     private TCMusicSettingFragment mMusicFragment;
+    private TimeLineView.OnTimeLineListener mOnTimeLineListener = new TimeLineView.OnTimeLineListener() {
+        @Override
+        public void onAddSlider(int type, long startEffectTime) {
+            if (mTimeLineView != null) {
+                mTimeLineView.onAddSlider(type, startEffectTime);
+            }
+        }
+
+        @Override
+        public void onRemoveSlider(int type) {
+            if (mTimeLineView != null) {
+                mTimeLineView.onRemoveSlider(type);
+            }
+        }
+
+        @Override
+        public long getCurrentTime() {
+            if (mTimeLineView != null) {
+                return mTimeLineView.getCurrentTime();
+            }
+            return 0;
+        }
+
+        @Override
+        public void setCurrentTime(long time) {
+            if (mTimeLineView != null) {
+                mTimeLineView.setCurrentTime(time);
+            }
+        }
+    };
 
     public AbsVideoEffectUI(Context context) {
         super(context);
@@ -63,6 +93,14 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
 
         mPlayControlLayout = (PlayControlLayout) findViewById(R.id.play_control_layout);
         mTimeLineView = (TimeLineView) findViewById(R.id.timeline_view);
+        mTimeLineView.setOnTimeChangeListener(new TimeLineView.OnTimeChangeListener() {
+            @Override
+            public void onTimeChange(int type, long time) {
+                if (mTimeFragment != null) {
+                    mTimeFragment.onTimeChange(type, time);
+                }
+            }
+        });
 
         mBubbleContainer = (FloatLayerViewGroup) findViewById(R.id.bubble_container);
         mPasterContainer = (FloatLayerViewGroup) findViewById(R.id.paster_container);
@@ -70,6 +108,8 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
         mBubbleSettingView = (BubbleSubtitlePannel) findViewById(R.id.bubble_setting_view);
 
         mTimeFragment = new TCTimeFragment();
+        mTimeFragment.setOnTimeLineListener(mOnTimeLineListener);
+
         mStaticFilterFragment = new TCStaticFilterFragment();
         mMotionFragment = new TCMotionFragment();
         mPasterFragment = new TCPasterFragment();

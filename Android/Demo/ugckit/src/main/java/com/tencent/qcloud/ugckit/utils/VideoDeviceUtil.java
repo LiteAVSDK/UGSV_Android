@@ -8,11 +8,12 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.io.File;
 
 public class VideoDeviceUtil {
-    private static final String TAG = VideoDeviceUtil.class.getSimpleName();
+    private static final String TAG = "VideoDeviceUtil";
 
     public VideoDeviceUtil() {
     }
@@ -24,19 +25,6 @@ public class VideoDeviceUtil {
         } else {
             NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
             return networkInfo != null && networkInfo.isConnectedOrConnecting();
-        }
-    }
-
-    public static boolean isExternalStorageAvailable() {
-        if (!"mounted".equals(Environment.getExternalStorageState()) && Environment.isExternalStorageRemovable()) {
-            return false;
-        } else {
-            try {
-                new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
-                return true;
-            } catch (Exception var1) {
-                return false;
-            }
         }
     }
 
@@ -53,29 +41,17 @@ public class VideoDeviceUtil {
     }
 
     public static boolean isExternalStorageSpaceEnough(long fileSize) {
-        File sdcard = Environment.getExternalStorageDirectory();
-        StatFs statFs = new StatFs(sdcard.getAbsolutePath());
-        return getAvailableSize(statFs) > fileSize;
-    }
-
-    @Nullable
-    private static File getExternalFilesDir(@NonNull Context context) {
-        File file = null;
-        file = context.getExternalFilesDir((String) null);
-        if (file == null) {
-            String filesDir = "/Android/data/" + context.getPackageName() + "/files/";
-            file = new File(Environment.getExternalStorageDirectory().getPath() + filesDir);
-        }
-
-        return file;
+        return true;
     }
 
     @Nullable
     public static File getExternalFilesDir(@NonNull Context context, String folder) {
-        String path = null;
-        if (isExternalStorageAvailable() && isExternalStorageSpaceEnough(52428800L)) {
-            path = getExternalFilesDir(context).getPath();
+        File sdcardDir = context.getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            Log.e(TAG, "sdcardDir is null");
+            return null;
         }
+        String path = sdcardDir.getPath();
 
         File file = new File(path + File.separator + folder);
 
@@ -88,7 +64,7 @@ public class VideoDeviceUtil {
                 file.mkdirs();
             }
         } catch (Exception var5) {
-            ;
+            var5.printStackTrace();
         }
 
         return file;

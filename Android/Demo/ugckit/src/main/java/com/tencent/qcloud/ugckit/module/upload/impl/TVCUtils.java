@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -115,8 +116,13 @@ public class TVCUtils {
 
         // get dev uuid from file
         String userIdFromFile = "";
+
+        File sdcardDir = context.getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            return "";
+        }
         try {
-            String userIdFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/txrtmp/spuid";
+            String userIdFilePath = sdcardDir.getAbsolutePath() + "/txrtmp/spuid";
             File userIdFile = new File(userIdFilePath);
             if (userIdFile.exists()) {
                 FileInputStream fin = new FileInputStream(userIdFile);
@@ -143,10 +149,10 @@ public class TVCUtils {
             userIdFromFile = userId;
             // set dev uuid to file
             try{
-                String userIdDirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/txrtmp";
+                String userIdDirPath = sdcardDir.getAbsolutePath() + "/txrtmp";
                 File userIdDir = new File(userIdDirPath);
                 if (!userIdDir.exists()) userIdDir.mkdir();
-                String userIdFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/txrtmp/spuid";
+                String userIdFilePath = sdcardDir.getAbsolutePath() + "/txrtmp/spuid";
                 File userIdFile = new File(userIdFilePath);
                 if (!userIdFile.exists()) userIdFile.createNewFile();
                 FileOutputStream fout = new FileOutputStream(userIdFile);

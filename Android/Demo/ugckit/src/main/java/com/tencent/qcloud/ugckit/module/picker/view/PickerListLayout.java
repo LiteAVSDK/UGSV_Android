@@ -49,7 +49,7 @@ public class PickerListLayout extends RelativeLayout implements IPickerListLayou
         mAdapter = new TCVideoEditerListAdapter(mActivity);
         mAdapter.setOnItemAddListener(this);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setMultiplePick(true);
+        mAdapter.setMultiplePick(true, false);
     }
 
     @Override

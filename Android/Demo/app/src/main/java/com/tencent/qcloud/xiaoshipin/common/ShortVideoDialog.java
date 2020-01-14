@@ -11,17 +11,21 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.DownloadUtil;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
-import com.tencent.qcloud.xiaoshipin.videopicker.TCPicturePickerActivity;
-import com.tencent.qcloud.xiaoshipin.videopicker.TCVideoPickerActivity;
+import com.tencent.qcloud.xiaoshipin.play.TCVideoPreviewActivity;
+import com.tencent.qcloud.xiaoshipin.videochoose.TCPicturePickerActivity;
+import com.tencent.qcloud.xiaoshipin.videochoose.TCVideoPickerActivity;
 import com.tencent.qcloud.xiaoshipin.videorecord.TCVideoFollowRecordActivity;
 import com.tencent.qcloud.xiaoshipin.videorecord.TCVideoRecordActivity;
+import com.tencent.qcloud.xiaoshipin.videorecord.TCVideoTripleScreenActivity;
 
 import java.io.File;
 
@@ -30,11 +34,13 @@ import java.io.File;
  */
 public class ShortVideoDialog extends DialogFragment implements View.OnClickListener {
 
-    private TextView mTVVideo;
+    private static final String TAG = "ShortVideoDialog";
+    private RelativeLayout mTVVideo;
     private ImageView mIVClose;
-    private TextView mTVEditer;
-    private TextView mTVPicture;
-    private TextView mTVChorus;
+    private RelativeLayout mTVEditer;
+    private RelativeLayout mTVPicture;
+    private RelativeLayout mTVChorus;
+    private RelativeLayout mTVTriple;
 
     private ProgressDialog mDownloadProgressDialog;
 
@@ -47,17 +53,19 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
         dialog.setContentView(R.layout.dialog_short_video);
         dialog.setCanceledOnTouchOutside(true);
 
-        mTVVideo = (TextView) dialog.findViewById(R.id.tv_record);
-        mTVEditer = (TextView) dialog.findViewById(R.id.tv_editer);
-        mTVPicture = (TextView) dialog.findViewById(R.id.tv_picture);
-        mTVChorus = (TextView) dialog.findViewById(R.id.tv_chorus);
+        mTVVideo = (RelativeLayout) dialog.findViewById(R.id.tv_record);
+        mTVEditer = (RelativeLayout) dialog.findViewById(R.id.tv_editer);
+        mTVPicture = (RelativeLayout) dialog.findViewById(R.id.tv_picture);
+        mTVChorus = (RelativeLayout) dialog.findViewById(R.id.tv_chorus);
         mIVClose = (ImageView) dialog.findViewById(R.id.iv_close);
+        mTVTriple = (RelativeLayout) dialog.findViewById(R.id.tv_triple_chorus);
 
         mTVVideo.setOnClickListener(this);
         mTVEditer.setOnClickListener(this);
         mTVPicture.setOnClickListener(this);
         mTVChorus.setOnClickListener(this);
         mIVClose.setOnClickListener(this);
+        mTVTriple.setOnClickListener(this);
 
         // 设置宽度为屏宽, 靠近屏幕底部。
         Window window = dialog.getWindow();
@@ -94,33 +102,52 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
                 startActivity(intent2);
                 break;
             case R.id.tv_chorus:
-                prepareToDownload();
+                prepareToDownload(false);
                 break;
             case R.id.iv_close:
                 dismissDialog();
                 break;
+            case R.id.tv_triple_chorus:
+                prepareToDownload(true);
+                break;
         }
     }
 
-    private void prepareToDownload() {
-        File downloadFileFolder = new File(Environment.getExternalStorageDirectory(), UGCKitConstants.OUTPUT_DIR_NAME);
+    private void prepareToDownload(final boolean isTriple) {
+        if (getActivity() == null) {
+            return;
+        }
+        File sdcardDir = getActivity().getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            TXCLog.e(TAG, "prepareToDownload sdcardDir is null");
+            return;
+        }
+        File downloadFileFolder = new File(sdcardDir, UGCKitConstants.OUTPUT_DIR_NAME);
         File downloadFile = new File(downloadFileFolder, DownloadUtil.getNameFromUrl(UGCKitConstants.CHORUS_URL));
         if (downloadFile.exists()) {
             mDownloadProgressDialog.dismiss();
-            startRecordActivity(downloadFile.getAbsolutePath());
+            if (isTriple) {
+                startTripleActivity(downloadFile.getAbsolutePath());
+            } else {
+                startRecordActivity(downloadFile.getAbsolutePath());
+            }
             return;
         }
         if (mDownloadProgressDialog != null) {
             mDownloadProgressDialog.show();
         }
-        DownloadUtil.get().download(UGCKitConstants.CHORUS_URL, UGCKitConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
+        DownloadUtil.get(getActivity()).download(UGCKitConstants.CHORUS_URL, UGCKitConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
             @Override
             public void onDownloadSuccess(final String path) {
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mDownloadProgressDialog.dismiss();
-                        startRecordActivity(path);
+                        if (isTriple) {
+                            startTripleActivity(path);
+                        } else {
+                            startRecordActivity(path);
+                        }
                     }
                 });
             }
@@ -153,6 +180,13 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
         Intent intent = new Intent(getActivity(), TCVideoFollowRecordActivity.class);
         intent.putExtra(UGCKitConstants.VIDEO_PATH, path);
         startActivity(intent);
+    }
+
+    private void startTripleActivity(String path) {
+        Intent intent = new Intent(getActivity(), TCVideoTripleScreenActivity.class);//TCVideoPreviewActivity
+        intent.putExtra(UGCKitConstants.VIDEO_PATH, path);
+        startActivity(intent);
+
     }
 
     private void dismissDialog() {

@@ -19,12 +19,14 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
     private int mCurrentState;
     private long mPreviewAtTime;
     public boolean isPreviewFinish;
-    private List<OnPreviewListener> progressListener;
-    private List<OnPlayStateListener> stateListener;
+    private List<OnPreviewListener> mProgressListenerList;
+    private List<OnPlayStateListener> mStateListenerList;
+    private Object mProgressObject = new Object();
+    private Object mStateObject = new Object();
 
     private PlayerManagerKit() {
-        progressListener = new ArrayList<OnPreviewListener>();
-        stateListener = new ArrayList<OnPlayStateListener>();
+        mProgressListenerList = new ArrayList<OnPreviewListener>();
+        mStateListenerList = new ArrayList<OnPlayStateListener>();
         mCurrentState = PlayState.STATE_NONE;
     }
 
@@ -204,71 +206,103 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
     }
 
     public void addOnPreviewLitener(OnPreviewListener listener) {
-        progressListener.add(listener);
+        synchronized (mProgressObject) {
+            mProgressListenerList.add(listener);
+        }
     }
 
     public void removeOnPreviewListener(OnPreviewListener listener) {
-        progressListener.remove(listener);
+        synchronized (mProgressObject) {
+            mProgressListenerList.remove(listener);
+        }
+    }
+
+    public void removeAllPreviewListener() {
+        synchronized (mProgressObject) {
+            mProgressListenerList.clear();
+        }
     }
 
     public void notifyPreviewProgress(int time) {
-        for (int i = 0; i < progressListener.size(); i++) {
-            OnPreviewListener listener = progressListener.get(i);
-            if (listener != null) {
-                listener.onPreviewProgress(time);
+        synchronized (mProgressObject) {
+            for (int i = 0; i < mProgressListenerList.size(); i++) {
+                OnPreviewListener listener = mProgressListenerList.get(i);
+                if (listener != null) {
+                    listener.onPreviewProgress(time);
+                }
             }
         }
     }
 
     public void notifyPreviewFinish() {
-        for (int i = 0; i < progressListener.size(); i++) {
-            OnPreviewListener listener = progressListener.get(i);
-            if (listener != null) {
-                listener.onPreviewFinish();
+        synchronized (mProgressObject) {
+            for (int i = 0; i < mProgressListenerList.size(); i++) {
+                OnPreviewListener listener = mProgressListenerList.get(i);
+                if (listener != null) {
+                    listener.onPreviewFinish();
+                }
             }
         }
     }
 
     public void addOnPlayStateLitener(OnPlayStateListener listener) {
-        stateListener.add(listener);
+        synchronized (mStateObject) {
+            mStateListenerList.add(listener);
+        }
     }
 
     public void removeOnPlayStateListener(OnPlayStateListener listener) {
-        stateListener.remove(listener);
+        synchronized (mStateObject) {
+            mStateListenerList.remove(listener);
+        }
+    }
+
+    public void removeAllPlayStateListener() {
+        synchronized (mStateObject) {
+            mStateListenerList.clear();
+        }
     }
 
     public void notifyStart() {
-        for (int i = 0; i < stateListener.size(); i++) {
-            OnPlayStateListener listener = stateListener.get(i);
-            if (listener != null) {
-                listener.onPlayStateStart();
+        synchronized (mStateObject) {
+            for (int i = 0; i < mStateListenerList.size(); i++) {
+                OnPlayStateListener listener = mStateListenerList.get(i);
+                if (listener != null) {
+                    listener.onPlayStateStart();
+                }
             }
         }
     }
 
     public void notifyStop() {
-        for (int i = 0; i < stateListener.size(); i++) {
-            OnPlayStateListener listener = stateListener.get(i);
-            if (listener != null) {
-                listener.onPlayStateStop();
+        synchronized (mStateObject) {
+            for (int i = 0; i < mStateListenerList.size(); i++) {
+                OnPlayStateListener listener = mStateListenerList.get(i);
+                if (listener != null) {
+                    listener.onPlayStateStop();
+                }
             }
         }
     }
 
     public void notifyResume() {
-        for (int i = 0; i < stateListener.size(); i++) {
-            OnPlayStateListener listener = stateListener.get(i);
-            if (listener != null) {
-                listener.onPlayStateResume();
+        synchronized (mStateObject) {
+            for (int i = 0; i < mStateListenerList.size(); i++) {
+                OnPlayStateListener listener = mStateListenerList.get(i);
+                if (listener != null) {
+                    listener.onPlayStateResume();
+                }
             }
         }
     }
 
     public void notifyPause() {
-        for (int i = 0; i < stateListener.size(); i++) {
-            OnPlayStateListener listener = stateListener.get(i);
-            if (listener != null) {
-                listener.onPlayStatePause();
+        synchronized (mStateObject) {
+            for (int i = 0; i < mStateListenerList.size(); i++) {
+                OnPlayStateListener listener = mStateListenerList.get(i);
+                if (listener != null) {
+                    listener.onPlayStatePause();
+                }
             }
         }
     }

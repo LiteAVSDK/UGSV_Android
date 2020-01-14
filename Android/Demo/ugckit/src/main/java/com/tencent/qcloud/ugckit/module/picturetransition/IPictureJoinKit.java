@@ -5,11 +5,11 @@ import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import java.util.List;
 
 /**
- * 腾讯云短视频TUIKit({@code TCPictureTransitionKit}):图片合成。<br>
+ * 腾讯云短视频UGCKit({@code TCPictureTransitionKit}):图片合成。<br>
  * 本组件功能包含多张图片设置转场动画，生成一个视频文件。<br>
- * 您可以通过TUIkit很简单搭建图片合成功能
+ * 您可以通过UGCKit很简单搭建图片合成功能
  * <p>
- * 如下演示了TUIKit图片合成简单用法：<br>
+ * 如下演示了UGCKit图片合成简单用法：<br>
  * 1、在xml中设置
  * <pre>
  * {@code

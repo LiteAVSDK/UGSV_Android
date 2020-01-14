@@ -16,14 +16,19 @@ import android.view.WindowManager;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
+import com.tencent.qcloud.ugckit.module.mixrecord.IVideoMixRecordKit;
+import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordActionData;
+import com.tencent.qcloud.ugckit.UGCKitVideoMixRecord;
+import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfigBuildInfo;
 import com.tencent.qcloud.xiaoshipin.R;
-import com.tencent.qcloud.ugckit.module.followRecord.FollowRecordInfo;
-import com.tencent.qcloud.ugckit.module.followRecord.IVideoFollowRecordKit;
-import com.tencent.qcloud.ugckit.UGCKitVideoFollowRecord;
+import com.tencent.qcloud.xiaoshipin.videochoose.TCTripleRecordVideoPickerActivity;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerActivity;
+import com.tencent.ugc.TXRecordCommon;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.tencent.qcloud.xiaoshipin.videorecord.TCVideoTripleScreenActivity.REQUEST_CODE;
 
 /**
  * 合唱
@@ -32,7 +37,7 @@ public class TCVideoFollowRecordActivity extends FragmentActivity {
 
     private static final String TAG = "TCVideoFollowRecordActivity";
     // 视频合唱组件
-    private UGCKitVideoFollowRecord mUGCKitVideoFollowRecord;
+    private UGCKitVideoMixRecord mUGCKitVideoFollowRecord;
     // 视频合唱跟拍的视频路径
     private String mFollowShotVideoPath;
 
@@ -43,34 +48,52 @@ public class TCVideoFollowRecordActivity extends FragmentActivity {
         initWindowParam();
 
         // 必须在代码中设置主题(setTheme)或者在AndroidManifest中设置主题(android:theme)
-        setTheme(R.style.FollowRecordActivityTheme);
+        setTheme(R.style.MixRecordActivityTheme);
 
         initData();
         setContentView(R.layout.activity_video_chorus);
 
-        mUGCKitVideoFollowRecord = (UGCKitVideoFollowRecord) findViewById(R.id.video_chorus);
+        mUGCKitVideoFollowRecord = (UGCKitVideoMixRecord) findViewById(R.id.video_chorus);
 
-        FollowRecordInfo followRecordInfo = new FollowRecordInfo();
-        followRecordInfo.playPath = mFollowShotVideoPath;
-
-        mUGCKitVideoFollowRecord.setFollowRecordInfo(followRecordInfo);
+        List<String> paths = new ArrayList<>();
+        paths.add(mFollowShotVideoPath);
+        MixRecordConfigBuildInfo buildInfo = new MixRecordConfigBuildInfo(paths, 0, 720 * 2, 1280, TXRecordCommon.VIDEO_ASPECT_RATIO_9_16);
+        mUGCKitVideoFollowRecord.setMixRecordInfo(buildInfo);
         mUGCKitVideoFollowRecord.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        mUGCKitVideoFollowRecord.setOnFollowRecordListener(new IVideoFollowRecordKit.OnFollowRecordListener() {
+        mUGCKitVideoFollowRecord.setOnMixRecordListener(new IVideoMixRecordKit.OnMixRecordListener() {
             @Override
-            public void onFollowRecordCanceled() {
+            public void onMixRecordCanceled() {
                 finish();
             }
 
             @Override
-            public void onFollowRecordCompleted(UGCKitResult ugcKitResult) {
+            public void onMixRecordCompleted(UGCKitResult ugcKitResult) {
                 startEditActivity();
             }
+
+            @Override
+            public void onMixRecordAction(IVideoMixRecordKit.MixRecordActionT actionT, Object object) {
+                if (actionT == IVideoMixRecordKit.MixRecordActionT.MIX_RECORD_ACTION_T_SELECT) {
+                    MixRecordActionData data = (MixRecordActionData) object;
+                    Intent intent = new Intent(TCVideoFollowRecordActivity.this, TCTripleRecordVideoPickerActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+            }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && data != null) {
+            String path = data.getStringExtra("file");
+            mUGCKitVideoFollowRecord.updateMixFile(-1, path);
+        }
     }
 
     private void startEditActivity() {

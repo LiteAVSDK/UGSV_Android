@@ -106,8 +106,8 @@ public class EffectEditer {
     public void clear() {
         this.bgmPath = null;
         this.bgmPos = -1;
-        this.bgmVolume = 0.5f;
-        this.videoVolume = 0.5f;
+        this.bgmVolume = 0f;
+        this.videoVolume = 1f;
         this.bgmStartTime = -1;
         this.bgmEndTime = -1;
     }

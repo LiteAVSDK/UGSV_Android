@@ -23,9 +23,6 @@ public class Config {
     }
 
     public void clearConfig() {
-        // 清除对TXVideoEditer的引用以及相关配置
-        VideoEditerSDK.getInstance().clear();
-
         // 清空BGM的设置
         DraftEditer.getInstance().clear();
         EffectEditer.getInstance().clear();

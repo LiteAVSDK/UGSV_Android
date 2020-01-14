@@ -10,9 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 
-import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
-import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.module.effect.AbsVideoEffectUI;
 import com.tencent.qcloud.ugckit.module.effect.ConfigureLoader;
 import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
@@ -75,6 +73,8 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
             public void onClick(View v) {
                 // 点击"返回",清除当前设置的视频特效
                 DraftEditer.getInstance().clear();
+                // 还原已经设置给SDK的特效
+                VideoEditerSDK.getInstance().restore();
 
                 PlayerManagerKit.getInstance().stopPlay();
 
@@ -113,6 +113,8 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
 
     @Override
     public void release() {
+        PlayerManagerKit.getInstance().removeAllPreviewListener();
+        PlayerManagerKit.getInstance().removeAllPlayStateListener();
         TelephonyUtil.getInstance().uninitPhoneListener();
     }
 

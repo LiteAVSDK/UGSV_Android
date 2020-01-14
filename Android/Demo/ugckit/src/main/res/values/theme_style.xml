@@ -64,30 +64,31 @@
         <item name="recordTimelineSelectionColor">@color/record_progress_pending</item>
         <item name="recordTimelineSeperatorColor">@color/white</item>
         <!-- 美颜面板 -->
-        <item name="beautyPannelSmoothIcon">@drawable/ic_beauty_smooth</item>
-        <item name="beautyPannelNaturalIcon">@drawable/ic_beauty_natural</item>
-        <item name="beautyPannelPituIcon">@drawable/ic_beauty_pitu</item>
-        <item name="beautyPannelWhiteIcon">@drawable/ic_beauty_white</item>
-        <item name="beautyPannelRuddyIcon">@drawable/ic_beauty_ruddy</item>
-        <item name="beautyPannelBigeyeIcon">@drawable/ic_beauty_bigeye</item>
-        <item name="beautyPannelFaceslimIcon">@drawable/ic_beauty_faceslim</item>
-        <item name="beautyPannelFacevIcon">@drawable/ic_beauty_facev</item>
-        <item name="beautyPannelChinIcon">@drawable/ic_beauty_chin</item>
-        <item name="beautyPannelFaceshortIcon">@drawable/ic_beauty_faceshort</item>
-        <item name="beautyPannelNoseslimIcon">@drawable/ic_beauty_noseslim</item>
-        <item name="beautyPannelEyeLightenIcon">@drawable/ic_eye_bright</item>
-        <item name="beautyPannelToothWhiteIcon">@drawable/ic_tooth_white</item>
-        <item name="beautyPannelPounchRemoveIcon">@drawable/ic_pounch_remove</item>
-        <item name="beautyPannelSmileLinesRemoveIcon">@drawable/ic_smilelines</item>
-        <item name="beautyPannelWrinkleIcon">@drawable/ic_wrinkles</item>
-        <item name="beautyPannelForeheadIcon">@drawable/ic_forehead</item>
-        <item name="beautyPannelEyeDistanceIcon">@drawable/ic_eye_distance</item>
-        <item name="beautyPannelEyeAngleIcon">@drawable/ic_eye_angle</item>
-        <item name="beautyPannelMouthShapeIcon">@drawable/ic_mouseshape</item>
-        <item name="beautyPannelNoseWingIcon">@drawable/ic_nose_wing</item>
-        <item name="beautyPannelNosePositionIcon">@drawable/ic_nose_position</item>
-        <item name="beautyPannelMouseWidthIcon">@drawable/ic_mouse_width</item>
-        <item name="beautyPannelFaceShapeIcon">@drawable/ic_faceshape</item>
+        <item name="beautyPanelColorPrimary">@color/colorRed</item>
+        <item name="beautyPanelSmoothIcon">@drawable/ic_beauty_smooth</item>
+        <item name="beautyPanelNaturalIcon">@drawable/ic_beauty_natural</item>
+        <item name="beautyPanelPituIcon">@drawable/ic_beauty_pitu</item>
+        <item name="beautyPanelWhiteIcon">@drawable/ic_beauty_white</item>
+        <item name="beautyPanelRuddyIcon">@drawable/ic_beauty_ruddy</item>
+        <item name="beautyPanelBigeyeIcon">@drawable/ic_beauty_bigeye</item>
+        <item name="beautyPanelFaceslimIcon">@drawable/ic_beauty_faceslim</item>
+        <item name="beautyPanelFacevIcon">@drawable/ic_beauty_facev</item>
+        <item name="beautyPanelChinIcon">@drawable/ic_beauty_chin</item>
+        <item name="beautyPanelFaceshortIcon">@drawable/ic_beauty_faceshort</item>
+        <item name="beautyPanelNoseslimIcon">@drawable/ic_beauty_noseslim</item>
+        <item name="beautyPanelEyeLightenIcon">@drawable/ic_eye_bright</item>
+        <item name="beautyPanelToothWhiteIcon">@drawable/ic_tooth_white</item>
+        <item name="beautyPanelPounchRemoveIcon">@drawable/ic_pounch_remove</item>
+        <item name="beautyPanelSmileLinesRemoveIcon">@drawable/ic_smilelines</item>
+        <item name="beautyPanelWrinkleIcon">@drawable/ic_wrinkles</item>
+        <item name="beautyPanelForeheadIcon">@drawable/ic_forehead</item>
+        <item name="beautyPanelEyeDistanceIcon">@drawable/ic_eye_distance</item>
+        <item name="beautyPanelEyeAngleIcon">@drawable/ic_eye_angle</item>
+        <item name="beautyPanelMouthShapeIcon">@drawable/ic_mouseshape</item>
+        <item name="beautyPanelNoseWingIcon">@drawable/ic_nose_wing</item>
+        <item name="beautyPanelNosePositionIcon">@drawable/ic_nose_position</item>
+        <item name="beautyPanelMouseWidthIcon">@drawable/ic_mouse_width</item>
+        <item name="beautyPanelFaceShapeIcon">@drawable/ic_faceshape</item>
 
         <!-- 音效面板 -->
         <item name="audioEffectDisabled">@drawable/ic_effect_non</item>
@@ -189,7 +190,7 @@
         <item name="editerConfirmIcon">@drawable/ic_edit_effect_confirm_selector</item>
     </style>
 
-    <style name="FollowRecordStyle" parent="RecordStyle">
+    <style name="MixRecordStyle" parent="RecordStyle">
         <item name="countDownIcon">@drawable/btn_timer</item>
     </style>
 

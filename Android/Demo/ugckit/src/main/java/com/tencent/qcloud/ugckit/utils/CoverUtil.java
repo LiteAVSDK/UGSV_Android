@@ -6,7 +6,10 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.ugc.TXVideoInfoReader;
 
@@ -23,6 +26,7 @@ public class CoverUtil {
     private String TAG = "CoverUtil";
     @NonNull
     private static CoverUtil instance = new CoverUtil();
+    private String mVideoPath;
 
     private CoverUtil() {
     }
@@ -32,10 +36,9 @@ public class CoverUtil {
         return instance;
     }
 
-    private String mPath;
 
     public void setInputPath(String path) {
-        mPath = path;
+        mVideoPath = path;
     }
 
     /**
@@ -46,21 +49,35 @@ public class CoverUtil {
         AsyncTask<Void, String, String> task = new AsyncTask<Void, String, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                File outputVideo = new File(mPath);
+                File outputVideo = new File(mVideoPath);
                 if (!outputVideo.exists()) {
                     return null;
                 }
-                Bitmap bitmap = TXVideoInfoReader.getInstance().getSampleImage(0, mPath);
+                Bitmap bitmap = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getSampleImage(0, mVideoPath);
                 if (bitmap == null) {
+                    Log.e(TAG, "TXVideoInfoReader getSampleImage bitmap is null");
                     return null;
                 }
-                String folder = Environment.getExternalStorageDirectory() + File.separator + UGCKitConstants.DEFAULT_MEDIA_PACK_FOLDER;
+                File sdcardDir = UGCKit.getAppContext().getExternalFilesDir(null);
+                if (sdcardDir == null) {
+                    Log.e(TAG, "sdcardDir is null");
+                    return null;
+                }
+                String folder = sdcardDir + File.separator + UGCKitConstants.DEFAULT_MEDIA_PACK_FOLDER;
                 File appDir = new File(folder);
                 if (!appDir.exists()) {
                     appDir.mkdirs();
                 }
                 String fileName = "thumbnail" + ".jpg";
                 File file = new File(appDir, fileName);
+                if (file.exists()) {
+                    file.delete();
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 try {
                     FileOutputStream fos = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);

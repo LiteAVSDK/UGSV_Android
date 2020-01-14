@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import com.tencent.liteav.basic.log.TXCLog;
 
+import com.tencent.liteav.demo.beauty.BeautyPanel;
+import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyPannel;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyParams;
 
 /**
  * 滑动滤镜View
@@ -79,7 +79,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
     private OnRecordFilterListener mOnRecordFilterListener;
     private float mLastScaleFactor;
     private float mScaleFactor;
-    private BeautyPannel mBeautyPannel;
+    private BeautyPanel mBeautyPanel;
     private FrameLayout mMaskLayout;
 
     public ScrollFilterView(@NonNull Context context) {
@@ -166,23 +166,26 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
                 mLeftBitmapRatio = leftRatio;
                 if (mIsNeedChange) {
                     mIsNeedChange = false;
-                    doTextAnimator();
+                    doTextAnimator(mCurFilterIndex);
                 } else {
                     mIsDoingAnimator = false;
                 }
 
                 // 保存到params 以便程序切换后恢复滤镜
-                BeautyParams beautyParams = UGCKitRecordConfig.getInstance().mBeautyParams;
-                if (mCurFilterIndex == mLeftIndex) {
-                    beautyParams.mFilterBmp = mLeftBitmap;
-                } else {
-                    beautyParams.mFilterBmp = mRightBitmap;
+                UGCKitRecordConfig config = VideoRecordSDK.getInstance().getConfig();
+                BeautyParams beautyParams = config.mBeautyParams;
+                if (beautyParams != null) {
+                    if (mCurFilterIndex == mLeftIndex) {
+                        beautyParams.mFilterBmp = mLeftBitmap;
+                    } else {
+                        beautyParams.mFilterBmp = mRightBitmap;
+                    }
+                    mBeautyPanel.setCurrentFilterIndex(mCurFilterIndex);
+                    beautyParams.mFilterMixLevel = mBeautyPanel.getFilterProgress(mCurFilterIndex);
                 }
-                mBeautyPannel.setCurrentFilterIndex(mCurFilterIndex);
-                beautyParams.mFilterMixLevel = mBeautyPannel.getFilterProgress(mCurFilterIndex);
             }
-            float leftSpecialRatio = mBeautyPannel.getFilterProgress(mLeftIndex) / 10.f;
-            float rightSpecialRatio = mBeautyPannel.getFilterProgress(mRightIndex) / 10.f;
+            float leftSpecialRatio = mBeautyPanel.getFilterProgress(mLeftIndex) / 10.f;
+            float rightSpecialRatio = mBeautyPanel.getFilterProgress(mRightIndex) / 10.f;
             VideoRecordSDK.getInstance().setFilter(mLeftBitmap, leftSpecialRatio, mRightBitmap, rightSpecialRatio, leftRatio);
         }
     };
@@ -203,9 +206,10 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
 
     /**
      * 设置当前滤镜的名字
+     * @param index
      */
-    public void doTextAnimator() {
-        String filterName = mBeautyPannel.getBeautyFilterArr()[mCurFilterIndex];
+    public void doTextAnimator(int index) {
+        String filterName = mBeautyPanel.getBeautyFilterArr()[index];
         mTvFilter.setText(filterName);
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(400);
@@ -260,7 +264,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
         boolean moveRight = moveEvent.getX() > downEvent.getX();
         if (moveRight && mCurFilterIndex == 0) {
             return true;
-        } else if (!moveRight && mCurFilterIndex == mBeautyPannel.getBeautyFilterArr().length - 1) {
+        } else if (!moveRight && mCurFilterIndex == mBeautyPanel.getBeautyFilterArr().length - 1) {
             return true;
         } else {
             mStartScroll = true;
@@ -273,12 +277,12 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
             }
 
             if (mLastLeftIndex != mLeftIndex) { //如果不一样，才加载bitmap出来；避免滑动过程中重复加载
-                mLeftBitmap = mBeautyPannel.getFilterBitmapByIndex(mLeftIndex);
+                mLeftBitmap = mBeautyPanel.getFilterBitmapByIndex(mLeftIndex);
                 mLastLeftIndex = mLeftIndex;
             }
 
             if (mLastRightIndex != mRightIndex) {//如果不一样，才加载bitmap出来；避免滑动过程中重复加载
-                mRightBitmap = mBeautyPannel.getFilterBitmapByIndex(mRightIndex);
+                mRightBitmap = mBeautyPanel.getFilterBitmapByIndex(mRightIndex);
                 mLastRightIndex = mRightIndex;
             }
 
@@ -286,8 +290,8 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
             float dis = moveEvent.getX() - downEvent.getX();
             float leftBitmapRatio = Math.abs(dis) / (width * 1.0f);
 
-            float leftSpecialRatio = mBeautyPannel.getFilterProgress(mLeftIndex) / 10.0f;
-            float rightSpecialRatio = mBeautyPannel.getFilterProgress(mRightIndex) / 10.0f;
+            float leftSpecialRatio = mBeautyPanel.getFilterProgress(mLeftIndex) / 10.0f;
+            float rightSpecialRatio = mBeautyPanel.getFilterProgress(mRightIndex) / 10.0f;
             mMoveRatio = leftBitmapRatio;
             if (moveRight) {
                 leftBitmapRatio = leftBitmapRatio;
@@ -354,8 +358,8 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
         mOnRecordFilterListener = listener;
     }
 
-    public void setBeautyPannel(BeautyPannel beautyPannel) {
-        mBeautyPannel = beautyPannel;
+    public void setBeautyPannel(BeautyPanel beautyPannel) {
+        mBeautyPanel = beautyPannel;
     }
 
     public interface OnRecordFilterListener {

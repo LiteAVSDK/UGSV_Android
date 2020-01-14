@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,9 +108,15 @@ public class VideoWorkProgressFragment extends DialogFragment {
 
     @Override
     public void show(FragmentManager manager, String tag) {
-        //此处不使用用.show(...)的方式加载dialogfragment，避免IllegalStateException
         try {
-            manager.beginTransaction().add(this, tag).commitAllowingStateLoss();
+            if (!isAdded() && null == manager.findFragmentByTag(tag)) {
+                manager.beginTransaction().add(this, tag).commitAllowingStateLoss();
+            } else {
+                manager.beginTransaction().show(this).commitAllowingStateLoss();
+            }
+            //Fragment already added FIXBUG:commit()并不立即执行transaction中包含的动作,而是把它加入到UI线程队列中.
+            //如果想要立即执行,可以在commit之后立即调用FragmentManager的executePendingTransactions()方法
+            manager.executePendingTransactions();
         } catch (Exception e) {
             e.printStackTrace();
             try {

@@ -31,6 +31,11 @@ public interface IRecordButton {
          * 拍照
          */
         void onTakePhoto();
+
+        /**
+         * 删除
+         */
+        void onDeleteParts(int partsSize, long duration);
     }
 
     /**

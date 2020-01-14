@@ -201,5 +201,7 @@
     <dimen name="video_progress_height">50dp</dimen>
     <dimen name="video_thumbnail_width">50dp</dimen>
     <dimen name="repeat_slider_width">26dp</dimen>
+    <dimen name="tv_short_dialog_width">60dp</dimen>
+    <dimen name="tv_short_dialog_height">60dp</dimen>
     <!-- UGC*******************************************************************************************************************************-->
 </resources>

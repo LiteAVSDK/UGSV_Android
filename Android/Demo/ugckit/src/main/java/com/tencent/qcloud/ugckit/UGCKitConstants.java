@@ -28,6 +28,7 @@ public class UGCKitConstants {
 
     public static final String VIDEO_PATH = "key_video_editer_path";
     public static final String VIDEO_COVERPATH = "coverpath";
+    public static final String VIDEO_URI = "key_video_editer_uri_path";
 
     public static final String VIDEO_RECORD_NO_CACHE = "nocache";
     public static final String VIDEO_RECORD_DURATION = "duration";
@@ -77,11 +78,6 @@ public class UGCKitConstants {
     public static final String RECORD_CONFIG_GOP = "record_config_gop";
     public static final String RECORD_CONFIG_NEED_EDITER = "record_config_go_editer";
     public static final String RECORD_CONFIG_TOUCH_FOCUS = "record_config_touch_focus";
-
-    /**
-     * 系统相册路径
-     */
-    public static final String DCIM_PATH = "/sdcard/DCIM/Camera/";
 
     public static final String ERROR_MSG_NET_DISCONNECTED = "网络异常，请检查网络";
     public static final String PLAYER_DEFAULT_VIDEO = "play_default_video";

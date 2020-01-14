@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -204,8 +205,14 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     private void initData() {
-        mPasterSDcardFolder = getActivity().getExternalFilesDir(null) + File.separator + PASTER_FOLDER_NAME + File.separator;
-        mAnimatedPasterSDcardFolder = getActivity().getExternalFilesDir(null) + File.separator + ANIMATED_PASTER_FOLDER_NAME + File.separator;
+        FragmentActivity fragmentActivity = getActivity();
+        if (fragmentActivity != null) {
+            File sdcardDir = fragmentActivity.getExternalFilesDir(null);
+            if (sdcardDir != null) {
+                mPasterSDcardFolder = sdcardDir + File.separator + PASTER_FOLDER_NAME + File.separator;
+                mAnimatedPasterSDcardFolder = sdcardDir + File.separator + ANIMATED_PASTER_FOLDER_NAME + File.separator;
+            }
+        }
 
         mTXVideoEditer = VideoEditerSDK.getInstance().getEditer();
 
@@ -241,15 +248,21 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
                 switch (msg.what) {
                     case MSG_COPY_PASTER_FILES:
                         if (mIsUpdatePng) {
-                            FileUtils.deleteFile(mPasterSDcardFolder);
-                            FileUtils.deleteFile(mAnimatedPasterSDcardFolder);
+                            if (!TextUtils.isEmpty(mPasterSDcardFolder)) {
+                                FileUtils.deleteFile(mPasterSDcardFolder);
+                            }
+                            if (!TextUtils.isEmpty(mAnimatedPasterSDcardFolder)) {
+                                FileUtils.deleteFile(mAnimatedPasterSDcardFolder);
+                            }
                         }
-                        File pasterFolder = new File(mPasterSDcardFolder);
-                        File animatedPasterFolder = new File(mAnimatedPasterSDcardFolder);
-                        if (!pasterFolder.exists() || !animatedPasterFolder.exists()) {
-                            copyPasterFilesToSdcard();
+                        if (!TextUtils.isEmpty(mPasterSDcardFolder)) {
+                            File pasterFolder = new File(mPasterSDcardFolder);
+                            File animatedPasterFolder = new File(mAnimatedPasterSDcardFolder);
+                            if (!pasterFolder.exists() || !animatedPasterFolder.exists()) {
+                                copyPasterFilesToSdcard();
+                            }
+                            preparePasterInfoToShow();
                         }
-                        preparePasterInfoToShow();
                         break;
                 }
             }
@@ -297,14 +310,17 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     private void copyPasterFilesToSdcard() {
-        File pasterFolder = new File(mPasterSDcardFolder);
-        if (!pasterFolder.exists()) {
-            FileUtils.copyFilesFromAssets(getActivity(), PASTER_FOLDER_NAME, mPasterSDcardFolder);
+        if (!TextUtils.isEmpty(mPasterSDcardFolder)) {
+            File pasterFolder = new File(mPasterSDcardFolder);
+            if (!pasterFolder.exists()) {
+                FileUtils.copyFilesFromAssets(getActivity(), PASTER_FOLDER_NAME, mPasterSDcardFolder);
+            }
         }
-
-        File animatedFolder = new File(mAnimatedPasterSDcardFolder);
-        if (!animatedFolder.exists()) {
-            FileUtils.copyFilesFromAssets(getActivity(), ANIMATED_PASTER_FOLDER_NAME, mAnimatedPasterSDcardFolder);
+        if (!TextUtils.isEmpty(mAnimatedPasterSDcardFolder)) {
+            File animatedFolder = new File(mAnimatedPasterSDcardFolder);
+            if (!animatedFolder.exists()) {
+                FileUtils.copyFilesFromAssets(getActivity(), ANIMATED_PASTER_FOLDER_NAME, mAnimatedPasterSDcardFolder);
+            }
         }
     }
 
@@ -331,8 +347,12 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
     @NonNull
     private List<TCPasterInfo> getPasterInfoList(int pasterType, String fileFolder, String fileName) {
-        String filePath = fileFolder + fileName;
         List<TCPasterInfo> pasterInfoList = new ArrayList<TCPasterInfo>();
+
+        if (TextUtils.isEmpty(fileFolder)) {
+            return pasterInfoList;
+        }
+        String filePath = fileFolder + fileName;
         try {
             String jsonString = FileUtils.getJsonFromFile(filePath);
             if (TextUtils.isEmpty(jsonString)) {
@@ -417,11 +437,16 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             }
             int keyFrameIndex = animatedPasterConfig.keyframe;
             String keyFrameName = animatedPasterConfig.frameArray.get(keyFrameIndex - 1).pictureName;
-            pasterPath = mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator + keyFrameName + ".png";
-            bitmap = BitmapFactory.decodeFile(pasterPath);
+
+            if (!TextUtils.isEmpty(mAnimatedPasterSDcardFolder)) {
+                pasterPath = mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator + keyFrameName + ".png";
+                bitmap = BitmapFactory.decodeFile(pasterPath);
+            }
         } else if (pasterType == PasterView.TYPE_CHILD_VIEW_PASTER) {
-            pasterPath = mPasterSDcardFolder + tcPasterInfo.getName() + File.separator + tcPasterInfo.getName() + ".png";
-            bitmap = BitmapFactory.decodeFile(pasterPath);
+            if (!TextUtils.isEmpty(mPasterSDcardFolder)) {
+                pasterPath = mPasterSDcardFolder + tcPasterInfo.getName() + File.separator + tcPasterInfo.getName() + ".png";
+                bitmap = BitmapFactory.decodeFile(pasterPath);
+            }
         }
         // 更新一下默认配置的时间
         updateDefaultTime();
@@ -445,7 +470,9 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         mVideoProgressController.setCurrentTimeMs(mDefaultWordStartTime);
 
         mFloatLayerViewGroup.addOperationView(pasterOperationView);
-        pasterOperationView.setImageBitamp(bitmap);
+        if (bitmap != null) {
+            pasterOperationView.setImageBitamp(bitmap);
+        }
         mPasterPannel.dismiss();
 
         // 更新下方的贴纸列表

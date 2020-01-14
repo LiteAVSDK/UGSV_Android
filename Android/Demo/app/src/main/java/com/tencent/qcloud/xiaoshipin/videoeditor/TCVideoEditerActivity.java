@@ -21,9 +21,6 @@ import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.videopublish.TCVideoPublisherActivity;
 
 
-/**
- * Created by hans on 2017/11/6.
- */
 public class TCVideoEditerActivity extends FragmentActivity implements View.OnClickListener {
 
     private static final String TAG = "TCVideoEditerActivity";
@@ -44,6 +41,17 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
     private TextView mTvPaster;
     // 字幕
     private TextView mTvSubtitle;
+    private IVideoEditKit.OnEditListener mOnVideoEditListener = new IVideoEditKit.OnEditListener() {
+        @Override
+        public void onEditCompleted(UGCKitResult ugcKitResult) {
+            startPreviewActivity(ugcKitResult);
+        }
+
+        @Override
+        public void onEditCanceled() {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,17 +67,6 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         }
         // 初始化播放器
         mUGCKitVideoEdit.initPlayer();
-        mUGCKitVideoEdit.setOnVideoEditListener(new IVideoEditKit.OnEditListener() {
-            @Override
-            public void onEditCompleted(UGCKitResult ugcKitResult) {
-                startPreviewActivity(ugcKitResult);
-            }
-
-            @Override
-            public void onEditCanceled() {
-                finish();
-            }
-        });
 
         mTvBgm = (TextView) findViewById(R.id.tv_bgm);
         mTvMotion = (TextView) findViewById(R.id.tv_motion);
@@ -104,6 +101,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
+        mUGCKitVideoEdit.setOnVideoEditListener(mOnVideoEditListener);
         mUGCKitVideoEdit.start();
     }
 
@@ -111,6 +109,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
     protected void onPause() {
         super.onPause();
         mUGCKitVideoEdit.stop();
+        mUGCKitVideoEdit.setOnVideoEditListener(null);
     }
 
     @Override

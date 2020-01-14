@@ -7,7 +7,6 @@ import android.support.multidex.MultiDexApplication;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
-import com.tencent.qcloud.ugckit.utils.TCHttpEngine;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
@@ -71,8 +70,6 @@ public class TCApplication extends MultiDexApplication {
         CrashReport.initCrashReport(getApplicationContext(), UGCKitConstants.BUGLY_APPID, true, strategy);
 
         TCUserMgr.getInstance().initContext(getApplicationContext());
-        TCHttpEngine.getInstance().initContext(getApplicationContext());
-
         TXLog.w(TAG, "app init sdk");
     }
 

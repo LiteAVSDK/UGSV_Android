@@ -13,7 +13,6 @@ import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
 
 /**
- * Created by carolsuo on 2017/3/9.
  * 小视频发布页面
  */
 public class TCVideoPublisherActivity extends Activity {

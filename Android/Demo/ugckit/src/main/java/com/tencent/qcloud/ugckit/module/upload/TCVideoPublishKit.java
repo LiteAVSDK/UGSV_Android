@@ -3,9 +3,9 @@ package com.tencent.qcloud.ugckit.module.upload;
 import com.tencent.qcloud.ugckit.UGCKitVideoPublish;
 
 /**
- * 腾讯云短视频TUIKit({@code TCVideoPublishKit}):视频发布。
+ * 腾讯云短视频UGCKit({@code TCVideoPublishKit}):视频发布。
  * 本组件包含视频封面和视频本身上传到cos并发布到点播服务器。
- * 如下演示了TUIKit视频发布模块简单用法：<br>
+ * 如下演示了UGCKit视频发布模块简单用法：<br>
  * 1、在xml中设置
  * <pre>
  * {@code
@@ -33,7 +33,7 @@ import com.tencent.qcloud.ugckit.UGCKitVideoPublish;
  * </pre>
  * <p>
  * <p>
- * TUIKit视频发布模块<br>
+ * UGCKit视频发布模块<br>
  * 1、设置待发布视频的路径和封面 {@link #setPublishPath(String, String)}<br>
  * 2、设置发布视频的监听器{@link #setOnPublishListener(OnPublishListener)} <br>
  * 3、当发布视频完成，{@link OnPublishListener#onPublishCompleted()} 被调用 <br>
@@ -45,7 +45,7 @@ import com.tencent.qcloud.ugckit.UGCKitVideoPublish;
  * 若开启本地缓存，则设置的视频文件和封面文件不会被删除。<br>
  * 默认开启本地缓存 {@code setCacheEnable(true)}
  * <p>
- * 如果您不使用TUIkit视频发布组建，自行搭建UI，调用SDK功能。<br>
+ * 如果您不使用UGCKit视频发布组建，自行搭建UI，调用SDK功能。<br>
  * 请参考文档  <a href="https://cloud.tencent.com/document/product/584/15535">视频上传(Android)</a>
  * </p>
  *

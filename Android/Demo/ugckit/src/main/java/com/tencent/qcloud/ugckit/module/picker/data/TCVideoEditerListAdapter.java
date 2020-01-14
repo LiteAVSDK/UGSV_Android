@@ -26,7 +26,9 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
     private ArrayList<TCVideoFileInfo> data = new ArrayList<TCVideoFileInfo>();
     private int mLastSelected = -1;
     private boolean mMultiplePick;
+    private boolean isOrdered;
     private ItemView.OnAddListener mOnAddListener;
+    private ArrayList<TCVideoFileInfo> mOrderFileList;
 
     public TCVideoEditerListAdapter(Context context) {
         mContext = context;
@@ -45,7 +47,7 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         if (fileInfo.getFileType() == TCVideoFileInfo.FILE_TYPE_VIDEO) {
             holder.duration.setText(DateTimeUtil.formattedTime(fileInfo.getDuration() / 1000));
         }
-        Glide.with(mContext).load(Uri.fromFile(new File(fileInfo.getFilePath()))).dontAnimate().into(holder.thumb);
+        Glide.with(mContext).load(fileInfo.getFileUri()).into(holder.thumb);
         holder.thumb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +68,15 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         return data.size();
     }
 
-    public void setMultiplePick(boolean multiplePick) {
+    /**
+     * 设置选择模式
+     *
+     * @param multiplePick 是否多选
+     * @param order        是否排序
+     */
+    public void setMultiplePick(boolean multiplePick, boolean order) {
         mMultiplePick = multiplePick;
+        isOrdered = order;
     }
 
     public void setOnItemAddListener(ItemView.OnAddListener onAddListener) {
@@ -79,13 +88,11 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         private final ImageView thumb;
         @NonNull
         private final TextView duration;
-        private final ImageView stroke;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             thumb = (ImageView) itemView.findViewById(R.id.iv_thumb);
             duration = (TextView) itemView.findViewById(R.id.tv_duration);
-            stroke = (ImageView) itemView.findViewById(R.id.iv_pick_stroke);
         }
     }
 
@@ -135,12 +142,36 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
     }
 
     public void changeMultiSelection(int position) {
-        if (data.get(position).isSelected()) {
-            data.get(position).setSelected(false);
+        if (isOrdered) {
+            if (mOrderFileList == null) {
+                mOrderFileList = new ArrayList<>();
+            }
+            TCVideoFileInfo fileInfo = data.get(position);
+
+            if (fileInfo.isSelected()) {
+                fileInfo.setSelected(false);
+                for (int i = 0; i < mOrderFileList.size(); i++) {
+                    TCVideoFileInfo tcVideoFileInfo = mOrderFileList.get(i);
+                    if (tcVideoFileInfo.getFilePath().equals(fileInfo.getFilePath())) {
+                        mOrderFileList.remove(i);
+                        break;
+                    }
+                }
+            } else {
+                fileInfo.setSelected(true);
+                mOrderFileList.add(fileInfo);
+            }
         } else {
-            data.get(position).setSelected(true);
+            if (data.get(position).isSelected()) {
+                data.get(position).setSelected(false);
+            } else {
+                data.get(position).setSelected(true);
+            }
         }
         notifyItemChanged(position);
     }
 
+    public ArrayList<TCVideoFileInfo> getInOrderMultiSelected() {
+        return mOrderFileList;
+    }
 }

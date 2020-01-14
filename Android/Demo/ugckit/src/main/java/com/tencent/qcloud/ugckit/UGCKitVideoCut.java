@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
-import com.tencent.qcloud.ugckit.UGCKitImpl;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -21,7 +21,6 @@ import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.DialogUtil;
 import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.dialog.ProgressDialogUtil;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
@@ -31,7 +30,7 @@ import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoInfoReader;
 
 /**
- * 腾讯云短视频TUIKit:视频裁剪控件
+ * 腾讯云短视频UGCKit:视频裁剪控件
  * <p>
  * 功能：用于实现长时间视频裁剪其中一段生成一段短时间的视频。<p/>
  */
@@ -39,6 +38,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
     private static final String TAG = "UGCKitVideoCut";
     private ProgressDialogUtil mProgressDialogUtil;
     private ProgressFragmentUtil mProgressFragmentUtil;
+    private boolean mComplete = false;
 
     public UGCKitVideoCut(Context context) {
         super(context);
@@ -59,6 +59,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
         mProgressDialogUtil = new ProgressDialogUtil(getContext());
         mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext(), getResources().getString(R.string.video_cutting));
 
+        VideoEditerSDK.getInstance().releaseSDK();
         VideoEditerSDK.getInstance().clear();
         VideoEditerSDK.getInstance().initSDK();
 
@@ -69,6 +70,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                 mProgressFragmentUtil.showLoadingProgress(new ProgressFragmentUtil.IProgressListener() {
                     @Override
                     public void onStop() {
+                        // 取消裁剪
                         mProgressFragmentUtil.dismissLoadingProgress();
                         boolean editFlag = JumpActivityMgr.getInstance().getEditFlagFromCut();
                         if (editFlag) {
@@ -77,9 +79,15 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                             VideoGenerateKit.getInstance().stopGenerate();
                         }
                         PlayerManagerKit.getInstance().startPlay();
+                        // 未加载完缩略图，重新进行加载
+                        if (!mComplete) {
+                            loadThumbnail();
+                        }
                     }
                 });
                 PlayerManagerKit.getInstance().stopPlay();
+                //如果图片没有加载完，先停止加载
+                ProcessKit.getInstance().stopProcess();
 
                 boolean editFlag = JumpActivityMgr.getInstance().getEditFlagFromCut();
                 if (editFlag) {
@@ -106,6 +114,9 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
 
         // 显示圆形进度条
         mProgressDialogUtil.showProgressDialog();
+
+        // 重新设置路径，缩略图重新加载
+        mComplete = false;
         // 加载视频基本信息
         loadVideoInfo(videoPath);
         // 圆形进度条消失
@@ -114,11 +125,9 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
 
     private void loadVideoInfo(String videoPath) {
         // 加载视频信息
-        TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance().getVideoFileInfo(videoPath);
+        TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(
-                    UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_cutter_activity_video_main_handler_edit_failed),
-                    getResources().getString(R.string.tc_video_cutter_activity_video_main_handler_does_not_support_android_version_below_4_3), null);
+            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_cutter_activity_video_main_handler_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
             getVideoCutLayout().setVideoInfo(info);
@@ -128,26 +137,46 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                     VideoEditerSDK.getInstance().getEditer().setRenderRotation(rotation);
                 }
             });
-            // 初始化缩略图列表
-            VideoEditerSDK.getInstance().initThumbnailList(new TXVideoEditer.TXThumbnailListener() {
-                @Override
-                public void onThumbnail(final int index, long timeMs, final Bitmap bitmap) {
-                    TXLog.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
-                    BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            getVideoCutLayout().addThumbnail(index, bitmap);
-                        }
-                    });
-                }
-            });
+            loadThumbnail();
             // 播放视频
             PlayerManagerKit.getInstance().startPlayCutTime();
         }
     }
 
+    private void loadThumbnail() {
+        // 初始化缩略图列表，裁剪缩略图时间间隔3秒钟一张
+        getVideoCutLayout().clearThumbnail();
+        final int interval = 3000;
+        VideoEditerSDK.getInstance().initThumbnailList(new TXVideoEditer.TXThumbnailListener() {
+            @Override
+            public void onThumbnail(final int index, long timeMs, final Bitmap bitmap) {
+                TXLog.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
+                BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getVideoCutLayout().addThumbnail(index, bitmap);
+
+                        TXVideoEditConstants.TXVideoInfo videoInfo = VideoEditerSDK.getInstance().getTXVideoInfo();
+                        if (videoInfo != null) {
+                            int size = (int) (videoInfo.duration / interval);
+                            if (index == size -1) { // Note: index从0开始增长
+                                Log.i(TAG, "Load Thumbnail Complete");
+                                mComplete = true;
+                            }
+                        }
+                    }
+                });
+            }
+        }, interval);
+    }
+
     @Override
     public void setOnCutListener(@Nullable final OnCutListener listener) {
+        if (listener == null) {
+            ProcessKit.getInstance().setOnUpdateUIListener(null);
+            VideoGenerateKit.getInstance().setOnUpdateUIListener(null);
+            return;
+        }
         boolean editFlag = JumpActivityMgr.getInstance().getEditFlagFromCut();
         // 设置生成的监听器，用来更新控件
         if (editFlag) {

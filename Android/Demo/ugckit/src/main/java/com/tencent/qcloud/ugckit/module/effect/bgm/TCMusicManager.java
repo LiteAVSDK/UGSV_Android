@@ -4,15 +4,17 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKitImpl;
-import com.tencent.qcloud.ugckit.utils.TCHttpEngine;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.utils.TCHttpURLClient;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -40,12 +42,13 @@ public class TCMusicManager {
             return;
         }
         isLoading = true;
-        TCHttpEngine.getInstance().get(UGCKitConstants.SVR_BGM_GET_URL, new TCHttpEngine.Listener() {
+        TCHttpURLClient.getInstance().get(UGCKitConstants.SVR_BGM_GET_URL, new TCHttpURLClient.OnHttpCallback() {
             @Override
-            public void onResponse(int retCode, String retMsg, @NonNull JSONObject retData) {
-                TXCLog.i(TAG, "retData = " + retData);
+            public void onSuccess(String result) {
+                TXCLog.i(TAG, "http request success:  result = " + result);
                 try {
-                    JSONObject bgmObject = retData.getJSONObject("bgm");
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONObject bgmObject = jsonObject.getJSONObject("bgm");
                     if (bgmObject == null && mLoadMusicListener != null) {
                         mLoadMusicListener.onBgmList(null);
                         return;
@@ -59,11 +62,16 @@ public class TCMusicManager {
                     if (mLoadMusicListener != null) {
                         mLoadMusicListener.onBgmList(bgmInfoList);
                     }
-                } catch (Exception e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
                     isLoading = false;
                 }
+            }
+
+            @Override
+            public void onError() {
+                isLoading = false;
             }
         });
     }

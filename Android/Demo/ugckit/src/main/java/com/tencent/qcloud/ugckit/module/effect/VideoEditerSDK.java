@@ -5,8 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitImpl;
 import com.tencent.qcloud.ugckit.module.cut.IVideoCutLayout;
+import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
+import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoInfoReader;
@@ -76,27 +79,15 @@ public class VideoEditerSDK {
 
     /**
      * 获取视频的信息
-     *
+     * FIXBUG：不能判断是否为空，如果更换频路径，
      * @return
      */
     public TXVideoEditConstants.TXVideoInfo getTXVideoInfo() {
-        if (mTXVideoInfo == null) {
-            mTXVideoInfo = TXVideoInfoReader.getInstance().getVideoFileInfo(mVideoPath);
-            Log.d(TAG, "setTXVideoInfo info:" + mTXVideoInfo);
+        mTXVideoInfo = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(mVideoPath);
+        if (mTXVideoInfo != null) {
+            Log.d(TAG, "setTXVideoInfo duration:" + mTXVideoInfo.duration);
         }
         return mTXVideoInfo;
-    }
-
-    public void setEditer(TXVideoEditer editer) {
-        mTXVideoEditer = editer;
-        if (mTXVideoEditer != null) {
-            mTXVideoEditer.setTXVideoPreviewListener(mPreviewListener);
-        }
-    }
-
-    @Nullable
-    public TXVideoEditer getEditer() {
-        return mTXVideoEditer;
     }
 
     public void clear() {
@@ -110,6 +101,8 @@ public class VideoEditerSDK {
         mCutterEndTime = 0;
 
         mThumbnailList.clear();
+        DraftEditer.getInstance().clear();
+        EffectEditer.getInstance().clear();
 
         synchronized (mPreviewWrapperList) {
             mPreviewWrapperList.clear();
@@ -205,10 +198,20 @@ public class VideoEditerSDK {
         }
     }
 
+    /**
+     * 初始化新的TXVideoEditer
+     */
     public void initSDK() {
-        if (mTXVideoEditer == null) {
-            mTXVideoEditer = new TXVideoEditer(UGCKitImpl.getAppContext());
-        }
+        mTXVideoEditer = new TXVideoEditer(UGCKitImpl.getAppContext());
+    }
+
+    /**
+     * 获取以前创建的TXVideoEditer
+     *
+     * @return
+     */
+    public TXVideoEditer getEditer() {
+        return mTXVideoEditer;
     }
 
     public void constructVideoInfo(@NonNull TXVideoEditConstants.TXVideoInfo videoInfo, long duration) {
@@ -224,7 +227,10 @@ public class VideoEditerSDK {
             mCutterStartTime = 0;
             mCutterEndTime = mCutterDuration;
         } else {
-            mCutterDuration = getTXVideoInfo().duration;
+            TXVideoEditConstants.TXVideoInfo videoInfo = getTXVideoInfo();
+            if (videoInfo != null) {
+                mCutterDuration = videoInfo.duration;
+            }
         }
         if (mTXVideoEditer != null) {
             mTXVideoEditer.setCutFromTime(0, mCutterDuration);
@@ -235,14 +241,34 @@ public class VideoEditerSDK {
         return mCutterDuration;
     }
 
-    public void initThumbnailList(TXVideoEditer.TXThumbnailListener listener) {
-        int durationS = (int) (getTXVideoInfo().duration / 1000);
+    /**
+     * 初始化缩略图
+     *
+     * @param listener
+     * @param interval 缩略图的时间间隔
+     */
+    public void initThumbnailList(TXVideoEditer.TXThumbnailListener listener, int interval) {
+        if (interval == 0) {
+            Log.e(TAG, "interval error:0");
+            return;
+        }
+        int durationS = 0;
+
+        TXVideoEditConstants.TXVideoInfo videoInfo = getTXVideoInfo();
+        if (videoInfo != null) {
+            durationS = (int) (getTXVideoInfo().duration / interval);
+        }
         // 每一秒/一张缩略图
         int thumbCount = durationS;
         Log.d(TAG, "thumbCount:" + thumbCount);
         setCutterStartTime(0, mTXVideoInfo.duration);
-        mTXVideoEditer.setRenderRotation(0);
-        mTXVideoEditer.getThumbnail(thumbCount, IVideoCutLayout.DEFAULT_THUMBNAIL_WIDTH, IVideoCutLayout.DEFAULT_THUMBNAIL_HEIGHT, false, listener);
+
+        if (mTXVideoEditer != null) {
+            mTXVideoEditer.setRenderRotation(0);
+            // FIXBUG：获取缩略图之前需要设置缩略图的开始和结束时间点，SDK内部会根据开始时间和结束时间出缩略图
+            mTXVideoEditer.setCutFromTime(mCutterStartTime, mCutterEndTime);
+            mTXVideoEditer.getThumbnail(thumbCount, IVideoCutLayout.DEFAULT_THUMBNAIL_WIDTH, IVideoCutLayout.DEFAULT_THUMBNAIL_HEIGHT, false, listener);
+        }
     }
 
     public void setPublishFlag(boolean flag) {
@@ -251,6 +277,18 @@ public class VideoEditerSDK {
 
     public boolean isPublish() {
         return mPublishFlag;
+    }
+
+    /**
+     * 在特效页面设置特效，会调用SDK，特效点击"取消"后，还原设置进入SDK的特效
+     */
+    public void restore() {
+        EffectEditer effectEditer = EffectEditer.getInstance();
+        if (mTXVideoEditer != null) {
+            mTXVideoEditer.setBGM(effectEditer.getBgmPath());
+            mTXVideoEditer.setBGMVolume(effectEditer.getBgmVolume());
+            mTXVideoEditer.setVideoVolume(effectEditer.getVideoVolume());
+        }
     }
 
     /**
@@ -294,8 +332,15 @@ public class VideoEditerSDK {
         mThumbnailList.add(new ThumbnailBitmapInfo(timeMs, bitmap));
     }
 
-    public void cleaThumbnails() {
+    /**
+     * 清空缩略图列表
+     */
+    public void clearThumbnails() {
         mThumbnailList.clear();
+    }
+
+    public int getThumbnailSize() {
+        return mThumbnailList == null ? 0 : mThumbnailList.size();
     }
 
     private class ThumbnailBitmapInfo {

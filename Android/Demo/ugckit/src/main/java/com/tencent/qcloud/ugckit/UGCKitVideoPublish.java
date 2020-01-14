@@ -89,7 +89,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
 
     /**
      * 功能：</p>
-     * 1、TUIKit控件初始化</p>
+     * 1、UGCKit控件初始化</p>
      * 2、加载视频封面</p>
      * 3、发布视频</p>
      *
@@ -194,7 +194,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
     }
 
     /************************************************************************/
-    /*****                     TUIKit外部接口调用                         *****/
+    /*****                     UGCKit外部接口调用                         *****/
     /************************************************************************/
     @Override
     public void setPublishPath(String videoPath, String coverPath) {

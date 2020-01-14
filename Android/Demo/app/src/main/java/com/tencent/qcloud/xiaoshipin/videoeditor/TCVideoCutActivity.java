@@ -22,6 +22,24 @@ public class TCVideoCutActivity extends FragmentActivity {
     private String TAG = "TCVideoCutActivity";
     private UGCKitVideoCut mUGCKitVideoCut;
     private String mInVideoPath;
+    private IVideoCutKit.OnCutListener mOnCutListener = new IVideoCutKit.OnCutListener() {
+        /**
+         * 视频裁剪进度条执行完成后调用
+         */
+        @Override
+        public void onCutterCompleted(UGCKitResult ugcKitResult) {
+            Log.i(TAG, "onCutterCompleted");
+            startEditActivity();
+        }
+
+        /**
+         * 点击视频裁剪进度叉号，取消裁剪时被调用
+         */
+        @Override
+        public void onCutterCanceled() {
+            Log.i(TAG, "onCutterCanceled");
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,27 +57,6 @@ public class TCVideoCutActivity extends FragmentActivity {
                 finish();
             }
         });
-        /**
-         * 设置视频生成的监听
-         */
-        mUGCKitVideoCut.setOnCutListener(new IVideoCutKit.OnCutListener() {
-            /**
-             * 视频裁剪进度条执行完成后调用
-             */
-            @Override
-            public void onCutterCompleted(UGCKitResult ugcKitResult) {
-                Log.i(TAG, "onCutterCompleted");
-                startEditActivity();
-            }
-
-            /**
-             * 点击视频裁剪进度叉号，取消裁剪时被调用
-             */
-            @Override
-            public void onCutterCanceled() {
-                Log.i(TAG, "onCutterCanceled");
-            }
-        });
     }
 
     private void initWindowParam() {
@@ -70,6 +67,7 @@ public class TCVideoCutActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mUGCKitVideoCut.setOnCutListener(mOnCutListener);
         mUGCKitVideoCut.startPlay();
     }
 
@@ -77,6 +75,7 @@ public class TCVideoCutActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         mUGCKitVideoCut.stopPlay();
+        mUGCKitVideoCut.setOnCutListener(null);
     }
 
     @Override

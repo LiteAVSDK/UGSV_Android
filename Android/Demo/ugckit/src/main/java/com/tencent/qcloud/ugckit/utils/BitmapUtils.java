@@ -1,6 +1,8 @@
 package com.tencent.qcloud.ugckit.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,6 +11,9 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v8.renderscript.Allocation;
@@ -23,9 +28,14 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.component.circlebmp.TCGlideCircleTransform;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,15 +76,37 @@ public class BitmapUtils {
     }
 
     public static Bitmap decodeSampledBitmapFromFile(String picPath, int reqWidth, int reqHeight) {
+        boolean isContentUri = picPath != null && picPath.startsWith("content://");
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(picPath, options);
+        ParcelFileDescriptor pdf = null;
+        if (isContentUri) {
+            try {
+                pdf = UGCKit.getAppContext().getContentResolver().openFileDescriptor(Uri.parse(picPath), "r");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                pdf = null;
+            }
+            BitmapFactory.decodeFileDescriptor(pdf.getFileDescriptor(), null, options);
+        } else {
+            BitmapFactory.decodeFile(picPath, options);
+        }
         // 调用上面定义的方法计算inSampleSize值
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
         // 使用获取到的inSampleSize值再次解析图片
         options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(picPath, options);
+        Bitmap bitmap = null;
+        if (pdf != null) {
+            bitmap = BitmapFactory.decodeFileDescriptor(pdf.getFileDescriptor(), null, options);
+            try {
+                pdf.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            bitmap = BitmapFactory.decodeFile(picPath, options);
+        }
         return bitmap;
     }
 
@@ -197,5 +229,51 @@ public class BitmapUtils {
         }
     }
 
+    /**
+     * Android10兼容，图片String类型地址先要转换为Uri，再加载
+     *
+     * @param context
+     * @param path
+     * @return
+     */
+    public static Uri getImageContentUri(Context context, String path) {
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "=? ",
+                new String[]{path}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            // 如果图片不在手机的共享图片数据库，就先把它插入。
+            if (new File(path).exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, path);
+                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
 
+
+    /**
+     * 通过uri加载图片
+     *
+     * @param context
+     * @param uri
+     * @return
+     */
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) {
+        try {
+            ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            return image;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

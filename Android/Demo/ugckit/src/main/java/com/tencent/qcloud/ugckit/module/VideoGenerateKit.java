@@ -3,6 +3,7 @@ package com.tencent.qcloud.ugckit.module;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -21,6 +22,9 @@ import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
 
+/**
+ * 视频生成管理
+ */
 public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerateListener {
     private static final String TAG = "VideoGenerateKit";
     private static final int DURATION_TAILWATERMARK = 3;
@@ -116,15 +120,15 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
      * 停止合成视频[包括一些异常操作导致的合成取消]
      */
     public void stopGenerate() {
+        //FIXBUG:如果上一次如生成缩略图没有停止，先停止，在进行下一次生成
+        TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+        if (editer != null) {
+            editer.cancel();
+            editer.setVideoGenerateListener(null);
+        }
         if (mCurrentState == PlayState.STATE_GENERATE) {
             ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.tc_video_editer_activity_cancel_video_generation));
             mCurrentState = PlayState.STATE_NONE;
-
-            TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
-            if (editer != null) {
-                editer.cancel();
-                editer.setVideoGenerateListener(null);
-            }
 
             if (mOnUpdateUIListener != null) {
                 mOnUpdateUIListener.onUICancel();
@@ -145,6 +149,10 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
     public void addTailWaterMark() {
         TXVideoEditConstants.TXVideoInfo info = VideoEditerSDK.getInstance().getTXVideoInfo();
 
+        if (info == null) {
+            Log.e(TAG, "addTailWaterMark info is null");
+            return;
+        }
         Bitmap tailWaterMarkBitmap = BitmapFactory.decodeResource(UGCKit.getAppContext().getResources(), R.drawable.tcloud_logo);
         float widthHeightRatio = tailWaterMarkBitmap.getWidth() / (float) tailWaterMarkBitmap.getHeight();
 
@@ -166,9 +174,10 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
         mCurrentState = PlayState.STATE_NONE;
         if (result.retCode == TXVideoEditConstants.GENERATE_RESULT_OK) {
             if (mCoverGenerate) {
-                // 生成封面
                 Log.d(TAG, "onGenerateComplete outputPath:" + mVideoOutputPath);
+                // 获取哪个视频的封面
                 CoverUtil.getInstance().setInputPath(mVideoOutputPath);
+                // 创建新的封面
                 CoverUtil.getInstance().createThumbFile(new CoverUtil.ICoverListener() {
                     @Override
                     public void onCoverPath(String coverPath) {
@@ -199,7 +208,7 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
         if (mSaveToDCIM) {
             long duration = VideoEditerSDK.getInstance().getVideoDuration();
             AlbumSaver.getInstance(UGCKit.getAppContext()).setOutputProfile(mVideoOutputPath, duration, mCoverPath);
-            mVideoOutputPath = AlbumSaver.getInstance(UGCKit.getAppContext()).saveVideoToDCIM();
+            AlbumSaver.getInstance(UGCKit.getAppContext()).saveVideoToDCIM();
         }
         // UI更新
         if (mOnUpdateUIListener != null) {

@@ -149,4 +149,7 @@
         <attr name="sampleProgressButtonText" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="MixRecord">
+        <attr name="layout_id" format="reference"/>
+    </declare-styleable>
 </resources>

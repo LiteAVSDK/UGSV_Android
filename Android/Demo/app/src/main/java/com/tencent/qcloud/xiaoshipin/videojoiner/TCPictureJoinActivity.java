@@ -23,6 +23,23 @@ public class TCPictureJoinActivity extends FragmentActivity {
 
     private UGCKitPictureJoin mPictureTransition;
     private ArrayList<String> mPicPathList;
+    private IPictureJoinKit.OnPictureJoinListener mOnPictureJoinListener = new IPictureJoinKit.OnPictureJoinListener() {
+
+        @Override
+        public void onPictureJoinCompleted(UGCKitResult ugcKitResult) {
+            /**
+             * 跳转到视频裁剪页面
+             */
+            startEditActivity(ugcKitResult);
+        }
+
+        @Override
+        public void onPictureJoinCanceled() {
+            /**
+             * 生成视频操作取消
+             */
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +59,6 @@ public class TCPictureJoinActivity extends FragmentActivity {
             public void onClick(View v) {
                 mPictureTransition.stopPlay();
                 finish();
-            }
-        });
-        /**
-         * 设置视频生成的监听
-         */
-        mPictureTransition.setOnPictureJoinListener(new IPictureJoinKit.OnPictureJoinListener() {
-
-            @Override
-            public void onPictureJoinCompleted(UGCKitResult ugcKitResult) {
-                /**
-                 * 跳转到视频裁剪页面
-                 */
-                startEditActivity(ugcKitResult);
-            }
-
-            @Override
-            public void onPictureJoinCanceled() {
-                /**
-                 * 生成视频操作取消
-                 */
             }
         });
     }
@@ -87,7 +84,15 @@ public class TCPictureJoinActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mPictureTransition.setOnPictureJoinListener(mOnPictureJoinListener);
         mPictureTransition.resumePlay();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPictureTransition.pausePlay();
+        mPictureTransition.setOnPictureJoinListener(null);
     }
 
 }

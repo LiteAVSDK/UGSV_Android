@@ -22,6 +22,23 @@ public class TCVideoJoinerActivity extends FragmentActivity {
 
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
     private UGCKitVideoJoin mUGCKitVideoJoin;
+    private IVideoJoinKit.OnVideoJoinListener mOnPictureListener = new IVideoJoinKit.OnVideoJoinListener() {
+        @Override
+        public void onJoinCanceled() {
+            /**
+             * 视频合成被取消，退出视频合成界面
+             */
+            finish();
+        }
+
+        @Override
+        public void onJoinCompleted(UGCKitResult ugcKitResult) {
+            /**
+             * 视频合成完成，返回合成后的视频地址，跳转到视频裁剪页面
+             */
+            startCutActivity(ugcKitResult);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +51,6 @@ public class TCVideoJoinerActivity extends FragmentActivity {
          * 设置合成的视频源
          */
         mUGCKitVideoJoin.setVideoJoinList(mTCVideoFileInfoList);
-        /**
-         * 设置合成视频的监听器
-         */
-        mUGCKitVideoJoin.setVideoJoinListener(new IVideoJoinKit.OnVideoJoinListener() {
-            @Override
-            public void onJoinCanceled() {
-                /**
-                 * 视频合成被取消，退出视频合成界面
-                 */
-                finish();
-            }
-
-            @Override
-            public void onJoinCompleted(UGCKitResult ugcKitResult) {
-                /**
-                 * 视频合成完成，返回合成后的视频地址，跳转到视频裁剪页面
-                 */
-                startCutActivity(ugcKitResult);
-            }
-        });
     }
 
     private void initWindowParam() {
@@ -73,4 +70,18 @@ public class TCVideoJoinerActivity extends FragmentActivity {
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /**
+         * 设置合成视频的监听器
+         */
+        mUGCKitVideoJoin.setVideoJoinListener(mOnPictureListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mUGCKitVideoJoin.setVideoJoinListener(null);
+    }
 }

@@ -45,6 +45,7 @@ public class ProgressFragmentUtil {
         }
         mLoadingProgress.setProgress(0);
         mLoadingProgress.setCancelable(false);
+
         mLoadingProgress.show(mActivity.getSupportFragmentManager(), "progress_dialog");
     }
 

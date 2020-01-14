@@ -12,8 +12,7 @@
         android:layout_height="90dp"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tv_duration"

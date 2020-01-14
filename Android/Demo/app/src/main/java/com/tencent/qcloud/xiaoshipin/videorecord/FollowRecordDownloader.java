@@ -45,8 +45,12 @@ public class FollowRecordDownloader {
             return;
         }
         mProgressDialogUtil.showProgressDialog();
-
-        File downloadFileFolder = new File(Environment.getExternalStorageDirectory(), UGCKitConstants.OUTPUT_DIR_NAME);
+        File sdcardDir = mContext.getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            TXCLog.e(TAG, "downloadVideo sdcardDir is null");
+            return;
+        }
+        File downloadFileFolder = new File(sdcardDir, UGCKitConstants.OUTPUT_DIR_NAME);
         File downloadFile = new File(downloadFileFolder, DownloadUtil.getNameFromUrl(tcVideoInfo.playurl));
 
         if (downloadFile.exists()) {
@@ -56,7 +60,7 @@ public class FollowRecordDownloader {
         }
         mProgressDialogUtil.setProgressDialogMessage(mContext.getResources().getString(R.string.tc_vod_player_activity_download_video_is_downloading));
 
-        DownloadUtil.get().download(tcVideoInfo.playurl, UGCKitConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
+        DownloadUtil.get(mContext).download(tcVideoInfo.playurl, UGCKitConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
 
             @Override
             public void onDownloadSuccess(final String path) {

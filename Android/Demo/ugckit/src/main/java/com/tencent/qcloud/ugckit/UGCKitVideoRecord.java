@@ -10,18 +10,20 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-
-import com.tencent.qcloud.ugckit.UGCKitImpl;
+import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
+import com.tencent.qcloud.ugckit.component.dialog.ProgressDialogUtil;
+import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.ProcessKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.module.record.AbsVideoRecordUI;
 import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
+import com.tencent.qcloud.ugckit.module.record.OnFilterScrollViewListener;
 import com.tencent.qcloud.ugckit.module.record.PhotoSoundPlayer;
 import com.tencent.qcloud.ugckit.module.record.RecordBottomLayout;
 import com.tencent.qcloud.ugckit.module.record.RecordModeView;
@@ -35,11 +37,6 @@ import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordRightLayout;
 import com.tencent.qcloud.ugckit.utils.DialogUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
-import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.component.dialog.ProgressDialogUtil;
-import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyPannel;
-import com.tencent.qcloud.ugckit.module.record.beauty.BeautyParams;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
@@ -49,7 +46,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         IRecordRightLayout.OnItemClickListener,
         IRecordButton.OnRecordButtonListener,
         SoundEffectsPannel.SoundEffectsSettingPannelListener,
-        BeautyPannel.IOnBeautyParamsChangeListener,
         IRecordMusicPannel.MusicChangeListener,
         ScrollFilterView.OnRecordFilterListener,
         VideoRecordSDK.OnVideoRecordListener {
@@ -60,6 +56,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     private FragmentActivity mActivity;
     private ProgressFragmentUtil mProgressFragmentUtil;
     private ProgressDialogUtil mProgressDialogUtil;
+    private UGCBeautyKit mUGCBeautyKit;
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -132,8 +129,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
         // 设置"音乐面板"监听器
         getRecordMusicPannel().setOnMusicChangeListener(this);
-        // 设置"美颜面板"监听器
-        getBeautyPannel().setBeautyParamsChangeListener(this);
         // 设置"音效面板"监听器
         getSoundEffectPannel().setSoundEffectsSettingPannelListener(this);
 
@@ -141,6 +136,28 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
         TelephonyUtil.getInstance().initPhoneListener();
         mProgressDialogUtil = new ProgressDialogUtil(mActivity);
+
+        UGCKitRecordConfig config = UGCKitRecordConfig.getInstance();
+        config.mBeautyParams = new BeautyParams();
+
+        // 设置默认美颜
+        config.mBeautyParams.mBeautyStyle = 0;
+        config.mBeautyParams.mBeautyLevel = 4;
+        config.mBeautyParams.mWhiteLevel = 1;
+        // 初始化默认配置
+        VideoRecordSDK.getInstance().initConfig(config);
+        VideoRecordSDK.getInstance().updateBeautyParam(config.mBeautyParams);
+
+        TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
+        mUGCBeautyKit = new UGCBeautyKit(txugcRecord);
+        mUGCBeautyKit.setOnFilterScrollViewListener(new OnFilterScrollViewListener() {
+
+            @Override
+            public void onFilerChange(Bitmap filterImage, int index) {
+                getScrollFilterView().doTextAnimator(index);
+            }
+        });
+        getBeautyPanel().setProxy(mUGCBeautyKit);
     }
 
     @Override
@@ -155,10 +172,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
     @Override
     public void start() {
-        UGCKitRecordConfig config = UGCKitRecordConfig.getInstance();
-        config.mBeautyParams = new BeautyParams();
-
-        VideoRecordSDK.getInstance().initConfig(config);
         // 打开录制预览界面
         VideoRecordSDK.getInstance().startCameraPreview(getRecordVideoView());
     }
@@ -182,6 +195,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         getRecordBottomLayout().getRecordProgressView().release();
         // 停止录制
         VideoRecordSDK.getInstance().releaseRecord();
+
+        UGCKitRecordConfig.getInstance().clear();
+        // 录制TXUGCRecord是单例，需要释放时还原配置
+        getBeautyPanel().clear();
+
+        VideoRecordSDK.getInstance().setVideoRecordListener(null);
+        mUGCBeautyKit.setOnFilterScrollViewListener(null);
     }
 
     @Override
@@ -327,20 +347,25 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     }
 
     @Override
-    public void onShowBeautyPannel() {
+    public void onDeleteParts(int partsSize, long duration) {
+
+    }
+
+    @Override
+    public void onShowBeautyPanel() {
         // 隐藏底部工具栏
         getRecordBottomLayout().setVisibility(View.GONE);
         // 隐藏右侧工具栏
         getRecordRightLayout().setVisibility(View.GONE);
         // 显示美颜Pannel
-        getBeautyPannel().setVisibility(View.VISIBLE);
+        getBeautyPanel().setVisibility(View.VISIBLE);
     }
 
     /**
      * 点击工具栏按钮"音乐"
      */
     @Override
-    public void onShowMusicPannel() {
+    public void onShowMusicPanel() {
         boolean isChooseMusicFlag = RecordMusicManager.getInstance().isChooseMusic();
         if (isChooseMusicFlag) {
             // 隐藏底部工具栏
@@ -359,7 +384,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     }
 
     @Override
-    public void onShowSoundEffectPannel() {
+    public void onShowSoundEffectPanel() {
         // 隐藏底部工具栏
         getRecordBottomLayout().setVisibility(View.GONE);
         // 隐藏右侧工具栏
@@ -400,157 +425,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     }
 
     /************************************   音效Pannel回调接口 End    ********************************************/
-
-    /************************************   美颜Pannel回调接口 Begin  ********************************************/
-    @Override
-    public void onBeautyParamsChange(@NonNull BeautyParams params, int key) {
-        switch (key) {
-            case BeautyPannel.BEAUTYPARAM_FILTER:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mFilterBmp = params.mFilterBmp;
-
-                Bitmap filterBmp = params.mFilterBmp;
-                TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
-                if (record != null) {
-                    record.setFilter(filterBmp);
-                }
-
-                float specialRatio = getBeautyPannel().getFilterProgress(params.filterIndex) / 10.f;
-                VideoRecordSDK.getInstance().setSpecialRatio(specialRatio);
-
-                getScrollFilterView().doTextAnimator();
-                break;
-            case BeautyPannel.BEAUTYPARAM_BEAUTY:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mBeautyLevel = params.mBeautyLevel;
-                UGCKitRecordConfig.getInstance().mBeautyParams.mBeautyStyle = params.mBeautyStyle;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_WHITE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mWhiteLevel = params.mWhiteLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_FACESLIM:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mFaceSlimLevel = params.mFaceSlimLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-
-                break;
-            case BeautyPannel.BEAUTYPARAM_BIG_EYE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mBigEyeLevel = params.mBigEyeLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_MOTION_TMPL:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mMotionTmplPath = params.mMotionTmplPath;
-
-                VideoRecordSDK.getInstance().updateMotionParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_GREEN:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mGreenFile = params.mGreenFile;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_RUDDY:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mRuddyLevel = params.mRuddyLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_FACEV:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mFaceVLevel = params.mFaceVLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_FACESHORT:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mFaceShortLevel = params.mFaceShortLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_CHINSLIME:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mChinSlimLevel = params.mChinSlimLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_NOSESCALE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mNoseScaleLevel = params.mNoseScaleLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_FILTER_MIX_LEVEL:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mFilterMixLevel = params.mFilterMixLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_EYELIGHTEN:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mEyeLightenLevel = params.mEyeLightenLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_TOOTHWHITEN:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mToothWhitenLevel = params.mToothWhitenLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_WRINKLEREMOVE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mWrinkleRemoveLevel = params.mWrinkleRemoveLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_POUNCHREMOVE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mPounchRemoveLevel = params.mPounchRemoveLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_SMILELINESREMOVE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mSmileLinesRemoveLevel = params.mSmileLinesRemoveLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_FOREHEAD:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mForeheadLevel = params.mForeheadLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_EYEDISTANCE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mEyeDistanceLevel = params.mEyeDistanceLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_EYEANGLE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mEyeAngleLevel = params.mEyeAngleLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_MOUTHSHAPE:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mMouthShapeLevel = params.mMouthShapeLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_NOSEWING:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mNoseWingLevel = params.mNoseWingLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_NOSEPOSITION:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mNosePositionLevel = params.mNosePositionLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_LIPSTHICKNESS:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mLipsThicknessLevel = params.mLipsThicknessLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-            case BeautyPannel.BEAUTYPARAM_FACEBEAUTY:
-                UGCKitRecordConfig.getInstance().mBeautyParams.mFaceBeautyLevel = params.mFaceBeautyLevel;
-
-                VideoRecordSDK.getInstance().updateBeautyParam(UGCKitRecordConfig.getInstance().mBeautyParams);
-                break;
-
-        }
-    }
-
-    /************************************   美颜Pannel回调接口 End    ********************************************/
 
     /************************************   音乐Pannel回调接口 Begin  ********************************************/
     @Override
@@ -641,7 +515,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
     @Override
     public void onSingleClick(float x, float y) {
-        getBeautyPannel().setVisibility(View.GONE);
+        getBeautyPanel().setVisibility(View.GONE);
         getRecordMusicPannel().setVisibility(View.GONE);
         getSoundEffectPannel().setVisibility(View.GONE);
 
@@ -673,7 +547,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
         if (result.retCode >= 0) {
             mProgressDialogUtil.dismissProgressDialog();
-            boolean editFlag = JumpActivityMgr.getInstance().getEditFlagFromRecord();
+            boolean editFlag = UGCKitRecordConfig.getInstance().mIsNeedEdit;
             if (editFlag) {
                 // 录制后需要进行编辑，预处理产生视频缩略图
                 startPreprocess(result.videoPath);
@@ -712,23 +586,16 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
      * @param videoPath
      */
     private void loadVideoInfo(String videoPath) {
-        TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance().getVideoFileInfo(videoPath);
+        TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_preprocess_activity_edit_failed),
-                    getResources().getString(R.string.tc_video_preprocess_activity_does_not_support_android_version_below_4_3), null);
+            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_preprocess_activity_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {
             // 设置视频基本信息
             VideoEditerSDK.getInstance().initSDK();
             VideoEditerSDK.getInstance().getEditer().setVideoPath(videoPath);
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
             VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
-            // 产生录制的缩略图
-            ProcessKit.getInstance().setOnThumbnailListener(new ProcessKit.OnThumbnailListener() {
-                @Override
-                public void onThumbnail(int index, long timeMs, Bitmap bitmap) {
-                    VideoEditerSDK.getInstance().addThumbnailBitmap(timeMs, bitmap);
-                }
-            });
+
             ProcessKit.getInstance().setOnUpdateUIListener(new OnUpdateUIListener() {
                 @Override
                 public void onUIProgress(float progress) {
@@ -741,7 +608,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                     mProgressFragmentUtil.dismissLoadingProgress();
                     if (mOnRecordListener != null) {
                         UGCKitResult ugcKitResult = new UGCKitResult();
-                        ugcKitResult.outputPath = VideoRecordSDK.getInstance().getRecordVideoPath();
                         ugcKitResult.errorCode = retCode;
                         ugcKitResult.descMsg = descMsg;
                         mOnRecordListener.onRecordCompleted(ugcKitResult);
@@ -774,7 +640,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
     @Override
     public void setEditVideoFlag(boolean enable) {
-        JumpActivityMgr.getInstance().setEditFlagFromRecord(enable);
+        UGCKitRecordConfig.getInstance().mIsNeedEdit = enable;
     }
 
 }

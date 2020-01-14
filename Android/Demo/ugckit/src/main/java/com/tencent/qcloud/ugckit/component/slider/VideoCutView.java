@@ -162,6 +162,10 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
         mAdapter.add(index, bitmap);
     }
 
+    public void clearAllBitmap() {
+        mAdapter.clearAllBitmap();
+    }
+
     @Override
     public void onKeyDown(int type) {
         if (mRangeChangeListener != null) {

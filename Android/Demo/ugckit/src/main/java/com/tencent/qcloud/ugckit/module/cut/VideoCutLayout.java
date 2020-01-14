@@ -112,6 +112,10 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
         mVideoCutView.addBitmap(index, bitmap);
     }
 
+    public void clearThumbnail() {
+        mVideoCutView.clearAllBitmap();
+    }
+
     public VideoCutView getVideoCutView() {
         return mVideoCutView;
     }

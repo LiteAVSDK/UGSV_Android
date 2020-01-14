@@ -35,6 +35,7 @@ import com.tencent.rtmp.TXVodPlayConfig;
 import com.tencent.rtmp.TXVodPlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,7 +186,11 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
             vodPlayer.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION);
             vodPlayer.setVodListener(TCVodPlayerActivity.this);
             TXVodPlayConfig config = new TXVodPlayConfig();
-            config.setCacheFolderPath(Environment.getExternalStorageDirectory().getPath() + "/txcache");
+
+            File sdcardDir = getExternalFilesDir(null);
+            if (sdcardDir != null) {
+                config.setCacheFolderPath(sdcardDir.getAbsolutePath() + "/txcache");
+            }
             config.setMaxCacheItems(5);
             vodPlayer.setConfig(config);
             vodPlayer.setAutoPlay(false);

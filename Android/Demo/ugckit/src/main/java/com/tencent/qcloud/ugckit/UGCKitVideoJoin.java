@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 腾讯云短视频TUIKit:多个视频合成组件</p>
+ * 腾讯云短视频UGCKit:多个视频合成组件</p>
  * <p>
  * VideoJoinKit功能： <p>
  * 1、调用{@link UGCKitVideoJoin#setVideoJoinList(ArrayList)} 设置多个视频路径<p>

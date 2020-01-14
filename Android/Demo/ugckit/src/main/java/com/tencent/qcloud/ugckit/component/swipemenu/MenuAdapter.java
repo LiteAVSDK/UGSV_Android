@@ -95,7 +95,7 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
             holder.setDuration(DateTimeUtil.duration(fileInfo.getDuration()));
             holder.tvDuration.setVisibility(View.VISIBLE);
         }
-        Glide.with(mContext).load(Uri.fromFile(new File(fileInfo.getFilePath()))).into(holder.ivThumb);
+        Glide.with(mContext).load(fileInfo.getFileUri()).into(holder.ivThumb);
     }
 
     public ArrayList<TCVideoFileInfo> getAll() {

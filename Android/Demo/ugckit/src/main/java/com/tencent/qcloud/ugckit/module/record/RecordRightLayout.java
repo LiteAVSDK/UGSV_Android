@@ -79,11 +79,11 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
     public void onClick(@NonNull View view) {
         int id = view.getId();
         if (id == R.id.iv_beauty) {
-            mOnItemClickListener.onShowBeautyPannel();
+            mOnItemClickListener.onShowBeautyPanel();
         } else if (id == R.id.iv_music) {
-            mOnItemClickListener.onShowMusicPannel();
+            mOnItemClickListener.onShowMusicPanel();
         } else if (id == R.id.iv_sound_effect) {
-            mOnItemClickListener.onShowSoundEffectPannel();
+            mOnItemClickListener.onShowSoundEffectPanel();
         }
     }
 
@@ -120,8 +120,8 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
      */
     @Override
     public void setAspectIconEnable(boolean enable) {
+        mAspectView.hideAspectSelectAnim();
         if (enable) {
-            mAspectView.hideAspectSelectAnim();
             mAspectView.disableMask();
         } else {
             mAspectView.enableMask();

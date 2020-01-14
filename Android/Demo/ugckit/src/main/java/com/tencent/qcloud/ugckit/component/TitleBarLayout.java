@@ -72,6 +72,9 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
             case MIDDLE:
                 mCenterTitle.setText(title);
                 break;
+            case RIGHT:
+                mRightButton.setText(title);
+                break;
         }
     }
 

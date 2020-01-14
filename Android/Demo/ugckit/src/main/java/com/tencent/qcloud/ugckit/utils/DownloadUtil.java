@@ -1,7 +1,12 @@
 package com.tencent.qcloud.ugckit.utils;
 
+import android.content.Context;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.tencent.qcloud.ugckit.UGCKit;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,21 +20,23 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class DownloadUtil {
+    private Context mContext;
     private static DownloadUtil instance;
     private OkHttpClient okHttpClient;
 
-    public static DownloadUtil get() {
+    public static DownloadUtil get(Context context) {
         if (instance == null) {
             synchronized (DownloadUtil.class) {
                 if (instance == null) {
-                    instance = new DownloadUtil();
+                    instance = new DownloadUtil(context);
                 }
             }
         }
         return instance;
     }
 
-    private DownloadUtil() {
+    private DownloadUtil(Context context) {
+        mContext = context;
         okHttpClient = new OkHttpClient();
     }
 
@@ -49,6 +56,9 @@ public class DownloadUtil {
                 FileOutputStream fos = null;
                 // 储存下载文件的目录
                 String saveFolder = isExistDir(saveDir);
+                if (TextUtils.isEmpty(saveFolder)) {
+                    return;
+                }
                 String tempPath = saveFolder + File.separator + "temp_" + getNameFromUrl(url);
                 String savePath = saveFolder + File.separator + getNameFromUrl(url);
                 try {
@@ -92,7 +102,12 @@ public class DownloadUtil {
     @NonNull
     private String isExistDir(@NonNull String saveDir) throws IOException {
         // 下载位置
-        File downloadFile = new File(Environment.getExternalStorageDirectory(), saveDir);
+        File sdcardDir = UGCKit.getAppContext().getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            return null;
+        }
+
+        File downloadFile = new File(sdcardDir, saveDir);
         if (!downloadFile.mkdirs()) {
             downloadFile.createNewFile();
         }

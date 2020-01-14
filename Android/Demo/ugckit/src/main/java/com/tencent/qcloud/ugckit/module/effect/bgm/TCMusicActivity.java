@@ -122,10 +122,14 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TCMusicInfo info = mTCMusicInfoList.get(position);
-                        info.status = TCMusicInfo.STATE_DOWNLOADING;
-                        info.progress = progress;
-                        mTCMusicAdapter.updateItem(position, info);
+                        if (mTCMusicInfoList != null && mTCMusicInfoList.size() > 0) {
+                            TCMusicInfo info = mTCMusicInfoList.get(position);
+                            if (info != null) {
+                                info.status = TCMusicInfo.STATE_DOWNLOADING;
+                                info.progress = progress;
+                                mTCMusicAdapter.updateItem(position, info);
+                            }
+                        }
                     }
                 });
             }

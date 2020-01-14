@@ -1,8 +1,9 @@
 package com.tencent.qcloud.ugckit.utils;
 
-import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 
 import java.io.File;
@@ -13,13 +14,20 @@ import java.util.Date;
  * 视频路径生成器
  */
 public class VideoPathUtil {
+    private static final String TAG = "VideoPathUtil";
+
     /**
      * 生成编辑后输出视频路径
      *
      * @return
      */
     public static String generateVideoPath() {
-        String outputPath = Environment.getExternalStorageDirectory() + File.separator + UGCKitConstants.DEFAULT_MEDIA_PACK_FOLDER;
+        File sdcardDir = UGCKit.getAppContext().getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            Log.e(TAG, "generateVideoPath sdcardDir is null");
+            return "";
+        }
+        String outputPath = sdcardDir + File.separator + UGCKitConstants.DEFAULT_MEDIA_PACK_FOLDER;
         File outputFolder = new File(outputPath);
 
         if (!outputFolder.exists()) {
@@ -40,7 +48,14 @@ public class VideoPathUtil {
         long currentTime = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
         String time = sdf.format(new Date(currentTime));
-        String outputDir = Environment.getExternalStorageDirectory() + File.separator + UGCKitConstants.OUTPUT_DIR_NAME;
+
+        File sdcardDir = UGCKit.getAppContext().getExternalFilesDir(null);
+        if (sdcardDir == null) {
+            Log.e(TAG, "sdcardDir is null");
+            return null;
+        }
+
+        String outputDir = sdcardDir + File.separator + UGCKitConstants.OUTPUT_DIR_NAME;
         File outputFolder = new File(outputDir);
         if (!outputFolder.exists()) {
             outputFolder.mkdir();
