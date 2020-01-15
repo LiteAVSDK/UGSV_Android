@@ -62,6 +62,9 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         setContentView(R.layout.activity_video_editer);
         initData();
         mUGCKitVideoEdit = (UGCKitVideoEdit) findViewById(R.id.video_edit);
+        UGCKitEditConfig config = new UGCKitEditConfig();
+        config.isPublish = true;
+        mUGCKitVideoEdit.setConfig(config);
         if (!TextUtils.isEmpty(mVideoPath)) {
             mUGCKitVideoEdit.setVideoPath(mVideoPath);
         }
