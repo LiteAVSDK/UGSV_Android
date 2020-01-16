@@ -9,6 +9,18 @@
 | iOS      | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
+## 最新版本 6.9 @ 2020.01.15
+
+- iOS&Android：UGC TUIKit 实现，UI 组件化，支持自定义主题，方便集成与修改。
+
+- iOS&Android：UGC 支持三屏合拍及音量调节能力。
+
+- Android：Android 10 兼容支持。
+
+- Android：UGC 预处理采用硬遍，提高预处理速度。
+
+- iOS：UGC 合唱模块优化，解决音画不同步等相关问题。
+
 ## 最新版本 6.8 @ 2019.11.15
 
 - iOS&Android：录制支持4：3分辨率。
