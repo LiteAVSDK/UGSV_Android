@@ -10,30 +10,11 @@
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
 ## 最新版本 6.9 @ 2020.01.15
-
 - iOS&Android：UGC TUIKit 实现，UI 组件化，支持自定义主题，方便集成与修改。
-
 - iOS&Android：UGC 支持三屏合拍及音量调节能力。
-
 - Android：Android 10 兼容支持。
-
 - Android：UGC 预处理采用硬遍，提高预处理速度。
-
 - iOS：UGC 合唱模块优化，解决音画不同步等相关问题。
-
-## 最新版本 6.8 @ 2019.11.15
-
-- iOS&Android：录制支持4：3分辨率。
-
-- iOS&Android：企业版增加 P 图新功能，包括美肤、亮眼、白牙、祛皱、美妆、手势识别等新特性。
-
-- Android：优化短视频生成速度，提高短视频编辑生成效率。
-
-- Android：修复对焦右下边框比左上边框粗的问题。
-
-- Android：企业版修复部分机型大眼、瘦脸、动效无效的问题。
-
-- iOS：短视频预览解决偶现黑屏的问题。
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
