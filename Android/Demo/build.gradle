@@ -1,9 +1,6 @@
 buildscript {
     repositories {
-        maven { url "http://maven.oa.com/nexus/content/repositories/jcenter"}
-        maven { url "http://maven.oa.com/nexus/content/repositories/google-maven"}
-        maven { url "http://maven.oa.com/nexus/content/groups/androidbuild"}
-        maven { url "http://maven.oa.com/nexus/content/repositories/tencentqcloudterminal"}
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
@@ -16,10 +13,7 @@ allprojects {
             dirs 'src/main/jniLibs'
             dirs project(':app').file('libs')
         }
-        maven { url "http://maven.oa.com/nexus/content/repositories/jcenter"}
-        maven { url "http://maven.oa.com/nexus/content/repositories/google-maven"}
-        maven { url "http://maven.oa.com/nexus/content/groups/androidbuild"}
-        maven { url "http://maven.oa.com/nexus/content/repositories/tencentqcloudterminal"}
+        jcenter()
     }
 }
 
