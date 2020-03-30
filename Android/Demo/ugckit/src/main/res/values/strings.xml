@@ -386,4 +386,9 @@
     <string name="follow_and_send_msg_to_public_number">关注公众号“腾讯云视频”\n给公众号发送“小视频”</string>
     <string name="triple_volume">音量</string>
     <string name="triple_replace_file">选视频</string>
+
+    <string name="start_record_not_init">别着急，画面还没出来</string>
+    <string name="start_record_not_finish">还有录制的任务没有结束</string>
+    <string name="start_record_path_empty">传入的视频路径为空</string>
+    <string name="start_record_version_below">版本太低</string>
 </resources>

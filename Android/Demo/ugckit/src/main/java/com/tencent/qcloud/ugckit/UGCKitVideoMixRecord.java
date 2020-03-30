@@ -211,7 +211,11 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         getFollowRecordBottomLayout().disableFunction();
         getFollowRecordRightLayout().setVisibility(View.INVISIBLE);
 
-        VideoRecordSDK.getInstance().startRecord();
+        int retCode = VideoRecordSDK.getInstance().startRecord();
+        if (retCode == VideoRecordSDK.START_RECORD_FAIL) { //点击开始录制失败，录制按钮状态变为暂停
+            getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
+            return;
+        }
         if (VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size() == 0) {
             getPlayViews().seekVideo(0);
         }

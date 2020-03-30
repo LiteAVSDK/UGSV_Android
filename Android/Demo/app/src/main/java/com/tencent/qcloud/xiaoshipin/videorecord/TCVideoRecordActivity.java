@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.module.effect.bgm.TCMusicActivity;
@@ -63,8 +64,12 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
             }
 
             @Override
-            public void onRecordCompleted(UGCKitResult result) {
-                startEditActivity();
+            public void onRecordCompleted(UGCKitResult ugcKitResult) {
+                if (ugcKitResult.errorCode == 0) {
+                    startEditActivity();
+                } else {
+                    ToastUtil.toastShortMessage("record video failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+                }
             }
         });
         mUGCKitVideoRecord.setOnMusicChooseListener(new IVideoRecordKit.OnMusicChooseListener() {

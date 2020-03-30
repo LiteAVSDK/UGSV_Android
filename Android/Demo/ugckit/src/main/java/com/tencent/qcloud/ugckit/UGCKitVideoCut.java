@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -81,6 +82,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                         PlayerManagerKit.getInstance().startPlay();
                         // 未加载完缩略图，重新进行加载
                         if (!mComplete) {
+                            TXCLog.i(TAG,"[UGCKit][VideoCut]last load uncomplete, reload thunmail");
                             loadThumbnail();
                         }
                     }
@@ -103,6 +105,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
 
     @Override
     public void setVideoPath(final String videoPath) {
+        TXCLog.i(TAG,"[UGCKit][VideoCut]setVideoPath:" + videoPath);
         if (TextUtils.isEmpty(videoPath)) {
             ToastUtil.toastShortMessage(getResources().getString(R.string.tc_video_cutter_activity_oncreate_an_unknown_error_occurred_the_path_cannot_be_empty));
             return;
@@ -137,6 +140,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                     VideoEditerSDK.getInstance().getEditer().setRenderRotation(rotation);
                 }
             });
+            TXCLog.i(TAG,"[UGCKit][VideoCut]load thunmail");
             loadThumbnail();
             // 播放视频
             PlayerManagerKit.getInstance().startPlayCutTime();

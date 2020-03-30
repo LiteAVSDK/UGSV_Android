@@ -10,6 +10,7 @@ public class JumpActivityMgr {
     @NonNull
     private static JumpActivityMgr instance = new JumpActivityMgr();
     private boolean mCutVideoFlag = true;
+    private boolean mQuickImport = false;
 
     private JumpActivityMgr() {
         mCutVideoFlag = true;
@@ -31,5 +32,13 @@ public class JumpActivityMgr {
 
     public boolean getEditFlagFromCut() {
         return mCutVideoFlag;
+    }
+
+    public void setQuickImport(boolean quickImport) {
+        mQuickImport = quickImport;
+    }
+
+    public boolean isQuickImport() {
+        return mQuickImport;
     }
 }

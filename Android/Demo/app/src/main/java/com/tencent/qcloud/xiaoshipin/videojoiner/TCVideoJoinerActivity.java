@@ -11,6 +11,7 @@ import com.tencent.qcloud.ugckit.module.join.IVideoJoinKit;
 import com.tencent.qcloud.ugckit.UGCKitVideoJoin;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoCutActivity;
 
 import java.util.ArrayList;
@@ -36,7 +37,11 @@ public class TCVideoJoinerActivity extends FragmentActivity {
             /**
              * 视频合成完成，返回合成后的视频地址，跳转到视频裁剪页面
              */
-            startCutActivity(ugcKitResult);
+            if (ugcKitResult.errorCode == 0) {
+                startCutActivity(ugcKitResult);
+            } else {
+                ToastUtil.toastShortMessage("join video failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+            }
         }
     };
 

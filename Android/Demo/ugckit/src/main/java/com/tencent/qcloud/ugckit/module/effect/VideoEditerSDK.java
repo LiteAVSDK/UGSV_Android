@@ -261,7 +261,6 @@ public class VideoEditerSDK {
         // 每一秒/一张缩略图
         int thumbCount = durationS;
         Log.d(TAG, "thumbCount:" + thumbCount);
-        setCutterStartTime(0, mTXVideoInfo.duration);
 
         if (mTXVideoEditer != null) {
             mTXVideoEditer.setRenderRotation(0);

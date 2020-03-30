@@ -11,6 +11,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.tencent.qcloud.ugckit.module.editer.UGCKitEditConfig;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -44,7 +46,11 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
     private IVideoEditKit.OnEditListener mOnVideoEditListener = new IVideoEditKit.OnEditListener() {
         @Override
         public void onEditCompleted(UGCKitResult ugcKitResult) {
-            startPreviewActivity(ugcKitResult);
+            if (ugcKitResult.errorCode == 0) {
+                startPreviewActivity(ugcKitResult);
+            } else {
+                ToastUtil.toastShortMessage("edit video failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+            }
         }
 
         @Override
@@ -62,6 +68,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         setContentView(R.layout.activity_video_editer);
         initData();
         mUGCKitVideoEdit = (UGCKitVideoEdit) findViewById(R.id.video_edit);
+
         UGCKitEditConfig config = new UGCKitEditConfig();
         config.isPublish = true;
         mUGCKitVideoEdit.setConfig(config);

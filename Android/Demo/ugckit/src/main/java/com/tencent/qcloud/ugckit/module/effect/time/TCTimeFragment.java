@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 
+import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.qcloud.ugckit.module.record.VideoRecordSDK;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.timeline.SliderViewContainer;
@@ -126,6 +129,17 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTvSpeedSelect.setBackgroundResource(coverIcon);
         mTvRepeatSelect.setBackgroundResource(coverIcon);
         mTvReverseSelect.setBackgroundResource(coverIcon);
+
+        boolean quickImport = JumpActivityMgr.getInstance().isQuickImport();
+        RelativeLayout layoutRepeat = (RelativeLayout) view.findViewById(R.id.layout_repeat);
+        RelativeLayout layoutReverse = (RelativeLayout) view.findViewById(R.id.layout_reverse);
+        if (quickImport) {
+            layoutRepeat.setVisibility(View.GONE);
+            layoutReverse.setVisibility(View.GONE);
+        } else {
+            layoutRepeat.setVisibility(View.VISIBLE);
+            layoutReverse.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initRepeatLayout() {
