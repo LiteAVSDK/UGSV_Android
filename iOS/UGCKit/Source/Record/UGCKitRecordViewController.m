@@ -387,6 +387,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     [btnBack addTarget:self action:@selector(onTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnBack];
 
+    // 比例按钮配置
+    _controlView.videoRatio = _config.ratio;
+    
     // 事件绑定
     [_controlView.btnMusic addTarget:self action:@selector(onBtnMusicClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_controlView.btnRatioGroup addTarget:self action:@selector(onBtnRatioClicked:) forControlEvents:UIControlEventValueChanged];
