@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
-import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.component.dialog.ProgressDialogUtil;
@@ -305,7 +304,11 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         getRecordRightLayout().setAspectIconEnable(false);
 
         // 开始/继续录制
-        VideoRecordSDK.getInstance().startRecord();
+        int retCode = VideoRecordSDK.getInstance().startRecord();
+        if (retCode == VideoRecordSDK.START_RECORD_FAIL) { //点击开始录制失败，录制按钮状态变为暂停
+            getRecordBottomLayout().getRecordButton().pauseRecordAnim();
+            return;
+        }
 
         AudioFocusManager.getInstance().setAudioFocusListener(new AudioFocusManager.OnAudioFocusListener() {
             @Override

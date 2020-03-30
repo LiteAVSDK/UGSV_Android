@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
@@ -44,7 +45,6 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
         long cutterEndTime = VideoEditerSDK.getInstance().getCutterEndTime();
 
         int thumbnailCount = (int) (cutterEndTime - cutterStartTime) / 1000;
-        TXLog.d(TAG, "thumbnailCount:" + thumbnailCount);
 
         TXVideoEditConstants.TXThumbnail thumbnail = new TXVideoEditConstants.TXThumbnail();
         thumbnail.count = thumbnailCount;
@@ -53,10 +53,12 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
 
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
+            TXCLog.i(TAG, "[UGCKit][VideoProcess]generate thumbnail start time:" + cutterStartTime + ",end time:" + cutterEndTime + ",thumbnail count:" + thumbnailCount);
             editer.setThumbnail(thumbnail);
             editer.setThumbnailListener(this);
             editer.setVideoProcessListener(this);
             editer.setCutFromTime(cutterStartTime, cutterEndTime);
+            TXCLog.i(TAG, "[UGCKit][VideoProcess]generate video start time:" + cutterStartTime + ",end time:" + cutterEndTime);
             editer.processVideo();
         }
     }

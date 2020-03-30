@@ -78,6 +78,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/layout_repeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp">
@@ -110,6 +111,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/layout_reverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

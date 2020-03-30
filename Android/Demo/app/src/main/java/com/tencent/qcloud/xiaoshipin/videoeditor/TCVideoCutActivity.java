@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
@@ -29,7 +30,11 @@ public class TCVideoCutActivity extends FragmentActivity {
         @Override
         public void onCutterCompleted(UGCKitResult ugcKitResult) {
             Log.i(TAG, "onCutterCompleted");
-            startEditActivity();
+            if (ugcKitResult.errorCode == 0) {
+                startEditActivity();
+            } else {
+                ToastUtil.toastShortMessage("cut video failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+            }
         }
 
         /**

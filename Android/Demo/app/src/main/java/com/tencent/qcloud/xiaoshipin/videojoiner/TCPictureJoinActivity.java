@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.module.picturetransition.IPictureJoinKit;
@@ -30,7 +31,11 @@ public class TCPictureJoinActivity extends FragmentActivity {
             /**
              * 跳转到视频裁剪页面
              */
-            startEditActivity(ugcKitResult);
+            if (ugcKitResult.errorCode == 0) {
+                startEditActivity(ugcKitResult);
+            } else {
+                ToastUtil.toastShortMessage("join picture failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+            }
         }
 
         @Override

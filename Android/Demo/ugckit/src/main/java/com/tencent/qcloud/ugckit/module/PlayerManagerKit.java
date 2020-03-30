@@ -47,12 +47,10 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
 
                 long startTime = VideoEditerSDK.getInstance().getCutterStartTime();
                 long endTime = VideoEditerSDK.getInstance().getCutterEndTime();
+                Log.d(TAG, "[UGCKit][PlayerKit]startPlay startTime:" + startTime + ",endTime:" + endTime);
                 editer.startPlayFromTime(startTime, endTime);
 
                 mCurrentState = PlayState.STATE_PLAY;
-
-                Log.d(TAG, "startPlay startTime:" + startTime + ",endTime:" + endTime);
-
                 notifyStart();
             }
             isPreviewFinish = false;
@@ -67,6 +65,7 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
         addPreviewListener();
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
+            Log.d(TAG, "[UGCKit][PlayerKit]startPlayCutTime startTime:" + startTime + ",endTime:" + endTime);
             editer.startPlayFromTime(startTime, endTime);
 
             notifyStart();
@@ -198,9 +197,9 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
             addPreviewListener();
+            Log.d(TAG, "[UGCKit][PlayerKit]startPlay startTime:" + startTime + ",endTime:" + endTime);
             editer.startPlayFromTime(startTime, endTime);
             mCurrentState = PlayState.STATE_PLAY;
-            Log.d(TAG, "startPlay startTime:" + startTime + ",endTime:" + endTime);
         }
         isPreviewFinish = false;
     }

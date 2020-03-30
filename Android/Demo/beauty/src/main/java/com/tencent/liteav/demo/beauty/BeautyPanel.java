@@ -117,7 +117,7 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
 
         mSeekbar = (SeekBar) findViewById(R.id.seekbarThird);
         mSeekbar.setOnSeekBarChangeListener(this);
-                
+
         mFirstGradlePicker = (TCHorizontalScrollView) findViewById(R.id.horizontalPickerViewFirst);
         mSecondGradlePicker = (TCHorizontalScrollView) findViewById(R.id.horizontalPickerViewSecond);
         mSeekBarValue = (TextView) findViewById(R.id.tvSeekbarValue);
@@ -137,14 +137,20 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     }
 
     private void initMotionLink() {
+        // TODO:贴纸仅第一个有效，更多贴纸效果请购买后参照第一个设置
         motionDataList.add(new MotionData("none", "无动效", "", ""));
+        motionDataList.add(new MotionData("video_boom", "Boom", "http://dldir1.qq.com/hudongzhibo/AISpecial/Android/170/video_boomAndroid.zip", mPrefs.getString("video_boom", "")));
+
         motionDataKoubeiList.add(new MotionData("none", "无", "", ""));
+        motionDataKoubeiList.add(new MotionData("video_xiaofu", "校服", "http://dldir1.qq.com/hudongzhibo/AISpecial/Android/170/video_xiaofuAndroid.zip", mPrefs.getString("video_xiaofu", "")));
 
         // 美妆
         motionBeautyFaceList.add(new MotionData("none", "无", "", ""));
+        motionBeautyFaceList.add(new MotionData("video_cherries", "樱桃", "http://dldir1.qq.com/hudongzhibo/AISpecial/Android/video_cherriesAndroid.zip", mPrefs.getString("video_cherries", "")));
 
         // 手势
         motionGestureList.add(new MotionData("none", "无", "", ""));
+        motionGestureList.add(new MotionData("video_pikachu", "皮卡丘", "http://dldir1.qq.com/hudongzhibo/AISpecial/Android/181/video_pikachu.zip", mPrefs.getString("video_pikachu", "")));
     }
 
     private void initMotionData() {

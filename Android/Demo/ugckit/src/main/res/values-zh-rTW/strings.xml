@@ -386,4 +386,8 @@
 
     <string name="follow_and_send_msg_to_public_number">關注公衆號“騰訊雲視頻”\n給公衆號發送“小視頻”</string>
 
+    <string name="start_record_not_init">別着急，畫面還沒出來</string>
+    <string name="start_record_not_finish">還有錄製的任務沒有結束</string>
+    <string name="start_record_path_empty">傳入的視頻路徑為空</string>
+    <string name="start_record_version_below">版本太低</string>
 </resources>

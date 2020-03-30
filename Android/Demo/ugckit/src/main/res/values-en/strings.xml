@@ -388,4 +388,11 @@
 
     <string name="follow_and_send_msg_to_public_number">Pay attention to public number "Tencent cloud video"\nSend a "Xiao Shi Pin" to the public number</string>
 
+    <string name="triple_volume">Volume</string>
+    <string name="triple_replace_file">Replace Video</string>
+
+    <string name="start_record_not_init">"Don't worry, the picture hasn't come out yet"</string>
+    <string name="start_record_not_finish">recorded mission is not finish</string>
+    <string name="start_record_path_empty">Incoming video path is empty</string>
+    <string name="start_record_version_below">Version is too low</string>
 </resources>
