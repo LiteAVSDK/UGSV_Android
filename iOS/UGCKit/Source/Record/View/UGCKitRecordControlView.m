@@ -452,4 +452,12 @@
     _speedMode = tag;
 }
 
+// Ignore touch events hit in the blank area
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *hitView = [super hitTest:point withEvent:event];
+    if (hitView == self) {
+        return nil;
+    }
+    return hitView;
+}
 @end
