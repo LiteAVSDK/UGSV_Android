@@ -173,8 +173,8 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordSDK.getBeautyManager().setNosePositionLevel(beautyParams.mNosePositionLevel);
             mRecordSDK.getBeautyManager().setLipsThicknessLevel(beautyParams.mLipsThicknessLevel);
             mRecordSDK.getBeautyManager().setFaceBeautyLevel(beautyParams.mFaceBeautyLevel);
-            mRecordSDK.setGreenScreenFile(beautyParams.mGreenFile, true);
-            mRecordSDK.setSpecialRatio(beautyParams.mFilterMixLevel / 10.f);
+            mRecordSDK.getBeautyManager().setGreenScreenFile(beautyParams.mGreenFile);
+            mRecordSDK.getBeautyManager().setFilterStrength(beautyParams.mFilterStrength / 10.f);
         }
     }
 
@@ -462,12 +462,6 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
                           float rightSpecialRatio, float leftRatio) {
         if (mRecordSDK != null) {
             mRecordSDK.setFilter(leftBmp, leftSpecialRatio, rightBmp, rightSpecialRatio, leftRatio);
-        }
-    }
-
-    public void setSpecialRatio(float specialRatio) {
-        if (mRecordSDK != null) {
-            mRecordSDK.setSpecialRatio(specialRatio);
         }
     }
 

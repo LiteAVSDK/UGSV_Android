@@ -17,7 +17,7 @@ public class UGCBeautyKit implements IBeautyKit {
     @Override
     public void setFilter(Bitmap filterImage, int index) {
         if (mTXUGCRecord != null) {
-            mTXUGCRecord.setFilter(filterImage);
+            mTXUGCRecord.getBeautyManager().setFilter(filterImage);
         }
         if (mListener != null) {
             mListener.onFilerChange(filterImage, index);
@@ -25,16 +25,16 @@ public class UGCBeautyKit implements IBeautyKit {
     }
 
     @Override
-    public void setSpecialRatio(float specialRatio) {
+    public void setFilterStrength(float strength) {
         if (mTXUGCRecord != null) {
-            mTXUGCRecord.setSpecialRatio(specialRatio / 10.0f);
+            mTXUGCRecord.getBeautyManager().setFilterStrength(strength / 10.0f);
         }
     }
 
     @Override
-    public void setGreenScreenFile(String path, boolean isLoop) {
+    public void setGreenScreenFile(String path) {
         if (mTXUGCRecord != null) {
-            mTXUGCRecord.setGreenScreenFile(path, isLoop);
+            mTXUGCRecord.getBeautyManager().setGreenScreenFile(path);
         }
     }
 

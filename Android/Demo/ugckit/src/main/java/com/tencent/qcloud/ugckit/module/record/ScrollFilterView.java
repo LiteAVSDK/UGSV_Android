@@ -181,7 +181,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
                         beautyParams.mFilterBmp = mRightBitmap;
                     }
                     mBeautyPanel.setCurrentFilterIndex(mCurFilterIndex);
-                    beautyParams.mFilterMixLevel = mBeautyPanel.getFilterProgress(mCurFilterIndex);
+                    beautyParams.mFilterStrength = mBeautyPanel.getFilterProgress(mCurFilterIndex);
                 }
             }
             float leftSpecialRatio = mBeautyPanel.getFilterProgress(mLeftIndex) / 10.f;
