@@ -4,6 +4,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+/// @defgroup TXUGCRecordTypeDef_ios TXUGCRecordTypeDef
+/// 视频录制关键类型定义
+/// @{
+
 /// CameraRecord 录制视频质量类型
 typedef NS_ENUM(NSInteger, TXVideoQuality)
 {
@@ -253,4 +257,5 @@ typedef NS_ENUM(NSInteger, TXUGCRecordResultCode)
 @property (nonatomic, strong) UIImage*              coverImage;     
 @end
 
+/// @}
 #endif

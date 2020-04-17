@@ -367,8 +367,8 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     return [self effectIconWithPath:@"jump" frameDuration: 1.0 / 10];
 }
 
-- (NSURL *)goodLuckVideoFileURL {
-    return [_beautyPanelResourceBundle URLForResource:@"goodluck" withExtension:@"mp4"];
+- (NSString *)goodLuckVideoFilePath {
+    return [_beautyPanelResourceBundle pathForResource:@"goodluck" ofType:@"mp4"];
 }
 
 @end

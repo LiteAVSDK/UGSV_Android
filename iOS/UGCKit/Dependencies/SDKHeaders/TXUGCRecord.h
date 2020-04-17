@@ -13,7 +13,9 @@
  **************  短视频录制   **************
  **********************************************/
 
+/// @defgroup TXUGCRecord_ios TXUGCRecord
 /// 短视频录制类
+/// @{
 @interface TXUGCRecord : NSObject
 
 /// 视频录制的委托对象，可以获取录制进度等
@@ -26,7 +28,7 @@
 
 /// 多段录制的管理
 /// @see TXUGCPartsManager
-@property (nonatomic, strong, readonly) TXUGCPartsManager *partsManager; 
+@property (nonatomic, strong, readonly) TXUGCPartsManager *partsManager;
 
 /// @name 实例化
 
@@ -116,19 +118,19 @@
  //activity竖屏模式，竖屏录制
  [[TXUGCRecord shareInstance] setHomeOrientation:VIDEO_HOME_ORIENTATION_DOWN];
  [[TXUGCRecord shareInstance] setRenderRotation:0];
- 
+
  //activity竖屏模式，home在右横屏录制
  [[TXUGCRecord shareInstance] setHomeOrientation:VIDOE_HOME_ORIENTATION_RIGHT];
  [[TXUGCRecord shareInstance] setRenderRotation:90];
- 
+
  //activity竖屏模式，home在左横屏录制
  [[TXUGCRecord shareInstance] setHomeOrientation:VIDEO_HOME_ORIENTATION_LEFT];
  [[TXUGCRecord shareInstance] setRenderRotation:270];
- 
+
  //activity横屏模式，home在右横屏录制 注意：渲染view要跟着activity旋转
  [[TXUGCRecord shareInstance] setHomeOrientation:VIDOE_HOME_ORIENTATION_RIGHT];
  [[TXUGCRecord shareInstance] setRenderRotation:0];
- 
+
  //activity横屏模式，home在左横屏录制 注意：渲染view要跟着activity旋转
  [[TXUGCRecord shareInstance] setHomeOrientation:VIDEO_HOME_ORIENTATION_LEFT];
  [[TXUGCRecord shareInstance] setRenderRotation:0];
@@ -165,10 +167,10 @@
 /**
   开始录制短视频，SDK内部会自动生成视频路经，在TXVideoRecordListener里面返回
   @warning 这个接口SDK会自动管理生成的视频和封面，在下次调用startRecord的时候，SDK会自动删除上一次生成的视频和封面
-  @return 
+  @return
   返回值 | 涵义
   ------|------
-   -1   | 正在录制短视频 
+   -1   | 正在录制短视频
    -2   | videoRecorder初始化失败
    -3   | 摄像头没有打开
    -4   | 麦克风没有打开
@@ -186,7 +188,7 @@
   @return
   返回值 | 涵义
   ------|------
-  -1   | 正在录制短视频 
+  -1   | 正在录制短视频
   -2   | videoRecorder初始化失败
   -3   | 摄像头没有打开
   -4   | 麦克风没有打开
@@ -206,7 +208,7 @@
   @return
   返回值 | 涵义
   ------|------
-  -1    | 正在录制短视频 
+  -1    | 正在录制短视频
   -2     | videoRecorder初始化失败
   -3    | 摄像头没有打开
   -4    | licence 验证失败，您可以通过 getLicenceInfo 接口查询licence信息，
@@ -280,90 +282,110 @@
  */
 - (TXBeautyManager *)getBeautyManager;
 
-/** 设置美颜 和 美白 效果级别
-  @param beautyStyle     : 美颜风格，TXVideoBeautyStyle类型。
-  @param beautyLevel     : 美颜级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
-  @param whitenessLevel  : 美白级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
-  @param ruddinessLevel  : 红润级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
+/**
+ * 设置美颜 和 美白 效果级别
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
+ * @param beautyStyle     : 美颜风格，TXVideoBeautyStyle类型。
+ * @param beautyLevel     : 美颜级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
+ * @param whitenessLevel  : 美白级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
+ * @param ruddinessLevel  : 红润级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setBeautyStyle:(TXVideoBeautyStyle)beautyStyle
             beautyLevel:(float)beautyLevel
          whitenessLevel:(float)whitenessLevel
          ruddinessLevel:(float)ruddinessLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 
+/**
  设置指定素材滤镜特效
  demo 用到的滤镜查找表图片位于RTMPiOSDemo/RTMPiOSDemo/resource／FilterResource.bundle中
+
+ @deprecated v7.2 版本弃用，请使用 TXBeautyManager 设置素材滤镜
  @param filterImage 指定素材，即颜色查找表图片。注意：一定要用png格式！！！
  */
--(void) setFilter:(UIImage*)filterImage;
+-(void) setFilter:(UIImage*)filterImage TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
-  设置两个滤镜效果 [精简版不支持]
-  @param   leftFilter       左滤镜图片(nil代表无左滤镜效果)
-  @param   leftIntensity    左滤镜浓度
-  @param   rightFilter      右滤镜图片(nil代表无右滤镜效果)
-  @param   rightIntensity   右滤镜浓度
-  @param   leftRatio        左滤镜所占比例
+ * 设置两个滤镜效果 [精简版不支持]
+ * @param   leftFilter       左滤镜图片(nil代表无左滤镜效果)
+ * @param   leftIntensity    左滤镜浓度
+ * @param   rightFilter      右滤镜图片(nil代表无右滤镜效果)
+ * @param   rightIntensity   右滤镜浓度
+ * @param   leftRatio        左滤镜所占比例
  */
 - (void)setFilter:(UIImage*)leftFilter leftIntensity:(CGFloat)leftIntensity rightFilter:(UIImage*)rightFilter rightIntensity:(CGFloat)rightIntensity leftRatio:(CGFloat)leftRatio;
 
-/**  
-  设置滤镜效果程度
-  @param specialRatio     从0到1，越大滤镜效果越明显，默认取值0.5
+/**
+ * 设置滤镜效果程度
+ *
+ * @deprecated v7.2 版本弃用，请使用 TXBeautyManager setFilterStrength 接口
+ * @param specialRatio     从0到1，越大滤镜效果越明显，默认取值0.5
  */
 
--(void) setSpecialRatio:(float)specialRatio;
+-(void) setSpecialRatio:(float)specialRatio TXUGC_DEPRECAETD_BEAUTY_API;
 
 // 以下接口均不支持精简版
 
-/** 
-  设置大眼级别（增值版本有效，普通版本设置此参数无效） [仅限企业版Pro]
-  @param eyeScaleLevel 大眼级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
+/**
+ * 设置大眼级别（增值版本有效，普通版本设置此参数无效） [仅限企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
+ * @param eyeScaleLevel 大眼级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 -(void) setEyeScaleLevel:(float)eyeScaleLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
-  设置瘦脸级别（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
-  @param faceScaleLevel 瘦脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
+ * 设置瘦脸级别（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
+ * @param faceScaleLevel 瘦脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 -(void) setFaceScaleLevel:(float)faceScaleLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
-  设置V脸（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
-  @param faceVLevel V脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
+ * 设置V脸（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
+ * @param faceVLevel V脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setFaceVLevel:(float)faceVLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置下巴拉伸或收缩（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+/**
+ * 设置下巴拉伸或收缩（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
  * @param chinLevel 下巴拉伸或收缩取值范围 -9 ~ 9； 0 表示关闭 -9收缩 ~ 9拉伸。
  */
 - (void) setChinLevel:(float)chinLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置短脸（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+/**
+ * 设置短脸（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
  * @param faceShortlevel 短脸级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setFaceShortLevel:(float)faceShortlevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置瘦鼻（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+/**
+ * 设置瘦鼻（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
  * @param noseSlimLevel 瘦鼻级别取值范围 0 ~ 9； 0 表示关闭 1 ~ 9值越大 效果越明显。
  */
 - (void) setNoseSlimLevel:(float)noseSlimLevel TXUGC_DEPRECAETD_BEAUTY_API;
 
-/** 设置绿幕文件（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+/**
+ * 设置绿幕文件（增值版本有效，普通版本设置此参数无效）[仅限企业版Pro]
+ *
+ * @deprecated v7.2 版本弃用，请使用 TXBeautyManager 设置绿幕背景视频
  * @param file 绿幕文件路径
  */
--(void) setGreenScreenFile:(NSURL *)file;
+-(void) setGreenScreenFile:(NSURL *)file TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
  * 设置动效 （增值版本有效，普通版本设置此参数无效）[仅限企业版及企业版Pro]
- * @param tmplName 动效名称 
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
+ * @param tmplName 动效名称
  * @param tmplDir  动效上层文件路径
  */
 - (void) selectMotionTmpl:(NSString *)tmplName inDir:(NSString *)tmplDir TXUGC_DEPRECAETD_BEAUTY_API;
 
 /**
  * 设置动效静音 （增值版本有效，普通版本设置此参数无效）[仅限企业版及企业版Pro]
+ * @deprecated v6.9 版本弃用，请使用 TXBeautyManager 设置美颜功能
  * @param motionMute YES 静音, NO 不静音
  */
 - (void)setMotionMute:(BOOL)motionMute TXUGC_DEPRECAETD_BEAUTY_API;
@@ -371,7 +393,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////背景音相关逻辑////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark - 背景音相关逻辑 
+#pragma mark - 背景音相关逻辑
 /** @name 背景音相关逻辑 */
 
 /**
@@ -465,3 +487,4 @@
 - (int)snapshot:(void (^)(UIImage *))snapshotCompletionBlock;
 
 @end
+/// @}

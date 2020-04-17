@@ -11,6 +11,9 @@
  **************  视频片段管理   **************
  **********************************************/
 
+/// @addtogroup TXUGCRecordTypeDef_ios
+/// @{
+
 /**
  * 视频在每一次stopRecord 和 pauseRecord 的时候都会生成一个视频片段,视频片段保存在 /Documents/TXUGC/TXUGCParts
    文件夹下，您可以在当前文件夹下获取所有本地存储的视频片段
@@ -60,3 +63,5 @@
 -(void)joinAllParts:(NSString *)videoOutputPath complete:(void(^)(int))result;
 
 @end
+
+/// @}

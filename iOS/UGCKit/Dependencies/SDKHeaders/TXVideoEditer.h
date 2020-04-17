@@ -20,7 +20,9 @@
 
 #pragma mark - 视频信息获取
 
+/// @defgroup TXVideoEditer_ios TXVideoEditer
 /// 视频信息获取类
+/// @{
 @interface TXVideoInfoReader : NSObject
 /**
  * @notice 1,如果当前image图片为nil，sdk会自动返回上一张image图片
@@ -405,7 +407,7 @@ typedef BOOL(^sampleProcess)(int number , UIImage * image);
  * 调用之后在TXVideoGenerateListener里面监听结果回调
  * @param videoCompressed 视频压缩质量
  * @param videoOutputPath 视频操作之后存储路径
- *
+ * 
  */
 - (void) generateVideo:(TXVideoCompressed)videoCompressed videoOutputPath:(NSString *)videoOutputPath;
 
@@ -432,7 +434,7 @@ typedef BOOL(^sampleProcess)(int number , UIImage * image);
 
 /**
   暂停视频生成，仅适用于generateVideo，quickGenerateVideo调用无效
-  @discussion
+  @discussion 
   SDK生成视频默认采用的是硬编码（编码效率高，编码出来的图像效果好），硬编码器在程序进后台后会停止工作，从而导致视频生成失败，
   这里新增了两个接口pauseGenerate，resumeGenerate，程序进后台后您可以调用pauseGenerate暂停视频生成，程序重新进前台后，
   您可以调用resumeGenerate 继续视频生成，这里需要注意的是，调用resumeGenerate，sdk会重启硬编码器，会有一定的概率重启失败，
@@ -539,5 +541,5 @@ typedef BOOL(^sampleProcess)(int number , UIImage * image);
 - (void)cancelJoin;
 
 @end
-
+/// @}
 
