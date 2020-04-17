@@ -43,18 +43,21 @@ typedef NSEdgeInsets TXEdgeInsets;
  * 从性能的角度，540 × 960 可以避免前置摄像头开启 720 × 1280 的采集分辨率，对于美颜开销很大的场景能节省不少的计算量。
  */
 typedef NS_ENUM(NSInteger, TX_Enum_Type_VideoResolution) {
-	
-	/// 竖屏分辨率，宽高比为 9:16
+
+    /// 竖屏分辨率，宽高比为 9:16
     VIDEO_RESOLUTION_TYPE_360_640      = 0,   ///< 建议码率 800kbps
     VIDEO_RESOLUTION_TYPE_540_960      = 1,   ///< 建议码率 1200kbps
     VIDEO_RESOLUTION_TYPE_720_1280     = 2,   ///< 建议码率 1800kbps
-	
-	/// 如下均为内建分辨率，为 SDK 内部使用，不支持通过接口进行设置
+    VIDEO_RESOLUTION_TYPE_1080_1920    = 30,  ///< 建议码率 3000kbps
+
+
+    /// 如下均为内建分辨率，为 SDK 内部使用，不支持通过接口进行设置
     VIDEO_RESOLUTION_TYPE_640_360      = 3,   
     VIDEO_RESOLUTION_TYPE_960_540      = 4,   
     VIDEO_RESOLUTION_TYPE_1280_720     = 5,   
-	
-    VIDEO_RESOLUTION_TYPE_320_480      = 6,   
+    VIDEO_RESOLUTION_TYPE_1920_1080    = 31,
+
+    VIDEO_RESOLUTION_TYPE_320_480      = 6,
     VIDEO_RESOLUTION_TYPE_180_320      = 7,
     VIDEO_RESOLUTION_TYPE_270_480      = 8,
     VIDEO_RESOLUTION_TYPE_320_180      = 9,
@@ -96,7 +99,8 @@ typedef NS_ENUM(NSInteger, TX_Enum_Type_VideoQuality) {
     VIDEO_QUALITY_STANDARD_DEFINITION       = 1,    ///< 标清：采用 360 × 640 的分辨率   
     VIDEO_QUALITY_HIGH_DEFINITION           = 2,    ///< 高清：采用 540 × 960 的分辨率  
     VIDEO_QUALITY_SUPER_DEFINITION          = 3,    ///< 超清：采用 720 × 1280 的分辨率
-    VIDEO_QUALITY_LINKMIC_MAIN_PUBLISHER    = 4,    ///< 连麦场景下的大主播使用 
+    VIDEO_QUALITY_ULTRA_DEFINITION          = 7,    ///< 蓝光：采用 1080 × 1920 的分辨率
+    VIDEO_QUALITY_LINKMIC_MAIN_PUBLISHER    = 4,    ///< 连麦场景下的大主播使用
     VIDEO_QUALITY_LINKMIC_SUB_PUBLISHER     = 5,    ///< 连麦场景下的小主播（连麦的观众）使用
     VIDEO_QUALITY_REALTIME_VIDEOCHAT        = 6,    ///< 纯视频通话场景使用（已废弃）
 };
@@ -143,7 +147,7 @@ typedef NS_ENUM(NSInteger, TX_Enum_Type_BeautyFilterDepth) {
  */
 typedef NS_ENUM(NSInteger, TX_Enum_Type_AutoAdjustStrategy) {
     AUTO_ADJUST_NONE                                 = -1,    ///< 非法数值，用于 SDK 内部做合法性检查
-	
+
     AUTO_ADJUST_LIVEPUSH_STRATEGY                    =  0,    ///< 最适合直播模式下的流控算法
     AUTO_ADJUST_LIVEPUSH_RESOLUTION_STRATEGY         =  1,    ///< 不推荐：SDK 内部会调整视频分辨率，如果有 H5 分享的需求请勿使用
     AUTO_ADJUST_REALTIME_VIDEOCHAT_STRATEGY          =  5,    ///< 待废弃，请使用腾讯云 TRTC 服务
@@ -251,6 +255,7 @@ typedef NS_ENUM(NSInteger, TXAudioRouteType) {
 typedef NS_ENUM(NSInteger, TXSystemAudioVolumeType) {
     SYSTEM_AUDIO_VOLUME_TYPE_AUTO             = 0,    ///< 默认类型，SDK会自动选择合适的音量类型
     SYSTEM_AUDIO_VOLUME_TYPE_MEDIA            = 1,    ///< 仅使用媒体音量，SDK不再使用通话音量
+    SYSTEM_AUDIO_VOLUME_TYPE_VOIP             = 2,    ///< 仅使用通话音量，SDK一直使用通话音量
 };
 
 /**
@@ -334,8 +339,8 @@ typedef NS_ENUM(NSInteger, TXCaptureVideoInputSource) {
  */
 #define EVT_MSG                          @"EVT_MSG"                 ///> 事件ID
 #define EVT_TIME                         @"EVT_TIME"                ///> 事件发生的UTC毫秒时间戳
-#define EVT_PARAM1				         @"EVT_PARAM1"              ///> 事件参数1
-#define EVT_PARAM2					     @"EVT_PARAM2"              ///> 事件参数2
+#define EVT_PARAM1                       @"EVT_PARAM1"              ///> 事件参数1
+#define EVT_PARAM2                       @"EVT_PARAM2"              ///> 事件参数2
 #define EVT_GET_MSG                      @"EVT_GET_MSG"             ///> 消息内容，收到PLAY_EVT_GET_MESSAGE事件时，通过该字段获取消息内容
 #define EVT_PLAY_PROGRESS                @"EVT_PLAY_PROGRESS"       ///> 点播：视频播放进度
 #define EVT_PLAY_DURATION                @"EVT_PLAY_DURATION"       ///> 点播：视频总时长

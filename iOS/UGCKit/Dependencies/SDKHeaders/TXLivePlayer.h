@@ -16,6 +16,10 @@
 #import "TXLiveRecordListener.h"
 #import "TXAudioRawDataDelegate.h"
 
+/// @defgroup TXLivePlayer_ios TXLivePlayer
+/// 腾讯云直播播放器接口类
+/// @{
+
 /**
  * 支持的直播和点播类型
  *
@@ -363,6 +367,7 @@ typedef NS_ENUM(NSInteger, TX_Enum_PlayType) {
  */
 - (void)callExperimentalAPI:(NSString*)jsonStr;
 
-@end
+/// @}
 
+@end
 /// @}

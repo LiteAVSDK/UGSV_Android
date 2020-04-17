@@ -130,47 +130,6 @@
 		45D52F7D238E178A006F71FA /* UGCKitEffectInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F7B238E178A006F71FA /* UGCKitEffectInfo.m */; };
 		45E8294E2384ED1200702418 /* UGCKitAudioEffectPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E8294C2384ED1200702418 /* UGCKitAudioEffectPanel.h */; };
 		45E8294F2384ED1200702418 /* UGCKitAudioEffectPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294D2384ED1200702418 /* UGCKitAudioEffectPanel.m */; };
-		45E90793239E253000CEC8F1 /* TXLivePush.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076A239E253000CEC8F1 /* TXLivePush.h */; };
-		45E90794239E253000CEC8F1 /* TXCAVRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076B239E253000CEC8F1 /* TXCAVRoom.h */; };
-		45E90795239E253000CEC8F1 /* TXUGCRecordTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076C239E253000CEC8F1 /* TXUGCRecordTypeDef.h */; };
-		45E90796239E253000CEC8F1 /* TXImageSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076D239E253000CEC8F1 /* TXImageSprite.h */; };
-		45E90797239E253000CEC8F1 /* TXUGCRecordListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076E239E253000CEC8F1 /* TXUGCRecordListener.h */; };
-		45E90798239E253000CEC8F1 /* TXVodDownloadManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9076F239E253000CEC8F1 /* TXVodDownloadManager.h */; };
-		45E90799239E253000CEC8F1 /* TXLiveBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90770239E253000CEC8F1 /* TXLiveBase.h */; };
-		45E9079A239E253000CEC8F1 /* TXLiveSDKEventDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90771239E253000CEC8F1 /* TXLiveSDKEventDef.h */; };
-		45E9079B239E253000CEC8F1 /* TXUGCBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90772239E253000CEC8F1 /* TXUGCBase.h */; };
-		45E9079C239E253000CEC8F1 /* TXVideoEditerListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90773239E253000CEC8F1 /* TXVideoEditerListener.h */; };
-		45E9079D239E253000CEC8F1 /* TXVodPlayConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90774239E253000CEC8F1 /* TXVodPlayConfig.h */; };
-		45E9079E239E253000CEC8F1 /* TXLiveRecordListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90775239E253000CEC8F1 /* TXLiveRecordListener.h */; };
-		45E9079F239E253000CEC8F1 /* TRTCCloud.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90776239E253000CEC8F1 /* TRTCCloud.h */; };
-		45E907A0239E253000CEC8F1 /* TXCAVRoomListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90777239E253000CEC8F1 /* TXCAVRoomListener.h */; };
-		45E907A1239E253000CEC8F1 /* TRTCCloudDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90778239E253000CEC8F1 /* TRTCCloudDef.h */; };
-		45E907A2239E253000CEC8F1 /* TXVodPlayListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90779239E253000CEC8F1 /* TXVodPlayListener.h */; };
-		45E907A3239E253000CEC8F1 /* TXLivePlayConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9077A239E253000CEC8F1 /* TXLivePlayConfig.h */; };
-		45E907A4239E253000CEC8F1 /* TXCAVRoomConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9077B239E253000CEC8F1 /* TXCAVRoomConfig.h */; };
-		45E907A5239E253000CEC8F1 /* TXVodPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9077C239E253000CEC8F1 /* TXVodPlayer.h */; };
-		45E907A6239E253000CEC8F1 /* TXVideoEditer.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9077D239E253000CEC8F1 /* TXVideoEditer.h */; };
-		45E907A7239E253000CEC8F1 /* TXLiveSDKTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9077E239E253000CEC8F1 /* TXLiveSDKTypeDef.h */; };
-		45E907A8239E253000CEC8F1 /* TRTCCloudDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9077F239E253000CEC8F1 /* TRTCCloudDelegate.h */; };
-		45E907A9239E253000CEC8F1 /* TXCAVRoomDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90780239E253000CEC8F1 /* TXCAVRoomDef.h */; };
-		45E907AA239E253000CEC8F1 /* TXBitrateItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90781239E253000CEC8F1 /* TXBitrateItem.h */; };
-		45E907AB239E253000CEC8F1 /* TXLiteAVSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90782239E253000CEC8F1 /* TXLiteAVSDK.h */; };
-		45E907AC239E253000CEC8F1 /* TXAudioCustomProcessDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90783239E253000CEC8F1 /* TXAudioCustomProcessDelegate.h */; };
-		45E907AD239E253000CEC8F1 /* TXPlayerAuthParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90784239E253000CEC8F1 /* TXPlayerAuthParams.h */; };
-		45E907AE239E253000CEC8F1 /* TXLivePlayListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90785239E253000CEC8F1 /* TXLivePlayListener.h */; };
-		45E907AF239E253000CEC8F1 /* TXLiteAVCode.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90786239E253000CEC8F1 /* TXLiteAVCode.h */; };
-		45E907B0239E253000CEC8F1 /* TXLivePushConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90787239E253000CEC8F1 /* TXLivePushConfig.h */; };
-		45E907B1239E253000CEC8F1 /* TXBeautyManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90788239E253000CEC8F1 /* TXBeautyManager.h */; };
-		45E907B2239E253000CEC8F1 /* TRTCStatistics.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90789239E253000CEC8F1 /* TRTCStatistics.h */; };
-		45E907B3239E253000CEC8F1 /* TXAudioRawDataDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9078A239E253000CEC8F1 /* TXAudioRawDataDelegate.h */; };
-		45E907B4239E253000CEC8F1 /* TXLivePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9078B239E253000CEC8F1 /* TXLivePlayer.h */; };
-		45E907B5239E253000CEC8F1 /* TXUGCRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9078C239E253000CEC8F1 /* TXUGCRecord.h */; };
-		45E907B6239E253000CEC8F1 /* TXVideoCustomProcessDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9078D239E253000CEC8F1 /* TXVideoCustomProcessDelegate.h */; };
-		45E907B7239E253000CEC8F1 /* TXLiveRecordTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9078E239E253000CEC8F1 /* TXLiveRecordTypeDef.h */; };
-		45E907B8239E253000CEC8F1 /* TXUGCPartsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E9078F239E253000CEC8F1 /* TXUGCPartsManager.h */; };
-		45E907B9239E253000CEC8F1 /* TXVideoEditerTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90790239E253000CEC8F1 /* TXVideoEditerTypeDef.h */; };
-		45E907BA239E253000CEC8F1 /* TXLivePushListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90791239E253000CEC8F1 /* TXLivePushListener.h */; };
-		45E907BB239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90792239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h */; };
 		F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D52F12238D231A006F71FA /* UGCKitBGMCell.xib */; };
 /* End PBXBuildFile section */
 
@@ -341,49 +300,38 @@
 		45D52F77238E175E006F71FA /* UGCKitVideoEffectManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitVideoEffectManager.m; sourceTree = "<group>"; };
 		45D52F7A238E178A006F71FA /* UGCKitEffectInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitEffectInfo.h; sourceTree = "<group>"; };
 		45D52F7B238E178A006F71FA /* UGCKitEffectInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitEffectInfo.m; sourceTree = "<group>"; };
+		45D8A1C524343C6500337699 /* TXUGCRecordTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCRecordTypeDef.h; sourceTree = "<group>"; };
+		45D8A1C624343C6500337699 /* TXImageSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXImageSprite.h; sourceTree = "<group>"; };
+		45D8A1C724343C6500337699 /* TXUGCRecordListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCRecordListener.h; sourceTree = "<group>"; };
+		45D8A1C824343C6500337699 /* TXVodDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodDownloadManager.h; sourceTree = "<group>"; };
+		45D8A1C924343C6500337699 /* TXLiveBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveBase.h; sourceTree = "<group>"; };
+		45D8A1CA24343C6500337699 /* TXLiveSDKEventDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveSDKEventDef.h; sourceTree = "<group>"; };
+		45D8A1CB24343C6500337699 /* TXUGCBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCBase.h; sourceTree = "<group>"; };
+		45D8A1CC24343C6500337699 /* TXVideoEditerListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerListener.h; sourceTree = "<group>"; };
+		45D8A1CD24343C6500337699 /* TXVodPlayConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodPlayConfig.h; sourceTree = "<group>"; };
+		45D8A1CE24343C6500337699 /* TXLiveRecordListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveRecordListener.h; sourceTree = "<group>"; };
+		45D8A1CF24343C6500337699 /* TXVodPlayListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodPlayListener.h; sourceTree = "<group>"; };
+		45D8A1D024343C6500337699 /* TXLivePlayConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLivePlayConfig.h; sourceTree = "<group>"; };
+		45D8A1D124343C6500337699 /* TXVodPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodPlayer.h; sourceTree = "<group>"; };
+		45D8A1D224343C6500337699 /* TXVideoEditer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoEditer.h; sourceTree = "<group>"; };
+		45D8A1D324343C6500337699 /* TXLiveSDKTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveSDKTypeDef.h; sourceTree = "<group>"; };
+		45D8A1D424343C6500337699 /* TXBitrateItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXBitrateItem.h; sourceTree = "<group>"; };
+		45D8A1D524343C6500337699 /* TXLiteAVSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiteAVSDK.h; sourceTree = "<group>"; };
+		45D8A1D624343C6500337699 /* TXAudioCustomProcessDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXAudioCustomProcessDelegate.h; sourceTree = "<group>"; };
+		45D8A1D724343C6600337699 /* TXPlayerAuthParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXPlayerAuthParams.h; sourceTree = "<group>"; };
+		45D8A1D824343C6600337699 /* TXLivePlayListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLivePlayListener.h; sourceTree = "<group>"; };
+		45D8A1D924343C6600337699 /* TXLiteAVCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiteAVCode.h; sourceTree = "<group>"; };
+		45D8A1DA24343C6600337699 /* TXBeautyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXBeautyManager.h; sourceTree = "<group>"; };
+		45D8A1DB24343C6600337699 /* TXAudioRawDataDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXAudioRawDataDelegate.h; sourceTree = "<group>"; };
+		45D8A1DC24343C6600337699 /* TXLivePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLivePlayer.h; sourceTree = "<group>"; };
+		45D8A1DD24343C6600337699 /* TXUGCRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCRecord.h; sourceTree = "<group>"; };
+		45D8A1DE24343C6600337699 /* TXVideoCustomProcessDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoCustomProcessDelegate.h; sourceTree = "<group>"; };
+		45D8A1DF24343C6600337699 /* TXLiveRecordTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveRecordTypeDef.h; sourceTree = "<group>"; };
+		45D8A1E024343C6600337699 /* TXUGCPartsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCPartsManager.h; sourceTree = "<group>"; };
+		45D8A1E124343C6600337699 /* TXVideoEditerTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerTypeDef.h; sourceTree = "<group>"; };
+		45D8A1E224343C6600337699 /* TXLiveAudioSessionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveAudioSessionDelegate.h; sourceTree = "<group>"; };
 		45E8294C2384ED1200702418 /* UGCKitAudioEffectPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitAudioEffectPanel.h; sourceTree = "<group>"; };
 		45E8294D2384ED1200702418 /* UGCKitAudioEffectPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitAudioEffectPanel.m; sourceTree = "<group>"; };
-		45E9076A239E253000CEC8F1 /* TXLivePush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePush.h; sourceTree = "<group>"; };
-		45E9076B239E253000CEC8F1 /* TXCAVRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCAVRoom.h; sourceTree = "<group>"; };
-		45E9076C239E253000CEC8F1 /* TXUGCRecordTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCRecordTypeDef.h; sourceTree = "<group>"; };
-		45E9076D239E253000CEC8F1 /* TXImageSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXImageSprite.h; sourceTree = "<group>"; };
-		45E9076E239E253000CEC8F1 /* TXUGCRecordListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCRecordListener.h; sourceTree = "<group>"; };
-		45E9076F239E253000CEC8F1 /* TXVodDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVodDownloadManager.h; sourceTree = "<group>"; };
-		45E90770239E253000CEC8F1 /* TXLiveBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveBase.h; sourceTree = "<group>"; };
-		45E90771239E253000CEC8F1 /* TXLiveSDKEventDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveSDKEventDef.h; sourceTree = "<group>"; };
-		45E90772239E253000CEC8F1 /* TXUGCBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCBase.h; sourceTree = "<group>"; };
-		45E90773239E253000CEC8F1 /* TXVideoEditerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerListener.h; sourceTree = "<group>"; };
-		45E90774239E253000CEC8F1 /* TXVodPlayConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVodPlayConfig.h; sourceTree = "<group>"; };
-		45E90775239E253000CEC8F1 /* TXLiveRecordListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveRecordListener.h; sourceTree = "<group>"; };
-		45E90776239E253000CEC8F1 /* TRTCCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloud.h; sourceTree = "<group>"; };
-		45E90777239E253000CEC8F1 /* TXCAVRoomListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCAVRoomListener.h; sourceTree = "<group>"; };
-		45E90778239E253000CEC8F1 /* TRTCCloudDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloudDef.h; sourceTree = "<group>"; };
-		45E90779239E253000CEC8F1 /* TXVodPlayListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVodPlayListener.h; sourceTree = "<group>"; };
-		45E9077A239E253000CEC8F1 /* TXLivePlayConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePlayConfig.h; sourceTree = "<group>"; };
-		45E9077B239E253000CEC8F1 /* TXCAVRoomConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCAVRoomConfig.h; sourceTree = "<group>"; };
-		45E9077C239E253000CEC8F1 /* TXVodPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVodPlayer.h; sourceTree = "<group>"; };
-		45E9077D239E253000CEC8F1 /* TXVideoEditer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVideoEditer.h; sourceTree = "<group>"; };
-		45E9077E239E253000CEC8F1 /* TXLiveSDKTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveSDKTypeDef.h; sourceTree = "<group>"; };
-		45E9077F239E253000CEC8F1 /* TRTCCloudDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCCloudDelegate.h; sourceTree = "<group>"; };
-		45E90780239E253000CEC8F1 /* TXCAVRoomDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCAVRoomDef.h; sourceTree = "<group>"; };
-		45E90781239E253000CEC8F1 /* TXBitrateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXBitrateItem.h; sourceTree = "<group>"; };
-		45E90782239E253000CEC8F1 /* TXLiteAVSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiteAVSDK.h; sourceTree = "<group>"; };
-		45E90783239E253000CEC8F1 /* TXAudioCustomProcessDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXAudioCustomProcessDelegate.h; sourceTree = "<group>"; };
-		45E90784239E253000CEC8F1 /* TXPlayerAuthParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXPlayerAuthParams.h; sourceTree = "<group>"; };
-		45E90785239E253000CEC8F1 /* TXLivePlayListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePlayListener.h; sourceTree = "<group>"; };
-		45E90786239E253000CEC8F1 /* TXLiteAVCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiteAVCode.h; sourceTree = "<group>"; };
-		45E90787239E253000CEC8F1 /* TXLivePushConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePushConfig.h; sourceTree = "<group>"; };
-		45E90788239E253000CEC8F1 /* TXBeautyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXBeautyManager.h; sourceTree = "<group>"; };
-		45E90789239E253000CEC8F1 /* TRTCStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCStatistics.h; sourceTree = "<group>"; };
-		45E9078A239E253000CEC8F1 /* TXAudioRawDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXAudioRawDataDelegate.h; sourceTree = "<group>"; };
-		45E9078B239E253000CEC8F1 /* TXLivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePlayer.h; sourceTree = "<group>"; };
-		45E9078C239E253000CEC8F1 /* TXUGCRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCRecord.h; sourceTree = "<group>"; };
-		45E9078D239E253000CEC8F1 /* TXVideoCustomProcessDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVideoCustomProcessDelegate.h; sourceTree = "<group>"; };
-		45E9078E239E253000CEC8F1 /* TXLiveRecordTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveRecordTypeDef.h; sourceTree = "<group>"; };
-		45E9078F239E253000CEC8F1 /* TXUGCPartsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCPartsManager.h; sourceTree = "<group>"; };
-		45E90790239E253000CEC8F1 /* TXVideoEditerTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerTypeDef.h; sourceTree = "<group>"; };
-		45E90791239E253000CEC8F1 /* TXLivePushListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLivePushListener.h; sourceTree = "<group>"; };
-		45E90792239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiveAudioSessionDelegate.h; sourceTree = "<group>"; };
 		45E9FFC52399FEAD00CEC8F1 /* UGCKitLocalization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitLocalization.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -669,7 +617,7 @@
 		453DE3E3237949EC0083E759 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				45E90769239E253000CEC8F1 /* SDKHeaders */,
+				45D8A1C424343C6500337699 /* SDKHeaders */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -770,50 +718,39 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		45E90769239E253000CEC8F1 /* SDKHeaders */ = {
+		45D8A1C424343C6500337699 /* SDKHeaders */ = {
 			isa = PBXGroup;
 			children = (
-				45E9076A239E253000CEC8F1 /* TXLivePush.h */,
-				45E9076B239E253000CEC8F1 /* TXCAVRoom.h */,
-				45E9076C239E253000CEC8F1 /* TXUGCRecordTypeDef.h */,
-				45E9076D239E253000CEC8F1 /* TXImageSprite.h */,
-				45E9076E239E253000CEC8F1 /* TXUGCRecordListener.h */,
-				45E9076F239E253000CEC8F1 /* TXVodDownloadManager.h */,
-				45E90770239E253000CEC8F1 /* TXLiveBase.h */,
-				45E90771239E253000CEC8F1 /* TXLiveSDKEventDef.h */,
-				45E90772239E253000CEC8F1 /* TXUGCBase.h */,
-				45E90773239E253000CEC8F1 /* TXVideoEditerListener.h */,
-				45E90774239E253000CEC8F1 /* TXVodPlayConfig.h */,
-				45E90775239E253000CEC8F1 /* TXLiveRecordListener.h */,
-				45E90776239E253000CEC8F1 /* TRTCCloud.h */,
-				45E90777239E253000CEC8F1 /* TXCAVRoomListener.h */,
-				45E90778239E253000CEC8F1 /* TRTCCloudDef.h */,
-				45E90779239E253000CEC8F1 /* TXVodPlayListener.h */,
-				45E9077A239E253000CEC8F1 /* TXLivePlayConfig.h */,
-				45E9077B239E253000CEC8F1 /* TXCAVRoomConfig.h */,
-				45E9077C239E253000CEC8F1 /* TXVodPlayer.h */,
-				45E9077D239E253000CEC8F1 /* TXVideoEditer.h */,
-				45E9077E239E253000CEC8F1 /* TXLiveSDKTypeDef.h */,
-				45E9077F239E253000CEC8F1 /* TRTCCloudDelegate.h */,
-				45E90780239E253000CEC8F1 /* TXCAVRoomDef.h */,
-				45E90781239E253000CEC8F1 /* TXBitrateItem.h */,
-				45E90782239E253000CEC8F1 /* TXLiteAVSDK.h */,
-				45E90783239E253000CEC8F1 /* TXAudioCustomProcessDelegate.h */,
-				45E90784239E253000CEC8F1 /* TXPlayerAuthParams.h */,
-				45E90785239E253000CEC8F1 /* TXLivePlayListener.h */,
-				45E90786239E253000CEC8F1 /* TXLiteAVCode.h */,
-				45E90787239E253000CEC8F1 /* TXLivePushConfig.h */,
-				45E90788239E253000CEC8F1 /* TXBeautyManager.h */,
-				45E90789239E253000CEC8F1 /* TRTCStatistics.h */,
-				45E9078A239E253000CEC8F1 /* TXAudioRawDataDelegate.h */,
-				45E9078B239E253000CEC8F1 /* TXLivePlayer.h */,
-				45E9078C239E253000CEC8F1 /* TXUGCRecord.h */,
-				45E9078D239E253000CEC8F1 /* TXVideoCustomProcessDelegate.h */,
-				45E9078E239E253000CEC8F1 /* TXLiveRecordTypeDef.h */,
-				45E9078F239E253000CEC8F1 /* TXUGCPartsManager.h */,
-				45E90790239E253000CEC8F1 /* TXVideoEditerTypeDef.h */,
-				45E90791239E253000CEC8F1 /* TXLivePushListener.h */,
-				45E90792239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h */,
+				45D8A1C524343C6500337699 /* TXUGCRecordTypeDef.h */,
+				45D8A1C624343C6500337699 /* TXImageSprite.h */,
+				45D8A1C724343C6500337699 /* TXUGCRecordListener.h */,
+				45D8A1C824343C6500337699 /* TXVodDownloadManager.h */,
+				45D8A1C924343C6500337699 /* TXLiveBase.h */,
+				45D8A1CA24343C6500337699 /* TXLiveSDKEventDef.h */,
+				45D8A1CB24343C6500337699 /* TXUGCBase.h */,
+				45D8A1CC24343C6500337699 /* TXVideoEditerListener.h */,
+				45D8A1CD24343C6500337699 /* TXVodPlayConfig.h */,
+				45D8A1CE24343C6500337699 /* TXLiveRecordListener.h */,
+				45D8A1CF24343C6500337699 /* TXVodPlayListener.h */,
+				45D8A1D024343C6500337699 /* TXLivePlayConfig.h */,
+				45D8A1D124343C6500337699 /* TXVodPlayer.h */,
+				45D8A1D224343C6500337699 /* TXVideoEditer.h */,
+				45D8A1D324343C6500337699 /* TXLiveSDKTypeDef.h */,
+				45D8A1D424343C6500337699 /* TXBitrateItem.h */,
+				45D8A1D524343C6500337699 /* TXLiteAVSDK.h */,
+				45D8A1D624343C6500337699 /* TXAudioCustomProcessDelegate.h */,
+				45D8A1D724343C6600337699 /* TXPlayerAuthParams.h */,
+				45D8A1D824343C6600337699 /* TXLivePlayListener.h */,
+				45D8A1D924343C6600337699 /* TXLiteAVCode.h */,
+				45D8A1DA24343C6600337699 /* TXBeautyManager.h */,
+				45D8A1DB24343C6600337699 /* TXAudioRawDataDelegate.h */,
+				45D8A1DC24343C6600337699 /* TXLivePlayer.h */,
+				45D8A1DD24343C6600337699 /* TXUGCRecord.h */,
+				45D8A1DE24343C6600337699 /* TXVideoCustomProcessDelegate.h */,
+				45D8A1DF24343C6600337699 /* TXLiveRecordTypeDef.h */,
+				45D8A1E024343C6600337699 /* TXUGCPartsManager.h */,
+				45D8A1E124343C6600337699 /* TXVideoEditerTypeDef.h */,
+				45D8A1E224343C6600337699 /* TXLiveAudioSessionDelegate.h */,
 			);
 			path = SDKHeaders;
 			sourceTree = "<group>";
@@ -825,104 +762,63 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45E907A4239E253000CEC8F1 /* TXCAVRoomConfig.h in Headers */,
-				45E907A1239E253000CEC8F1 /* TRTCCloudDef.h in Headers */,
 				453DE3DF237949860083E759 /* UGCKitBGMCutView.h in Headers */,
 				453DE37F237945DD0083E759 /* UGCKitResult.h in Headers */,
-				45E907BB239E253000CEC8F1 /* TXLiveAudioSessionDelegate.h in Headers */,
-				45E907A8239E253000CEC8F1 /* TRTCCloudDelegate.h in Headers */,
 				453DE36B237945DD0083E759 /* UGCKitVideoTextFiled.h in Headers */,
-				45E907A9239E253000CEC8F1 /* TXCAVRoomDef.h in Headers */,
-				45E907AD239E253000CEC8F1 /* TXPlayerAuthParams.h in Headers */,
 				453DE35D237945DD0083E759 /* UGCKitPasterAddView.h in Headers */,
-				45E90794239E253000CEC8F1 /* TXCAVRoom.h in Headers */,
 				45D52F7C238E178A006F71FA /* UGCKitEffectInfo.h in Headers */,
 				453DE365237945DD0083E759 /* UGCKitEditBottomMenu.h in Headers */,
 				4507F44E23AB707600804AD5 /* UGCKitPieProgressView.h in Headers */,
 				45D52F78238E175E006F71FA /* UGCKitVideoEffectManager.h in Headers */,
-				45E907B4239E253000CEC8F1 /* TXLivePlayer.h in Headers */,
-				45E90793239E253000CEC8F1 /* TXLivePush.h in Headers */,
 				453DE34A237945DD0083E759 /* UGCKitSlomoIconView.h in Headers */,
-				45E907A0239E253000CEC8F1 /* TXCAVRoomListener.h in Headers */,
 				455AAEE8237ABA7F00AF4A3C /* UGCKitCutViewController.h in Headers */,
 				453DE37C237945DD0083E759 /* UGCKitMedia.h in Headers */,
 				453DE33B237945DD0083E759 /* UGCKitProgressHUD.h in Headers */,
-				45E90797239E253000CEC8F1 /* TXUGCRecordListener.h in Headers */,
 				45B53F8F2387823D00E1B18B /* UGCKitReporter.h in Headers */,
 				453DE385237945DD0083E759 /* UGCKit.h in Headers */,
 				453DE4182379594F0083E759 /* UGCKitSmallButton.h in Headers */,
 				453DE33C237945DD0083E759 /* UGCKitTheme.h in Headers */,
 				453DE413237959240083E759 /* UGCKitLabel.h in Headers */,
-				45E907A6239E253000CEC8F1 /* TXVideoEditer.h in Headers */,
 				453DE34C237945DD0083E759 /* UGCKitVideoIndicatorView.h in Headers */,
-				45E907B3239E253000CEC8F1 /* TXAudioRawDataDelegate.h in Headers */,
 				453DE369237945DD0083E759 /* UGCKitVideoInfo.h in Headers */,
-				45E907B9239E253000CEC8F1 /* TXVideoEditerTypeDef.h in Headers */,
 				453DE3AC2379487D0083E759 /* UGCKitVideoRecordProcessView.h in Headers */,
-				45E907B7239E253000CEC8F1 /* TXLiveRecordTypeDef.h in Headers */,
 				45B53F932387829400E1B18B /* UGCKitReportConstants.h in Headers */,
-				45E907A7239E253000CEC8F1 /* TXLiveSDKTypeDef.h in Headers */,
 				453DE38F237947530083E759 /* UGCKitColorMacro.h in Headers */,
 				453DE368237945DD0083E759 /* UGCKitPhotoTransitionToolbar.h in Headers */,
 				453DE367237945DD0083E759 /* UGCKitVideoEffectColorPalette.h in Headers */,
-				45E9079E239E253000CEC8F1 /* TXLiveRecordListener.h in Headers */,
 				453DE35C237945DD0083E759 /* UGCKitEffectSelectView.h in Headers */,
 				457BFD6D23979E4B004017FE /* UGCKitConstants.h in Headers */,
 				45D52F1A238D234B006F71FA /* UGCKitCircleProgressView.h in Headers */,
-				45E9079F239E253000CEC8F1 /* TRTCCloud.h in Headers */,
 				453DE383237945DD0083E759 /* UGCKitRecordViewController.h in Headers */,
-				45E907BA239E253000CEC8F1 /* TXLivePushListener.h in Headers */,
 				453DE33E237945DD0083E759 /* UGCKitSelectionOverlay.h in Headers */,
 				453DE380237945DD0083E759 /* UGCKitWatermark.h in Headers */,
 				453DE350237945DD0083E759 /* UGCKitMediaPickerViewController.h in Headers */,
-				45E9079D239E253000CEC8F1 /* TXVodPlayConfig.h in Headers */,
 				453DE373237945DD0083E759 /* UGCKitVideoCutView.h in Headers */,
 				455AB064237C1B3100AF4A3C /* UGCKitSlideOptionControl.h in Headers */,
 				453DE35A237945DD0083E759 /* UGCKitEditViewController.h in Headers */,
-				45E907A5239E253000CEC8F1 /* TXVodPlayer.h in Headers */,
-				45E907B8239E253000CEC8F1 /* TXUGCPartsManager.h in Headers */,
-				45E907B6239E253000CEC8F1 /* TXVideoCustomProcessDelegate.h in Headers */,
-				45E9079B239E253000CEC8F1 /* TXUGCBase.h in Headers */,
 				453DE362237945DD0083E759 /* UGCKitVideoRangeConst.h in Headers */,
 				453DE349237945DD0083E759 /* UGCKitAssetsViewController.h in Headers */,
 				453DE34D237945DD0083E759 /* UGCKitVideoIconView.h in Headers */,
-				45E907AF239E253000CEC8F1 /* TXLiteAVCode.h in Headers */,
-				45E9079C239E253000CEC8F1 /* TXVideoEditerListener.h in Headers */,
 				45A105CF2385403D00EC2D86 /* UGCKitAssetLoadingController.h in Headers */,
 				453DE361237945DD0083E759 /* UGCKitRangeContent.h in Headers */,
 				453DE3962379476C0083E759 /* UGCKitVerticalButton.h in Headers */,
 				453DE356237945DD0083E759 /* UGCKitAssetLoader.h in Headers */,
-				45E907AE239E253000CEC8F1 /* TXLivePlayListener.h in Headers */,
-				45E90799239E253000CEC8F1 /* TXLiveBase.h in Headers */,
 				45B53FB1238794DB00E1B18B /* UGCKit_UIViewAdditions.h in Headers */,
-				45E90795239E253000CEC8F1 /* TXUGCRecordTypeDef.h in Headers */,
 				453DE352237945DD0083E759 /* UGCKitImageScrollerViewController.h in Headers */,
 				453DE348237945DD0083E759 /* UGCKitAlbumsViewController.h in Headers */,
 				45D52F14238D231B006F71FA /* UGCKitBGMCell.h in Headers */,
 				453DE360237945DD0083E759 /* UGCKitVideoRangeSlider.h in Headers */,
-				45E90798239E253000CEC8F1 /* TXVodDownloadManager.h in Headers */,
 				453DE3B6237949260083E759 /* UGCKitBGMListViewController.h in Headers */,
 				453DE35B237945DD0083E759 /* UGCKitPlayerView.h in Headers */,
-				45E90796239E253000CEC8F1 /* TXImageSprite.h in Headers */,
 				453DE3DE237949860083E759 /* UGCKitBGMHelper.h in Headers */,
 				453DE378237945DD0083E759 /* UGCKitSlideButton.h in Headers */,
-				45E907AB239E253000CEC8F1 /* TXLiteAVSDK.h in Headers */,
-				45E907B2239E253000CEC8F1 /* TRTCStatistics.h in Headers */,
 				453DE34F237945DD0083E759 /* UGCKitAssetCell.h in Headers */,
-				45E907A2239E253000CEC8F1 /* TXVodPlayListener.h in Headers */,
-				45E907AA239E253000CEC8F1 /* TXBitrateItem.h in Headers */,
-				45E907A3239E253000CEC8F1 /* TXLivePlayConfig.h in Headers */,
 				453DE41C237959D60083E759 /* UGCKitBGMProgressView.h in Headers */,
-				45E9079A239E253000CEC8F1 /* TXLiveSDKEventDef.h in Headers */,
 				45D52F1E238D237E006F71FA /* UGCKitBGMSliderCutView.h in Headers */,
-				45E907B0239E253000CEC8F1 /* TXLivePushConfig.h in Headers */,
 				45D52F22238D23B1006F71FA /* UGCKitVideoRecordMusicView.h in Headers */,
-				45E907B5239E253000CEC8F1 /* TXUGCRecord.h in Headers */,
 				453DE342237945DD0083E759 /* UGCKitAlbumCell.h in Headers */,
-				45E907B1239E253000CEC8F1 /* TXBeautyManager.h in Headers */,
 				45E8294E2384ED1200702418 /* UGCKitAudioEffectPanel.h in Headers */,
 				453DE377237945DD0083E759 /* UGCKitRecordControlView.h in Headers */,
-				45E907AC239E253000CEC8F1 /* TXAudioCustomProcessDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

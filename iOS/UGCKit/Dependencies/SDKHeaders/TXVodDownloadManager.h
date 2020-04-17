@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "TXPlayerAuthParams.h"
 
+/// @addtogroup TXVodPlayConfig_ios
+/// @{
+
 /**
  * 下载视频的清晰度
  */
@@ -166,3 +169,4 @@ typedef NS_ENUM(NSInteger, TXDownloadError) {
 - (BOOL)deleteDownloadFile:(NSString *)playPath;
 
 @end
+/// @}

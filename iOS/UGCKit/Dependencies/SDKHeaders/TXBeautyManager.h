@@ -10,6 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// @defgroup TXBeautyManager_ios TXBeautyManager
+/// 美颜及动效参数管理
+/// @{
+
 /**
  * 美颜（磨皮）算法
  * SDK 内置了多种不同的磨皮算法，您可以选择最适合您产品定位的方案。
@@ -202,5 +206,6 @@ typedef NS_ENUM(NSInteger, TXBeautyStyle) {
 #endif
 
 @end
+/// @}
 
 NS_ASSUME_NONNULL_END

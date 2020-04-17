@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "TXLiveSDKTypeDef.h"
 
+/// @defgroup TXLivePlayListener_ios TXLivePlayListener
 /// 腾讯云直播播放的回调通知
+/// @{
 @protocol TXLivePlayListener <NSObject>
 
 /**
@@ -26,3 +28,4 @@
 - (void)onNetStatus:(NSDictionary *)param;
 
 @end
+/// @}

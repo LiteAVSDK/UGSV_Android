@@ -308,6 +308,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// 编辑 - 动效图标
 - (UIImage *)effectIconWithName:(NSString *)name;
 /// 绿幕背景视频路径
-- (NSURL *)goodLuckVideoFileURL;
+- (NSURL *)goodLuckVideoFilePath;
 @end
 NS_ASSUME_NONNULL_END

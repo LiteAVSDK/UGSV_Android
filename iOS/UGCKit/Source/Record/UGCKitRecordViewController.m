@@ -502,10 +502,10 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (@available(iOS 11, *)) {
         offset = [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom;
     }
-    _vBeauty = [[ TCBeautyPanel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - controlHeight - offset,
-                                                                    self.view.frame.size.width, controlHeight)
-                                                   theme:_theme
-                                         actionPerformer:[TCBeautyPanelActionProxy proxyWithSDKObject:[TXUGCRecord shareInstance]]];
+    _vBeauty = [TCBeautyPanel beautyPanelWithFrame:CGRectMake(0, self.view.frame.size.height - controlHeight - offset,
+                                                              self.view.frame.size.width, controlHeight)
+                                             theme:_theme
+                                         SDKObject:[TXUGCRecord shareInstance]];
     _vBeauty.hidden = YES;
     _vBeauty.pituDelegate = self;
     _vBeauty.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -1597,25 +1597,35 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     CGFloat filter2Level = 0.f;
     if (leftRatio > 0) {
         filterImage1 = [_vBeauty filterImageByMenuOptionIndex:index - 1];
-        filter1Level = [_vBeauty filterMixLevelByIndex:index - 1] / 10;
+        filter1Level = [_vBeauty filterStrengthAtIndex:index - 1] / 10;
         filterImage2 = curFilterImage;
-        filter2Level = [_vBeauty filterMixLevelByIndex:index] / 10;
+        filter2Level = [_vBeauty filterStrengthAtIndex:index] / 10;
     }
     else {
         filterImage1 = curFilterImage;
-        filter1Level = [_vBeauty filterMixLevelByIndex:index] / 10;
+        filter1Level = [_vBeauty filterStrengthAtIndex:index] / 10;
         filterImage2 = [_vBeauty filterImageByMenuOptionIndex:index + 1];
-        filter2Level = [_vBeauty filterMixLevelByIndex:index + 1] / 10;
+        filter2Level = [_vBeauty filterStrengthAtIndex:index + 1] / 10;
         leftRatio = 1 + leftRatio;
     }
     
     if (recognizer.state == UIGestureRecognizerStateChanged) {
-        [[TXUGCRecord shareInstance] setFilter:filterImage1 leftIntensity:filter1Level rightFilter:filterImage2 rightIntensity:filter2Level leftRatio:leftRatio];
+        [[TXUGCRecord shareInstance] setFilter:filterImage1
+                                 leftIntensity:filter1Level
+                                   rightFilter:filterImage2
+                                rightIntensity:filter2Level
+                                     leftRatio:leftRatio];
     }
     else if (recognizer.state == UIGestureRecognizerStateEnded) {
         BOOL isDependRadio = fabs(speed.x) < 500; //x方向的速度
-        [self animateFromFilter1:filterImage1 filter2:filterImage2 filter1MixLevel:filter1Level filter2MixLevel:filter2Level leftRadio:leftRatio speed:speed.x completion:^{
-            NSInteger filterIndex = 0;
+        [self animateFromFilter1:filterImage1
+                         filter2:filterImage2
+                 filter1Strength:filter1Level
+                 filter2Strength:filter2Level
+                       leftRadio:leftRatio
+                           speed:speed.x
+                      completion:^{
+            NSInteger filterIndex = index;
             if (!isDependRadio) {
                 if (speed.x < 0) {
                     filterIndex = index + 1;
@@ -1657,7 +1667,13 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     }
 }
 
-- (void)animateFromFilter1:(UIImage*)filter1Image filter2:(UIImage*)filter2Image filter1MixLevel:(CGFloat)filter1MixLevel filter2MixLevel:(CGFloat)filter2MixLevel leftRadio:(CGFloat)leftRadio speed:(CGFloat)speed completion:(void(^)(void))completion
+- (void)animateFromFilter1:(UIImage*)filter1Image
+                   filter2:(UIImage*)filter2Image
+           filter1Strength:(CGFloat)filter1Strength
+           filter2Strength:(CGFloat)filter2Strength
+                 leftRadio:(CGFloat)leftRadio
+                     speed:(CGFloat)speed
+                completion:(void(^)(void))completion
 {
     if (leftRadio <= 0 || leftRadio >= 1) {
         completion();
@@ -1683,10 +1699,10 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
             leftRadio -= delta;
     }
     
-    [[TXUGCRecord shareInstance] setFilter:filter1Image leftIntensity:filter1MixLevel rightFilter:filter2Image rightIntensity:filter2MixLevel leftRatio:leftRadio];
+    [[TXUGCRecord shareInstance] setFilter:filter1Image leftIntensity:filter1Strength rightFilter:filter2Image rightIntensity:filter2Strength leftRatio:leftRadio];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.f / 30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self animateFromFilter1:filter1Image filter2:filter2Image filter1MixLevel:filter1MixLevel filter2MixLevel:filter2MixLevel leftRadio:leftRadio speed:speed completion:completion];
+        [self animateFromFilter1:filter1Image filter2:filter2Image filter1Strength:filter1Strength filter2Strength:filter2Strength leftRadio:leftRadio speed:speed completion:completion];
     });
 }
 

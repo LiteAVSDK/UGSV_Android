@@ -21,7 +21,7 @@
 #define kMessage        @"message"
 #define kData           @"data"
 
-#define TVCVersion @"7.1.8775"
+#define TVCVersion @"7.2.8927"
 
 #pragma mark - COS config
 //字段废弃，作为InitUploadUGC的占位字段
