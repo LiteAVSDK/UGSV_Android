@@ -12,9 +12,7 @@
 #import "TXLiveSDKTypeDef.h"
 @class TXVodPlayer;
 
-/// @defgroup TXVodPlayListener_ios TXVodPlayListener
 /// 点播通知
-/// @{
 @protocol TXVodPlayListener <NSObject>
 
 /**
@@ -37,5 +35,4 @@
 -(void) onNetStatus:(TXVodPlayer *)player withParam:(NSDictionary*)param;
 
 @end
-/// @}
 #endif /* TXLiveVodListener_h */

@@ -18,7 +18,7 @@
 #import "UIView+Additions.h"
 #import "MBProgressHUD.h"
 
-@interface TCLoginViewController ()<UITextFieldDelegate,TCLoginListener, UIGestureRecognizerDelegate>
+@interface TCLoginViewController ()<UITextFieldDelegate, TCLoginListener, UIGestureRecognizerDelegate>
 {
     TCLoginParam *_loginParam;
 

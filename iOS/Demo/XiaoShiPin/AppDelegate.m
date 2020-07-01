@@ -34,7 +34,7 @@
         config.channel = @"AppStore";
     }
 #endif
-    [Bugly startWithAppId:@"6efe67cbad" config:config];
+//    [Bugly startWithAppId:@"6efe67cbad" config:config];
 
     [TXUGCBase setLicenceURL:@"" key:@""];
     [TXLiveBase setLogLevel:LOGLEVEL_VERBOSE];

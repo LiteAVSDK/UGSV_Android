@@ -12,6 +12,7 @@
 #import "TXWechatInfoView.h"
 #import "TCUtil.h"
 #import "MBProgressHUD.h"
+#import "TCUserInfoModel.h"
 
 #define L(X) NSLocalizedString((X), nil)
 
@@ -225,6 +226,8 @@
                                                     succ:^(NSString* userName, NSString* md5pwd ,NSString *token,NSString *refreshToken,long expires) {
             [weakSelf _hideHUD];
             [weakSelf.loginListener loginOK:userName hashedPwd:md5pwd token:token refreshToken:refreshToken expires:expires];
+            //将信息同步到用户主界面显示
+            [[NSNotificationCenter defaultCenter] postNotificationName:KReloadUserInfoNotification object:nil];
         } fail:^(NSString *userName, int errCode, NSString *errMsg) {
             [weakSelf _hideHUD];
             [weakSelf.loginListener loginFail:userName code:errCode message:errMsg];

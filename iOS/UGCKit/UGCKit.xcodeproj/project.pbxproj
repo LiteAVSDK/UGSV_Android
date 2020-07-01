@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40DD579A247383E200C72F27 /* TXLiteAVSDK_Enterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A49D7F24598E3200BFCB18 /* TXLiteAVSDK_Enterprise.framework */; };
+		40F4D69D2474CA2100847F5B /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F4D69C2474CA2100847F5B /* TCBeautyPanel.framework */; };
 		4500A6D12382793300147B05 /* UGCKitMediaPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2F6237945DC0083E759 /* UGCKitMediaPicker.storyboard */; };
 		4507F44E23AB707600804AD5 /* UGCKitPieProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4507F44C23AB707600804AD5 /* UGCKitPieProgressView.h */; };
 		4507F44F23AB707600804AD5 /* UGCKitPieProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4507F44D23AB707600804AD5 /* UGCKitPieProgressView.m */; };
@@ -99,8 +101,6 @@
 		455AAEE9237ABA7F00AF4A3C /* UGCKitCutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455AAEE7237ABA7F00AF4A3C /* UGCKitCutViewController.m */; };
 		455AB064237C1B3100AF4A3C /* UGCKitSlideOptionControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 455AB062237C1B3100AF4A3C /* UGCKitSlideOptionControl.h */; };
 		455AB065237C1B3100AF4A3C /* UGCKitSlideOptionControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 455AB063237C1B3100AF4A3C /* UGCKitSlideOptionControl.m */; };
-		4579C3F523AC65E6005ECC1C /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4579C39623AC6507005ECC1C /* TCBeautyPanel.framework */; };
-		4579C41323AC7CFE005ECC1C /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4579C40923AC675E005ECC1C /* TCBeautyPanelResources.bundle */; };
 		457BFD382395089D004017FE /* Paster.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 457BFD372395089D004017FE /* Paster.bundle */; };
 		457BFD6D23979E4B004017FE /* UGCKitConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 453DE40123794CCE0083E759 /* UGCKitConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45A105CD2385403D00EC2D86 /* UGCKitAssetLoadingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A105CA2385403C00EC2D86 /* UGCKitAssetLoadingController.m */; };
@@ -130,41 +130,13 @@
 		45D52F7D238E178A006F71FA /* UGCKitEffectInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F7B238E178A006F71FA /* UGCKitEffectInfo.m */; };
 		45E8294E2384ED1200702418 /* UGCKitAudioEffectPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E8294C2384ED1200702418 /* UGCKitAudioEffectPanel.h */; };
 		45E8294F2384ED1200702418 /* UGCKitAudioEffectPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294D2384ED1200702418 /* UGCKitAudioEffectPanel.m */; };
+		45E907AB239E253000CEC8F1 /* TXLiteAVSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E90782239E253000CEC8F1 /* TXLiteAVSDK.h */; };
 		F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D52F12238D231A006F71FA /* UGCKitBGMCell.xib */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		4579C39523AC6507005ECC1C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4579C38623AC64DC005ECC1C;
-			remoteInfo = TCBeautyPanel;
-		};
-		4579C40823AC675E005ECC1C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4579C3FA23AC660C005ECC1C;
-			remoteInfo = TCBeautyPanelResources;
-		};
-		4579C40B23AC79CD005ECC1C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4579C38523AC64DC005ECC1C;
-			remoteInfo = TCBeautyPanel;
-		};
-		4579C41123AC7CAC005ECC1C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4579C3F923AC660C005ECC1C;
-			remoteInfo = TCBeautyPanelResources;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		40A49D7F24598E3200BFCB18 /* TXLiteAVSDK_Enterprise.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_Enterprise.framework; path = ../../../../SDK/TXLiteAVSDK_Enterprise.framework; sourceTree = "<group>"; };
+		40F4D69C2474CA2100847F5B /* TCBeautyPanel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TCBeautyPanel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4507F44C23AB707600804AD5 /* UGCKitPieProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitPieProgressView.h; sourceTree = "<group>"; };
 		4507F44D23AB707600804AD5 /* UGCKitPieProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitPieProgressView.m; sourceTree = "<group>"; };
 		451E4DD0238D1F52000EFC80 /* bubbleText.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = bubbleText.bundle; sourceTree = "<group>"; };
@@ -273,7 +245,6 @@
 		455AAEF2237AD9E300AF4A3C /* UGCKitMem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitMem.h; sourceTree = "<group>"; };
 		455AB062237C1B3100AF4A3C /* UGCKitSlideOptionControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitSlideOptionControl.h; sourceTree = "<group>"; };
 		455AB063237C1B3100AF4A3C /* UGCKitSlideOptionControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitSlideOptionControl.m; sourceTree = "<group>"; };
-		4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = TCBeautyPanel/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
 		457BFD372395089D004017FE /* Paster.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Paster.bundle; sourceTree = "<group>"; };
 		45A105CA2385403C00EC2D86 /* UGCKitAssetLoadingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UGCKitAssetLoadingController.m; sourceTree = "<group>"; };
 		45A105CC2385403C00EC2D86 /* UGCKitAssetLoadingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UGCKitAssetLoadingController.h; sourceTree = "<group>"; };
@@ -300,38 +271,9 @@
 		45D52F77238E175E006F71FA /* UGCKitVideoEffectManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitVideoEffectManager.m; sourceTree = "<group>"; };
 		45D52F7A238E178A006F71FA /* UGCKitEffectInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitEffectInfo.h; sourceTree = "<group>"; };
 		45D52F7B238E178A006F71FA /* UGCKitEffectInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitEffectInfo.m; sourceTree = "<group>"; };
-		45D8A1C524343C6500337699 /* TXUGCRecordTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCRecordTypeDef.h; sourceTree = "<group>"; };
-		45D8A1C624343C6500337699 /* TXImageSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXImageSprite.h; sourceTree = "<group>"; };
-		45D8A1C724343C6500337699 /* TXUGCRecordListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCRecordListener.h; sourceTree = "<group>"; };
-		45D8A1C824343C6500337699 /* TXVodDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodDownloadManager.h; sourceTree = "<group>"; };
-		45D8A1C924343C6500337699 /* TXLiveBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveBase.h; sourceTree = "<group>"; };
-		45D8A1CA24343C6500337699 /* TXLiveSDKEventDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveSDKEventDef.h; sourceTree = "<group>"; };
-		45D8A1CB24343C6500337699 /* TXUGCBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCBase.h; sourceTree = "<group>"; };
-		45D8A1CC24343C6500337699 /* TXVideoEditerListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerListener.h; sourceTree = "<group>"; };
-		45D8A1CD24343C6500337699 /* TXVodPlayConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodPlayConfig.h; sourceTree = "<group>"; };
-		45D8A1CE24343C6500337699 /* TXLiveRecordListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveRecordListener.h; sourceTree = "<group>"; };
-		45D8A1CF24343C6500337699 /* TXVodPlayListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodPlayListener.h; sourceTree = "<group>"; };
-		45D8A1D024343C6500337699 /* TXLivePlayConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLivePlayConfig.h; sourceTree = "<group>"; };
-		45D8A1D124343C6500337699 /* TXVodPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVodPlayer.h; sourceTree = "<group>"; };
-		45D8A1D224343C6500337699 /* TXVideoEditer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoEditer.h; sourceTree = "<group>"; };
-		45D8A1D324343C6500337699 /* TXLiveSDKTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveSDKTypeDef.h; sourceTree = "<group>"; };
-		45D8A1D424343C6500337699 /* TXBitrateItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXBitrateItem.h; sourceTree = "<group>"; };
-		45D8A1D524343C6500337699 /* TXLiteAVSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiteAVSDK.h; sourceTree = "<group>"; };
-		45D8A1D624343C6500337699 /* TXAudioCustomProcessDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXAudioCustomProcessDelegate.h; sourceTree = "<group>"; };
-		45D8A1D724343C6600337699 /* TXPlayerAuthParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXPlayerAuthParams.h; sourceTree = "<group>"; };
-		45D8A1D824343C6600337699 /* TXLivePlayListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLivePlayListener.h; sourceTree = "<group>"; };
-		45D8A1D924343C6600337699 /* TXLiteAVCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiteAVCode.h; sourceTree = "<group>"; };
-		45D8A1DA24343C6600337699 /* TXBeautyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXBeautyManager.h; sourceTree = "<group>"; };
-		45D8A1DB24343C6600337699 /* TXAudioRawDataDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXAudioRawDataDelegate.h; sourceTree = "<group>"; };
-		45D8A1DC24343C6600337699 /* TXLivePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLivePlayer.h; sourceTree = "<group>"; };
-		45D8A1DD24343C6600337699 /* TXUGCRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCRecord.h; sourceTree = "<group>"; };
-		45D8A1DE24343C6600337699 /* TXVideoCustomProcessDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoCustomProcessDelegate.h; sourceTree = "<group>"; };
-		45D8A1DF24343C6600337699 /* TXLiveRecordTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveRecordTypeDef.h; sourceTree = "<group>"; };
-		45D8A1E024343C6600337699 /* TXUGCPartsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUGCPartsManager.h; sourceTree = "<group>"; };
-		45D8A1E124343C6600337699 /* TXVideoEditerTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXVideoEditerTypeDef.h; sourceTree = "<group>"; };
-		45D8A1E224343C6600337699 /* TXLiveAudioSessionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXLiveAudioSessionDelegate.h; sourceTree = "<group>"; };
 		45E8294C2384ED1200702418 /* UGCKitAudioEffectPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitAudioEffectPanel.h; sourceTree = "<group>"; };
 		45E8294D2384ED1200702418 /* UGCKitAudioEffectPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitAudioEffectPanel.m; sourceTree = "<group>"; };
+		45E90782239E253000CEC8F1 /* TXLiteAVSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXLiteAVSDK.h; sourceTree = "<group>"; };
 		45E9FFC52399FEAD00CEC8F1 /* UGCKitLocalization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitLocalization.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -340,7 +282,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4579C3F523AC65E6005ECC1C /* TCBeautyPanel.framework in Frameworks */,
+				40F4D69D2474CA2100847F5B /* TCBeautyPanel.framework in Frameworks */,
+				40DD579A247383E200C72F27 /* TXLiteAVSDK_Enterprise.framework in Frameworks */,
 				453DE40C23794ECD0083E759 /* AssetsLibrary.framework in Frameworks */,
 				453DE40A23794E900083E759 /* OpenAL.framework in Frameworks */,
 			);
@@ -373,7 +316,6 @@
 		453DE2D8237945B10083E759 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				4579C2DE23ABA2CF005ECC1C /* BeautyPanel */,
 				45B53F862387814500E1B18B /* Report */,
 				455AAEE1237AB8BD00AF4A3C /* VideoCut */,
 				453DE2E1237945DC0083E759 /* Common */,
@@ -617,7 +559,7 @@
 		453DE3E3237949EC0083E759 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				45D8A1C424343C6500337699 /* SDKHeaders */,
+				45E90769239E253000CEC8F1 /* SDKHeaders */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -625,6 +567,8 @@
 		453DE40223794E010083E759 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40F4D69C2474CA2100847F5B /* TCBeautyPanel.framework */,
+				40A49D7F24598E3200BFCB18 /* TXLiteAVSDK_Enterprise.framework */,
 				453DE40B23794ECD0083E759 /* AssetsLibrary.framework */,
 				453DE40923794E900083E759 /* OpenAL.framework */,
 				453DE40723794E8A0083E759 /* libresolv.tbd */,
@@ -656,23 +600,6 @@
 				455AAEE7237ABA7F00AF4A3C /* UGCKitCutViewController.m */,
 			);
 			path = VideoCut;
-			sourceTree = "<group>";
-		};
-		4579C2DE23ABA2CF005ECC1C /* BeautyPanel */ = {
-			isa = PBXGroup;
-			children = (
-				4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */,
-			);
-			path = BeautyPanel;
-			sourceTree = "<group>";
-		};
-		4579C39223AC6506005ECC1C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4579C39623AC6507005ECC1C /* TCBeautyPanel.framework */,
-				4579C40923AC675E005ECC1C /* TCBeautyPanelResources.bundle */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		45A105C92385403C00EC2D86 /* LoadingViewController */ = {
@@ -718,39 +645,10 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		45D8A1C424343C6500337699 /* SDKHeaders */ = {
+		45E90769239E253000CEC8F1 /* SDKHeaders */ = {
 			isa = PBXGroup;
 			children = (
-				45D8A1C524343C6500337699 /* TXUGCRecordTypeDef.h */,
-				45D8A1C624343C6500337699 /* TXImageSprite.h */,
-				45D8A1C724343C6500337699 /* TXUGCRecordListener.h */,
-				45D8A1C824343C6500337699 /* TXVodDownloadManager.h */,
-				45D8A1C924343C6500337699 /* TXLiveBase.h */,
-				45D8A1CA24343C6500337699 /* TXLiveSDKEventDef.h */,
-				45D8A1CB24343C6500337699 /* TXUGCBase.h */,
-				45D8A1CC24343C6500337699 /* TXVideoEditerListener.h */,
-				45D8A1CD24343C6500337699 /* TXVodPlayConfig.h */,
-				45D8A1CE24343C6500337699 /* TXLiveRecordListener.h */,
-				45D8A1CF24343C6500337699 /* TXVodPlayListener.h */,
-				45D8A1D024343C6500337699 /* TXLivePlayConfig.h */,
-				45D8A1D124343C6500337699 /* TXVodPlayer.h */,
-				45D8A1D224343C6500337699 /* TXVideoEditer.h */,
-				45D8A1D324343C6500337699 /* TXLiveSDKTypeDef.h */,
-				45D8A1D424343C6500337699 /* TXBitrateItem.h */,
-				45D8A1D524343C6500337699 /* TXLiteAVSDK.h */,
-				45D8A1D624343C6500337699 /* TXAudioCustomProcessDelegate.h */,
-				45D8A1D724343C6600337699 /* TXPlayerAuthParams.h */,
-				45D8A1D824343C6600337699 /* TXLivePlayListener.h */,
-				45D8A1D924343C6600337699 /* TXLiteAVCode.h */,
-				45D8A1DA24343C6600337699 /* TXBeautyManager.h */,
-				45D8A1DB24343C6600337699 /* TXAudioRawDataDelegate.h */,
-				45D8A1DC24343C6600337699 /* TXLivePlayer.h */,
-				45D8A1DD24343C6600337699 /* TXUGCRecord.h */,
-				45D8A1DE24343C6600337699 /* TXVideoCustomProcessDelegate.h */,
-				45D8A1DF24343C6600337699 /* TXLiveRecordTypeDef.h */,
-				45D8A1E024343C6600337699 /* TXUGCPartsManager.h */,
-				45D8A1E124343C6600337699 /* TXVideoEditerTypeDef.h */,
-				45D8A1E224343C6600337699 /* TXLiveAudioSessionDelegate.h */,
+				45E90782239E253000CEC8F1 /* TXLiteAVSDK.h */,
 			);
 			path = SDKHeaders;
 			sourceTree = "<group>";
@@ -812,6 +710,7 @@
 				453DE35B237945DD0083E759 /* UGCKitPlayerView.h in Headers */,
 				453DE3DE237949860083E759 /* UGCKitBGMHelper.h in Headers */,
 				453DE378237945DD0083E759 /* UGCKitSlideButton.h in Headers */,
+				45E907AB239E253000CEC8F1 /* TXLiteAVSDK.h in Headers */,
 				453DE34F237945DD0083E759 /* UGCKitAssetCell.h in Headers */,
 				453DE41C237959D60083E759 /* UGCKitBGMProgressView.h in Headers */,
 				45D52F1E238D237E006F71FA /* UGCKitBGMSliderCutView.h in Headers */,
@@ -837,7 +736,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				4579C40C23AC79CD005ECC1C /* PBXTargetDependency */,
 			);
 			name = UGCKit;
 			productName = UGCKit;
@@ -853,7 +751,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				4579C41223AC7CAC005ECC1C /* PBXTargetDependency */,
 			);
 			name = UGCKitResources;
 			productName = UGCKitResources;
@@ -889,12 +786,6 @@
 			mainGroup = 453DE2CC237945B10083E759;
 			productRefGroup = 453DE2D7237945B10083E759 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 4579C39223AC6506005ECC1C /* Products */;
-					ProjectRef = 4579C39123AC6506005ECC1C /* TCBeautyPanel.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				453DE2D5237945B10083E759 /* UGCKit */,
@@ -902,23 +793,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		4579C39623AC6507005ECC1C /* TCBeautyPanel.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = TCBeautyPanel.framework;
-			remoteRef = 4579C39523AC6507005ECC1C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4579C40923AC675E005ECC1C /* TCBeautyPanelResources.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = TCBeautyPanelResources.bundle;
-			remoteRef = 4579C40823AC675E005ECC1C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		453DE2D4237945B10083E759 /* Resources */ = {
@@ -940,7 +814,6 @@
 				F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */,
 				451E4DD3238D1F52000EFC80 /* bubbleText.bundle in Resources */,
 				457BFD382395089D004017FE /* Paster.bundle in Resources */,
-				4579C41323AC7CFE005ECC1C /* TCBeautyPanelResources.bundle in Resources */,
 				4500A6D12382793300147B05 /* UGCKitMediaPicker.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1010,19 +883,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		4579C40C23AC79CD005ECC1C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TCBeautyPanel;
-			targetProxy = 4579C40B23AC79CD005ECC1C /* PBXContainerItemProxy */;
-		};
-		4579C41223AC7CAC005ECC1C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TCBeautyPanelResources;
-			targetProxy = 4579C41123AC7CAC005ECC1C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		454616CF23797CA5009CDF83 /* Localizable.strings */ = {
@@ -1164,6 +1024,11 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../SDK",
+					"$(SRCROOT)/../../SDK",
+					"$(SRCROOT)/../SDK",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1192,6 +1057,11 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../SDK",
+					"$(SRCROOT)/../../SDK",
+					"$(SRCROOT)/../SDK",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

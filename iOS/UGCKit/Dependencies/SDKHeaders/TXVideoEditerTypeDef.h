@@ -3,11 +3,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-/// @defgroup TXVideoEditerTypeDef_ios TXVideoEditerTypeDef
-/// 视频编辑关键类型定义
-/// @{
-
 /// 视频信息
 @interface TXVideoInfo : NSObject
 /// 视频首帧图片
@@ -232,5 +227,4 @@ typedef NS_ENUM(NSInteger, TXVideoCompressed)
 
 @end
 
-/// @}
 #endif

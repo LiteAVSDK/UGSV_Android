@@ -15,8 +15,7 @@
     [self.downLoadBtn setTitle:self.downloadText forState:UIControlStateNormal];
 }
 
--(void) setDownloadProgress:(CGFloat)progress
-{
+- (void)setDownloadProgress:(CGFloat)progress {
     UIImage *image = self.progressButtonBackground;
 
     if (_progressView == nil) {
@@ -54,7 +53,7 @@
     if (progress == 1.0) {
         [self.downLoadBtn setTitle:self.applyText forState:UIControlStateNormal];
         [self.downLoadBtn setBackgroundImage:image forState:UIControlStateNormal];
-        
+        _downLoadBtn.hidden = NO;
         _progressView.hidden = YES;
     } else {
         [self.downLoadBtn setTitle:self.downloadText forState:UIControlStateNormal];
@@ -63,8 +62,7 @@
     }
 }
 
-- (void)prepareForReuse
-{
+- (void)prepareForReuse {
     [super prepareForReuse];
     [self.downLoadBtn setTitle:self.downloadText forState:UIControlStateNormal];
     [self.downLoadBtn setBackgroundImage: self.downloadButtonBackground forState:UIControlStateNormal];

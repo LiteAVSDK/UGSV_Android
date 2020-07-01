@@ -192,6 +192,10 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
         _resourceBundle = bundle ?: [NSBundle mainBundle];
         NSString *beautyPanelResPath = [bundle pathForResource:@"TCBeautyPanelResources"
                                                         ofType:@"bundle"];
+        if (!beautyPanelResPath) {
+            beautyPanelResPath = [[NSBundle mainBundle] pathForResource:@"TCBeautyPanelResources"
+        ofType:@"bundle"];
+        }
         _beautyPanelResourceBundle = [NSBundle bundleWithPath:beautyPanelResPath];
 
         _backgroundColor = [UIColor colorWithRed:0.12 green:0.15 blue:0.19 alpha:1];
@@ -367,8 +371,8 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     return [self effectIconWithPath:@"jump" frameDuration: 1.0 / 10];
 }
 
-- (NSString *)goodLuckVideoFilePath {
-    return [_beautyPanelResourceBundle pathForResource:@"goodluck" ofType:@"mp4"];
+- (NSURL *)goodLuckVideoFileURL {
+    return [_beautyPanelResourceBundle URLForResource:@"goodluck" withExtension:@"mp4"];
 }
 
 @end

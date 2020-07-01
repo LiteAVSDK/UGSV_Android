@@ -135,7 +135,9 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _videoAsset = asset.videoAsset;
+#ifdef DEBUG
         NSAssert(_videoAsset, @"asset is nil");
+#endif
         _config = config ?: [[UGCKitEditConfig alloc] init];
         _theme = theme ?: [UGCKitTheme sharedTheme];
         _generateMode = _config.generateMode;
@@ -181,7 +183,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 {
     [super viewWillAppear:animated];
     _navigationBarHidden = self.navigationController.navigationBar.hidden;
-    self.navigationController.navigationBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]){
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
@@ -637,6 +639,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         nv.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:nv animated:YES completion:nil];
         [_bgmListVC loadBGMList];
+        [_bgmListVC clearSelectStatus];
     }
 }
 
@@ -1585,10 +1588,16 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 - (void)onVideoRangeLeftChangeEnded:(UGCKitVideoRangeSlider *)sender
 {
     if (_effectSelectType == EffectSelectType_Paster) {
+        if (_effectSelectIndex < 0 || _effectSelectIndex >= _videoPasterInfoList.count) {
+            return;
+        }
         UGCKitVideoPasterInfo *info = _videoPasterInfoList[_effectSelectIndex];
         info.startTime = sender.leftPos;
     }
     else if (_effectSelectType == EffectSelectType_Text) {
+        if (_effectSelectIndex < 0 || _effectSelectIndex >= _videoTextInfoList.count) {
+            return;
+        }
         UGCKitVideoTextInfo *info = _videoTextInfoList[_effectSelectIndex];
         info.startTime = sender.leftPos;
     }

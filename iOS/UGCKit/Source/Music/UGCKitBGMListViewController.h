@@ -11,4 +11,5 @@
 - (instancetype)initWithTheme:(UGCKitTheme*)theme;
 -(void)setBGMControllerListener:(id<TCBGMControllerListener>) listener;
 -(void)loadBGMList;
+- (void)clearSelectStatus;
 @end

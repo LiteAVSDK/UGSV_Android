@@ -15,9 +15,7 @@
 #import "TXBitrateItem.h"
 #import "TXPlayerAuthParams.h"
 
-/// @defgroup TXVodPlayer_ios TXVodPlayer
 /// 点播播放器
-/// @{
 @interface TXVodPlayer : NSObject
 
 /**
@@ -205,4 +203,3 @@
 @property (nonatomic, assign) BOOL loop;
 
 @end
-/// @}

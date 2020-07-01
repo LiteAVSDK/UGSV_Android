@@ -144,7 +144,7 @@ typedef void(^DownLoadCallback)(float percent, NSString* url);
 
 }
 
--(void) initBGMListWithJsonFile:(NSString* _Nonnull)url{
+-(void)initBGMListWithJsonFile:(NSString* _Nonnull)url{
     if(url == nil)return;
     __weak UGCKitBGMHelper* weak = self;
     void (^task)(void) = ^{
@@ -205,6 +205,10 @@ typedef void(^DownLoadCallback)(float percent, NSString* url);
         NSString* url = [current netUrl];
 
         __block NSString* justName = [current name];
+        if (0 == justName.pathExtension.length) {
+            NSString *bgmExtension = url.pathExtension.length ? url.pathExtension : @"mp3";
+            justName = [justName stringByAppendingPathExtension:bgmExtension];
+        }
         if (needOverride) {
             localListPath = [_bgmPath stringByAppendingPathComponent:justName];
         } else {

@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-/// @defgroup TXLivePlayConfig_ios TXLivePlayConfig
-/// 腾讯云直播播放器的参数配置模块
-/// @{
-
 /**
  * 腾讯云直播播放器的参数配置模块
  *
@@ -92,4 +88,3 @@
 #endif
 
 @end
-/// @}
