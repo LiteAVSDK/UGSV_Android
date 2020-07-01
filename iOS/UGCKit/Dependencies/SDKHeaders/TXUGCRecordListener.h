@@ -3,9 +3,7 @@
 
 #import "TXUGCRecordTypeDef.h"
 
-/// @defgroup TXUGCRecordListener_ios TXUGCRecordListener
 /// 短视频录制回调定义
-/// @{
 @protocol TXUGCRecordListener <NSObject>
 
 /**
@@ -32,5 +30,4 @@
 
 @end
 
-/// @}
 #endif

@@ -80,7 +80,7 @@ typedef  NS_ENUM(NSInteger,VideoType)
 {
     [super viewWillAppear:animated];
     _navigationBarHidden = self.navigationController.navigationBar.hidden;
-    self.navigationController.navigationBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 

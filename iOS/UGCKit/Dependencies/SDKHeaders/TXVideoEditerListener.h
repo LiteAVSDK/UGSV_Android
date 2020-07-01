@@ -3,10 +3,6 @@
 
 #import "TXVideoEditerTypeDef.h"
 
-/// @defgroup TXVideoEditerListener_ios TXVideoEditerListener
-/// 视频编辑回调接口类
-/// @{
-
 ///  视频预览回调
 @protocol TXVideoPreviewListener <NSObject>
 
@@ -86,6 +82,4 @@
 -(void) onJoinComplete:(TXJoinerResult *)result;
 
 @end
-
-/// @}
 #endif

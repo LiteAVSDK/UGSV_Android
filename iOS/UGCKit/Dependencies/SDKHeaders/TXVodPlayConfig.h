@@ -11,10 +11,6 @@
 
 #import <Foundation/Foundation.h>
 
-/// @defgroup TXVodPlayConfig_ios TXVodPlayConfig
-/// 点播播放器关键类型定义
-/// @{
-
 /// 播放器选择
 typedef NS_ENUM(NSInteger, TX_Enum_PlayerType) {
     PLAYER_FFPLAY   = 0,          //基于FFmepg，支持软解，兼容性更好
@@ -70,5 +66,4 @@ typedef NS_ENUM(NSInteger, TX_Enum_PlayerType) {
 @property int maxBufferSize;
 @end
 
-/// @}
 #endif /* TXVodPlayConfig_h */

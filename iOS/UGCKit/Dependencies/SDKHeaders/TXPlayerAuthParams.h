@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-/// @addtogroup TXVodPlayConfig_ios 
-/// @{
-
 /// 点播fileid鉴权信息
 @interface TXPlayerAuthParams : NSObject
 ///应用appId。必填
@@ -38,4 +35,3 @@
 ///是否用https请求，默认NO
 @property BOOL https;
 @end
-/// @}

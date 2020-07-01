@@ -144,7 +144,7 @@
     else [_bgmHelper downloadBGM: _bgmDict[_bgmKeys[indexPath.row]]];
 }
 
--(void) onBGMListLoad:(NSDictionary*)dict{
+-(void)onBGMListLoad:(NSDictionary*)dict{
     BOOL foundKeyBGMToLoadRemote = NO;
     if(dict){
         BGMLog(@"BGM List 加载成功");
@@ -160,10 +160,11 @@
                 }
             }
             // 没有青花瓷时用本地音乐，AppStore审核用
-            NSRange range = [ele.name rangeOfString:@"青花瓷"]; //
-            if (range.location != NSNotFound) {
-                foundKeyBGMToLoadRemote = YES;
-            }
+//            NSRange range = [ele.name rangeOfString:@"青花瓷"]; //
+//            if (range.location != NSNotFound) {
+//                foundKeyBGMToLoadRemote = YES;
+//            }
+            foundKeyBGMToLoadRemote = YES;
         }
     }
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -177,7 +178,7 @@
     });
 }
 
--(void) onBGMDownloading:(TCBGMElement*)current percent:(float)percent{
+-(void)onBGMDownloading:(TCBGMElement*)current percent:(float)percent{
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([[self.tableView indexPathsForVisibleRows] containsObject:self->_BGMCellPath]) {
             UGCKitBGMCell *cell = [self.tableView cellForRowAtIndexPath:self->_BGMCellPath];
@@ -221,9 +222,8 @@ static void *mpcKey = &mpcKey;
     }
     mpc.modalPresentationStyle = UIModalPresentationFullScreen;
     objc_setAssociatedObject(mpc, mpcKey, self, OBJC_ASSOCIATION_RETAIN);
-
     UINavigationController *nav = self.navigationController;
-    self.navigationController.navigationBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setViewControllers:@[mpc] animated:NO];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
@@ -243,5 +243,10 @@ static void *mpcKey = &mpcKey;
 //点击取消时回调
 - (void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker{
     [_bgmListener onBGMControllerPlay:nil];
+}
+
+// 清空选中状态
+- (void)clearSelectStatus {
+    _BGMCellPath = nil;
 }
 @end
