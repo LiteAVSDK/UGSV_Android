@@ -16,6 +16,8 @@ Android/Demo/beautysettingkit/build/
 
 .DS_Store
 .vscode
+.project
+.settings
 xcuserdata
 *.iml
 
