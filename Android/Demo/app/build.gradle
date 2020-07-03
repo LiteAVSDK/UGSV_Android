@@ -24,16 +24,6 @@ android {
         release {
             minifyEnabled = false
             proguardFiles.add(file('proguard-rules.pro'))
-            signingConfig signingConfigs.debug
-        }
-    }
-
-    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
         }
     }
 
