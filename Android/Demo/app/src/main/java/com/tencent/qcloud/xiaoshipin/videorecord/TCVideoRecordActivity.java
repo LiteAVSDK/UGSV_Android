@@ -161,16 +161,8 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults == null || permissions == null || permissions.length == 0 || grantResults.length == 0) {
-            return;
+        if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mUGCKitVideoRecord.start();
         }
-
-        for (int ret : grantResults) {
-            if (ret != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-        }
-        mUGCKitVideoRecord.start();
-
     }
 }

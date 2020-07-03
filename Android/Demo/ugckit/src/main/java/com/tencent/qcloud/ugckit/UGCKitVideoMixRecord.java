@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfigBuildInfo;
+import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
@@ -94,8 +95,8 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         });
 
         TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
-        UGCBeautyKit manager = new UGCBeautyKit(txugcRecord);
-        getBeautyPanel().setProxy(manager);
+        UGCBeautyKit ugcBeautyKit = new UGCBeautyKit(txugcRecord);
+        getBeautyPanel().setBeautyKit(ugcBeautyKit);
     }
 
     @Override
@@ -346,9 +347,13 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     }
 
     @Override
-    public void onChorusCompleted(String outputPath) {
+    public void onChorusCompleted(String outputPath, boolean success) {
         Log.d(TAG, "onMixRecordCompleted outputPath:" + outputPath);
         mProgressDialogUtil.dismissProgressDialog();
+
+        if (!success) {
+            return;
+        }
 
         boolean editFlag = mConfig.mIsNeedEdit;
         Log.d(TAG, "onMixRecordCompleted editFlag:" + editFlag);
@@ -387,8 +392,13 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         // 加载视频信息
         TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_preprocess_activity_edit_failed),
-                    getResources().getString(R.string.tc_video_preprocess_activity_does_not_support_android_version_below_4_3), null);
+            BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    DialogUtil.showDialog(mActivity, getResources().getString(R.string.tc_video_preprocess_activity_edit_failed),
+                            getResources().getString(R.string.tc_video_preprocess_activity_does_not_support_android_version_below_4_3), null);
+                }
+            });
         } else {
             // 设置视频基本信息
             VideoEditerSDK.getInstance().initSDK();

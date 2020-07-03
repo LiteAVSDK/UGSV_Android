@@ -385,14 +385,15 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
                 if (mOnRecordButtonListener != null) {
                     mOnRecordButtonListener.onRecordPause();
                     mIsRecording = false;
                 }
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
             }
 
             @Override

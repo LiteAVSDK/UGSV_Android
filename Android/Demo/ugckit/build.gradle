@@ -27,6 +27,14 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
 
     dexOptions {
         javaMaxHeapSize "4g"
@@ -48,7 +56,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.4.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile(name: 'LiteAVSDK_Professional', ext: 'aar')
+//    compile project(':liteav_sdk')
+    compile rootProject.ext.liteavSdk
     compile 'com.android.support:multidex:1.0.0'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.github.castorflex.verticalviewpager:library:19.0.1'
@@ -61,5 +70,5 @@ dependencies {
     compile('com.tencent.qcloud:cosxml:5.4.20') {
         exclude group: 'com.tencent.qcloud', module: 'mtaUtils' //关闭 mta 上报功能}
     }
-    compile project(':beauty')
+    compile project(':beautysettingkit')
 }

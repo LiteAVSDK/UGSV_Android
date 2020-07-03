@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.demo.beauty.BeautyPanel;
+import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
+import com.tencent.liteav.demo.beauty.model.BeautyInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
@@ -51,6 +53,9 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mRecordBottomLayout = (RecordBottomLayout) findViewById(R.id.record_bottom_layout);
 
         mBeautyPanel = (BeautyPanel) findViewById(R.id.beauty_pannel);
+        BeautyInfo defaultBeauty = mBeautyPanel.getDefaultBeautyInfo();
+        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
+        mBeautyPanel.setBeautyInfo(defaultBeauty);
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
         mScrollFilterView.setBeautyPannel(mBeautyPanel);
 

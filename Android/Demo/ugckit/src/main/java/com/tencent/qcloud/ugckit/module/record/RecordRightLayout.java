@@ -110,6 +110,7 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
         } else {
             mIvMusicMask.setVisibility(View.VISIBLE);
         }
+        mIvMusic.setEnabled(enable);
     }
 
     /**
@@ -126,6 +127,7 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
         } else {
             mAspectView.enableMask();
         }
+        mAspectView.setEnabled(enable);
     }
 
     /**

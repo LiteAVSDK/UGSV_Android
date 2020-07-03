@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
+import com.tencent.liteav.demo.beauty.model.BeautyInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 import com.tencent.qcloud.ugckit.module.record.ScrollFilterView;
-import com.tencent.liteav.demo.beauty.BeautyPanel;
 
 public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implements IVideoMixRecordKit {
     private TitleBarLayout mTitleBar;
@@ -47,6 +49,9 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
         mMixRecordBottomLayout = (MixRecordBottomLayout) findViewById(R.id.record_bottom_layout);
         mBeautyPannel = (BeautyPanel) findViewById(R.id.beauty_pannel);
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
+        BeautyInfo defaultBeauty = mBeautyPannel.getDefaultBeautyInfo();
+        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
+        mBeautyPannel.setBeautyInfo(defaultBeauty);
         mScrollFilterView.setBeautyPannel(mBeautyPannel);
 
         mTitleBar.setVisible(true, ITitleBarLayout.POSITION.RIGHT);

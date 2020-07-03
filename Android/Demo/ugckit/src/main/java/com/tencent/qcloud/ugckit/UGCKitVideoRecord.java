@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.tencent.liteav.demo.beauty.BeautyParams;
+import com.tencent.liteav.demo.beauty.model.ItemInfo;
+import com.tencent.liteav.demo.beauty.model.TabInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -156,7 +159,34 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                 getScrollFilterView().doTextAnimator(index);
             }
         });
-        getBeautyPanel().setProxy(mUGCBeautyKit);
+        getBeautyPanel().setBeautyKit(mUGCBeautyKit);
+        getBeautyPanel().setOnBeautyListener(new BeautyPanel.OnBeautyListener() {
+            @Override
+            public void onTabChange(TabInfo tabInfo, int position) {
+
+            }
+
+            @Override
+            public boolean onClose() {
+                getBeautyPanel().setVisibility(View.GONE);
+                getRecordMusicPannel().setVisibility(View.GONE);
+                getSoundEffectPannel().setVisibility(View.GONE);
+
+                getRecordBottomLayout().setVisibility(View.VISIBLE);
+                getRecordRightLayout().setVisibility(View.VISIBLE);
+                return true;
+            }
+
+            @Override
+            public boolean onClick(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition) {
+                return false;
+            }
+
+            @Override
+            public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel) {
+                return false;
+            }
+        });
     }
 
     @Override

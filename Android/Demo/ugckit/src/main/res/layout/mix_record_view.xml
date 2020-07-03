@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <com.tencent.liteav.demo.beauty.BeautyPanel
+    <com.tencent.liteav.demo.beauty.view.BeautyPanel
         android:id="@+id/beauty_pannel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

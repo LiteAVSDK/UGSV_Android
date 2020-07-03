@@ -151,6 +151,15 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
         // 初始化缩略图列表，裁剪缩略图时间间隔3秒钟一张
         getVideoCutLayout().clearThumbnail();
         final int interval = 3000;
+
+        // 计算整个视频需要加载的缩略图数量
+        int count = 0;
+        TXVideoEditConstants.TXVideoInfo videoInfo = VideoEditerSDK.getInstance().getTXVideoInfo();
+        if (videoInfo != null) {
+            count = (int) (videoInfo.duration / interval);
+        }
+        final int thumbnailCount = count;
+
         VideoEditerSDK.getInstance().initThumbnailList(new TXVideoEditer.TXThumbnailListener() {
             @Override
             public void onThumbnail(final int index, long timeMs, final Bitmap bitmap) {
@@ -160,13 +169,9 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                     public void run() {
                         getVideoCutLayout().addThumbnail(index, bitmap);
 
-                        TXVideoEditConstants.TXVideoInfo videoInfo = VideoEditerSDK.getInstance().getTXVideoInfo();
-                        if (videoInfo != null) {
-                            int size = (int) (videoInfo.duration / interval);
-                            if (index == size -1) { // Note: index从0开始增长
-                                Log.i(TAG, "Load Thumbnail Complete");
-                                mComplete = true;
-                            }
+                        if (index >= thumbnailCount - 1) { // Note: index从0开始增长
+                            Log.i(TAG, "Load Thumbnail Complete");
+                            mComplete = true;
                         }
                     }
                 });

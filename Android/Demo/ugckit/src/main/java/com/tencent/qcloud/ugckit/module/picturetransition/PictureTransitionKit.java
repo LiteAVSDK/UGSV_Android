@@ -40,6 +40,9 @@ public class PictureTransitionKit {
     public long pictureTransition(int type) {
         long duration = 0;
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+        if (editer == null) {
+            return duration;
+        }
         switch (type) {
             case TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING:
                 duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING);

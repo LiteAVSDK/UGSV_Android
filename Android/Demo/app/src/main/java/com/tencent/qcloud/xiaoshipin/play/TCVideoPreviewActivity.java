@@ -36,8 +36,7 @@ public class TCVideoPreviewActivity extends Activity implements ITXVodPlayListen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_video_preview);
-
-        mVideoPath = getIntent().getStringExtra(UGCKitConstants.VIDEO_PATH);
+        getIntent().getStringExtra(UGCKitConstants.VIDEO_PATH);
 
         mTXVodPlayer = new TXVodPlayer(this);
         mTXPlayConfig = new TXVodPlayConfig();

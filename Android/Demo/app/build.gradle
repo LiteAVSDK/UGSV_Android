@@ -28,12 +28,23 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
     dexOptions {
         javaMaxHeapSize "4g"
     }
 
     packagingOptions {
         pickFirst '**/libc++_shared.so'
+        pickFirst '**/libRSSupport.so'
+        pickFirst '**/librsjni.so'
         doNotStrip "*/armeabi/libYTCommon.so"
         doNotStrip "*/armeabi-v7a/libYTCommon.so"
         doNotStrip "*/x86/libYTCommon.so"
@@ -44,13 +55,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
-    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs/upload')
     compile 'com.android.support:design:25.3.1'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.ctiao:dfm:0.4.4'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile project(':ugckit')
 }
 

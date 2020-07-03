@@ -7,7 +7,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.liteav.demo.beauty.BeautyParams;
@@ -386,9 +385,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
         if (mRecordSDK != null) {
             mRecordSDK.resumeRecord();
         }
-
         RecordMusicManager.getInstance().resumeMusic();
-
         AudioFocusManager.getInstance().requestAudioFocus();
 
         mCurrentState = STATE_RESUME;
@@ -426,7 +423,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             return;
         }
         if (mRecordSDK != null) {
-            mRecordSDK.pauseBGM();
+            mRecordSDK.stopBGM();
             mRecordSDK.stopRecord();
         }
         AudioFocusManager.getInstance().abandonAudioFocus();
