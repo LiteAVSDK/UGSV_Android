@@ -1,9 +1,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
 
@@ -14,6 +15,7 @@ allprojects {
             dirs project(':app').file('libs')
         }
         jcenter()
+        google()
     }
 }
 
@@ -23,10 +25,10 @@ task clean(type: Delete) {
 
 ext {
     compileSdkVersion = 25
-    buildToolsVersion = "25.0.2"
+    buildToolsVersion = "28.0.3"
     supportSdkVersion = "25.4.0"
     minSdkVersion = 16
-    targetSdkVersion = 23
+    targetSdkVersion = 26
     versionCode = 1
     versionName = "v1.0"
     proguard = true
@@ -35,4 +37,5 @@ ext {
     noffmpeg = false
     noijkplay = false
     aekit_version = '1.0.19-cloud'
+    liteavSdk="com.tencent.liteav:LiteAVSDK_Professional:latest.release"
 }

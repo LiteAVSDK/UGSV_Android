@@ -27,10 +27,8 @@ public class TCApplication extends MultiDexApplication {
 //    private RefWatcher mRefWatcher;
 
     private static TCApplication instance;
-
-    // 请替换成您的Licence信息
-    private String ugcKey = "xxxxx";
-    private String ugcLicenceUrl = "http://xxx/TXUgcSDK.licence";
+    private String ugcKey = "请替换成您的licenseKey";
+    private String ugcLicenceUrl = "请替换成您的licenseUrl";
 
     @Override
     public void onCreate() {

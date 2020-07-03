@@ -61,14 +61,14 @@
     <com.tencent.qcloud.ugckit.module.effect.paster.view.PasterPannel
         android:id="@+id/paster_select_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="220dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone" />
 
     <com.tencent.qcloud.ugckit.module.effect.bubble.BubbleSubtitlePannel
         android:id="@+id/bubble_setting_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="220dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone" />
 </RelativeLayout>

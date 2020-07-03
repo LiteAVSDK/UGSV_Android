@@ -19,7 +19,8 @@ import android.widget.TextView;
 
 import com.tencent.liteav.basic.log.TXCLog;
 
-import com.tencent.liteav.demo.beauty.BeautyPanel;
+import com.tencent.liteav.demo.beauty.utils.ResourceUtils;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.R;
 
@@ -209,7 +210,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
      * @param index
      */
     public void doTextAnimator(int index) {
-        String filterName = mBeautyPanel.getBeautyFilterArr()[index];
+        String filterName = ResourceUtils.getString(mBeautyPanel.getFilterItemInfo(index).getItemName());
         mTvFilter.setText(filterName);
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(400);
@@ -264,7 +265,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
         boolean moveRight = moveEvent.getX() > downEvent.getX();
         if (moveRight && mCurFilterIndex == 0) {
             return true;
-        } else if (!moveRight && mCurFilterIndex == mBeautyPanel.getBeautyFilterArr().length - 1) {
+        } else if (!moveRight && mCurFilterIndex == mBeautyPanel.getFilterSize() - 1) {
             return true;
         } else {
             mStartScroll = true;
@@ -277,12 +278,12 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
             }
 
             if (mLastLeftIndex != mLeftIndex) { //如果不一样，才加载bitmap出来；避免滑动过程中重复加载
-                mLeftBitmap = mBeautyPanel.getFilterBitmapByIndex(mLeftIndex);
+                mLeftBitmap = mBeautyPanel.getFilterResource(mLeftIndex);
                 mLastLeftIndex = mLeftIndex;
             }
 
             if (mLastRightIndex != mRightIndex) {//如果不一样，才加载bitmap出来；避免滑动过程中重复加载
-                mRightBitmap = mBeautyPanel.getFilterBitmapByIndex(mRightIndex);
+                mRightBitmap = mBeautyPanel.getFilterResource(mRightIndex);
                 mLastRightIndex = mRightIndex;
             }
 

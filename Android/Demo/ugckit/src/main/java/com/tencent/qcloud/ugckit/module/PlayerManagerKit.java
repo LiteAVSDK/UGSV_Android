@@ -200,6 +200,7 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
             Log.d(TAG, "[UGCKit][PlayerKit]startPlay startTime:" + startTime + ",endTime:" + endTime);
             editer.startPlayFromTime(startTime, endTime);
             mCurrentState = PlayState.STATE_PLAY;
+            notifyStart();
         }
         isPreviewFinish = false;
     }

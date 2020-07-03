@@ -1,6 +1,7 @@
 package com.tencent.qcloud.ugckit.module.mixrecord;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
@@ -36,11 +37,12 @@ public class MixRecordJoiner implements TXVideoJoiner.TXVideoJoinerListener {
 
     @Override
     public void onJoinComplete(TXVideoEditConstants.TXJoinerResult result) {
-        if (mListener != null) {
-            mListener.onChorusCompleted(mOutputPath);
-        }
         if (result.retCode != TXVideoEditConstants.JOIN_RESULT_OK) {
-            ToastUtil.toastShortMessage(mContext.getResources().getString(R.string.tc_video_record_activity_on_join_complete_synthesis_failed));
+            ToastUtil.toastShortMessage(TextUtils.isEmpty(result.descMsg) ? mContext.getResources().getString(R.string.tc_video_record_activity_on_join_complete_synthesis_failed)
+                    : result.descMsg);
+        }
+        if (mListener != null) {
+            mListener.onChorusCompleted(mOutputPath, result.retCode == TXVideoEditConstants.JOIN_RESULT_OK);
         }
     }
 

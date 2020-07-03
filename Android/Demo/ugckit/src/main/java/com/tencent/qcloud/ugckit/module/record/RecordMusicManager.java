@@ -71,6 +71,7 @@ public class RecordMusicManager {
             TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
             if (record != null) {
                 record.stopBGM();
+                mMusicInfo.playingPath = null;
             }
             // 在试听结束时，再设置回原来的速度
             VideoRecordSDK.getInstance().setRecordSpeed(UGCKitRecordConfig.getInstance().mRecordSpeed);
@@ -94,7 +95,8 @@ public class RecordMusicManager {
             if (!TextUtils.isEmpty(mMusicInfo.path)) {
                 if (mMusicInfo.playingPath == null || !mMusicInfo.path.equals(mMusicInfo.playingPath)) {
                     mMusicInfo.playingPath = mMusicInfo.path;
-                    record.playBGMFromTime(0, (int) mMusicInfo.duration);
+                    mMusicInfo.duration = record.setBGM(mMusicInfo.path);
+                    record.playBGMFromTime((int)mMusicInfo.startTime, (int) mMusicInfo.duration);
                 } else {
                     record.resumeBGM();
                 }

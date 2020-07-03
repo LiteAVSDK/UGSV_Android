@@ -304,8 +304,10 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
                 params.bubbleBitmap = TCBubbleManager.getInstance(getActivity()).getBitmapFromAssets(params.wordParamsInfo.getBubbleInfo().getBubblePath());
                 view.setBubbleParams(params);
             }
-            BubbleViewParams bubbleViewParams = mAddBubbleInfoList.get(index);
-            bubbleViewParams.wordParamsInfo = info;
+            if (index > 0  && index < mAddBubbleInfoList.size()) {
+                BubbleViewParams bubbleViewParams = mAddBubbleInfoList.get(index);
+                bubbleViewParams.wordParamsInfo = info;
+            }
             mAddBubbleAdapter.notifyDataSetChanged();
 
             mIsEditWordAgain = false;
