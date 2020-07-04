@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		400B68D9245825370055D584 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		4008F6BB24B02D20007F4FE6 /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4008F6BA24B02D20007F4FE6 /* TXLiteAVSDK_UGC.framework */; };
+		4008F6C424B02D61007F4FE6 /* UGCKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4008F6B424B02BBE007F4FE6 /* UGCKitResources.bundle */; };
+		4008F6C524B02D67007F4FE6 /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4008F6AB24B02BB8007F4FE6 /* TCBeautyPanelResources.bundle */; };
+		4008F6C624B02D6C007F4FE6 /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4008F6A924B02BB8007F4FE6 /* TCBeautyPanel.framework */; };
+		4008F6C724B02D6C007F4FE6 /* UGCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4008F6B224B02BBE007F4FE6 /* UGCKit.framework */; };
 		40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A37344246A3916004E3FC7 /* Bugly.framework */; };
-		40DD5799247382B400C72F27 /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40DD57902473820900C72F27 /* TCBeautyPanelResources.bundle */; };
-		40DD57D624738D7E00C72F27 /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40DD578E2473820900C72F27 /* TCBeautyPanel.framework */; };
 		40F4D6822473EC9800847F5B /* TVCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F4D66A2473EC9800847F5B /* TVCUtils.m */; };
 		40F4D6832473EC9800847F5B /* TXUGCPublish.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F4D66C2473EC9800847F5B /* TXUGCPublish.m */; };
 		40F4D6842473EC9800847F5B /* TXUGCPublishUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F4D6712473EC9800847F5B /* TXUGCPublishUtil.m */; };
@@ -38,7 +40,6 @@
 		453DE2C02379458C0083E759 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2BF2379458C0083E759 /* Assets.xcassets */; };
 		453DE2C32379458C0083E759 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2C12379458C0083E759 /* LaunchScreen.storyboard */; };
 		453DE2C62379458C0083E759 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 453DE2C52379458C0083E759 /* main.m */; };
-		453DE42423795B620083E759 /* UGCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 453DE42223795A6D0083E759 /* UGCKit.framework */; };
 		453EA3CB23A236D3007C45F2 /* FilterResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 453EA3CA23A236D3007C45F2 /* FilterResource.bundle */; };
 		454616A923797B9F009CDF83 /* TCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454616A823797B9F009CDF83 /* TCMainViewController.m */; };
 		454616AD23797BC8009CDF83 /* TCEditUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454616AB23797BC8009CDF83 /* TCEditUserInfoViewController.m */; };
@@ -62,7 +63,6 @@
 		455AAEED237ABBAE00AF4A3C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */; };
 		455AAEEF237ABBB300AF4A3C /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 455AAEEE237ABBB300AF4A3C /* OpenAL.framework */; };
 		455AAEF1237ABBB900AF4A3C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 455AAEF0237ABBB800AF4A3C /* libsqlite3.tbd */; };
-		455AAF04237ADC1900AF4A3C /* UGCKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 454616D523797D6E009CDF83 /* UGCKitResources.bundle */; };
 		455AAF0A237AEF3C00AF4A3C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 455AAF0C237AEF3C00AF4A3C /* Localizable.strings */; };
 		455AAF7C237BA91200AF4A3C /* SDImageHEICCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 455AAF0F237BA91200AF4A3C /* SDImageHEICCoder.m */; };
 		455AAF7D237BA91200AF4A3C /* NSImage+Compatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 455AAF11237BA91200AF4A3C /* NSImage+Compatibility.m */; };
@@ -164,71 +164,72 @@
 		45D52F74238D6998006F71FA /* PhotoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F71238D6998006F71FA /* PhotoUtil.m */; };
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
-		B99BB2F6AD8FDC2EF70017CD /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E58E634F195145D35C261F /* TXLiteAVSDK_UGC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		40DD578D2473820900C72F27 /* PBXContainerItemProxy */ = {
+		4008F6A824B02BB8007F4FE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */;
+			containerPortal = 4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4579C38623AC64DC005ECC1C;
 			remoteInfo = TCBeautyPanel;
 		};
-		40DD578F2473820900C72F27 /* PBXContainerItemProxy */ = {
+		4008F6AA24B02BB8007F4FE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */;
+			containerPortal = 4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4579C3FA23AC660C005ECC1C;
 			remoteInfo = TCBeautyPanelResources;
 		};
-		40DD5795247382A100C72F27 /* PBXContainerItemProxy */ = {
+		4008F6B124B02BBE007F4FE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4579C3F923AC660C005ECC1C;
-			remoteInfo = TCBeautyPanelResources;
-		};
-		40DD57F42473B97F00C72F27 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4579C38523AC64DC005ECC1C;
-			remoteInfo = TCBeautyPanel;
-		};
-		40DD57F62473B98400C72F27 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 453DE2D5237945B10083E759;
-			remoteInfo = UGCKit;
-		};
-		453DE42123795A6D0083E759 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */;
+			containerPortal = 4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 453DE2D6237945B10083E759;
 			remoteInfo = UGCKit;
 		};
-		454616D423797D6E009CDF83 /* PBXContainerItemProxy */ = {
+		4008F6B324B02BBE007F4FE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */;
+			containerPortal = 4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 454616C223797C39009CDF83;
 			remoteInfo = UGCKitResources;
 		};
-		455AAF05237ADC2000AF4A3C /* PBXContainerItemProxy */ = {
+		4008F6BC24B02D56007F4FE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */;
+			containerPortal = 4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 453DE2D5237945B10083E759;
+			remoteInfo = UGCKit;
+		};
+		4008F6BE24B02D56007F4FE6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 454616C123797C39009CDF83;
 			remoteInfo = UGCKitResources;
 		};
+		4008F6C024B02D5A007F4FE6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C38523AC64DC005ECC1C;
+			remoteInfo = TCBeautyPanel;
+		};
+		4008F6C224B02D5A007F4FE6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C3F923AC660C005ECC1C;
+			remoteInfo = TCBeautyPanelResources;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = BeautySettingKit/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
+		4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
+		4008F6BA24B02D20007F4FE6 /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 		40A37344246A3916004E3FC7 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = XiaoShiPin/Frameworks/Bugly.framework; sourceTree = "<group>"; };
-		40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = ../BeautySettingKit/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
 		40F4D6682473EC9800847F5B /* TXUGCPublishOptCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCPublishOptCenter.h; sourceTree = "<group>"; };
 		40F4D6692473EC9800847F5B /* TVCHttpMessageURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCHttpMessageURLProtocol.h; sourceTree = "<group>"; };
 		40F4D66A2473EC9800847F5B /* TVCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCUtils.m; sourceTree = "<group>"; };
@@ -283,7 +284,6 @@
 		453DE2BF2379458C0083E759 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		453DE2C22379458C0083E759 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		453DE2C52379458C0083E759 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = ../UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
 		453EA3CA23A236D3007C45F2 /* FilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterResource.bundle; sourceTree = "<group>"; };
 		454616A723797B9F009CDF83 /* TCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCMainViewController.h; sourceTree = "<group>"; };
 		454616A823797B9F009CDF83 /* TCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCMainViewController.m; sourceTree = "<group>"; };
@@ -531,7 +531,6 @@
 		45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitWrapper.m; sourceTree = "<group>"; };
 		45E829492384EB7800702418 /* TCNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCNavigationController.h; sourceTree = "<group>"; };
 		45E8294A2384EB7800702418 /* TCNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCNavigationController.m; sourceTree = "<group>"; };
-		C9E58E634F195145D35C261F /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -539,8 +538,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40DD57D624738D7E00C72F27 /* TCBeautyPanel.framework in Frameworks */,
-				453DE42423795B620083E759 /* UGCKit.framework in Frameworks */,
+				4008F6C624B02D6C007F4FE6 /* TCBeautyPanel.framework in Frameworks */,
+				4008F6C724B02D6C007F4FE6 /* UGCKit.framework in Frameworks */,
+				4008F6BB24B02D20007F4FE6 /* TXLiteAVSDK_UGC.framework in Frameworks */,
 				40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */,
 				40F4D6872473EC9800847F5B /* QCloudCOSXML.framework in Frameworks */,
 				455AB05E237BED1800AF4A3C /* AssetsLibrary.framework in Frameworks */,
@@ -550,18 +550,26 @@
 				40F4D6892473EC9800847F5B /* QCloudCore.framework in Frameworks */,
 				455AAEEB237ABBAA00AF4A3C /* libc++.tbd in Frameworks */,
 				40F4D6882473EC9800847F5B /* libmtasdk.a in Frameworks */,
-				B99BB2F6AD8FDC2EF70017CD /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		40DD57892473820900C72F27 /* Products */ = {
+		4008F6A424B02BB8007F4FE6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				40DD578E2473820900C72F27 /* TCBeautyPanel.framework */,
-				40DD57902473820900C72F27 /* TCBeautyPanelResources.bundle */,
+				4008F6A924B02BB8007F4FE6 /* TCBeautyPanel.framework */,
+				4008F6AB24B02BB8007F4FE6 /* TCBeautyPanelResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4008F6AD24B02BBE007F4FE6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4008F6B224B02BBE007F4FE6 /* UGCKit.framework */,
+				4008F6B424B02BBE007F4FE6 /* UGCKitResources.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -652,8 +660,8 @@
 		453DE2A72379458A0083E759 = {
 			isa = PBXGroup;
 			children = (
-				40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */,
-				453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */,
+				4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */,
+				4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */,
 				453DE2B22379458A0083E759 /* XiaoShiPin */,
 				453DE2B12379458A0083E759 /* Products */,
 				453DE42323795B620083E759 /* Frameworks */,
@@ -694,25 +702,16 @@
 			path = XiaoShiPin;
 			sourceTree = "<group>";
 		};
-		453DE41E23795A6D0083E759 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				453DE42223795A6D0083E759 /* UGCKit.framework */,
-				454616D523797D6E009CDF83 /* UGCKitResources.bundle */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		453DE42323795B620083E759 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4008F6BA24B02D20007F4FE6 /* TXLiteAVSDK_UGC.framework */,
 				40A37344246A3916004E3FC7 /* Bugly.framework */,
 				455AB05D237BED1800AF4A3C /* AssetsLibrary.framework */,
 				455AAEF0237ABBB800AF4A3C /* libsqlite3.tbd */,
 				455AAEEE237ABBB300AF4A3C /* OpenAL.framework */,
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
-				C9E58E634F195145D35C261F /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1163,10 +1162,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				40DD57F72473B98400C72F27 /* PBXTargetDependency */,
-				40DD57F52473B97F00C72F27 /* PBXTargetDependency */,
-				40DD5796247382A100C72F27 /* PBXTargetDependency */,
-				455AAF06237ADC2000AF4A3C /* PBXTargetDependency */,
+				4008F6C124B02D5A007F4FE6 /* PBXTargetDependency */,
+				4008F6C324B02D5A007F4FE6 /* PBXTargetDependency */,
+				4008F6BD24B02D56007F4FE6 /* PBXTargetDependency */,
+				4008F6BF24B02D56007F4FE6 /* PBXTargetDependency */,
 			);
 			name = XiaoShiPinApp;
 			productName = XiaoShiPin;
@@ -1201,12 +1200,12 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 40DD57892473820900C72F27 /* Products */;
-					ProjectRef = 40DD57882473820900C72F27 /* TCBeautyPanel.xcodeproj */;
+					ProductGroup = 4008F6A424B02BB8007F4FE6 /* Products */;
+					ProjectRef = 4008F6A324B02BB8007F4FE6 /* TCBeautyPanel.xcodeproj */;
 				},
 				{
-					ProductGroup = 453DE41E23795A6D0083E759 /* Products */;
-					ProjectRef = 453DE41D23795A6D0083E759 /* UGCKit.xcodeproj */;
+					ProductGroup = 4008F6AD24B02BBE007F4FE6 /* Products */;
+					ProjectRef = 4008F6AC24B02BBE007F4FE6 /* UGCKit.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1217,32 +1216,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		40DD578E2473820900C72F27 /* TCBeautyPanel.framework */ = {
+		4008F6A924B02BB8007F4FE6 /* TCBeautyPanel.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = TCBeautyPanel.framework;
-			remoteRef = 40DD578D2473820900C72F27 /* PBXContainerItemProxy */;
+			remoteRef = 4008F6A824B02BB8007F4FE6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		40DD57902473820900C72F27 /* TCBeautyPanelResources.bundle */ = {
+		4008F6AB24B02BB8007F4FE6 /* TCBeautyPanelResources.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = TCBeautyPanelResources.bundle;
-			remoteRef = 40DD578F2473820900C72F27 /* PBXContainerItemProxy */;
+			remoteRef = 4008F6AA24B02BB8007F4FE6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		453DE42223795A6D0083E759 /* UGCKit.framework */ = {
+		4008F6B224B02BBE007F4FE6 /* UGCKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = UGCKit.framework;
-			remoteRef = 453DE42123795A6D0083E759 /* PBXContainerItemProxy */;
+			remoteRef = 4008F6B124B02BBE007F4FE6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		454616D523797D6E009CDF83 /* UGCKitResources.bundle */ = {
+		4008F6B424B02BBE007F4FE6 /* UGCKitResources.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = UGCKitResources.bundle;
-			remoteRef = 454616D423797D6E009CDF83 /* PBXContainerItemProxy */;
+			remoteRef = 4008F6B324B02BBE007F4FE6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1252,8 +1251,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40DD5799247382B400C72F27 /* TCBeautyPanelResources.bundle in Resources */,
-				455AAF04237ADC1900AF4A3C /* UGCKitResources.bundle in Resources */,
+				4008F6C524B02D67007F4FE6 /* TCBeautyPanelResources.bundle in Resources */,
+				4008F6C424B02D61007F4FE6 /* UGCKitResources.bundle in Resources */,
 				457BFBDB23901362004017FE /* InfoPlist.strings in Resources */,
 				453DE2C32379458C0083E759 /* LaunchScreen.storyboard in Resources */,
 				455AAF0A237AEF3C00AF4A3C /* Localizable.strings in Resources */,
@@ -1433,25 +1432,25 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		40DD5796247382A100C72F27 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TCBeautyPanelResources;
-			targetProxy = 40DD5795247382A100C72F27 /* PBXContainerItemProxy */;
-		};
-		40DD57F52473B97F00C72F27 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TCBeautyPanel;
-			targetProxy = 40DD57F42473B97F00C72F27 /* PBXContainerItemProxy */;
-		};
-		40DD57F72473B98400C72F27 /* PBXTargetDependency */ = {
+		4008F6BD24B02D56007F4FE6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = UGCKit;
-			targetProxy = 40DD57F62473B98400C72F27 /* PBXContainerItemProxy */;
+			targetProxy = 4008F6BC24B02D56007F4FE6 /* PBXContainerItemProxy */;
 		};
-		455AAF06237ADC2000AF4A3C /* PBXTargetDependency */ = {
+		4008F6BF24B02D56007F4FE6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = UGCKitResources;
-			targetProxy = 455AAF05237ADC2000AF4A3C /* PBXContainerItemProxy */;
+			targetProxy = 4008F6BE24B02D56007F4FE6 /* PBXContainerItemProxy */;
+		};
+		4008F6C124B02D5A007F4FE6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBeautyPanel;
+			targetProxy = 4008F6C024B02D5A007F4FE6 /* PBXContainerItemProxy */;
+		};
+		4008F6C324B02D5A007F4FE6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TCBeautyPanelResources;
+			targetProxy = 4008F6C224B02D5A007F4FE6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
