@@ -1,1 +1,5 @@
-编译时，会自动检测frame是否存在，然后下载到该目录。
+# UGSV SDK （iOS）
+
+## 下载地址
+
+[下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip)
