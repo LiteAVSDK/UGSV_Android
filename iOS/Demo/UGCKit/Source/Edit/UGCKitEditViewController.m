@@ -1681,7 +1681,6 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     if (path == nil) {
-        _bottomMenu.hidden = NO;
         [self resetConfirmBtn];
         [self startPlayFromTime:0 toTime:_duration];
         return;

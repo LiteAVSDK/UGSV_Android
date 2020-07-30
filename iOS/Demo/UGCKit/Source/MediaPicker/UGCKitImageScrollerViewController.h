@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImageManage:(PHCachingImageManager *)imageManager;
 - (void)addAsset:(PHAsset *)asset;
 - (void)removeAssetAtIndex:(NSUInteger)index;
+
+- (NSArray<PHAsset *> *)currentAssets;
 @end
 
 NS_ASSUME_NONNULL_END

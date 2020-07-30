@@ -69,7 +69,7 @@
         UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(lw - labelW / 2,
                                                                   _appearanceConfig.borderHeight + _appearanceConfig.thumbHeight / 2 - labelH / 2,
                                                                   labelW,
-                                                                  labelH)];
+                                                                  MIN(labelH, _appearanceConfig.thumbHeight))];
         label.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
         label.layer.cornerRadius = labelH/2;
         label.clipsToBounds = YES;
@@ -87,7 +87,7 @@
     _bgScrollView.scrollsToTop = NO;
     _bgScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _bgScrollView.delegate = self;
-    _bgScrollView.contentSize = CGSizeMake(sliderWidth, _appearanceConfig.borderHeight);
+    _bgScrollView.contentSize = CGSizeMake(sliderWidth,_appearanceConfig.thumbHeight);
     _bgScrollView.decelerationRate = 0.1f;
     _bgScrollView.bounces = NO;
     [_bgScrollView addSubview:_imageView];
@@ -96,7 +96,6 @@
         self.leftCover = [[UIImageView alloc] initWithImage:_appearanceConfig.leftCorverImage];
         self.leftCover.contentMode = UIViewContentModeCenter;
         self.leftCover.clipsToBounds = YES;
-        
     }
     else {
         self.leftCover = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -214,24 +213,28 @@
     
     self.topBorder.ugckit_height = _appearanceConfig.borderHeight;
     self.topBorder.ugckit_width = self.rightPinCenterX - self.leftPinCenterX;
-    self.topBorder.ugckit_y = 0;
+    self.topBorder.ugckit_y = self.bgScrollView.ugckit_y;
     self.topBorder.ugckit_x = self.leftPinCenterX;
     
     self.bottomBorder.ugckit_height = _appearanceConfig.borderHeight;
     self.bottomBorder.ugckit_width = self.rightPinCenterX - self.leftPinCenterX;
-    self.bottomBorder.ugckit_y = self.leftPin.ugckit_bottom-_appearanceConfig.borderHeight;
+    self.bottomBorder.ugckit_y = self.bgScrollView.ugckit_y + self.bgScrollView.ugckit_height;
     self.bottomBorder.ugckit_x = self.leftPinCenterX;
     
     
-    self.leftCover.ugckit_height = _appearanceConfig.thumbHeight;
+    self.leftCover.ugckit_height = self.bgScrollView.ugckit_height;
     self.leftCover.ugckit_width = self.leftPinCenterX - _appearanceConfig.pinWidth / 2;
     self.leftCover.ugckit_y = _appearanceConfig.borderHeight;
     self.leftCover.ugckit_x = _appearanceConfig.pinWidth;
     
-    self.rightCover.ugckit_height = _appearanceConfig.thumbHeight;
+    self.rightCover.ugckit_height = self.bgScrollView.ugckit_height;
     self.rightCover.ugckit_width = self.ugckit_width - self.rightPinCenterX - _appearanceConfig.pinWidth/2;
-    self.rightCover.ugckit_y = _appearanceConfig.borderHeight;
+    self.rightCover.ugckit_y = self.bgScrollView.ugckit_y + self.bgScrollView.ugckit_height;
     self.rightCover.ugckit_x = self.rightPinCenterX - _appearanceConfig.pinWidth/2 + 1;
+    self.leftPin.ugckit_y = self.bgScrollView.ugckit_y;
+    self.leftPin.ugckit_height = self.bgScrollView.ugckit_height + self.topBorder.ugckit_height;
+    self.rightPin.ugckit_y = self.bgScrollView.ugckit_y;
+    self.rightPin.ugckit_height = self.bgScrollView.ugckit_height + self.topBorder.ugckit_height;
 }
 
 -(CGFloat) getPointDistance:(CGPoint) p1 point2:(CGPoint) p2{
