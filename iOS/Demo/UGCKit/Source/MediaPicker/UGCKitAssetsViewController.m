@@ -241,12 +241,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 
 - (IBAction)done:(id)sender
 {
-    [self tellDelegateWithAssets:self.imagePickerController.selectedAssets.array];
-
-//    if ([self.imagePickerController.delegate respondsToSelector:@selector(qb_imagePickerController:didFinishPickingAssets:)]) {
-//        [self.imagePickerController.delegate qb_imagePickerController:self.imagePickerController
-//                                               didFinishPickingAssets:self.imagePickerController.selectedAssets.array];
-//    }
+    NSArray* assets = [self.imagesController currentAssets];
+    [self tellDelegateWithAssets:assets];
 }
 
 - (IBAction)cancel:(id)sender

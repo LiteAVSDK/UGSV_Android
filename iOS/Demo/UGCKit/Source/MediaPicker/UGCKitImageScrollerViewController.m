@@ -15,7 +15,7 @@ typedef _UGCKitImageScrollerCellView CellClass;
 
 @interface UGCKitImageScrollerViewController () <UICollectionViewDelegateFlowLayout>
 {
-    NSMutableArray *_assets;
+    NSMutableArray<PHAsset *> *_assets;
 }
 @property (strong, nonatomic) PHCachingImageManager *imageManager;
 @end
@@ -45,6 +45,15 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 #pragma mark - Public
+
+- (NSArray<PHAsset *> *)currentAssets {
+    if (_assets) {
+        return _assets;
+    } else {
+        return @[];
+    }
+}
+
 - (void)addAsset:(PHAsset *)asset {
     [_assets addObject:asset];
     [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:_assets.count-1 inSection:0]]];

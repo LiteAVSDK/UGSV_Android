@@ -202,7 +202,7 @@
     [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"TCEditUserInfoView.FaceAlbum", nil)
                                                   style:UIAlertActionStyleDefault
                                                 handler:^(UIAlertAction *_){[ws openCameraPhoto:OPEN_PHOTO];}]];
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"UGCKit.Common.Cancel", nil)
+    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Common.Cancel", nil)
                                                   style:UIAlertActionStyleCancel
                                                 handler:nil]];
     [self presentViewController:actionSheet animated:YES completion:nil];
@@ -233,7 +233,7 @@
         cell->genderText.text = action.title;
         [ws uploadUserGenderInfo:cell->genderText.text];
     }]];
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"UGCKit.Common.Cancel", nil)
+    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Common.Cancel", nil)
                                                   style:UIAlertActionStyleCancel
                                                 handler:nil]];
     [self presentViewController:actionSheet animated:YES completion:nil];

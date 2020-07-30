@@ -236,7 +236,7 @@
         [ws confirmReportUser];
         [[HUDHelper sharedInstance] tipMessage:NSLocalizedString(@"TCPlayDecorate.ActionBlacklistResult", nil)];
     }]];
-    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"UGCKit.Common.Cancel", nil)
+    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Common.Cancel", nil)
                                                    style:UIAlertActionStyleCancel
                                                  handler:nil]];
 
