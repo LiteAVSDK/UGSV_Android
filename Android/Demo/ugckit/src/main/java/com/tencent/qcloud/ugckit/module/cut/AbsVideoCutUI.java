@@ -10,9 +10,9 @@ import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
 public abstract class AbsVideoCutUI extends RelativeLayout implements IVideoCutKit {
 
-    private TitleBarLayout mTitleBar;
+    private TitleBarLayout  mTitleBar;
     private VideoPlayLayout mVideoPlayLayout;
-    private VideoCutLayout mVideoCutLayout;
+    private VideoCutLayout  mVideoCutLayout;
 
     public AbsVideoCutUI(Context context) {
         super(context);
@@ -30,7 +30,7 @@ public abstract class AbsVideoCutUI extends RelativeLayout implements IVideoCutK
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.video_cut_layout, this);
+        inflate(getContext(), R.layout.ugckit_video_cut_layout, this);
 
         mTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
         mVideoPlayLayout = (VideoPlayLayout) findViewById(R.id.video_play_layout);

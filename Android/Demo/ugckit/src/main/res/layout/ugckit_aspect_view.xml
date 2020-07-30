@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/layout_aspect_show"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_aspect"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="?attr/recordAspect169Icon" />
+
+        <ImageView
+            android:id="@+id/iv_aspect_mask"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ugckit_record_round_bg"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_aspect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_aspect"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
+            android:text="@string/ugckit_aspect"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_aspect_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/layout_aspect_show"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_aspect_first"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="@dimen/ugckit_aspect_divider"
+            android:src="?attr/recordAspect11Icon" />
+
+        <ImageView
+            android:id="@+id/iv_aspect_second"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginRight="@dimen/ugckit_aspect_divider"
+            android:layout_toRightOf="@id/iv_aspect_first"
+            android:src="?attr/recordAspect34Icon" />
+
+        <ImageView
+            android:id="@+id/iv_aspect_third"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginRight="@dimen/ugckit_aspect_divider"
+            android:layout_toRightOf="@id/iv_aspect_second"
+            android:src="?attr/recordAspect43Icon" />
+
+        <ImageView
+            android:id="@+id/iv_aspect_fourth"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginRight="@dimen/ugckit_aspect_divider"
+            android:layout_toRightOf="@id/iv_aspect_third"
+            android:src="?attr/recordAspect916Icon" />
+    </RelativeLayout>
+</RelativeLayout>

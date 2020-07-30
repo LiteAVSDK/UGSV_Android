@@ -1,206 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BasicStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="titleColor">@color/colorTextWhite</item>
-        <item name="titleTextSize">@dimen/title</item>
-        <item name="backIcon">@drawable/btn_back_no_shaddow</item>
-        <item name="nextIcon">@drawable/drawable_ugc_red_next</item>
-        <item name="progressColor">@color/colorRed2</item>
-        <item name="sliderColor">@color/colorRed2</item>
-        <item name="ugckitColorPrimary">@color/colorRed2</item>
+    <style name="UGCKitBasicStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="titleColor">@color/color_text_white</item>
+        <item name="titleTextSize">@dimen/ugckit_title</item>
+        <item name="backIcon">@drawable/ugckit_btn_back_no_shaddow</item>
+        <item name="nextIcon">@drawable/ugckit_drawable_ugc_red_next</item>
+        <item name="progressColor">@color/ugckit_color_red2</item>
+        <item name="sliderColor">@color/ugckit_color_red2</item>
+        <item name="ugckitColorPrimary">@color/ugckit_color_red2</item>
     </style>
 
     <!-- 视频选择器主题UI配置-->
-    <style name="PickerStyle" parent="BasicStyle">
-        <item name="pickerDelIcon">@drawable/ic_picker_close</item>
-        <item name="pickerNextIcon">@drawable/ic_choose_next_selector</item>
+    <style name="UGCKitPickerStyle" parent="UGCKitBasicStyle">
+        <item name="pickerDelIcon">@drawable/ugckit_ic_picker_close</item>
+        <item name="pickerNextIcon">@drawable/ugckit_ic_choose_next_selector</item>
     </style>
 
     <!-- 短视频录制主题UI配置-->
-    <style name="RecordStyle" parent="BasicStyle">
+    <style name="UGCKitRecordStyle" parent="UGCKitBasicStyle">
         <!-- 音乐icon -->
-        <item name="recordMusicIcon">@drawable/ugc_record_music</item>
+        <item name="recordMusicIcon">@drawable/ugckit_record_music</item>
         <!-- 屏比icon-->
-        <item name="recordAspect11Icon">@drawable/ic_aspect_11</item>
-        <item name="recordAspect34Icon">@drawable/ic_aspect_34</item>
-        <item name="recordAspect43Icon">@drawable/ic_aspect_43</item>
-        <item name="recordAspect169Icon">@drawable/ic_aspect_169</item>
-        <item name="recordAspect916Icon">@drawable/ic_aspect_916</item>
+        <item name="recordAspect11Icon">@drawable/ugckit_ic_aspect_11</item>
+        <item name="recordAspect34Icon">@drawable/ugckit_ic_aspect_34</item>
+        <item name="recordAspect43Icon">@drawable/ugckit_ic_aspect_43</item>
+        <item name="recordAspect169Icon">@drawable/ugckit_ic_aspect_169</item>
+        <item name="recordAspect916Icon">@drawable/ugckit_ic_aspect_916</item>
         <!-- 美颜icon-->
-        <item name="recordBeautyIcon">@drawable/record_beauty_selector</item>
+        <item name="recordBeautyIcon">@drawable/ugckit_record_beauty_selector</item>
         <!-- 音效icon-->
-        <item name="recordAudioEffectIcon">@drawable/record_soundeffect</item>
+        <item name="recordAudioEffectIcon">@drawable/ugckit_record_soundeffect</item>
         <!-- 回删icon-->
-        <item name="recordDeleteIcon">@drawable/selector_delete_last_part</item>
+        <item name="recordDeleteIcon">@drawable/ugckit_selector_delete_last_part</item>
         <!-- 闪光灯icon-->
-        <item name="recordTorchOnIcon">@drawable/selector_torch_open</item>
-        <item name="recordTorchOffIcon">@drawable/selector_torch_close</item>
+        <item name="recordTorchOnIcon">@drawable/ugckit_selector_torch_open</item>
+        <item name="recordTorchOffIcon">@drawable/ugckit_selector_torch_close</item>
         <!-- 切换摄像头icon-->
-        <item name="recordSwitchCameraIcon">@drawable/selector_switch_camera</item>
+        <item name="recordSwitchCameraIcon">@drawable/ugckit_selector_switch_camera</item>
         <!-- 速度 -->
-        <item name="recordSpeedSlowestBackgroud">@drawable/record_left_bg</item>
-        <item name="recordSpeedSlowBackground">@drawable/record_mid_bg</item>
-        <item name="recordSpeedNormalBackground">@drawable/record_mid_bg</item>
-        <item name="recordSpeedFastBackground">@drawable/record_mid_bg</item>
-        <item name="recordSpeedFastestBackground">@drawable/record_right_bg</item>
+        <item name="recordSpeedSlowestBackgroud">@drawable/ugckit_record_left_bg</item>
+        <item name="recordSpeedSlowBackground">@drawable/ugckit_record_mid_bg</item>
+        <item name="recordSpeedNormalBackground">@drawable/ugckit_record_mid_bg</item>
+        <item name="recordSpeedFastBackground">@drawable/ugckit_record_mid_bg</item>
+        <item name="recordSpeedFastestBackground">@drawable/ugckit_record_right_bg</item>
         <!-- 录制Button-->
         <item name="recordButtonPhotoModeOutterBackground">
-            @color/recordButtonTakePhotoBackgroundColor
+            @color/ugckit_record_button_take_photo_background_color
         </item>
-        <item name="recordButtonPhotoModeInnerBackground">@color/colorTextWhite</item>
+        <item name="recordButtonPhotoModeInnerBackground">@color/color_text_white</item>
         <item name="recordButtonTapModeOutterBackground">
-            @color/recordButtonClickShotBackgroundColor
+            @color/ugckit_record_button_click_shot_background_color
         </item>
-        <item name="recordButtonTapModeInnerBackground">@color/recordButtonClickShotInnerColor
+        <item name="recordButtonTapModeInnerBackground">@color/ugckit_record_button_click_shotInner_color
         </item>
         <item name="recordButtonPressModeOutterBackground">
-            @color/recordButtonTouchShotBackgroundColor
+            @color/ugckit_record_button_touch_shot_background_color
         </item>
-        <item name="recordButtonPressModeInnerBackground">@color/recordButtonTouchShotInnerColor
+        <item name="recordButtonPressModeInnerBackground">@color/ugckit_record_button_touch_shot_inner_color
         </item>
         <!-- 多段录制进度条-->
-        <item name="recordTimelineColor">@color/record_progress</item>
-        <item name="recordTimelineSelectionColor">@color/record_progress_pending</item>
-        <item name="recordTimelineSeperatorColor">@color/white</item>
+        <item name="recordTimelineColor">@color/ugckit_record_progress</item>
+        <item name="recordTimelineSelectionColor">@color/ugckit_record_progress_pending</item>
+        <item name="recordTimelineSeperatorColor">@color/ugckit_white</item>
         <!-- 美颜面板 -->
-        <item name="beautyPanelColorPrimary">@color/colorRed</item>
-        <item name="beautyPanelSmoothIcon">@drawable/ic_beauty_smooth</item>
-        <item name="beautyPanelNaturalIcon">@drawable/ic_beauty_natural</item>
-        <item name="beautyPanelPituIcon">@drawable/ic_beauty_pitu</item>
-        <item name="beautyPanelWhiteIcon">@drawable/ic_beauty_white</item>
-        <item name="beautyPanelRuddyIcon">@drawable/ic_beauty_ruddy</item>
-        <item name="beautyPanelBigeyeIcon">@drawable/ic_beauty_bigeye</item>
-        <item name="beautyPanelFaceslimIcon">@drawable/ic_beauty_faceslim</item>
-        <item name="beautyPanelFacevIcon">@drawable/ic_beauty_facev</item>
-        <item name="beautyPanelChinIcon">@drawable/ic_beauty_chin</item>
-        <item name="beautyPanelFaceshortIcon">@drawable/ic_beauty_faceshort</item>
-        <item name="beautyPanelNoseslimIcon">@drawable/ic_beauty_noseslim</item>
-        <item name="beautyPanelEyeLightenIcon">@drawable/ic_eye_bright</item>
-        <item name="beautyPanelToothWhiteIcon">@drawable/ic_tooth_white</item>
-        <item name="beautyPanelPounchRemoveIcon">@drawable/ic_pounch_remove</item>
-        <item name="beautyPanelSmileLinesRemoveIcon">@drawable/ic_smilelines</item>
-        <item name="beautyPanelWrinkleIcon">@drawable/ic_wrinkles</item>
-        <item name="beautyPanelForeheadIcon">@drawable/ic_forehead</item>
-        <item name="beautyPanelEyeDistanceIcon">@drawable/ic_eye_distance</item>
-        <item name="beautyPanelEyeAngleIcon">@drawable/ic_eye_angle</item>
-        <item name="beautyPanelMouthShapeIcon">@drawable/ic_mouseshape</item>
-        <item name="beautyPanelNoseWingIcon">@drawable/ic_nose_wing</item>
-        <item name="beautyPanelNosePositionIcon">@drawable/ic_nose_position</item>
-        <item name="beautyPanelMouseWidthIcon">@drawable/ic_mouse_width</item>
-        <item name="beautyPanelFaceShapeIcon">@drawable/ic_faceshape</item>
+        <item name="beautyPanelColorPrimary">@color/color_red</item>
+        <item name="beautyPanelSmoothIcon">@drawable/ugckit_ic_beauty_smooth</item>
+        <item name="beautyPanelNaturalIcon">@drawable/ugckit_ic_beauty_natural</item>
+        <item name="beautyPanelPituIcon">@drawable/ugckit_ic_beauty_pitu</item>
+        <item name="beautyPanelWhiteIcon">@drawable/ugckit_ic_beauty_white</item>
+        <item name="beautyPanelRuddyIcon">@drawable/ugckit_ic_beauty_ruddy</item>
+        <item name="beautyPanelBigeyeIcon">@drawable/ugckit_ic_beauty_bigeye</item>
+        <item name="beautyPanelFaceslimIcon">@drawable/ugckit_ic_beauty_faceslim</item>
+        <item name="beautyPanelFacevIcon">@drawable/ugckit_ic_beauty_facev</item>
+        <item name="beautyPanelChinIcon">@drawable/ugckit_ic_beauty_chin</item>
+        <item name="beautyPanelFaceshortIcon">@drawable/ugckit_ic_beauty_faceshort</item>
+        <item name="beautyPanelNoseslimIcon">@drawable/ugckit_ic_beauty_noseslim</item>
+        <item name="beautyPanelEyeLightenIcon">@drawable/ugckit_ic_eye_bright</item>
+        <item name="beautyPanelToothWhiteIcon">@drawable/ugckit_ic_tooth_white</item>
+        <item name="beautyPanelPounchRemoveIcon">@drawable/ugckit_ic_pounch_remove</item>
+        <item name="beautyPanelSmileLinesRemoveIcon">@drawable/ugckit_ic_smilelines</item>
+        <item name="beautyPanelWrinkleIcon">@drawable/ugckit_ic_wrinkles</item>
+        <item name="beautyPanelForeheadIcon">@drawable/ugckit_ic_forehead</item>
+        <item name="beautyPanelEyeDistanceIcon">@drawable/ugckit_ic_eye_distance</item>
+        <item name="beautyPanelEyeAngleIcon">@drawable/ugckit_ic_eye_angle</item>
+        <item name="beautyPanelMouthShapeIcon">@drawable/ugckit_ic_mouseshape</item>
+        <item name="beautyPanelNoseWingIcon">@drawable/ugckit_ic_nose_wing</item>
+        <item name="beautyPanelNosePositionIcon">@drawable/ugckit_ic_nose_position</item>
+        <item name="beautyPanelMouseWidthIcon">@drawable/ugckit_ic_mouse_width</item>
+        <item name="beautyPanelFaceShapeIcon">@drawable/ugckit_ic_faceshape</item>
 
         <!-- 音效面板 -->
-        <item name="audioEffectDisabled">@drawable/ic_effect_non</item>
-        <item name="audioEffectVoicechangeBadboy">@drawable/ic_voicechange_badboy</item>
-        <item name="audioEffectVoicechangeLoli">@drawable/ic_voicechange_loli</item>
-        <item name="audioEffectVoicechangeUncle">@drawable/ic_voicechange_uncle</item>
+        <item name="audioEffectDisabled">@drawable/ugckit_ic_effect_non</item>
+        <item name="audioEffectVoicechangeBadboy">@drawable/ugckit_ic_voicechange_badboy</item>
+        <item name="audioEffectVoicechangeLoli">@drawable/ugckit_ic_voicechange_loli</item>
+        <item name="audioEffectVoicechangeUncle">@drawable/ugckit_ic_voicechange_uncle</item>
         <item name="audioEffectVoicechangeHeavymechanical">
-            @drawable/ic_voicechange_heavymechanical
+            @drawable/ugckit_ic_voicechange_heavymechanical
         </item>
-        <item name="audioEffectVoicechangeForeigner">@drawable/ic_voicechange_foreigner</item>
-        <item name="audioEffectVoicechangeBeast">@drawable/ic_voicechange_beast</item>
-        <item name="audioEffectVoicechangeFatty">@drawable/ic_voicechange_deadfathouse
+        <item name="audioEffectVoicechangeForeigner">@drawable/ugckit_ic_voicechange_foreigner</item>
+        <item name="audioEffectVoicechangeBeast">@drawable/ugckit_ic_voicechange_beast</item>
+        <item name="audioEffectVoicechangeFatty">@drawable/ugckit_ic_voicechange_deadfathouse
         </item>
-        <item name="audioEffectVoicechangeElectric">@drawable/ic_voicechange_electric</item>
-        <item name="audioEffectVoicechangeEthereal">@drawable/ic_voicechange_ethereal</item>
-        <item name="audioEffectReverbKTV">@drawable/ic_reverb_ktv</item>
-        <item name="audioEffectReverbRoom">@drawable/ic_reverb_room</item>
-        <item name="audioEffectReverbHall">@drawable/ic_reverb_hall</item>
-        <item name="audioEffectReverbLow">@drawable/ic_reverb_low</item>
-        <item name="audioEffectReverbSonorous">@drawable/ic_reverb_sonorous</item>
-        <item name="audioEffectReverbMagnetic">@drawable/ic_reverb_magnetic</item>
+        <item name="audioEffectVoicechangeElectric">@drawable/ugckit_ic_voicechange_electric</item>
+        <item name="audioEffectVoicechangeEthereal">@drawable/ugckit_ic_voicechange_ethereal</item>
+        <item name="audioEffectReverbKTV">@drawable/ugckit_ic_reverb_ktv</item>
+        <item name="audioEffectReverbRoom">@drawable/ugckit_ic_reverb_room</item>
+        <item name="audioEffectReverbHall">@drawable/ugckit_ic_reverb_hall</item>
+        <item name="audioEffectReverbLow">@drawable/ugckit_ic_reverb_low</item>
+        <item name="audioEffectReverbSonorous">@drawable/ugckit_ic_reverb_sonorous</item>
+        <item name="audioEffectReverbMagnetic">@drawable/ugckit_ic_reverb_magnetic</item>
     </style>
 
     <!-- 短视频编辑主题UI配置-->
-    <style name="EditerStyle" parent="BasicStyle">
+    <style name="UGCKitEditerStyle" parent="UGCKitBasicStyle">
         <!-- 裁剪条-->
-        <item name="editerCutViewColor">@color/colorRed2</item>
-        <item name="editerCutSliderLeftIcon">@drawable/ic_progress_left</item>
-        <item name="editerCutSliderRightIcon">@drawable/ic_progress_right</item>
-        <item name="editerRotateIcon">@drawable/icon_rotate_video_view</item>
+        <item name="editerCutViewColor">@color/ugckit_color_red2</item>
+        <item name="editerCutSliderLeftIcon">@drawable/ugckit_ic_progress_left</item>
+        <item name="editerCutSliderRightIcon">@drawable/ugckit_ic_progress_right</item>
+        <item name="editerRotateIcon">@drawable/ugckit_icon_rotate_video_view</item>
         <!-- 播放/暂停icon -->
-        <item name="editerPlayIcon">@drawable/ic_play_normal</item>
-        <item name="editerPauseIcon">@drawable/ic_pause_normal</item>
+        <item name="editerPlayIcon">@drawable/ugckit_ic_play_normal</item>
+        <item name="editerPauseIcon">@drawable/ugckit_ic_pause_normal</item>
         <!-- 进度条-->
-        <item name="editerCurrentProgressIcon">@drawable/ic_player_slider</item>
+        <item name="editerCurrentProgressIcon">@drawable/ugckit_ic_player_slider</item>
         <!-- 编辑菜单-->
-        <item name="editerMenuBgmIcon">@drawable/ic_music_selector</item>
-        <item name="editerMenuMotionIcon">@drawable/ic_motion_selector</item>
-        <item name="editerMenuSpeedIcon">@drawable/ic_time_selector</item>
-        <item name="editerMenuFilterIcon">@drawable/ic_filter_selector</item>
-        <item name="editerMenuPasterIcon">@drawable/ic_paster_selector</item>
-        <item name="editerMenuSubtitleIcon">@drawable/ic_word_selector</item>
+        <item name="editerMenuBgmIcon">@drawable/ugckit_ic_music_selector</item>
+        <item name="editerMenuMotionIcon">@drawable/ugckit_ic_motion_selector</item>
+        <item name="editerMenuSpeedIcon">@drawable/ugckit_ic_time_selector</item>
+        <item name="editerMenuFilterIcon">@drawable/ugckit_ic_filter_selector</item>
+        <item name="editerMenuPasterIcon">@drawable/ugckit_ic_paster_selector</item>
+        <item name="editerMenuSubtitleIcon">@drawable/ugckit_ic_word_selector</item>
         <!--动态特效-->
-        <item name="editerMotionUndoIcon">@drawable/editor_undo_selector</item>
-        <item name="editerMotionSoulOutIcon">@drawable/motion_soul_out</item>
-        <item name="editerMotionSoulOutCoverColor">@color/soul_out_color_press</item>
-        <item name="editerMotionSplitScreenIcon">@drawable/motion_split_screen</item>
-        <item name="editerMotionSplitScreenCoverColor">@color/screen_split_press</item>
-        <item name="editerMotionDarkDreamIcon">@drawable/motion_dark_dream</item>
-        <item name="editerMotionDarkDreamCoverColor">@color/dark_dream_press</item>
-        <item name="editerMotionGhostIcon">@drawable/motion_ghost</item>
-        <item name="editerMotionGhostCoverColor">@color/ghost_color_press</item>
-        <item name="editerMotionGhostShadowIcon">@drawable/motion_ghost_shaddow</item>
-        <item name="editerMotionGhostShadowCoverColor">@color/ghost_shaddow_color_press</item>
-        <item name="editerMotionIllusionIcon">@drawable/motion_illusion</item>
-        <item name="editerMotionIllusionCoverColor">@color/illusion_color_press</item>
-        <item name="editerMotionLightningIcon">@drawable/motion_lightning</item>
-        <item name="editerMotionLightningCoverColor">@color/lightning_color_press</item>
-        <item name="editerMotionMirrorIcon">@drawable/motion_mirror</item>
-        <item name="editerMotionMirrorCoverColor">@color/mirror_color_press</item>
-        <item name="editerMotionPhantomShadowIcon">@drawable/motion_phantom_shaddow</item>
-        <item name="editerMotionPhantomShadowCoverColor">@color/phantom_shaddow_color_press</item>
-        <item name="editerMotionRockLightIcon">@drawable/motion_rock_light</item>
-        <item name="editerMotionRockLightCoverColor">@color/rock_light_press</item>
-        <item name="editerMotionWinShadowIcon">@drawable/motion_win_shaddow</item>
-        <item name="editerMotionWinShadowCoverColor">@color/win_shaddow_color_press</item>
+        <item name="editerMotionUndoIcon">@drawable/ugckit_editor_undo_selector</item>
+        <item name="editerMotionSoulOutIcon">@drawable/ugckit_motion_soul_out</item>
+        <item name="editerMotionSoulOutCoverColor">@color/ugckit_soul_out_color_press</item>
+        <item name="editerMotionSplitScreenIcon">@drawable/ugckit_motion_split_screen</item>
+        <item name="editerMotionSplitScreenCoverColor">@color/ugckit_screen_split_press</item>
+        <item name="editerMotionDarkDreamIcon">@drawable/ugckit_motion_dark_dream</item>
+        <item name="editerMotionDarkDreamCoverColor">@color/ugckit_dark_dream_press</item>
+        <item name="editerMotionGhostIcon">@drawable/ugckit_motion_ghost</item>
+        <item name="editerMotionGhostCoverColor">@color/ugckit_ghost_color_press</item>
+        <item name="editerMotionGhostShadowIcon">@drawable/ugckit_motion_ghost_shaddow</item>
+        <item name="editerMotionGhostShadowCoverColor">@color/ugckit_ghost_shaddow_color_press</item>
+        <item name="editerMotionIllusionIcon">@drawable/ugckit_motion_illusion</item>
+        <item name="editerMotionIllusionCoverColor">@color/ugckit_illusion_color_press</item>
+        <item name="editerMotionLightningIcon">@drawable/ugckit_motion_lightning</item>
+        <item name="editerMotionLightningCoverColor">@color/ugckit_lightning_color_press</item>
+        <item name="editerMotionMirrorIcon">@drawable/ugckit_motion_mirror</item>
+        <item name="editerMotionMirrorCoverColor">@color/ugckit_mirror_color_press</item>
+        <item name="editerMotionPhantomShadowIcon">@drawable/ugckit_motion_phantom_shaddow</item>
+        <item name="editerMotionPhantomShadowCoverColor">@color/ugckit_phantom_shaddow_color_press</item>
+        <item name="editerMotionRockLightIcon">@drawable/ugckit_motion_rock_light</item>
+        <item name="editerMotionRockLightCoverColor">@color/ugckit_rock_light_press</item>
+        <item name="editerMotionWinShadowIcon">@drawable/ugckit_motion_win_shaddow</item>
+        <item name="editerMotionWinShadowCoverColor">@color/ugckit_win_shaddow_color_press</item>
 
         <!--速度特效-->
-        <item name="editerTimeEffectNormalIcon">@drawable/motion_time_normal</item>
-        <item name="editerTimeEffectSlowMotionIcon">@drawable/motion_time_slow</item>
-        <item name="editerTimeEffectRepeatIcon">@drawable/motion_time_repeat</item>
-        <item name="editerTimeEffectReverseIcon">@drawable/motion_time_reverse</item>
+        <item name="editerTimeEffectNormalIcon">@drawable/ugckit_motion_time_normal</item>
+        <item name="editerTimeEffectSlowMotionIcon">@drawable/ugckit_motion_time_slow</item>
+        <item name="editerTimeEffectRepeatIcon">@drawable/ugckit_motion_time_repeat</item>
+        <item name="editerTimeEffectReverseIcon">@drawable/ugckit_motion_time_reverse</item>
 
         <!--静态滤镜-->
-        <item name="editerFilterOriginIcon">@drawable/orginal</item>
-        <item name="editerFilterNormalIcon">@drawable/biaozhun</item>
-        <item name="editerFilterYinghongIcon">@drawable/yinghong</item>
-        <item name="editerFilterYunchangIcon">@drawable/yunshang</item>
-        <item name="editerFilterChunzhenIcon">@drawable/chunzhen</item>
-        <item name="editerFilterBailanIcon">@drawable/bailan</item>
-        <item name="editerFilterYuanqiIcon">@drawable/yuanqi</item>
-        <item name="editerFilterChaotuoIcon">@drawable/chaotuo</item>
-        <item name="editerFilterXiangfenIcon">@drawable/xiangfen</item>
-        <item name="editerFilterLangmanIcon">@drawable/langman</item>
-        <item name="editerFilterQingxinIcon">@drawable/qingxin</item>
-        <item name="editerFilterWeimeiIcon">@drawable/weimei</item>
-        <item name="editerFilterFennenIcon">@drawable/fennen</item>
-        <item name="editerFilterHuaijiuIcon">@drawable/huaijiu</item>
-        <item name="editerFilterLandiaoIcon">@drawable/landiao</item>
-        <item name="editerFilterQingliangIcon">@drawable/qingliang</item>
-        <item name="editerFilterRixiIcon">@drawable/rixi</item>
+        <item name="editerFilterOriginIcon">@drawable/ugckit_orginal</item>
+        <item name="editerFilterNormalIcon">@drawable/ugckit_biaozhun</item>
+        <item name="editerFilterYinghongIcon">@drawable/ugckit_yinghong</item>
+        <item name="editerFilterYunchangIcon">@drawable/ugckit_yunshang</item>
+        <item name="editerFilterChunzhenIcon">@drawable/ugckit_chunzhen</item>
+        <item name="editerFilterBailanIcon">@drawable/ugckit_bailan</item>
+        <item name="editerFilterYuanqiIcon">@drawable/ugckit_yuanqi</item>
+        <item name="editerFilterChaotuoIcon">@drawable/ugckit_chaotuo</item>
+        <item name="editerFilterXiangfenIcon">@drawable/ugckit_xiangfen</item>
+        <item name="editerFilterLangmanIcon">@drawable/ugckit_langman</item>
+        <item name="editerFilterQingxinIcon">@drawable/ugckit_qingxin</item>
+        <item name="editerFilterWeimeiIcon">@drawable/ugckit_weimei</item>
+        <item name="editerFilterFennenIcon">@drawable/ugckit_fennen</item>
+        <item name="editerFilterHuaijiuIcon">@drawable/ugckit_huaijiu</item>
+        <item name="editerFilterLandiaoIcon">@drawable/ugckit_landiao</item>
+        <item name="editerFilterQingliangIcon">@drawable/ugckit_qingliang</item>
+        <item name="editerFilterRixiIcon">@drawable/ugckit_rixi</item>
 
         <!-- 贴纸 -->
-        <item name="editerPasterDelIcon">@drawable/ic_word_del_normal</item>
+        <item name="editerPasterDelIcon">@drawable/ugckit_ic_word_del_normal</item>
         <!-- 气泡字幕 -->
-        <item name="editerSubtitleDelIcon">@drawable/ic_word_del_normal</item>
+        <item name="editerSubtitleDelIcon">@drawable/ugckit_ic_word_del_normal</item>
 
         <!-- 特效确认按钮-->
-        <item name="editerConfirmIcon">@drawable/ic_edit_effect_confirm_selector</item>
+        <item name="editerConfirmIcon">@drawable/ugckit_ic_edit_effect_confirm_selector</item>
     </style>
 
-    <style name="MixRecordStyle" parent="RecordStyle">
-        <item name="countDownIcon">@drawable/btn_timer</item>
+    <style name="UGCKitMixRecordStyle" parent="UGCKitRecordStyle">
+        <item name="countDownIcon">@drawable/ugckit_btn_timer</item>
     </style>
 
-    <style name="PictureTransitionStyle" parent="BasicStyle">
-        <item name="transitionLeftRightIcon">@drawable/btn_left_right</item>
-        <item name="transitionUpDownIcon">@drawable/btn_up_down</item>
-        <item name="transitionEnlargeIcon">@drawable/btn_zoom_in</item>
-        <item name="transitionNarrowIcon">@drawable/btn_zoom_out</item>
-        <item name="transitionRotateIcon">@drawable/btn_rotate</item>
-        <item name="transitionFadeInOutIcon">@drawable/btn_gradient</item>
+    <style name="UGCKitPictureTransitionStyle" parent="UGCKitBasicStyle">
+        <item name="transitionLeftRightIcon">@drawable/ugckit_btn_left_right</item>
+        <item name="transitionUpDownIcon">@drawable/ugckit_btn_up_down</item>
+        <item name="transitionEnlargeIcon">@drawable/ugckit_btn_zoom_in</item>
+        <item name="transitionNarrowIcon">@drawable/ugckit_btn_zoom_out</item>
+        <item name="transitionRotateIcon">@drawable/ugckit_btn_rotate</item>
+        <item name="transitionFadeInOutIcon">@drawable/ugckit_btn_gradient</item>
     </style>
 
 </resources>

@@ -16,17 +16,15 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 
 public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoRecordKit {
 
-    private TitleBarLayout mTitleBar;
-    private TXCloudVideoView mVideoView;
-    private ScrollFilterView mScrollFilterView;
-
-    private RecordRightLayout mRecordRightLayout;
-    private RecordBottomLayout mRecordBottomLayout;
-
-    private BeautyPanel mBeautyPanel;
-    private RecordMusicPannel mRecordMusicPannel;
-    private SoundEffectsPannel mSoundEffectsPannel;
-    private ImageSnapShotView mImageSnapShotView;
+    private TitleBarLayout      mTitleBar;
+    private TXCloudVideoView    mVideoView;
+    private ScrollFilterView    mScrollFilterView;
+    private RecordRightLayout   mRecordRightLayout;
+    private RecordBottomLayout  mRecordBottomLayout;
+    private BeautyPanel         mBeautyPanel;
+    private RecordMusicPannel   mRecordMusicPannel;
+    private SoundEffectsPannel  mSoundEffectsPannel;
+    private ImageSnapShotView   mImageSnapShotView;
 
     public AbsVideoRecordUI(Context context) {
         super(context);
@@ -44,7 +42,7 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.video_rec_layout, this);
+        inflate(getContext(), R.layout.ugckit_video_rec_layout, this);
 
         mTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
         mVideoView = (TXCloudVideoView) findViewById(R.id.video_view);

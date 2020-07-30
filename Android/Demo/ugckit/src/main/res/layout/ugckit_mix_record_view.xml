@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="RelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical">
+
+
+<!--    <com.tencent.qcloud.ugckit.module.triplescreen.TripleRecordPlayerViews-->
+<!--        android:id="@+id/triple_views"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_centerInParent="true" />-->
+    <!-- 视频预览界面占位 -->
+    <View android:id="@+id/mixrecord_playerview_placeholder"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.tencent.qcloud.ugckit.module.record.ScrollFilterView
+        android:id="@+id/scrollFilterView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.tencent.qcloud.ugckit.module.mixrecord.MixRecordRightLayout
+        android:id="@+id/record_right_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleBar_layout"
+        android:layout_alignParentRight="true" />
+
+    <com.tencent.qcloud.ugckit.module.mixrecord.MixRecordBottomLayout
+        android:id="@+id/record_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <com.tencent.liteav.demo.beauty.view.BeautyPanel
+        android:id="@+id/beauty_pannel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:visibility="gone" />
+
+    <!-- 标题栏 -->
+    <com.tencent.qcloud.ugckit.component.TitleBarLayout
+        android:id="@+id/titleBar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+    <com.tencent.qcloud.ugckit.module.mixrecord.CountDownTimerView
+        android:id="@+id/countdown_timer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+</merge>

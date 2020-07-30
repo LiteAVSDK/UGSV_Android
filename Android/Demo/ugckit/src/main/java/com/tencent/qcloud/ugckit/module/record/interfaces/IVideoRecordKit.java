@@ -26,7 +26,7 @@ import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
  *     &#064;Override
  *     protected void onCreate(Bundle savedInstanceState) {
  *         super.onCreate(savedInstanceState);
- *         setContentView(R.layout.activity_video_record);
+ *         setContentView(R.layout.ugcrecord_activity_video_record);
  *
  *         mVideoRecord = (VideoRecord) findViewById(R.id.video_record_layout);
  *         mVideoRecord.setOnRecordListener(new IVideoRecordKit.OnRecordListener() {

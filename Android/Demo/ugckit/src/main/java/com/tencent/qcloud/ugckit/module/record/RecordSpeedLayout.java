@@ -21,25 +21,21 @@ import com.tencent.ugc.TXRecordCommon;
  */
 public class RecordSpeedLayout extends RelativeLayout implements RadioGroup.OnCheckedChangeListener, IRecordSpeedLayout {
     private static final String TAG = "RecordSpeedLayout";
-    private Activity mActivity;
+    private Activity    mActivity;
+    private RadioGroup  mRadioGroup;
+    private RadioButton mRadioSloweset;
+    private RadioButton mRadioSlow;
+    private RadioButton mRadioNormal;
+    private RadioButton mRadioFast;
+    private RadioButton mRadioFastest;
 
-    private RadioGroup mRadioGroup;
-    private RadioButton mRbSloweset;
-    private RadioButton mRbSlow;
-    private RadioButton mRbNormal;
-    private RadioButton mRbFast;
-    private RadioButton mRbFastest;
-
-    private int slowestBg = R.drawable.record_left_bg;
-    private int slowBg = R.drawable.record_mid_bg;
-    private int normalBg = R.drawable.record_mid_bg;
-    private int fastBg = R.drawable.record_mid_bg;
-    private int fastestBg = R.drawable.record_right_bg;
-
-    /**
-     * 录制速度
-     */
-    private int mRecordSpeed = TXRecordCommon.RECORD_SPEED_NORMAL;
+    private int mSlowestBg   = R.drawable.ugckit_record_left_bg;
+    private int mSlowBg      = R.drawable.ugckit_record_mid_bg;
+    private int mNormalBg    = R.drawable.ugckit_record_mid_bg;
+    private int mFastBg      = R.drawable.ugckit_record_mid_bg;
+    private int mFastestBg   = R.drawable.ugckit_record_right_bg;
+    private int mRecordSpeed = TXRecordCommon.RECORD_SPEED_NORMAL;  // 录制速度
+    
     private OnRecordSpeedListener mOnRecordSpeedListener;
 
     public RecordSpeedLayout(Context context) {
@@ -59,65 +55,65 @@ public class RecordSpeedLayout extends RelativeLayout implements RadioGroup.OnCh
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.record_speed_layout, this);
+        inflate(mActivity, R.layout.ugckit_record_speed_layout, this);
 
         mRadioGroup = (RadioGroup) findViewById(R.id.rg_record_speed);
-        mRbFast = (RadioButton) findViewById(R.id.rb_fast);
-        mRbFastest = (RadioButton) findViewById(R.id.rb_fastest);
-        mRbNormal = (RadioButton) findViewById(R.id.rb_normal);
-        mRbSlow = (RadioButton) findViewById(R.id.rb_slow);
-        mRbSloweset = (RadioButton) findViewById(R.id.rb_slowest);
+        mRadioFast = (RadioButton) findViewById(R.id.rb_fast);
+        mRadioFastest = (RadioButton) findViewById(R.id.rb_fastest);
+        mRadioNormal = (RadioButton) findViewById(R.id.rb_normal);
+        mRadioSlow = (RadioButton) findViewById(R.id.rb_slow);
+        mRadioSloweset = (RadioButton) findViewById(R.id.rb_slowest);
 
-        slowestBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedSlowestBackgroud, R.drawable.record_left_bg);
-        slowBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedSlowBackground, R.drawable.record_mid_bg);
-        normalBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedNormalBackground, R.drawable.record_mid_bg);
-        fastBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedFastBackground, R.drawable.record_mid_bg);
-        fastestBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedFastestBackground, R.drawable.record_right_bg);
+        mSlowestBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedSlowestBackgroud, R.drawable.ugckit_record_left_bg);
+        mSlowBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedSlowBackground, R.drawable.ugckit_record_mid_bg);
+        mNormalBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedNormalBackground, R.drawable.ugckit_record_mid_bg);
+        mFastBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedFastBackground, R.drawable.ugckit_record_mid_bg);
+        mFastestBg = UIAttributeUtil.getResResources(mActivity, R.attr.recordSpeedFastestBackground, R.drawable.ugckit_record_right_bg);
 
         ((RadioButton) findViewById(R.id.rb_normal)).setChecked(true);
-        mRbNormal.setBackgroundResource(normalBg);
+        mRadioNormal.setBackgroundResource(mNormalBg);
         mRadioGroup.setOnCheckedChangeListener(this);
     }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         if (checkedId == R.id.rb_fast) {
-            mRbFast.setBackgroundResource(fastBg);
-            mRbFastest.setBackgroundColor(Color.TRANSPARENT);
-            mRbNormal.setBackgroundColor(Color.TRANSPARENT);
-            mRbSlow.setBackgroundColor(Color.TRANSPARENT);
-            mRbSloweset.setBackgroundColor(Color.TRANSPARENT);
+            mRadioFast.setBackgroundResource(mFastBg);
+            mRadioFastest.setBackgroundColor(Color.TRANSPARENT);
+            mRadioNormal.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSlow.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSloweset.setBackgroundColor(Color.TRANSPARENT);
             mRecordSpeed = TXRecordCommon.RECORD_SPEED_FAST;
         } else if (checkedId == R.id.rb_fastest) {
-            mRbFastest.setBackgroundResource(fastestBg);
-            mRbFast.setBackgroundColor(Color.TRANSPARENT);
-            mRbNormal.setBackgroundColor(Color.TRANSPARENT);
-            mRbSlow.setBackgroundColor(Color.TRANSPARENT);
-            mRbSloweset.setBackgroundColor(Color.TRANSPARENT);
+            mRadioFastest.setBackgroundResource(mFastestBg);
+            mRadioFast.setBackgroundColor(Color.TRANSPARENT);
+            mRadioNormal.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSlow.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSloweset.setBackgroundColor(Color.TRANSPARENT);
             mRecordSpeed = TXRecordCommon.RECORD_SPEED_FASTEST;
 
         } else if (checkedId == R.id.rb_normal) {
-            mRbNormal.setBackgroundResource(normalBg);
-            mRbFastest.setBackgroundColor(Color.TRANSPARENT);
-            mRbFast.setBackgroundColor(Color.TRANSPARENT);
-            mRbSlow.setBackgroundColor(Color.TRANSPARENT);
-            mRbSloweset.setBackgroundColor(Color.TRANSPARENT);
+            mRadioNormal.setBackgroundResource(mNormalBg);
+            mRadioFastest.setBackgroundColor(Color.TRANSPARENT);
+            mRadioFast.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSlow.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSloweset.setBackgroundColor(Color.TRANSPARENT);
             mRecordSpeed = TXRecordCommon.RECORD_SPEED_NORMAL;
 
         } else if (checkedId == R.id.rb_slow) {
-            mRbSlow.setBackgroundResource(slowBg);
-            mRbFastest.setBackgroundColor(Color.TRANSPARENT);
-            mRbFast.setBackgroundColor(Color.TRANSPARENT);
-            mRbNormal.setBackgroundColor(Color.TRANSPARENT);
-            mRbSloweset.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSlow.setBackgroundResource(mSlowBg);
+            mRadioFastest.setBackgroundColor(Color.TRANSPARENT);
+            mRadioFast.setBackgroundColor(Color.TRANSPARENT);
+            mRadioNormal.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSloweset.setBackgroundColor(Color.TRANSPARENT);
             mRecordSpeed = TXRecordCommon.RECORD_SPEED_SLOW;
 
         } else if (checkedId == R.id.rb_slowest) {
-            mRbSloweset.setBackgroundResource(slowestBg);
-            mRbFastest.setBackgroundColor(Color.TRANSPARENT);
-            mRbFast.setBackgroundColor(Color.TRANSPARENT);
-            mRbNormal.setBackgroundColor(Color.TRANSPARENT);
-            mRbSlow.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSloweset.setBackgroundResource(mSlowestBg);
+            mRadioFastest.setBackgroundColor(Color.TRANSPARENT);
+            mRadioFast.setBackgroundColor(Color.TRANSPARENT);
+            mRadioNormal.setBackgroundColor(Color.TRANSPARENT);
+            mRadioSlow.setBackgroundColor(Color.TRANSPARENT);
             mRecordSpeed = TXRecordCommon.RECORD_SPEED_SLOWEST;
         }
 
@@ -137,20 +133,20 @@ public class RecordSpeedLayout extends RelativeLayout implements RadioGroup.OnCh
 
     @Override
     public void setSpeedTextSize(int size) {
-        mRbFast.setTextSize(size);
-        mRbFastest.setTextSize(size);
-        mRbNormal.setTextSize(size);
-        mRbSlow.setTextSize(size);
-        mRbSloweset.setTextSize(size);
+        mRadioFast.setTextSize(size);
+        mRadioFastest.setTextSize(size);
+        mRadioNormal.setTextSize(size);
+        mRadioSlow.setTextSize(size);
+        mRadioSloweset.setTextSize(size);
     }
 
     @Override
     public void setSpeedTextColor(ColorStateList color) {
-        mRbFast.setTextColor(color);
-        mRbFastest.setTextColor(color);
-        mRbNormal.setTextColor(color);
-        mRbSlow.setTextColor(color);
-        mRbSloweset.setTextColor(color);
+        mRadioFast.setTextColor(color);
+        mRadioFastest.setTextColor(color);
+        mRadioNormal.setTextColor(color);
+        mRadioSlow.setTextColor(color);
+        mRadioSloweset.setTextColor(color);
     }
 
     @Override
@@ -161,10 +157,10 @@ public class RecordSpeedLayout extends RelativeLayout implements RadioGroup.OnCh
     public void settIconList(int[] iconList) {
         Log.d(TAG, "iconList size:" + iconList.length);
 
-        mRbSloweset.setBackgroundResource(iconList[0]);
-        mRbSlow.setBackgroundResource(iconList[1]);
-        mRbNormal.setBackgroundResource(iconList[2]);
-        mRbFast.setBackgroundResource(iconList[3]);
-        mRbFastest.setBackgroundResource(iconList[4]);
+        mRadioSloweset.setBackgroundResource(iconList[0]);
+        mRadioSlow.setBackgroundResource(iconList[1]);
+        mRadioNormal.setBackgroundResource(iconList[2]);
+        mRadioFast.setBackgroundResource(iconList[3]);
+        mRadioFastest.setBackgroundResource(iconList[4]);
     }
 }

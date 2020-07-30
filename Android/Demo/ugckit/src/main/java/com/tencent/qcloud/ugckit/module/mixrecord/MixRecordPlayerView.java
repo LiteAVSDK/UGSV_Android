@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import com.tencent.cos.xml.utils.StringUtils;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.utils.NetworkUtil;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXVodPlayConfig;
@@ -29,13 +28,15 @@ import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_PROGRESS;
 
 public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayListener, IPlayerView {
     private static final String TAG = "MixRecordPlayerView";
-    private TXVodPlayer mVodPlayer;
-    private String mVideoPath;
+
+    private TXVodPlayer      mVodPlayer;
     private TXCloudVideoView mCloudView;
-    private int mIndex = -1;
-    private PlayerState mPlayerState = PlayerState.STATE_UNINIT;
-    private float mContinuePosition = -1;
-    private ImageView mCoverimg;
+    private ImageView        mCoverimg;
+    private PlayerState      mPlayerState = PlayerState.STATE_UNINIT;
+
+    private String  mVideoPath;
+    private int     mIndex = -1;
+    private float   mContinuePosition = -1;
 
     public MixRecordPlayerView(Context context) {
         this(context, null);
@@ -52,7 +53,7 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.mix_record_player_view, this);
+        inflate(getContext(), R.layout.ugckit_mix_record_player_view, this);
         mCloudView = (TXCloudVideoView) findViewById(R.id.mix_player_view);
         mCoverimg = (ImageView) findViewById(R.id.cover);
     }

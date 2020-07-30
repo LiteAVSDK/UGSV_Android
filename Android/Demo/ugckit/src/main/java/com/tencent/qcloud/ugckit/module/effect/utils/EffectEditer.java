@@ -9,6 +9,19 @@ public class EffectEditer {
 
     private static EffectEditer sInstance;
 
+    /**
+     * 背景音乐相关
+     * */
+    @Nullable
+    private String bgmPath;
+    private int    bgmPos;
+    private float  bgmVolume;
+    private float  videoVolume;
+    private long   bgmStartTime;
+    private long   bgmEndTime;
+    private long   bgmDuration;
+    private String bgmName;
+
     public static EffectEditer getInstance() {
         if (sInstance == null) {
             synchronized (EffectEditer.class) {
@@ -25,18 +38,6 @@ public class EffectEditer {
         bgmVolume = 0.5f;
         videoVolume = 0.5f;
     }
-
-    //背景音乐相关
-    @Nullable
-    private String bgmPath;
-
-    private int bgmPos;
-    private float bgmVolume;
-    private float videoVolume;
-    private long bgmStartTime;
-    private long bgmEndTime;
-    private long bgmDuration;
-    private String bgmName;
 
     public String getBgmName() {
         return bgmName;

@@ -18,19 +18,21 @@ import com.tencent.qcloud.ugckit.component.slider.RangeSlider;
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 
 public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPannel, SeekBar.OnSeekBarChangeListener, RangeSlider.OnRangeChangeListener, View.OnClickListener {
-    private Context mContext;
-    private SeekBar mMicVolumeSeekBar;
-    private SeekBar mBGMVolumeSeekBar;
-    private int mMicVolume = 100;
-    private int mBGMVolume = 100;
-    private MusicChangeListener mMusicChangeListener;
-    private RangeSlider mRangeSlider;
+    private Context     mContext;
+    private SeekBar     mSeekBarMicVolume;
+    private SeekBar     mSeekBarBGMVolume;
+    private RangeSlider mSliderRange;
+    private TextView    mTextStartTime;
+    private TextView    mTextMicVolume;
+    private TextView    mTextMusicName;
+    private ImageView   mImageReplace;
+    private ImageView   mImageDelete;
+
+    private int  mMicVolume = 100;
+    private int  mBGMVolume = 100;
     private long mBgmDuration;
-    private TextView mTvStartTime;
-    private TextView mTvMicVolume;
-    private TextView mTvMusicName;
-    private ImageView mIvReplace;
-    private ImageView mIvDelete;
+
+    private MusicChangeListener mMusicChangeListener;
 
     public TCEditMusicPannel(Context context) {
         super(context);
@@ -49,42 +51,42 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
 
     private void init(Context context) {
         mContext = context;
-        LayoutInflater.from(context).inflate(R.layout.layout_edit_music, this);
-        mMicVolumeSeekBar = (SeekBar) findViewById(R.id.seekbar_mic_volume);
-        mBGMVolumeSeekBar = (SeekBar) findViewById(R.id.seekbar_bgm_volume);
-        mMicVolumeSeekBar.setOnSeekBarChangeListener(this);
-        mBGMVolumeSeekBar.setOnSeekBarChangeListener(this);
+        LayoutInflater.from(context).inflate(R.layout.ugckit_layout_edit_music, this);
+        mSeekBarMicVolume = (SeekBar) findViewById(R.id.seekbar_mic_volume);
+        mSeekBarBGMVolume = (SeekBar) findViewById(R.id.seekbar_bgm_volume);
+        mSeekBarMicVolume.setOnSeekBarChangeListener(this);
+        mSeekBarBGMVolume.setOnSeekBarChangeListener(this);
 
-        mTvMicVolume = (TextView) findViewById(R.id.tv_mic_volume);
+        mTextMicVolume = (TextView) findViewById(R.id.tv_mic_volume);
 
-        mRangeSlider = (RangeSlider) findViewById(R.id.bgm_range_slider);
-        mRangeSlider.setRangeChangeListener(this);
+        mSliderRange = (RangeSlider) findViewById(R.id.bgm_range_slider);
+        mSliderRange.setRangeChangeListener(this);
 
-        mIvReplace = (ImageView) findViewById(R.id.btn_bgm_replace);
-        mIvDelete = (ImageView) findViewById(R.id.btn_bgm_delete);
+        mImageReplace = (ImageView) findViewById(R.id.btn_bgm_replace);
+        mImageDelete = (ImageView) findViewById(R.id.btn_bgm_delete);
 
-        mIvReplace.setOnClickListener(this);
-        mIvDelete.setOnClickListener(this);
+        mImageReplace.setOnClickListener(this);
+        mImageDelete.setOnClickListener(this);
 
-        mTvStartTime = (TextView) findViewById(R.id.tv_bgm_start_time);
-        mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position), "00:00"));
+        mTextStartTime = (TextView) findViewById(R.id.tv_bgm_start_time);
+        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), "00:00"));
 
-        mTvMusicName = (TextView) findViewById(R.id.tx_music_name);
-        mTvMusicName.setText("");
-        mTvMusicName.setSelected(true);
+        mTextMusicName = (TextView) findViewById(R.id.tx_music_name);
+        mTextMusicName.setText("");
+        mTextMusicName.setSelected(true);
     }
 
     @Override
     public void setMusicInfo(MusicInfo musicInfo) {
         if (!TextUtils.isEmpty(musicInfo.name)) {
-            mTvMusicName.setText(musicInfo.name);
+            mTextMusicName.setText(musicInfo.name);
         }
-        if (mMicVolumeSeekBar != null && musicInfo.videoVolume != -1) {
-            mMicVolumeSeekBar.setProgress((int) (musicInfo.videoVolume * 100));
+        if (mSeekBarMicVolume != null && musicInfo.videoVolume != -1) {
+            mSeekBarMicVolume.setProgress((int) (musicInfo.videoVolume * 100));
         }
 
-        if (mBGMVolumeSeekBar != null && musicInfo.bgmVolume != -1) {
-            mBGMVolumeSeekBar.setProgress((int) (musicInfo.bgmVolume * 100));
+        if (mSeekBarBGMVolume != null && musicInfo.bgmVolume != -1) {
+            mSeekBarBGMVolume.setProgress((int) (musicInfo.bgmVolume * 100));
         }
         mBgmDuration = musicInfo.duration;
         setCutRange(musicInfo.startTime, musicInfo.endTime);
@@ -131,14 +133,14 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
         long leftTime = mBgmDuration * leftPinIndex / 100; //ms
         long rightTime = mBgmDuration * rightPinIndex / 100;
 
-        mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position),
+        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position),
                 DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
 
         if (mMusicChangeListener != null) {
             mMusicChangeListener.onMusicTimeChanged(leftTime, rightTime);
         }
 
-        mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
+        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
     }
 
     /******** RangeSlider callback end *********/
@@ -160,13 +162,13 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
     private void setCutRange(long startTime, long endTime) {
         if (startTime == -1 || endTime == -1)
             return;
-        if (mRangeSlider != null && mBgmDuration != 0) {
+        if (mSliderRange != null && mBgmDuration != 0) {
             int left = (int) (startTime * 100 / mBgmDuration);
             int right = (int) (endTime * 100 / mBgmDuration);
-            mRangeSlider.setCutRange(left, right);
+            mSliderRange.setCutRange(left, right);
         }
-        if (mTvStartTime != null) {
-            mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
+        if (mTextStartTime != null) {
+            mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
         }
     }
 }

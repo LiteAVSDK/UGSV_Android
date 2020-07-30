@@ -21,24 +21,22 @@ import com.tencent.ugc.TXRecordCommon;
  */
 public class AspectView extends RelativeLayout implements View.OnClickListener {
     private static final String TAG = "AspectView";
-    private Activity mActivity;
-
-    private TextView mTvAspect;
-    private ImageView mIvAspectCurr;
-    private ImageView mIvAspectFirst;
-    private ImageView mIvAspectSecond;
-    private ImageView mIvAspectThird;
-    private ImageView mIvAspectFourth;
-    private ImageView mIvAspecteMask;
-
+    private Activity       mActivity;
+    private TextView       mTextAspect;
+    private ImageView      mImageAspectCurr;
+    private ImageView      mImageAspectFirst;
+    private ImageView      mImageAspectSecond;
+    private ImageView      mImageAspectThird;
+    private ImageView      mImageAspectFourth;
+    private ImageView      mImageAspecteMask;
     private RelativeLayout mLayoutAspectSelect;
+
     private boolean mToggleAspect;
-    // UI上三个位置的屏比分别对应哪个Icon
-    private int mFirstAspect;
-    private int mSecondAspect;
-    private int mThirdAspect;
-    private int mFourthAspect;
-    private int mCurrentAspect;
+    private int     mFirstAspect; // UI上三个位置的屏比分别对应哪个Icon
+    private int     mSecondAspect;
+    private int     mThirdAspect;
+    private int     mFourthAspect;
+    private int     mCurrentAspect;
     private OnAspectListener mOnAspectListener;
 
     public AspectView(Context context) {
@@ -58,22 +56,22 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.aspect_view, this);
+        inflate(mActivity, R.layout.ugckit_aspect_view, this);
 
-        mTvAspect = (TextView) findViewById(R.id.tv_aspect);
-        mIvAspectCurr = (ImageView) findViewById(R.id.iv_aspect);
-        mIvAspecteMask = (ImageView) findViewById(R.id.iv_aspect_mask);
-        mIvAspectFirst = (ImageView) findViewById(R.id.iv_aspect_first);
-        mIvAspectSecond = (ImageView) findViewById(R.id.iv_aspect_second);
-        mIvAspectThird = (ImageView) findViewById(R.id.iv_aspect_third);
-        mIvAspectFourth = (ImageView) findViewById(R.id.iv_aspect_fourth);
+        mTextAspect = (TextView) findViewById(R.id.tv_aspect);
+        mImageAspectCurr = (ImageView) findViewById(R.id.iv_aspect);
+        mImageAspecteMask = (ImageView) findViewById(R.id.iv_aspect_mask);
+        mImageAspectFirst = (ImageView) findViewById(R.id.iv_aspect_first);
+        mImageAspectSecond = (ImageView) findViewById(R.id.iv_aspect_second);
+        mImageAspectThird = (ImageView) findViewById(R.id.iv_aspect_third);
+        mImageAspectFourth = (ImageView) findViewById(R.id.iv_aspect_fourth);
         mLayoutAspectSelect = (RelativeLayout) findViewById(R.id.layout_aspect_select);
 
-        mIvAspectCurr.setOnClickListener(this);
-        mIvAspectFirst.setOnClickListener(this);
-        mIvAspectSecond.setOnClickListener(this);
-        mIvAspectThird.setOnClickListener(this);
-        mIvAspectFourth.setOnClickListener(this);
+        mImageAspectCurr.setOnClickListener(this);
+        mImageAspectFirst.setOnClickListener(this);
+        mImageAspectSecond.setOnClickListener(this);
+        mImageAspectThird.setOnClickListener(this);
+        mImageAspectFourth.setOnClickListener(this);
     }
 
     @Override
@@ -113,11 +111,11 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
                 if (mOnAspectListener != null) {
                     mOnAspectListener.onAspectSelect(TXRecordCommon.VIDEO_ASPECT_RATIO_9_16);
                 }
-                mIvAspectCurr.setImageResource(R.drawable.ic_aspect_916);
-                mIvAspectFirst.setImageResource(R.drawable.ic_aspect_11);
-                mIvAspectSecond.setImageResource(R.drawable.ic_aspect_34);
-                mIvAspectThird.setImageResource(R.drawable.ic_aspect_43);
-                mIvAspectFourth.setImageResource(R.drawable.ic_aspect_169);
+                mImageAspectCurr.setImageResource(R.drawable.ugckit_ic_aspect_916);
+                mImageAspectFirst.setImageResource(R.drawable.ugckit_ic_aspect_11);
+                mImageAspectSecond.setImageResource(R.drawable.ugckit_ic_aspect_34);
+                mImageAspectThird.setImageResource(R.drawable.ugckit_ic_aspect_43);
+                mImageAspectFourth.setImageResource(R.drawable.ugckit_ic_aspect_169);
 
                 mFirstAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_1_1;
                 mSecondAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_3_4;
@@ -128,11 +126,11 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
                 if (mOnAspectListener != null) {
                     mOnAspectListener.onAspectSelect(TXRecordCommon.VIDEO_ASPECT_RATIO_3_4);
                 }
-                mIvAspectCurr.setImageResource(R.drawable.ic_aspect_34);
-                mIvAspectFirst.setImageResource(R.drawable.ic_aspect_11);
-                mIvAspectSecond.setImageResource(R.drawable.ic_aspect_916);
-                mIvAspectThird.setImageResource(R.drawable.ic_aspect_43);
-                mIvAspectFourth.setImageResource(R.drawable.ic_aspect_169);
+                mImageAspectCurr.setImageResource(R.drawable.ugckit_ic_aspect_34);
+                mImageAspectFirst.setImageResource(R.drawable.ugckit_ic_aspect_11);
+                mImageAspectSecond.setImageResource(R.drawable.ugckit_ic_aspect_916);
+                mImageAspectThird.setImageResource(R.drawable.ugckit_ic_aspect_43);
+                mImageAspectFourth.setImageResource(R.drawable.ugckit_ic_aspect_169);
 
                 mFirstAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_1_1;
                 mSecondAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16;
@@ -143,11 +141,11 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
                 if (mOnAspectListener != null) {
                     mOnAspectListener.onAspectSelect(TXRecordCommon.VIDEO_ASPECT_RATIO_1_1);
                 }
-                mIvAspectCurr.setImageResource(R.drawable.ic_aspect_11);
-                mIvAspectFirst.setImageResource(R.drawable.ic_aspect_34);
-                mIvAspectSecond.setImageResource(R.drawable.ic_aspect_916);
-                mIvAspectThird.setImageResource(R.drawable.ic_aspect_43);
-                mIvAspectFourth.setImageResource(R.drawable.ic_aspect_169);
+                mImageAspectCurr.setImageResource(R.drawable.ugckit_ic_aspect_11);
+                mImageAspectFirst.setImageResource(R.drawable.ugckit_ic_aspect_34);
+                mImageAspectSecond.setImageResource(R.drawable.ugckit_ic_aspect_916);
+                mImageAspectThird.setImageResource(R.drawable.ugckit_ic_aspect_43);
+                mImageAspectFourth.setImageResource(R.drawable.ugckit_ic_aspect_169);
 
                 mFirstAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_3_4;
                 mSecondAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16;
@@ -158,11 +156,11 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
                 if (mOnAspectListener != null) {
                     mOnAspectListener.onAspectSelect(TXRecordCommon.VIDEO_ASPECT_RATIO_4_3);
                 }
-                mIvAspectCurr.setImageResource(R.drawable.ic_aspect_43);
-                mIvAspectFirst.setImageResource(R.drawable.ic_aspect_34);
-                mIvAspectSecond.setImageResource(R.drawable.ic_aspect_916);
-                mIvAspectThird.setImageResource(R.drawable.ic_aspect_11);
-                mIvAspectFourth.setImageResource(R.drawable.ic_aspect_169);
+                mImageAspectCurr.setImageResource(R.drawable.ugckit_ic_aspect_43);
+                mImageAspectFirst.setImageResource(R.drawable.ugckit_ic_aspect_34);
+                mImageAspectSecond.setImageResource(R.drawable.ugckit_ic_aspect_916);
+                mImageAspectThird.setImageResource(R.drawable.ugckit_ic_aspect_11);
+                mImageAspectFourth.setImageResource(R.drawable.ugckit_ic_aspect_169);
 
                 mFirstAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_3_4;
                 mSecondAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16;
@@ -173,11 +171,11 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
                 if (mOnAspectListener != null) {
                     mOnAspectListener.onAspectSelect(TXRecordCommon.VIDEO_ASPECT_RATIO_16_9);
                 }
-                mIvAspectCurr.setImageResource(R.drawable.ic_aspect_169);
-                mIvAspectFirst.setImageResource(R.drawable.ic_aspect_34);
-                mIvAspectSecond.setImageResource(R.drawable.ic_aspect_916);
-                mIvAspectThird.setImageResource(R.drawable.ic_aspect_11);
-                mIvAspectFourth.setImageResource(R.drawable.ic_aspect_43);
+                mImageAspectCurr.setImageResource(R.drawable.ugckit_ic_aspect_169);
+                mImageAspectFirst.setImageResource(R.drawable.ugckit_ic_aspect_34);
+                mImageAspectSecond.setImageResource(R.drawable.ugckit_ic_aspect_916);
+                mImageAspectThird.setImageResource(R.drawable.ugckit_ic_aspect_11);
+                mImageAspectFourth.setImageResource(R.drawable.ugckit_ic_aspect_43);
 
                 mFirstAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_3_4;
                 mSecondAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16;
@@ -192,7 +190,7 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
      */
     private void showAspectSelectAnim() {
         ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mLayoutAspectSelect, "translationX",
-                2 * (getResources().getDimension(R.dimen.ugc_aspect_divider) + getResources().getDimension(R.dimen.ugc_aspect_width)), 0f);
+                2 * (getResources().getDimension(R.dimen.ugckit_aspect_divider) + getResources().getDimension(R.dimen.ugckit_aspect_width)), 0f);
         showAnimator.setDuration(80);
         showAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -223,7 +221,7 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
      */
     public void hideAspectSelectAnim() {
         ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mLayoutAspectSelect, "translationX", 0f,
-                2 * (getResources().getDimension(R.dimen.ugc_aspect_divider) + getResources().getDimension(R.dimen.ugc_aspect_width)));
+                2 * (getResources().getDimension(R.dimen.ugckit_aspect_divider) + getResources().getDimension(R.dimen.ugckit_aspect_width)));
         showAnimator.setDuration(80);
         showAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -259,29 +257,29 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
     }
 
     public void enableMask() {
-        mIvAspecteMask.setVisibility(View.VISIBLE);
-        mIvAspectCurr.setEnabled(false);
+        mImageAspecteMask.setVisibility(View.VISIBLE);
+        mImageAspectCurr.setEnabled(false);
     }
 
     public void disableMask() {
-        mIvAspecteMask.setVisibility(View.GONE);
-        mIvAspectCurr.setEnabled(true);
+        mImageAspecteMask.setVisibility(View.GONE);
+        mImageAspectCurr.setEnabled(true);
     }
 
     public void setTextSize(int size) {
-        mTvAspect.setTextSize(size);
+        mTextAspect.setTextSize(size);
     }
 
     public void setTextColor(int color) {
-        mTvAspect.setTextColor(getResources().getColor(color));
+        mTextAspect.setTextColor(getResources().getColor(color));
     }
 
     public void setIconList(int[] iconList) {
         Log.d(TAG, "iconList size:" + iconList.length);
 
-        mIvAspectCurr.setImageResource(iconList[0]);
-        mIvAspectFirst.setImageResource(iconList[1]);
-        mIvAspectSecond.setImageResource(iconList[2]);
+        mImageAspectCurr.setImageResource(iconList[0]);
+        mImageAspectFirst.setImageResource(iconList[1]);
+        mImageAspectSecond.setImageResource(iconList[2]);
     }
 
     public void setAspect(int aspectRatio) {

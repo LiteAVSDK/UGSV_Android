@@ -76,7 +76,7 @@ public class TCColorView extends View {
         mValuePaint = new Paint();
         mSwipePaint = new Paint();
         mSwipePaint.setAntiAlias(true);
-        mSwipeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.color_swipe);
+        mSwipeBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ugckit_color_swipe);
         mSwipeRadius = lastValueX = mSwipeBitmap.getWidth() / 2;
 
         mColorHeight = dp2px(10);

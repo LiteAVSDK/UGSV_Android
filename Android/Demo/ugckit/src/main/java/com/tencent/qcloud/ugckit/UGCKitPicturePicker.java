@@ -16,7 +16,6 @@ import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
 import com.tencent.qcloud.ugckit.module.picker.data.PickerManagerKit;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.picker.view.AbsPickerUI;
 import com.tencent.qcloud.ugckit.module.picker.view.PickedLayout;
 
@@ -52,7 +51,7 @@ public class UGCKitPicturePicker extends AbsPickerUI implements ActivityCompat.O
     @Override
     public void initDefault() {
         // 设置标题
-        getTitleBar().setTitle(getResources().getString(R.string.picture_choose), ITitleBarLayout.POSITION.MIDDLE);
+        getTitleBar().setTitle(getResources().getString(R.string.ugckit_picture_choose), ITitleBarLayout.POSITION.MIDDLE);
         getTitleBar().setVisible(false, ITitleBarLayout.POSITION.RIGHT);
         getPickerListLayout().setOnItemAddListener(new ItemView.OnAddListener() {
             @Override

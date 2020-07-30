@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        maven { url "http://maven.oa.com/nexus/content/groups/androidbuild" }
         jcenter()
         google()
     }
@@ -14,6 +15,7 @@ allprojects {
             dirs 'src/main/jniLibs'
             dirs project(':app').file('libs')
         }
+        maven { url "http://maven.oa.com/nexus/content/groups/androidbuild" }
         jcenter()
         google()
     }

@@ -26,39 +26,37 @@ import java.util.List;
  */
 public class VideoEditerSDK {
     private static final String TAG = "VideoEditerKit";
-    private static VideoEditerSDK INSTANCE;
+
+    private static VideoEditerSDK sInstance;
     @Nullable
     private TXVideoEditer mTXVideoEditer;
 
-    /**
-     * 缩略图相关
-     */
-    private List<ThumbnailBitmapInfo> mThumbnailList;               // 将已经加在好的Bitmap缓存起来
+    private List<ThumbnailBitmapInfo> mThumbnailList;               // 缩略图相关, 将已经加在好的Bitmap缓存起来
 
     /**
      * 预览相关
      * <p>
      * 由于SDK没有提供多个Listener的预览进度的回调，所以在上层包装一下
      */
-    private final List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
     private boolean mIsReverse;
-
-    private long mCutterDuration;                                   // 裁剪的总时长
-    private long mCutterStartTime;                                  // 裁剪开始的时间
-    private long mCutterEndTime;                                    // 裁剪结束的时间
-    private TXVideoEditConstants.TXVideoInfo mTXVideoInfo;
-    private String mVideoPath;
+    private long    mCutterDuration;                                   // 裁剪的总时长
+    private long    mCutterStartTime;                                  // 裁剪开始的时间
+    private long    mCutterEndTime;                                    // 裁剪结束的时间
+    private String  mVideoPath;
     private boolean mPublishFlag;
+    private TXVideoEditConstants.TXVideoInfo mTXVideoInfo;
+    private final List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
+
 
     public static VideoEditerSDK getInstance() {
-        if (INSTANCE == null) {
+        if (sInstance == null) {
             synchronized (VideoEditerSDK.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new VideoEditerSDK();
+                if (sInstance == null) {
+                    sInstance = new VideoEditerSDK();
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
 
     private VideoEditerSDK() {

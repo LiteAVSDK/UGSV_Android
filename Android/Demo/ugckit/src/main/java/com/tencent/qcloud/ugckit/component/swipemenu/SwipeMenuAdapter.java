@@ -14,15 +14,8 @@ import java.util.List;
 
 public abstract class SwipeMenuAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
-    /**
-     * Swipe menu creator。
-     */
-    private SwipeMenuCreator mSwipeMenuCreator;
-
-    /**
-     * Swipe menu click listener。
-     */
-    private  OnSwipeMenuItemClickListener mSwipeMenuItemClickListener;
+    private SwipeMenuCreator             mSwipeMenuCreator;             // Swipe menu creator。
+    private OnSwipeMenuItemClickListener mSwipeMenuItemClickListener;   // Swipe menu click listener。
 
     /**
      * Set to create menu listener.
@@ -48,7 +41,7 @@ public abstract class SwipeMenuAdapter<VH extends RecyclerView.ViewHolder> exten
         View contentView = onCreateContentView(parent, viewType);
         if (mSwipeMenuCreator != null) {
             SwipeMenuLayout swipeMenuLayout = (SwipeMenuLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout
-                    .swipe_item, parent, false);
+                    .ugckit_swipe_item, parent, false);
 
             SwipeMenu swipeLeftMenu = new SwipeMenu(swipeMenuLayout, viewType);
             SwipeMenu swipeRightMenu = new SwipeMenu(swipeMenuLayout, viewType);

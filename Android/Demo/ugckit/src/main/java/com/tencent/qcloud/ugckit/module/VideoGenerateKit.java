@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.module;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -28,16 +27,18 @@ import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
 public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerateListener {
     private static final String TAG = "VideoGenerateKit";
     private static final int DURATION_TAILWATERMARK = 3;
-    private int mCurrentState;
-    private String mVideoOutputPath;
-    private String mCoverPath;
 
     @NonNull
     private static VideoGenerateKit instance = new VideoGenerateKit();
-    private int mVideoResolution = TXVideoEditConstants.VIDEO_COMPRESSED_720P;
+
+    private int     mCurrentState;
+    private int     mVideoResolution = TXVideoEditConstants.VIDEO_COMPRESSED_720P;
     private boolean mSaveToDCIM;
     private boolean mCoverGenerate;
-    private WaterMarkConfig mWaterMark;
+    private String  mVideoOutputPath;
+    private String  mCoverPath;
+
+    private WaterMarkConfig     mWaterMark;
     private TailWaterMarkConfig mTailWaterMarkConfig;
 
     private VideoGenerateKit() {
@@ -127,7 +128,7 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
             editer.setVideoGenerateListener(null);
         }
         if (mCurrentState == PlayState.STATE_GENERATE) {
-            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.tc_video_editer_activity_cancel_video_generation));
+            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_editer_activity_cancel_video_generation));
             mCurrentState = PlayState.STATE_NONE;
 
             if (mOnUpdateUIListener != null) {
@@ -153,7 +154,7 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
             Log.e(TAG, "addTailWaterMark info is null");
             return;
         }
-        Bitmap tailWaterMarkBitmap = BitmapFactory.decodeResource(UGCKit.getAppContext().getResources(), R.drawable.tcloud_logo);
+        Bitmap tailWaterMarkBitmap = BitmapFactory.decodeResource(UGCKit.getAppContext().getResources(), R.drawable.ugckit_tcloud_logo);
         float widthHeightRatio = tailWaterMarkBitmap.getWidth() / (float) tailWaterMarkBitmap.getHeight();
 
         TXVideoEditConstants.TXRect rect = new TXVideoEditConstants.TXRect();

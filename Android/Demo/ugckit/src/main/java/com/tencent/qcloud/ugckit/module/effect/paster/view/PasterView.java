@@ -9,16 +9,10 @@ public class PasterView extends FloatLayerView {
     public static int TYPE_CHILD_VIEW_PASTER = 1;
     public static int TYPE_CHILD_VIEW_ANIMATED_PASTER = 2;
 
-    private int mChildType;
+    private int    mChildType;
     private String mPasterName;
-    /**
-     * 预览界面上显示的图片
-     */
-    private String mPasterPath;
-    /**
-     * 缩略图
-     */
-    private String mIconPath;
+    private String mPasterPath;  //预览界面上显示的图片
+    private String mIconPath;    //缩略图
 
     public PasterView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);

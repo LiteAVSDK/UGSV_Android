@@ -22,21 +22,20 @@ import com.tencent.ugc.TXRecordCommon;
  * 音效Pannel
  */
 public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsPannel, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
-    private Context mContext;
-    private SeekBar mMicVolumeSeekBar;
-    private int mMicVolume = 100;
-
-    private SoundEffectsSettingPannelListener mSoundEffectsSettingPannelListener;
-
-    private int mLastReverbIndex;
-    private int mLastVoiceChangerIndex;
-    private Button mBtnVolume;
-    private Button mBtnVoiceChange;
-    private Button mBtnReverb;
-    private LinearLayout mLayoutVolume;
+    private Context              mContext;
+    private SeekBar              mSeekBarMicVolume;
+    private Button               mButtonVolume;
+    private Button               mButtonVoiceChange;
+    private Button               mButtonReverb;
+    private LinearLayout         mLayoutVolume;
     private HorizontalScrollView mLayoutVoiceChange;
     private HorizontalScrollView mLayoutReverb;
 
+    private int mMicVolume = 100;
+    private int mLastReverbIndex;
+    private int mLastVoiceChangerIndex;
+
+    private SoundEffectsSettingPannelListener mSoundEffectsSettingPannelListener;
     public SoundEffectsPannel(Context context) {
         super(context);
         init(context);
@@ -54,21 +53,21 @@ public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsP
 
     private void init(Context context) {
         mContext = context;
-        LayoutInflater.from(context).inflate(R.layout.layout_sound_effects, this);
+        LayoutInflater.from(context).inflate(R.layout.ugckit_layout_sound_effects, this);
 
-        mBtnVolume = (Button) findViewById(R.id.btn_volume);
-        mBtnVolume.setOnClickListener(this);
-        mBtnVoiceChange = (Button) findViewById(R.id.btn_voicechange);
-        mBtnVoiceChange.setOnClickListener(this);
-        mBtnReverb = (Button) findViewById(R.id.btn_reverb);
-        mBtnReverb.setOnClickListener(this);
+        mButtonVolume = (Button) findViewById(R.id.btn_volume);
+        mButtonVolume.setOnClickListener(this);
+        mButtonVoiceChange = (Button) findViewById(R.id.btn_voicechange);
+        mButtonVoiceChange.setOnClickListener(this);
+        mButtonReverb = (Button) findViewById(R.id.btn_reverb);
+        mButtonReverb.setOnClickListener(this);
 
         mLayoutVolume = (LinearLayout) findViewById(R.id.layout_volume);
         mLayoutVoiceChange = (HorizontalScrollView) findViewById(R.id.layout_voicechanger);
         mLayoutReverb = (HorizontalScrollView) findViewById(R.id.layout_reverb_type);
 
-        mMicVolumeSeekBar = (SeekBar) findViewById(R.id.seekbar_mic_volume);
-        mMicVolumeSeekBar.setOnSeekBarChangeListener(this);
+        mSeekBarMicVolume = (SeekBar) findViewById(R.id.seekbar_mic_volume);
+        mSeekBarMicVolume.setOnSeekBarChangeListener(this);
 
         findViewById(R.id.btn_reverb_default).setOnClickListener(this);
         findViewById(R.id.btn_reverb_1).setOnClickListener(this);
@@ -123,27 +122,27 @@ public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsP
         int i = v.getId();
         if (i == R.id.btn_volume) {
             //音量
-            mBtnVolume.setBackgroundResource(R.drawable.ic_ugc_soundeffect);
-            mBtnVoiceChange.setBackground(null);
-            mBtnReverb.setBackground(null);
+            mButtonVolume.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
+            mButtonVoiceChange.setBackground(null);
+            mButtonReverb.setBackground(null);
 
             mLayoutVolume.setVisibility(View.VISIBLE);
             mLayoutReverb.setVisibility(View.GONE);
             mLayoutVoiceChange.setVisibility(View.GONE);
         } else if (i == R.id.btn_voicechange) {
             //变声
-            mBtnVoiceChange.setBackgroundResource(R.drawable.ic_ugc_soundeffect);
-            mBtnVolume.setBackground(null);
-            mBtnReverb.setBackground(null);
+            mButtonVoiceChange.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
+            mButtonVolume.setBackground(null);
+            mButtonReverb.setBackground(null);
 
             mLayoutVolume.setVisibility(View.GONE);
             mLayoutReverb.setVisibility(View.GONE);
             mLayoutVoiceChange.setVisibility(View.VISIBLE);
         } else if (i == R.id.btn_reverb) {
             //混响
-            mBtnReverb.setBackgroundResource(R.drawable.ic_ugc_soundeffect);
-            mBtnVoiceChange.setBackground(null);
-            mBtnVolume.setBackground(null);
+            mButtonReverb.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
+            mButtonVoiceChange.setBackground(null);
+            mButtonVolume.setBackground(null);
 
             mLayoutVolume.setVisibility(View.GONE);
             mLayoutReverb.setVisibility(View.VISIBLE);

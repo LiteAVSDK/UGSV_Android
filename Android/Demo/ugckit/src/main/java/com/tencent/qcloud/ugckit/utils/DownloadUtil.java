@@ -1,10 +1,8 @@
 package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
 

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeMenuRecyclerView extends RecyclerView {
-
     /**
      * Left menu.
      */
@@ -31,30 +30,27 @@ public class SwipeMenuRecyclerView extends RecyclerView {
      * Right menu.
      */
     public static final int RIGHT_DIRECTION = -1;
-
-    @IntDef({LEFT_DIRECTION, RIGHT_DIRECTION})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface DirectionMode {
-    }
-
     /**
      * Invalid position.
      */
     private static final int INVALID_POSITION = -1;
 
-    protected int mScaleTouchSlop;
+    private int     mDownX;
+    private int     mDownY;
+    protected int   mScaleTouchSlop;
+    protected int   mOldTouchedPosition = INVALID_POSITION;
+    private boolean allowSwipeDelete    = false;
+
     @Nullable
-    protected SwipeMenuLayout mOldSwipedLayout;
-    protected int mOldTouchedPosition = INVALID_POSITION;
-
-    private int mDownX;
-    private int mDownY;
-
-    private boolean allowSwipeDelete = false;
-
-    private SwipeMenuCreator mSwipeMenuCreator;
+    protected SwipeMenuLayout            mOldSwipedLayout;
+    private SwipeMenuCreator             mSwipeMenuCreator;
     private OnSwipeMenuItemClickListener mSwipeMenuItemClickListener;
-    private DefaultItemTouchHelper mDefaultItemTouchHelper;
+    private DefaultItemTouchHelper       mDefaultItemTouchHelper;
+
+    @IntDef({LEFT_DIRECTION, RIGHT_DIRECTION})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface DirectionMode {
+    }
 
     public SwipeMenuRecyclerView(Context context) {
         this(context, null);

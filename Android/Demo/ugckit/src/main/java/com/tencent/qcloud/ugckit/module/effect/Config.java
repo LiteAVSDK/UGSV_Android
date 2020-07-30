@@ -12,14 +12,14 @@ import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
 
 public class Config {
     @NonNull
-    private static Config instance = new Config();
+    private static Config sInstance = new Config();
 
     private Config() {
     }
 
     @NonNull
     public static Config getInstance() {
-        return instance;
+        return sInstance;
     }
 
     public void clearConfig() {

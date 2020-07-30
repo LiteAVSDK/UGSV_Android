@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="156dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="15dp"
+    android:background="@drawable/ugckit_ic_choose_bottom_bg">
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_drag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/ugckit_video_long_drag"
+            android:textColor="@color/ugckit_half_white"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="0dp"
+            android:background="@drawable/ugckit_ic_choose_next_selector"
+            android:text="@string/ugckit_next_step"
+            android:textColor="@color/ugckit_white"
+            android:textSize="@dimen/ugckit_h4" />
+
+    </LinearLayout>
+
+    <com.tencent.qcloud.ugckit.component.swipemenu.SwipeMenuRecyclerView
+        android:id="@+id/swipe_menu_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+</RelativeLayout>

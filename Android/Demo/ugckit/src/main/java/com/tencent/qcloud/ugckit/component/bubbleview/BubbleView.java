@@ -15,6 +15,7 @@ import com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerView;
  */
 public class BubbleView extends FloatLayerView {
     private static final String TAG = "BubbleView";
+
     private long mStartTime;
     private long mEndTime;
 

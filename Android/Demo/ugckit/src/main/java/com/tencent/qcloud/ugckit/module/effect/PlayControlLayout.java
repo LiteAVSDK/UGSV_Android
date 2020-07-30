@@ -17,13 +17,13 @@ import com.tencent.qcloud.ugckit.R;
 
 public class PlayControlLayout extends RelativeLayout implements IPlayControlLayout, View.OnClickListener, PlayerManagerKit.OnPreviewListener, PlayerManagerKit.OnPlayStateListener {
     private static final String TAG = "PlayControlLayout";
-    private ImageView mIvPlay;
-    private TextView mTvCurrent;
 
-    private int mPauseIcon = R.drawable.ic_pause_normal;
-    private int mPlayIcon = R.drawable.ic_play_normal;
-    private int currentTimeColor = R.color.white;
-    private int currentTimeTextSize = 15;
+    private ImageView mImagePlay;
+    private TextView  mTextCurrent;
+    private int       mPauseIcon           = R.drawable.ugckit_ic_pause_normal;
+    private int       mPlayIcon            = R.drawable.ugckit_ic_play_normal;
+    private int       mCurrentTimeColor    = R.color.ugckit_white;
+    private int       mCurrentTimeTextSize = 15;
 
     public PlayControlLayout(Context context) {
         super(context);
@@ -41,20 +41,20 @@ public class PlayControlLayout extends RelativeLayout implements IPlayControlLay
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.play_control_view, this);
+        inflate(getContext(), R.layout.ugckit_play_control_view, this);
 
-        mIvPlay = (ImageView) findViewById(R.id.iv_play);
-        mIvPlay.setOnClickListener(this);
+        mImagePlay = (ImageView) findViewById(R.id.iv_play);
+        mImagePlay.setOnClickListener(this);
 
-        mTvCurrent = (TextView) findViewById(R.id.tv_current);
-        mTvCurrent.setTextColor(getResources().getColor(currentTimeColor));
-        mTvCurrent.setTextSize(currentTimeTextSize);
+        mTextCurrent = (TextView) findViewById(R.id.tv_current);
+        mTextCurrent.setTextColor(getResources().getColor(mCurrentTimeColor));
+        mTextCurrent.setTextSize(mCurrentTimeTextSize);
 
         PlayerManagerKit.getInstance().addOnPreviewLitener(this);
         PlayerManagerKit.getInstance().addOnPlayStateLitener(this);
 
-        mPlayIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerPlayIcon, R.drawable.ic_play_normal);
-        mPauseIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerPauseIcon, R.drawable.ic_pause_normal);
+        mPlayIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerPlayIcon, R.drawable.ugckit_ic_play_normal);
+        mPauseIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerPauseIcon, R.drawable.ugckit_ic_pause_normal);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PlayControlLayout extends RelativeLayout implements IPlayControlLay
 
     @Override
     public void onPreviewProgress(int timeMs) {
-        mTvCurrent.setText(DateTimeUtil.duration(timeMs));
+        mTextCurrent.setText(DateTimeUtil.duration(timeMs));
     }
 
     @Override
@@ -77,40 +77,40 @@ public class PlayControlLayout extends RelativeLayout implements IPlayControlLay
 
     public void updateUIByFragment(int type) {
         if (type == UGCKitConstants.TYPE_EDITER_BGM) {
-            mIvPlay.setVisibility(View.GONE);
+            mImagePlay.setVisibility(View.GONE);
         } else {
-            mIvPlay.setVisibility(View.VISIBLE);
+            mImagePlay.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onPlayStateStart() {
-        mIvPlay.setImageResource(mPauseIcon);
+        mImagePlay.setImageResource(mPauseIcon);
     }
 
     @Override
     public void onPlayStateResume() {
-        mIvPlay.setImageResource(mPauseIcon);
+        mImagePlay.setImageResource(mPauseIcon);
     }
 
     @Override
     public void onPlayStatePause() {
-        mIvPlay.setImageResource(mPlayIcon);
+        mImagePlay.setImageResource(mPlayIcon);
     }
 
     @Override
     public void onPlayStateStop() {
-        mIvPlay.setImageResource(mPlayIcon);
+        mImagePlay.setImageResource(mPlayIcon);
     }
 
     @Override
     public void setCurrentTimeTextSize(int size) {
-        currentTimeTextSize = size;
+        mCurrentTimeTextSize = size;
     }
 
     @Override
     public void setCurrentTimeTextColor(int color) {
-        currentTimeColor = color;
+        mCurrentTimeColor = color;
     }
 
     @Override

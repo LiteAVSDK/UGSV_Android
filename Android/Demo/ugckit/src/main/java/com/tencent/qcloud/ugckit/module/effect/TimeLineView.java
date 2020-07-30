@@ -26,13 +26,15 @@ import java.util.List;
  */
 public class TimeLineView extends RelativeLayout implements ITimeLineView, VideoProgressController.VideoProgressSeekListener, PlayerManagerKit.OnPreviewListener {
     private static final String TAG = "TimeLineView";
-    private FragmentActivity mActivity;
-    private ImageView mIvSlider;
-    private VideoProgressView mVideoProgressView;
+
+    private FragmentActivity        mActivity;
+    private ImageView               mImageSlider;
+    private VideoProgressView       mVideoProgressView;
     private VideoProgressController mVideoProgressController;
-    private SliderViewContainer mSpeedSlider;
-    private SliderViewContainer mRepeatSlider;
-    private int startProgressIcon = R.drawable.ic_repeate_range;
+    private SliderViewContainer     mSpeedSlider;
+    private SliderViewContainer     mRepeatSlider;
+
+    private int startProgressIcon = R.drawable.ugckit_ic_repeate_range;
     private OnTimeChangeListener mListener;
 
     public TimeLineView(Context context) {
@@ -52,8 +54,8 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
 
     private void initViews() {
         mActivity = (FragmentActivity) getContext();
-        inflate(getContext(), R.layout.video_timeline, this);
-        mIvSlider = (ImageView) findViewById(R.id.iv_player_slider);
+        inflate(getContext(), R.layout.ugckit_video_timeline, this);
+        mImageSlider = (ImageView) findViewById(R.id.iv_player_slider);
         mVideoProgressView = (VideoProgressView) findViewById(R.id.video_progress_view);
 
         PlayerManagerKit.getInstance().addOnPreviewLitener(this);
@@ -122,7 +124,7 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
 
     @Override
     public void setCurrentProgessIconResource(int resid) {
-        mIvSlider.setImageResource(resid);
+        mImageSlider.setImageResource(resid);
     }
 
     public void onAddSlider(int type, long time) {

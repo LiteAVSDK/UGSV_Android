@@ -10,8 +10,8 @@ import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
 public abstract class AbsVideoEditUI extends RelativeLayout implements IVideoEditKit {
 
-    private TitleBarLayout mTitleBar;
-    private VideoPlayLayout mVideoPlayLayout;
+    private TitleBarLayout  mLayoutTitleBar;
+    private VideoPlayLayout mLayoutVideoPlay;
 
     public AbsVideoEditUI(Context context) {
         super(context);
@@ -29,21 +29,21 @@ public abstract class AbsVideoEditUI extends RelativeLayout implements IVideoEdi
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.video_edit_layout, this);
+        inflate(getContext(), R.layout.ugckit_video_edit_layout, this);
 
-        mTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
-        mVideoPlayLayout = (VideoPlayLayout) findViewById(R.id.video_play_layout);
+        mLayoutTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
+        mLayoutVideoPlay = (VideoPlayLayout) findViewById(R.id.video_play_layout);
     }
 
     public TitleBarLayout getTitleBar() {
-        return mTitleBar;
+        return mLayoutTitleBar;
     }
 
     /**
      * 获取视频播放界面
      */
     public VideoPlayLayout getVideoPlayLayout() {
-        return mVideoPlayLayout;
+        return mLayoutVideoPlay;
     }
 
 }

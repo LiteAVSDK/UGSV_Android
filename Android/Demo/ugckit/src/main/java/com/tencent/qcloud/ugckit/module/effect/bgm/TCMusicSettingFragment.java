@@ -31,31 +31,31 @@ import java.io.IOException;
 public class TCMusicSettingFragment extends Fragment {
     private static final String TAG = "TCMusicSettingFragment";
 
-    private DraftEditer mDraftEditer;
-    private TCEditMusicPannel mTCEditMusicPannel;
-    private MusicInfo musicInfo;
+    private DraftEditer        mEditerDraft;
+    private TCEditMusicPannel  mTCEditMusicPannel;
+    private MusicInfo          mMusicInfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDraftEditer = DraftEditer.getInstance();
+        mEditerDraft = DraftEditer.getInstance();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        musicInfo = DraftEditer.getInstance().loadMusicInfo();
-        if (TextUtils.isEmpty(musicInfo.path)) {
+        mMusicInfo = DraftEditer.getInstance().loadMusicInfo();
+        if (TextUtils.isEmpty(mMusicInfo.path)) {
             chooseBGM();
             return;
         }
-        mTCEditMusicPannel.setMusicInfo(musicInfo);
+        mTCEditMusicPannel.setMusicInfo(mMusicInfo);
     }
 
     private void chooseBGM() {
         Intent bgmIntent = new Intent(getActivity(), TCMusicActivity.class);
-        bgmIntent.putExtra(UGCKitConstants.MUSIC_POSITION, musicInfo.position);
+        bgmIntent.putExtra(UGCKitConstants.MUSIC_POSITION, mMusicInfo.position);
         startActivityForResult(bgmIntent, UGCKitConstants.ACTIVITY_MUSIC_REQUEST_CODE);
     }
 
@@ -64,47 +64,47 @@ public class TCMusicSettingFragment extends Fragment {
             getActivity().finish();
             return;
         }
-        musicInfo = new MusicInfo();
-        musicInfo.path = data.getStringExtra(UGCKitConstants.MUSIC_PATH);
-        musicInfo.name = data.getStringExtra(UGCKitConstants.MUSIC_NAME);
-        musicInfo.position = data.getIntExtra(UGCKitConstants.MUSIC_POSITION, -1);
+        mMusicInfo = new MusicInfo();
+        mMusicInfo.path = data.getStringExtra(UGCKitConstants.MUSIC_PATH);
+        mMusicInfo.name = data.getStringExtra(UGCKitConstants.MUSIC_NAME);
+        mMusicInfo.position = data.getIntExtra(UGCKitConstants.MUSIC_POSITION, -1);
 
-        if (TextUtils.isEmpty(musicInfo.path)) {
+        if (TextUtils.isEmpty(mMusicInfo.path)) {
             getActivity().finish();
             return;
         }
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
-        int result = editer.setBGM(musicInfo.path);
+        int result = editer.setBGM(mMusicInfo.path);
         if (result != 0) {
-            DialogUtil.showDialog(getContext(), getResources().getString(R.string.tc_bgm_setting_fragment_video_edit_failed), getResources().getString(R.string.tc_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format), null);
+            DialogUtil.showDialog(getContext(), getResources().getString(R.string.ugckit_bgm_setting_fragment_video_edit_failed), getResources().getString(R.string.ugckit_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format), null);
         }
         try {
             MediaPlayer mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(musicInfo.path);
+            mediaPlayer.setDataSource(mMusicInfo.path);
             mediaPlayer.prepare();
-            musicInfo.duration = mediaPlayer.getDuration();
+            mMusicInfo.duration = mediaPlayer.getDuration();
             mediaPlayer.release();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        editer.setBGMStartTime(0, musicInfo.duration);
+        editer.setBGMStartTime(0, mMusicInfo.duration);
         editer.setBGMVolume(0.5f);
         editer.setVideoVolume(0.5f);
 
-        DraftEditer.getInstance().saveRecordMusicInfo(musicInfo);
+        DraftEditer.getInstance().saveRecordMusicInfo(mMusicInfo);
 
-        musicInfo.videoVolume = 0.5f;
-        musicInfo.bgmVolume = 0.5f;
-        musicInfo.startTime = 0;
-        musicInfo.endTime = musicInfo.duration;
+        mMusicInfo.videoVolume = 0.5f;
+        mMusicInfo.bgmVolume = 0.5f;
+        mMusicInfo.startTime = 0;
+        mMusicInfo.endTime = mMusicInfo.duration;
 
-        mTCEditMusicPannel.setMusicInfo(musicInfo);
+        mTCEditMusicPannel.setMusicInfo(mMusicInfo);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bgm, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_bgm, container, false);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TCMusicSettingFragment extends Fragment {
         mTCEditMusicPannel.setOnMusicChangeListener(new IEditMusicPannel.MusicChangeListener() {
             @Override
             public void onMicVolumeChanged(float volume) {
-                mDraftEditer.setVideoVolume(volume);
+                mEditerDraft.setVideoVolume(volume);
 
                 TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
                 editer.setVideoVolume(volume);
@@ -129,7 +129,7 @@ public class TCMusicSettingFragment extends Fragment {
 
             @Override
             public void onMusicVolumChanged(float volume) {
-                mDraftEditer.setBgmVolume(volume);
+                mEditerDraft.setBgmVolume(volume);
 
                 TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
                 editer.setBGMVolume(volume);
@@ -137,8 +137,8 @@ public class TCMusicSettingFragment extends Fragment {
 
             @Override
             public void onMusicTimeChanged(long startTime, long endTime) {
-                mDraftEditer.setBgmStartTime(startTime);
-                mDraftEditer.setBgmEndTime(endTime);
+                mEditerDraft.setBgmStartTime(startTime);
+                mEditerDraft.setBgmEndTime(endTime);
 
                 // bgm 播放时间区间设置
                 VideoEditerSDK.getInstance().getEditer().setBGMStartTime(startTime, endTime);
@@ -151,7 +151,7 @@ public class TCMusicSettingFragment extends Fragment {
 
             @Override
             public void onMusicDelete() {
-                mDraftEditer.setBgmPath(null);
+                mEditerDraft.setBgmPath(null);
 
                 TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
                 editer.setBGM(null);

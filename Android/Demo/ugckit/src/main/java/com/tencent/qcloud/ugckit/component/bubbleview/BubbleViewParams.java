@@ -12,11 +12,10 @@ import com.tencent.qcloud.ugckit.module.effect.bubble.TCSubtitleInfo;
  * 用于初始化气泡字幕控件{@link BubbleView} 的参数配置
  */
 public class BubbleViewParams {
-    public String text;
     @Nullable
-    public Bitmap bubbleBitmap;
+    public Bitmap         bubbleBitmap;
     public TCSubtitleInfo wordParamsInfo;
-
+    public String         text;
     @NonNull
     public static BubbleViewParams createDefaultParams(String text) {
         BubbleViewParams params = new BubbleViewParams();

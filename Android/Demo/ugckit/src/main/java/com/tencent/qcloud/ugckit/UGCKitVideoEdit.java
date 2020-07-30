@@ -9,12 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 
 import com.tencent.liteav.basic.log.TXCLog;
-import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
@@ -25,7 +23,6 @@ import com.tencent.qcloud.ugckit.module.editer.AbsVideoEditUI;
 import com.tencent.qcloud.ugckit.module.editer.UGCKitEditConfig;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.dialog.ActionSheetDialog;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.Config;
@@ -37,10 +34,11 @@ import com.tencent.ugc.TXVideoInfoReader;
 
 public class UGCKitVideoEdit extends AbsVideoEditUI {
     private static final String TAG = "UGCKitVideoEdit";
+
     private ProgressFragmentUtil mProgressFragmentUtil;
     @Nullable
-    private OnEditListener mOnEditListener;
-    private boolean isPublish;
+    private OnEditListener       mOnEditListener;
+    private boolean              mIsPublish;
 
     public UGCKitVideoEdit(Context context) {
         super(context);
@@ -61,7 +59,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext());
 
         // 点击"完成"
-        getTitleBar().setTitle(getResources().getString(R.string.complete), ITitleBarLayout.POSITION.RIGHT);
+        getTitleBar().setTitle(getResources().getString(R.string.ugckit_complete), ITitleBarLayout.POSITION.RIGHT);
         getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,8 +104,8 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     @Override
     public void backPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle(getContext().getString(R.string.tips)).setCancelable(false).setMessage(R.string.confirm_cancel_edit_content)
-                .setPositiveButton(R.string.btn_back, new DialogInterface.OnClickListener() {
+        AlertDialog alertDialog = builder.setTitle(getContext().getString(R.string.ugckit_tips)).setCancelable(false).setMessage(R.string.ugckit_confirm_cancel_edit_content)
+                .setPositiveButton(R.string.ugckit_btn_back, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -121,7 +119,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                         }
                     }
                 })
-                .setNegativeButton(getContext().getString(R.string.wrong_click), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getContext().getString(R.string.ugckit_wrong_click), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -184,7 +182,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         actionSheetDialog.builder();
         actionSheetDialog.setCancelable(false);
         actionSheetDialog.setCancelable(false);
-        actionSheetDialog.addSheetItem(getResources().getString(R.string.tc_video_editer_activity_show_publish_dialog_save),
+        actionSheetDialog.addSheetItem(getResources().getString(R.string.ugckit_video_editer_activity_show_publish_dialog_save),
                 ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                     @Override
                     public void onClick(int which) {
@@ -193,8 +191,8 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                     }
                 });
 
-        if (isPublish) {
-            actionSheetDialog.addSheetItem(getResources().getString(R.string.tc_video_editer_activity_show_publish_dialog_publish),
+        if (mIsPublish) {
+            actionSheetDialog.addSheetItem(getResources().getString(R.string.ugckit_video_editer_activity_show_publish_dialog_publish),
                     ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                         @Override
                         public void onClick(int which) {
@@ -222,7 +220,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         VideoGenerateKit.getInstance().saveVideoToDCIM(config.isSaveToDCIM);
         VideoGenerateKit.getInstance().setWaterMark(config.mWaterMarkConfig);
         VideoGenerateKit.getInstance().setTailWaterMark(config.mTailWaterMarkConfig);
-        isPublish = config.isPublish;
+        mIsPublish = config.isPublish;
     }
 
     @Override

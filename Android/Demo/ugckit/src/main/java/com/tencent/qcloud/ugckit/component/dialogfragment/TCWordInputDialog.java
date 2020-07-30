@@ -31,29 +31,30 @@ import java.lang.ref.WeakReference;
  */
 public class TCWordInputDialog extends DialogFragment implements View.OnClickListener {
     private static final String TAG = "TCWordInputDialog";
-    private TextView mTvSure, mTvCancel;
-    private EditText mEtContent;
+    private TextView mTextSure;
+    private TextView mTextCancel;
+    private EditText mEditContent;
     @Nullable
-    private String mDefaultText;
+    private String   mDefaultText;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         setDialogStyle();//去掉标题栏
-        return inflater.inflate(R.layout.fragment_input_word, null, false);
+        return inflater.inflate(R.layout.ugckit_fragment_input_word, null, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTvCancel = (TextView) view.findViewById(R.id.word_tv_cancel);
-        mTvCancel.setOnClickListener(this);
-        mTvSure = (TextView) view.findViewById(R.id.word_tv_done);
-        mTvSure.setOnClickListener(this);
-        mEtContent = (EditText) view.findViewById(R.id.word_et_content);
+        mTextCancel = (TextView) view.findViewById(R.id.word_tv_cancel);
+        mTextCancel.setOnClickListener(this);
+        mTextSure = (TextView) view.findViewById(R.id.word_tv_done);
+        mTextSure.setOnClickListener(this);
+        mEditContent = (EditText) view.findViewById(R.id.word_et_content);
         if (!TextUtils.isEmpty(mDefaultText)) {
-            mEtContent.setText(mDefaultText);
+            mEditContent.setText(mDefaultText);
         }
     }
 
@@ -64,10 +65,10 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
             onClickCancel();
 
         } else if (i == R.id.word_tv_done) {
-            String text = mEtContent.getText().toString();
+            String text = mEditContent.getText().toString();
             if (TextUtils.isEmpty(text)) {
 
-                ToastUtil.toastShortMessage(getResources().getString(R.string.tc_word_input_dialog_please_enter_subtitles));
+                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_word_input_dialog_please_enter_subtitles));
                 return;
             }
             onClickSure();
@@ -76,7 +77,7 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
     }
 
     private void onClickCancel() {
-        mEtContent.setText("");
+        mEditContent.setText("");
         dismissDialog();
         if (mWefCallback.get() != null) {
             mWefCallback.get().onInputCancel();
@@ -84,7 +85,7 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
     }
 
     private void onClickSure() {
-        String text = mEtContent.getText().toString();
+        String text = mEditContent.getText().toString();
         dismissDialog();
         if (mWefCallback.get() != null) {
             mWefCallback.get().onInputSure(text);
@@ -132,11 +133,11 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
         Log.i(TAG, "setDefaultText: defaultText  = " + defaultText);
         if (defaultText != null) {
             mDefaultText = defaultText;
-            if (mEtContent != null) {
-                mEtContent.post(new Runnable() {
+            if (mEditContent != null) {
+                mEditContent.post(new Runnable() {
                     @Override
                     public void run() {
-                        mEtContent.setText(defaultText);
+                        mEditContent.setText(defaultText);
                     }
                 });
             }

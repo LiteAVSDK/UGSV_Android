@@ -44,7 +44,7 @@ public class VideoProgressView extends FrameLayout {
 
     private void init(Context context) {
         mContext = context;
-        mRootView = LayoutInflater.from(context).inflate(R.layout.layout_video_progress, this);
+        mRootView = LayoutInflater.from(context).inflate(R.layout.ugckit_layout_video_progress, this);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.rv_video_thumbnail);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
     }
@@ -69,7 +69,7 @@ public class VideoProgressView extends FrameLayout {
     }
 
     public float getSingleThumbnailWidth() {
-        return mContext.getResources().getDimension(R.dimen.video_thumbnail_width);
+        return mContext.getResources().getDimension(R.dimen.ugckit_video_thumbnail_width);
     }
 
     @NonNull

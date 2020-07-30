@@ -45,7 +45,7 @@ public class VideoChecker {
     }
 
     public static void showErrorDialog(Context context, String msg) {
-        AlertDialog.Builder normalDialog = new AlertDialog.Builder(context, R.style.ConfirmDialogStyle);
+        AlertDialog.Builder normalDialog = new AlertDialog.Builder(context, R.style.UGCKitConfirmDialogStyle);
         normalDialog.setMessage(msg);
         normalDialog.setCancelable(false);
         normalDialog.setPositiveButton("知道了", null);

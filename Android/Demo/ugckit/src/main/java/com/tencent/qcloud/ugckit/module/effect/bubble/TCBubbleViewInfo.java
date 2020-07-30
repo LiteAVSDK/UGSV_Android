@@ -11,10 +11,10 @@ import com.tencent.qcloud.ugckit.component.bubbleview.BubbleViewParams;
 public class TCBubbleViewInfo {
     private float viewCenterX, viewCenterY;// 控件的x y
     private float imageRotation;
-    private BubbleViewParams viewParams; //气泡字幕配置参数
-    private long startTime,endTime;
+    private long  startTime,endTime;
     private float scale;
 
+    private BubbleViewParams viewParams; //气泡字幕配置参数
 
     public float getScale() {
         return scale;

@@ -17,9 +17,9 @@ import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
  * 图片生成管理
  */
 public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenerateListener {
-    private int mCurrentState;
-    private String mVideoOutputPath;
-    private String mCoverPath;
+    private int     mCurrentState;
+    private String  mVideoOutputPath;
+    private String  mCoverPath;
     private boolean mCoverGenerate;
 
     @NonNull

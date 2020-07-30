@@ -17,11 +17,11 @@ public class AnimatedPasterConfig {
     public static final String CONFIG_KEYFRAME_ARRAY = "frameArray";
 
     public String name;
-    public int period;
-    public int count;
-    public int width;
-    public int height;
-    public int keyframe;
+    public int    period;
+    public int    count;
+    public int    width;
+    public int    height;
+    public int    keyframe;
     @NonNull
     public List<PasterPicture> frameArray = new ArrayList<>();
 

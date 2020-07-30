@@ -37,9 +37,10 @@ import com.tencent.ugc.TXVideoInfoReader;
  */
 public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.OnPreviewListener {
     private static final String TAG = "UGCKitVideoCut";
-    private ProgressDialogUtil mProgressDialogUtil;
+    
+    private ProgressDialogUtil   mProgressDialogUtil;
     private ProgressFragmentUtil mProgressFragmentUtil;
-    private boolean mComplete = false;
+    private boolean              mComplete = false;
 
     public UGCKitVideoCut(Context context) {
         super(context);
@@ -58,7 +59,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
 
     private void initDefault() {
         mProgressDialogUtil = new ProgressDialogUtil(getContext());
-        mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext(), getResources().getString(R.string.video_cutting));
+        mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext(), getResources().getString(R.string.ugckit_video_cutting));
 
         VideoEditerSDK.getInstance().releaseSDK();
         VideoEditerSDK.getInstance().clear();
@@ -107,7 +108,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
     public void setVideoPath(final String videoPath) {
         TXCLog.i(TAG,"[UGCKit][VideoCut]setVideoPath:" + videoPath);
         if (TextUtils.isEmpty(videoPath)) {
-            ToastUtil.toastShortMessage(getResources().getString(R.string.tc_video_cutter_activity_oncreate_an_unknown_error_occurred_the_path_cannot_be_empty));
+            ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_video_cutter_activity_oncreate_an_unknown_error_occurred_the_path_cannot_be_empty));
             return;
         }
 
@@ -130,7 +131,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
         // 加载视频信息
         TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_cutter_activity_video_main_handler_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
+            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.ugckit_video_cutter_activity_video_main_handler_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
             getVideoCutLayout().setVideoInfo(info);

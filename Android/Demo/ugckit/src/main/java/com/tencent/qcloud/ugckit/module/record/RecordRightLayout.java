@@ -16,23 +16,21 @@ import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordRightLayout;
 public class RecordRightLayout extends RelativeLayout implements IRecordRightLayout,
         View.OnClickListener, AspectView.OnAspectListener {
     private static final String TAG = "RecordRightLayout";
-    private Activity mActivity;
-    // 音乐
-    private ImageView mIvMusic;
-    private TextView mTvMusic;
-    private ImageView mIvMusicMask;
-    private RelativeLayout mLayoutMusic;
-    // 屏比，目前有三种（1:1；3:4；9:16）
-    private AspectView mAspectView;
-    // 美颜
-    private ImageView mIvBeauty;
-    private TextView mTvBeauty;
-    private RelativeLayout mLayoutBeauty;
-    // 音效
-    private ImageView mIvSoundEffect;
-    private TextView mTvSoundEffect;
-    private ImageView mIvSoundEffectMask;
-    private RelativeLayout mLayoutSoundEffect;
+
+    private Activity        mActivity;
+    private ImageView       mImageMusic;        // 音乐
+    private TextView        mTextMusic;
+    private ImageView       mImageMusicMask;
+    private RelativeLayout  mLayoutMusic;
+    private AspectView      mAspectView;        // 屏比，目前有三种（1:1；3:4；9:16）
+    private ImageView       mImageBeauty;       // 美颜
+    private TextView        mTextBeauty;
+    private RelativeLayout  mLayoutBeauty;
+    private ImageView       mImageSoundEffect;  // 音效
+    private TextView        mTextSoundEffect;
+    private ImageView       mImageSoundEffectMask;
+    private RelativeLayout  mLayoutSoundEffect;
+
     private OnItemClickListener mOnItemClickListener;
 
     public RecordRightLayout(Context context) {
@@ -52,27 +50,27 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.record_right_layout, this);
+        inflate(mActivity, R.layout.ugckit_record_right_layout, this);
 
         mLayoutMusic = (RelativeLayout) findViewById(R.id.layout_music);
-        mIvMusic = (ImageView) findViewById(R.id.iv_music);
-        mTvMusic = (TextView) findViewById(R.id.tv_music);
-        mIvMusic.setOnClickListener(this);
-        mIvMusicMask = (ImageView) findViewById(R.id.iv_music_mask);
+        mImageMusic = (ImageView) findViewById(R.id.iv_music);
+        mTextMusic = (TextView) findViewById(R.id.tv_music);
+        mImageMusic.setOnClickListener(this);
+        mImageMusicMask = (ImageView) findViewById(R.id.iv_music_mask);
 
         mAspectView = (AspectView) findViewById(R.id.aspect_view);
         mAspectView.setOnAspectListener(this);
 
         mLayoutBeauty = (RelativeLayout) findViewById(R.id.layout_beauty);
-        mIvBeauty = (ImageView) findViewById(R.id.iv_beauty);
-        mTvBeauty = (TextView) findViewById(R.id.tv_beauty);
-        mIvBeauty.setOnClickListener(this);
+        mImageBeauty = (ImageView) findViewById(R.id.iv_beauty);
+        mTextBeauty = (TextView) findViewById(R.id.tv_beauty);
+        mImageBeauty.setOnClickListener(this);
 
         mLayoutSoundEffect = (RelativeLayout) findViewById(R.id.layout_sound_effect);
-        mIvSoundEffect = (ImageView) findViewById(R.id.iv_sound_effect);
-        mTvSoundEffect = (TextView) findViewById(R.id.tv_sound_effect);
-        mIvSoundEffect.setOnClickListener(this);
-        mIvSoundEffectMask = (ImageView) findViewById(R.id.iv_sound_effect_mask);
+        mImageSoundEffect = (ImageView) findViewById(R.id.iv_sound_effect);
+        mTextSoundEffect = (TextView) findViewById(R.id.tv_sound_effect);
+        mImageSoundEffect.setOnClickListener(this);
+        mImageSoundEffectMask = (ImageView) findViewById(R.id.iv_sound_effect_mask);
     }
 
     @Override
@@ -106,11 +104,11 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
     @Override
     public void setMusicIconEnable(boolean enable) {
         if (enable) {
-            mIvMusicMask.setVisibility(View.GONE);
+            mImageMusicMask.setVisibility(View.GONE);
         } else {
-            mIvMusicMask.setVisibility(View.VISIBLE);
+            mImageMusicMask.setVisibility(View.VISIBLE);
         }
-        mIvMusic.setEnabled(enable);
+        mImageMusic.setEnabled(enable);
     }
 
     /**
@@ -139,9 +137,9 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
     @Override
     public void setSoundEffectIconEnable(boolean enable) {
         if (enable) {
-            mIvSoundEffectMask.setVisibility(View.INVISIBLE);
+            mImageSoundEffectMask.setVisibility(View.INVISIBLE);
         } else {
-            mIvSoundEffectMask.setVisibility(View.VISIBLE);
+            mImageSoundEffectMask.setVisibility(View.VISIBLE);
         }
     }
 
@@ -168,17 +166,17 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
 
     @Override
     public void setMusicIconResource(int resid) {
-        mIvMusic.setImageResource(resid);
+        mImageMusic.setImageResource(resid);
     }
 
     @Override
     public void setMusicTextSize(int size) {
-        mTvMusic.setTextSize(size);
+        mTextMusic.setTextSize(size);
     }
 
     @Override
     public void setMusicTextColor(int color) {
-        mTvMusic.setTextColor(getResources().getColor(color));
+        mTextMusic.setTextColor(getResources().getColor(color));
     }
 
     @Override
@@ -198,32 +196,32 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
 
     @Override
     public void setBeautyIconResource(int resid) {
-        mIvBeauty.setImageResource(resid);
+        mImageBeauty.setImageResource(resid);
     }
 
     @Override
     public void setBeautyTextSize(int size) {
-        mTvBeauty.setTextSize(size);
+        mTextBeauty.setTextSize(size);
     }
 
     @Override
     public void setBeautyTextColor(int color) {
-        mTvBeauty.setTextColor(getResources().getColor(color));
+        mTextBeauty.setTextColor(getResources().getColor(color));
     }
 
     @Override
     public void setSoundEffectIconResource(int resid) {
-        mIvSoundEffect.setImageResource(resid);
+        mImageSoundEffect.setImageResource(resid);
     }
 
     @Override
     public void setSoundEffectTextSize(int size) {
-        mTvSoundEffect.setTextSize(size);
+        mTextSoundEffect.setTextSize(size);
     }
 
     @Override
     public void setSoundEffectTextColor(int color) {
-        mTvSoundEffect.setTextColor(getResources().getColor(color));
+        mTextSoundEffect.setTextColor(getResources().getColor(color));
     }
 
     public void setAspect(int aspectRatio) {

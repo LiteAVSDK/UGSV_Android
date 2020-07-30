@@ -46,7 +46,7 @@ public class TripleRecordVideoPicker extends AbsPickerUI implements ActivityComp
     @Override
     public void initDefault() {
         // 设置标题
-        getTitleBar().setTitle(getResources().getString(com.tencent.qcloud.ugckit.R.string.video_choose), ITitleBarLayout.POSITION.MIDDLE);
+        getTitleBar().setTitle(getResources().getString(com.tencent.qcloud.ugckit.R.string.ugckit_video_choose), ITitleBarLayout.POSITION.MIDDLE);
         getTitleBar().setVisible(false, ITitleBarLayout.POSITION.RIGHT);
         getPickedLayout().setVisibility(GONE);
         getPickerListLayout().setOnItemAddListener(new ItemView.OnAddListener() {

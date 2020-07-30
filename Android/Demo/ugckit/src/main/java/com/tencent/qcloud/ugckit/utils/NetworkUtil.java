@@ -10,22 +10,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class NetworkUtil {
-    private Context mContext;
     @Nullable
-    private NetchangeReceiver mNetchangeReceiver = null;
-
-    private static NetworkUtil instance;
-    private NetchangeListener mListener;
+    private NetchangeReceiver  mNetchangeReceiver = null;
+    private Context            mContext;
+    private static NetworkUtil sInstance;
+    private NetchangeListener  mListener;
 
     private NetworkUtil(Context context) {
         mContext = context.getApplicationContext();
     }
 
     public static NetworkUtil getInstance(Context context) {
-        if (instance == null) {
-            instance = new NetworkUtil(context);
+        if (sInstance == null) {
+            sInstance = new NetworkUtil(context);
         }
-        return instance;
+        return sInstance;
     }
 
     /*

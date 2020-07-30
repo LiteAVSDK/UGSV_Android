@@ -8,8 +8,8 @@ import android.view.View;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 
 public class ProgressFragmentUtil {
-    private String mTitle;
-    private FragmentActivity mActivity;
+    private String                    mTitle;
+    private FragmentActivity          mActivity;
     private VideoWorkProgressFragment mLoadingProgress;
 
     public ProgressFragmentUtil(FragmentActivity context) {

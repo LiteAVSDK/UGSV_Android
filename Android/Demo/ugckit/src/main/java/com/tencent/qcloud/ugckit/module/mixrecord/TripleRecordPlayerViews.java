@@ -33,7 +33,7 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.triple_record_player_view_inner, this);
+        inflate(getContext(), R.layout.ugckit_triple_record_player_view_inner, this);
         mTopView = (MixRecordPlayerView) findViewById(R.id.triple_first);
         mMiddleView = (MixRecordPlayerView) findViewById(R.id.triple_second);
         mBottomView = (MixRecordPlayerView) findViewById(R.id.triple_third);

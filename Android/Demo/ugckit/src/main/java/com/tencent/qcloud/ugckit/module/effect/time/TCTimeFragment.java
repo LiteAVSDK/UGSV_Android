@@ -16,10 +16,8 @@ import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.module.record.VideoRecordSDK;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.component.timeline.SliderViewContainer;
 
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
@@ -34,27 +32,35 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TCTimeFragment";
+
     public static final long DEAULT_DURATION_MS = 1000; //默认重复时间段1s
-    private int mCurrentEffect = TimeEffect.NONE_EFFECT;
 
-    private ImageView mTvCancel, mTvSpeed, mTvRepeat, mTvReverse;
-    private CircleImageView mTvCancelSelect, mTvSpeedSelect, mTvRepeatSelect, mTvReverseSelect;
+    private ImageView       mImageCancel;
+    private ImageView       mImageSpeed;
+    private ImageView       mImageRepeat;
+    private ImageView       mImageReverse;
+    private CircleImageView mCircleImageCancelSelect;
+    private CircleImageView mCircleSpeedSelect;
+    private CircleImageView mCircleImageRepeatSelect;
+    private CircleImageView mCircleImageReverseSelect;
+    private TXVideoEditer   mTXVideoEditer;
 
-    private TXVideoEditer mTXVideoEditer;
     private long mCurrentEffectStartMs;
-
-    //定制化Gif
-    private int noTimeMotionGif = R.drawable.motion_time_normal;
-    private int slowMotionGif = R.drawable.motion_time_slow;
-    private int repeatGif = R.drawable.motion_time_repeat;
-    private int reverseGif = R.drawable.motion_time_reverse;
-    private int coverIcon = R.drawable.ic_effect5;
+    private int  mCurrentEffect = TimeEffect.NONE_EFFECT;
+    /**
+     * 定制化Gif
+     * */
+    private int noTimeMotionGif = R.drawable.ugckit_motion_time_normal;
+    private int slowMotionGif = R.drawable.ugckit_motion_time_slow;
+    private int repeatGif = R.drawable.ugckit_motion_time_repeat;
+    private int reverseGif = R.drawable.ugckit_motion_time_reverse;
+    private int coverIcon = R.drawable.ugckit_ic_effect5;
     private TimeLineView.OnTimeLineListener mListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_time, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_time, container, false);
     }
 
     @Override
@@ -80,13 +86,13 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
                 if (mListener != null) {
                     mListener.onAddSlider(TimeEffect.SPEED_EFFECT, mCurrentEffectStartMs);
                 }
-                mTvSpeedSelect.setVisibility(View.VISIBLE);
+                mCircleSpeedSelect.setVisibility(View.VISIBLE);
                 break;
             case TimeEffect.REPEAT_EFFECT:
                 if (mListener != null) {
                     mListener.onAddSlider(TimeEffect.REPEAT_EFFECT, mCurrentEffectStartMs);
                 }
-                mTvRepeatSelect.setVisibility(View.VISIBLE);
+                mCircleImageRepeatSelect.setVisibility(View.VISIBLE);
                 break;
             case TimeEffect.REVERSE_EFFECT:
                 showReverseLayout();
@@ -101,34 +107,34 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViews(@NonNull View view) {
-        noTimeMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectNormalIcon, R.drawable.motion_time_normal);
-        slowMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectSlowMotionIcon, R.drawable.motion_time_slow);
-        repeatGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectRepeatIcon, R.drawable.motion_time_repeat);
-        reverseGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectReverseIcon, R.drawable.motion_time_reverse);
+        noTimeMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectNormalIcon, R.drawable.ugckit_motion_time_normal);
+        slowMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectSlowMotionIcon, R.drawable.ugckit_motion_time_slow);
+        repeatGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectRepeatIcon, R.drawable.ugckit_motion_time_repeat);
+        reverseGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectReverseIcon, R.drawable.ugckit_motion_time_reverse);
 
-        mTvCancelSelect = (CircleImageView) view.findViewById(R.id.time_tv_cancel_select);
-        mTvCancel = (ImageView) view.findViewById(R.id.time_tv_cancel);
-        mTvCancel.setOnClickListener(this);
-        mTvSpeedSelect = (CircleImageView) view.findViewById(R.id.time_tv_speed_select);
-        mTvSpeed = (ImageView) view.findViewById(R.id.time_tv_speed);
-        mTvSpeed.setOnClickListener(this);
-        mTvSpeed.setSelected(true);
-        mTvRepeatSelect = (CircleImageView) view.findViewById(R.id.time_tv_repeat_select);
-        mTvRepeat = (ImageView) view.findViewById(R.id.time_tv_repeat);
-        mTvRepeat.setOnClickListener(this);
-        mTvReverseSelect = (CircleImageView) view.findViewById(R.id.time_tv_reverse_select);
-        mTvReverse = (ImageView) view.findViewById(R.id.time_tv_reverse);
-        mTvReverse.setOnClickListener(this);
+        mCircleImageCancelSelect = (CircleImageView) view.findViewById(R.id.time_tv_cancel_select);
+        mImageCancel = (ImageView) view.findViewById(R.id.time_tv_cancel);
+        mImageCancel.setOnClickListener(this);
+        mCircleSpeedSelect = (CircleImageView) view.findViewById(R.id.time_tv_speed_select);
+        mImageSpeed = (ImageView) view.findViewById(R.id.time_tv_speed);
+        mImageSpeed.setOnClickListener(this);
+        mImageSpeed.setSelected(true);
+        mCircleImageRepeatSelect = (CircleImageView) view.findViewById(R.id.time_tv_repeat_select);
+        mImageRepeat = (ImageView) view.findViewById(R.id.time_tv_repeat);
+        mImageRepeat.setOnClickListener(this);
+        mCircleImageReverseSelect = (CircleImageView) view.findViewById(R.id.time_tv_reverse_select);
+        mImageReverse = (ImageView) view.findViewById(R.id.time_tv_reverse);
+        mImageReverse.setOnClickListener(this);
 
-        Glide.with(this).load(noTimeMotionGif).into(mTvCancel);
-        Glide.with(this).load(slowMotionGif).into(mTvSpeed);
-        Glide.with(this).load(repeatGif).into(mTvRepeat);
-        Glide.with(this).load(reverseGif).into(mTvReverse);
+        Glide.with(this).load(noTimeMotionGif).into(mImageCancel);
+        Glide.with(this).load(slowMotionGif).into(mImageSpeed);
+        Glide.with(this).load(repeatGif).into(mImageRepeat);
+        Glide.with(this).load(reverseGif).into(mImageReverse);
 
-        mTvCancelSelect.setBackgroundResource(coverIcon);
-        mTvSpeedSelect.setBackgroundResource(coverIcon);
-        mTvRepeatSelect.setBackgroundResource(coverIcon);
-        mTvReverseSelect.setBackgroundResource(coverIcon);
+        mCircleImageCancelSelect.setBackgroundResource(coverIcon);
+        mCircleSpeedSelect.setBackgroundResource(coverIcon);
+        mCircleImageRepeatSelect.setBackgroundResource(coverIcon);
+        mCircleImageReverseSelect.setBackgroundResource(coverIcon);
 
         boolean quickImport = JumpActivityMgr.getInstance().isQuickImport();
         RelativeLayout layoutRepeat = (RelativeLayout) view.findViewById(R.id.layout_repeat);
@@ -278,66 +284,66 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showNoneLayout() {
-        mTvCancel.setSelected(true);
-        mTvSpeed.setSelected(false);
-        mTvRepeat.setSelected(false);
-        mTvReverse.setSelected(false);
+        mImageCancel.setSelected(true);
+        mImageSpeed.setSelected(false);
+        mImageRepeat.setSelected(false);
+        mImageReverse.setSelected(false);
 
         if (mListener != null) {
             mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
             mListener.onRemoveSlider(TimeEffect.REPEAT_EFFECT);
         }
-        mTvCancelSelect.setVisibility(View.VISIBLE);
-        mTvSpeedSelect.setVisibility(View.INVISIBLE);
-        mTvRepeatSelect.setVisibility(View.INVISIBLE);
-        mTvReverseSelect.setVisibility(View.INVISIBLE);
+        mCircleImageCancelSelect.setVisibility(View.VISIBLE);
+        mCircleSpeedSelect.setVisibility(View.INVISIBLE);
+        mCircleImageRepeatSelect.setVisibility(View.INVISIBLE);
+        mCircleImageReverseSelect.setVisibility(View.INVISIBLE);
     }
 
     private void showSpeedLayout() {
         initSpeedLayout();
-        mTvSpeed.setSelected(true);
-        mTvRepeat.setSelected(false);
-        mTvCancel.setSelected(false);
-        mTvReverse.setSelected(false);
+        mImageSpeed.setSelected(true);
+        mImageRepeat.setSelected(false);
+        mImageCancel.setSelected(false);
+        mImageReverse.setSelected(false);
         if (mListener != null) {
             mListener.onRemoveSlider(TimeEffect.REPEAT_EFFECT);
         }
-        mTvCancelSelect.setVisibility(View.INVISIBLE);
-        mTvSpeedSelect.setVisibility(View.VISIBLE);
-        mTvRepeatSelect.setVisibility(View.INVISIBLE);
-        mTvReverseSelect.setVisibility(View.INVISIBLE);
+        mCircleImageCancelSelect.setVisibility(View.INVISIBLE);
+        mCircleSpeedSelect.setVisibility(View.VISIBLE);
+        mCircleImageRepeatSelect.setVisibility(View.INVISIBLE);
+        mCircleImageReverseSelect.setVisibility(View.INVISIBLE);
     }
 
     private void showRepeatLayout() {
         initRepeatLayout();
-        mTvCancel.setSelected(false);
-        mTvSpeed.setSelected(false);
-        mTvRepeat.setSelected(true);
-        mTvReverse.setSelected(false);
+        mImageCancel.setSelected(false);
+        mImageSpeed.setSelected(false);
+        mImageRepeat.setSelected(true);
+        mImageReverse.setSelected(false);
         if (mListener != null) {
             mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
         }
         mCurrentEffect = TimeEffect.REPEAT_EFFECT;
 
-        mTvCancelSelect.setVisibility(View.INVISIBLE);
-        mTvSpeedSelect.setVisibility(View.INVISIBLE);
-        mTvRepeatSelect.setVisibility(View.VISIBLE);
-        mTvReverseSelect.setVisibility(View.INVISIBLE);
+        mCircleImageCancelSelect.setVisibility(View.INVISIBLE);
+        mCircleSpeedSelect.setVisibility(View.INVISIBLE);
+        mCircleImageRepeatSelect.setVisibility(View.VISIBLE);
+        mCircleImageReverseSelect.setVisibility(View.INVISIBLE);
     }
 
     private void showReverseLayout() {
-        mTvSpeed.setSelected(false);
-        mTvCancel.setSelected(false);
-        mTvRepeat.setSelected(false);
-        mTvReverse.setSelected(true);
+        mImageSpeed.setSelected(false);
+        mImageCancel.setSelected(false);
+        mImageRepeat.setSelected(false);
+        mImageReverse.setSelected(true);
         if (mListener != null) {
             mListener.onRemoveSlider(TimeEffect.REPEAT_EFFECT);
             mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
         }
-        mTvCancelSelect.setVisibility(View.INVISIBLE);
-        mTvSpeedSelect.setVisibility(View.INVISIBLE);
-        mTvRepeatSelect.setVisibility(View.INVISIBLE);
-        mTvReverseSelect.setVisibility(View.VISIBLE);
+        mCircleImageCancelSelect.setVisibility(View.INVISIBLE);
+        mCircleSpeedSelect.setVisibility(View.INVISIBLE);
+        mCircleImageRepeatSelect.setVisibility(View.INVISIBLE);
+        mCircleImageReverseSelect.setVisibility(View.VISIBLE);
     }
 
     public void setOnTimeLineListener(TimeLineView.OnTimeLineListener listener) {

@@ -6,19 +6,19 @@ import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
 import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
 
 public class ConfigureLoader {
-
     private static final String TAG = "ConfigureLoader";
+
     @NonNull
-    private static ConfigureLoader instance = new ConfigureLoader();
-    private DraftEditer mDraftEditer;
-    private EffectEditer mEffectEditer;
+    private static ConfigureLoader sInstance = new ConfigureLoader();
+    private DraftEditer            mDraftEditer;
+    private EffectEditer           mEffectEditer;
 
     private ConfigureLoader() {
     }
 
     @NonNull
     public static ConfigureLoader getInstance() {
-        return instance;
+        return sInstance;
     }
 
     /**

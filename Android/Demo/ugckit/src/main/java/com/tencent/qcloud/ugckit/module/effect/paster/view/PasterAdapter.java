@@ -23,8 +23,8 @@ import java.util.List;
 public class PasterAdapter extends RecyclerView.Adapter<PasterAdapter.PasterViewHolder> implements View.OnClickListener {
 
     @Nullable
-    private List<TCPasterInfo> mPasterInfoList;
-    private WeakReference<RecyclerView> mRecyclerView;
+    private List<TCPasterInfo>                mPasterInfoList;
+    private WeakReference<RecyclerView>       mRecyclerView;
     private IPasterPannel.OnItemClickListener mOnItemClickListener;
 
     public PasterAdapter(@Nullable List<TCPasterInfo> pasterInfoList) {
@@ -41,7 +41,7 @@ public class PasterAdapter extends RecyclerView.Adapter<PasterAdapter.PasterView
         if (mRecyclerView == null) {
             mRecyclerView = new WeakReference<RecyclerView>((RecyclerView) parent);
         }
-        return new PasterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_paster_view, null));
+        return new PasterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_layout_paster_view, null));
     }
 
     @Override

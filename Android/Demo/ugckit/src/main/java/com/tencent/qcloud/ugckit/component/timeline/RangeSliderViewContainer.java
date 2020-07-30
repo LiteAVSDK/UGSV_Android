@@ -61,7 +61,7 @@ public class RangeSliderViewContainer extends LinearLayout {
 
     private void initView(Context context) {
         mContext = context;
-        mRootView = LayoutInflater.from(context).inflate(R.layout.layout_range_slider, this);
+        mRootView = LayoutInflater.from(context).inflate(R.layout.ugckit_layout_range_slider, this);
         mStartView = mRootView.findViewById(R.id.iv_start_view);
         mEndView = mRootView.findViewById(R.id.iv_end_view);
         mMiddleView = mRootView.findViewById(R.id.middle_view);
@@ -82,7 +82,7 @@ public class RangeSliderViewContainer extends LinearLayout {
         ViewGroup.LayoutParams layoutParams = mMiddleView.getLayoutParams();
         layoutParams.width = mDistance;
         mMiddleView.setLayoutParams(layoutParams);
-        setMiddleRangeColor(mContext.getResources().getColor(R.color.colorAccentTransparent30));
+        setMiddleRangeColor(mContext.getResources().getColor(R.color.ugckit_color_accent_transparent30));
 
         setTouchProcessListener();
     }

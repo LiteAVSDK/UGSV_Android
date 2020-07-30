@@ -26,8 +26,10 @@ public class TCConfirmDialog extends DialogFragment {
     private static final String KEY_SURE_TXT = "key_sure_txt";
     private static final String KEY_CANCEL_TXT = "key_cancel_txt";
 
-    private TextView mTvTitle, mTvContent, mTvSure, mTvCancel;
-
+    private TextView mTextTitle;
+    private TextView mTextContent;
+    private TextView mTextSure;
+    private TextView mTextCancel;
 
     @NonNull
     public static TCConfirmDialog newInstance(String title, String msg, boolean isHaveCancel, String sureTxt, String cancalTxt) {
@@ -67,7 +69,7 @@ public class TCConfirmDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setDialogStyle();
-        return inflater.inflate(R.layout.fragment_confirm, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_confirm, container, false);
     }
 
     @Override
@@ -80,16 +82,16 @@ public class TCConfirmDialog extends DialogFragment {
         String cancelTxt = getArguments().getString(KEY_CANCEL_TXT);
         String sureTxt = getArguments().getString(KEY_SURE_TXT);
 
-        mTvTitle = (TextView) view.findViewById(R.id.confirm_tv_title);
-        mTvTitle.setText(title);
+        mTextTitle = (TextView) view.findViewById(R.id.confirm_tv_title);
+        mTextTitle.setText(title);
 
-        mTvContent = (TextView) view.findViewById(R.id.confirm_et_content);
-        mTvContent.setText(msg);
-        mTvSure = (TextView) view.findViewById(R.id.confirm_tv_done);
+        mTextContent = (TextView) view.findViewById(R.id.confirm_et_content);
+        mTextContent.setText(msg);
+        mTextSure = (TextView) view.findViewById(R.id.confirm_tv_done);
         if (sureTxt != null) {
-            mTvSure.setText(sureTxt);
+            mTextSure.setText(sureTxt);
         }
-        mTvSure.setOnClickListener(new View.OnClickListener() {
+        mTextSure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -98,16 +100,16 @@ public class TCConfirmDialog extends DialogFragment {
             }
         });
 
-        mTvCancel = (TextView) view.findViewById(R.id.confirm_tv_cancel);
+        mTextCancel = (TextView) view.findViewById(R.id.confirm_tv_cancel);
         if (!isHaveCancel) {
-            mTvCancel.setVisibility(View.GONE);
+            mTextCancel.setVisibility(View.GONE);
         } else {
-            mTvCancel.setVisibility(View.VISIBLE);
+            mTextCancel.setVisibility(View.VISIBLE);
         }
         if (cancelTxt != null) {
-            mTvCancel.setText(cancelTxt);
+            mTextCancel.setText(cancelTxt);
         }
-        mTvCancel.setOnClickListener(new View.OnClickListener() {
+        mTextCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();

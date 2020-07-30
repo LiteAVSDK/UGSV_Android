@@ -11,21 +11,18 @@ import java.util.List;
 
 public class SwipeMenu {
 
+    public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
+    public static final int VERTICAL   = LinearLayout.VERTICAL;
+
+    private int                 mViewType;
+    private int                 orientation = HORIZONTAL;
+    private SwipeMenuLayout     mSwipeMenuLayout;
+    private List<SwipeMenuItem> mSwipeMenuItems;
+
     @IntDef({HORIZONTAL, VERTICAL})
     @Retention(RetentionPolicy.SOURCE)
     public @interface OrientationMode {
     }
-
-    public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
-    public static final int VERTICAL = LinearLayout.VERTICAL;
-
-    private SwipeMenuLayout mSwipeMenuLayout;
-
-    private int mViewType;
-
-    private int orientation = HORIZONTAL;
-
-    private List<SwipeMenuItem> mSwipeMenuItems;
 
     public SwipeMenu(SwipeMenuLayout swipeMenuLayout, int viewType) {
         this.mSwipeMenuLayout = swipeMenuLayout;

@@ -101,8 +101,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     private VideoProgressController mVideoProgressController;
 
     // 定制UI
-    private int addIcon = R.drawable.ic_edit_add_selector;
-    private int deleteIcon = R.drawable.ic_word_del_normal;
+    private int addIcon = R.drawable.ugckit_ic_edit_add_selector;
+    private int deleteIcon = R.drawable.ugckit_ic_word_del_normal;
     private int mCoverIcon;
     private int pasterTextSize;
     private int pasterTextColor;
@@ -117,7 +117,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_paster, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_paster, container, false);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     private void initView(@NonNull View view) {
-        mFootView = LayoutInflater.from(view.getContext()).inflate(R.layout.item_add, null);
+        mFootView = LayoutInflater.from(view.getContext()).inflate(R.layout.ugckit_item_add, null);
         CircleImageView addView = (CircleImageView) mFootView.findViewById(R.id.add_paster_image);
         addView.setImageResource(addIcon);
 

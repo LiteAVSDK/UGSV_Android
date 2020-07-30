@@ -21,20 +21,20 @@ import com.tencent.qcloud.ugckit.component.slider.RangeSlider;
 
 
 public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPannel, SeekBar.OnSeekBarChangeListener, RangeSlider.OnRangeChangeListener, View.OnClickListener {
-    private Context mContext;
-
-    private SeekBar mSeekBarVolume;
+    private Context     mContext;
+    private SeekBar     mSeekBarVolume;
     private RangeSlider mRangeSlider;
-    private Button mBtnConfirm;
-    private TextView mTvStartTime;
-    private TextView mTvMusicName;
-    private ImageView mIvLogo;
-    private ImageView mIvVoiceWave;
-    private ImageView mIvReplace;
-    private ImageView mIvDelete;
+    private Button      mButtonConfirm;
+    private TextView    mTextStartTime;
+    private TextView    mTextMusicName;
+    private ImageView   mImageLogo;
+    private ImageView   mImageVoiceWave;
+    private ImageView   mImageReplace;
+    private ImageView   mImageDelete;
 
-    private int mMusicVolume = 100;
+    private int  mMusicVolume = 100;
     private long mMusicDuration;
+
     private IRecordMusicPannel.MusicChangeListener mMusicChangeListener;
 
     public RecordMusicPannel(Context context) {
@@ -54,28 +54,28 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
 
     private void init(Context context) {
         mContext = context;
-        LayoutInflater.from(context).inflate(R.layout.layout_reocrd_music, this);
-        mIvLogo = (ImageView) findViewById(R.id.iv_music_logo);
-        mIvVoiceWave = (ImageView) findViewById(R.id.iv_voice_wave);
+        LayoutInflater.from(context).inflate(R.layout.ugckit_layout_reocrd_music, this);
+        mImageLogo = (ImageView) findViewById(R.id.iv_music_logo);
+        mImageVoiceWave = (ImageView) findViewById(R.id.iv_voice_wave);
         mSeekBarVolume = (SeekBar) findViewById(R.id.seekbar_bgm_volume);
         mSeekBarVolume.setOnSeekBarChangeListener(this);
 
         mRangeSlider = (RangeSlider) findViewById(R.id.bgm_range_slider);
         mRangeSlider.setRangeChangeListener(this);
 
-        mBtnConfirm = (Button) findViewById(R.id.btn_bgm_confirm);
-        mBtnConfirm.setOnClickListener(this);
-        mIvReplace = (ImageView) findViewById(R.id.btn_bgm_replace);
-        mIvReplace.setOnClickListener(this);
-        mIvDelete = (ImageView) findViewById(R.id.btn_bgm_delete);
-        mIvDelete.setOnClickListener(this);
+        mButtonConfirm = (Button) findViewById(R.id.btn_bgm_confirm);
+        mButtonConfirm.setOnClickListener(this);
+        mImageReplace = (ImageView) findViewById(R.id.btn_bgm_replace);
+        mImageReplace.setOnClickListener(this);
+        mImageDelete = (ImageView) findViewById(R.id.btn_bgm_delete);
+        mImageDelete.setOnClickListener(this);
 
-        mTvStartTime = (TextView) findViewById(R.id.tv_bgm_start_time);
-        mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position), "00:00"));
+        mTextStartTime = (TextView) findViewById(R.id.tv_bgm_start_time);
+        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), "00:00"));
 
-        mTvMusicName = (TextView) findViewById(R.id.tx_music_name);
-        mTvMusicName.setText("");
-        mTvMusicName.setSelected(true);
+        mTextMusicName = (TextView) findViewById(R.id.tx_music_name);
+        mTextMusicName.setText("");
+        mTextMusicName.setSelected(true);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
     }
 
     private void setMusicName(String musicName) {
-        mTvMusicName.setText(musicName);
+        mTextMusicName.setText(musicName);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
             mMusicChangeListener.onMusicTimeChanged(leftTime, rightTime);
         }
 
-        mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
+        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
     }
 
     private void setCutRange(long startTime, long endTime) {
@@ -131,8 +131,8 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
             int right = (int) (endTime * 100 / mMusicDuration);
             mRangeSlider.setCutRange(left, right);
         }
-        if (mTvStartTime != null) {
-            mTvStartTime.setText(String.format(getResources().getString(R.string.bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
+        if (mTextStartTime != null) {
+            mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
         }
     }
 
@@ -171,17 +171,17 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
 
     @Override
     public void setMusicIconResource(int resid) {
-        mIvLogo.setImageResource(resid);
+        mImageLogo.setImageResource(resid);
     }
 
     @Override
     public void setMusicDeleteIconResource(int resid) {
-        mIvDelete.setImageResource(resid);
+        mImageDelete.setImageResource(resid);
     }
 
     @Override
     public void setMusicReplaceIconResource(int resid) {
-        mIvReplace.setImageResource(resid);
+        mImageReplace.setImageResource(resid);
     }
 
     @Override
@@ -195,21 +195,21 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
 
     @Override
     public void setMusicRangeBackgroundResource(int resid) {
-        mIvVoiceWave.setImageResource(resid);
+        mImageVoiceWave.setImageResource(resid);
     }
 
     @Override
     public void setConfirmButtonBackgroundColor(int color) {
-        mBtnConfirm.setBackgroundColor(getResources().getColor(color));
+        mButtonConfirm.setBackgroundColor(getResources().getColor(color));
     }
 
     @Override
     public void setConfirmButtonTextColor(int color) {
-        mBtnConfirm.setTextColor(getResources().getColor(color));
+        mButtonConfirm.setTextColor(getResources().getColor(color));
     }
 
     @Override
     public void setConfirmButtonTextSize(int size) {
-        mBtnConfirm.setTextSize(size);
+        mButtonConfirm.setTextSize(size);
     }
 }

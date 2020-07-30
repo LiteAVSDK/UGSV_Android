@@ -95,7 +95,7 @@
                 android:paddingTop="8dp"
                 android:gravity="center_horizontal"
                 android:layout_centerHorizontal="true"
-                android:text="@string/triple_title"
+                android:text="@string/ugckit_triple_title"
                 android:textColor="@color/white"
                 android:textSize="14dp" />
         </RelativeLayout>

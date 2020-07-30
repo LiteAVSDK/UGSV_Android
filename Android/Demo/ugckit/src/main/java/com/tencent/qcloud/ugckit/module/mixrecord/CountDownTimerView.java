@@ -21,7 +21,8 @@ import com.tencent.qcloud.ugckit.R;
  */
 public class CountDownTimerView extends RelativeLayout implements ICountDownTimerView {
     public static int DEFAULT_COUNTDOWN_NUMBER = 3;
-    private TextView mTvNumber;
+
+    private TextView           mTextNumber;
     private ICountDownListener mListener;
 
     public CountDownTimerView(Context context) {
@@ -40,9 +41,9 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.countdown_view, this);
+        inflate(getContext(), R.layout.ugckit_countdown_view, this);
 
-        mTvNumber = (TextView) findViewById(R.id.tv_number);
+        mTextNumber = (TextView) findViewById(R.id.tv_number);
     }
 
     @Override
@@ -57,27 +58,27 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
      */
     public void countDownAnimation(final int num) {
         if (num <= 0) {
-            mTvNumber.setVisibility(GONE);
+            mTextNumber.setVisibility(GONE);
 
             if (mListener != null) {
                 mListener.onCountDownComplete();
             }
             return;
         }
-        mTvNumber.setVisibility(View.VISIBLE);
-        mTvNumber.setText(Integer.toString(num));
+        mTextNumber.setVisibility(View.VISIBLE);
+        mTextNumber.setText(Integer.toString(num));
 
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(mTvNumber, "scaleX", 0, 1.1f);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(mTvNumber, "scaleY", 0, 1.1f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(mTextNumber, "scaleX", 0, 1.1f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(mTextNumber, "scaleY", 0, 1.1f);
 
-        ObjectAnimator animatorX2 = ObjectAnimator.ofFloat(mTvNumber, "scaleX", 1.1f, 1);
-        ObjectAnimator animatorY2 = ObjectAnimator.ofFloat(mTvNumber, "scaleY", 1.1f, 1);
+        ObjectAnimator animatorX2 = ObjectAnimator.ofFloat(mTextNumber, "scaleX", 1.1f, 1);
+        ObjectAnimator animatorY2 = ObjectAnimator.ofFloat(mTextNumber, "scaleY", 1.1f, 1);
 
-        ObjectAnimator animatorX3 = ObjectAnimator.ofFloat(mTvNumber, "scaleX", 1, 1);
-        ObjectAnimator animatorY3 = ObjectAnimator.ofFloat(mTvNumber, "scaleY", 1, 1);
+        ObjectAnimator animatorX3 = ObjectAnimator.ofFloat(mTextNumber, "scaleX", 1, 1);
+        ObjectAnimator animatorY3 = ObjectAnimator.ofFloat(mTextNumber, "scaleY", 1, 1);
 
-        ObjectAnimator animatorX4 = ObjectAnimator.ofFloat(mTvNumber, "scaleX", 1, 0);
-        ObjectAnimator animatorY4 = ObjectAnimator.ofFloat(mTvNumber, "scaleY", 1, 0);
+        ObjectAnimator animatorX4 = ObjectAnimator.ofFloat(mTextNumber, "scaleX", 1, 0);
+        ObjectAnimator animatorY4 = ObjectAnimator.ofFloat(mTextNumber, "scaleY", 1, 0);
 
 
         AnimatorSet animatorSet1 = new AnimatorSet();
@@ -133,7 +134,7 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
 
     @Override
     public void setCountDownTextColor(int color) {
-        mTvNumber.setTextColor(getResources().getColor(color));
+        mTextNumber.setTextColor(getResources().getColor(color));
     }
 
     @Override

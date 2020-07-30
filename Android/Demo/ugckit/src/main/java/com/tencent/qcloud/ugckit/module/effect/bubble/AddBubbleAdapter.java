@@ -25,13 +25,14 @@ public class AddBubbleAdapter extends BaseRecyclerAdapter<AddBubbleAdapter.AddPa
     public static final int TYPE_NORMAL = 1;  // 真实数据
 
     private Context mContext;
+
     private View mFooterView;
+    private int  mCurrentSelectedPos = -1;
+    private int  mPasterTextSize;
+    private int  mPasterTextColor;
+    private int  mCoverIcon;
 
     private List<BubbleViewParams> mBubbleInfoList;
-    private int mCurrentSelectedPos = -1;
-    private int mPasterTextSize;
-    private int mPasterTextColor;
-    private int mCoverIcon;
 
     public AddBubbleAdapter(List<BubbleViewParams> bubbleInfoList, Context context) {
         mBubbleInfoList = bubbleInfoList;
@@ -110,7 +111,7 @@ public class AddBubbleAdapter extends BaseRecyclerAdapter<AddBubbleAdapter.AddPa
         if (mFooterView != null && viewType == TYPE_FOOTER) {
             return new AddPasterViewHolder(mFooterView);
         }
-        return new AddPasterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_paster, parent, false));
+        return new AddPasterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_item_add_paster, parent, false));
     }
 
     @Override

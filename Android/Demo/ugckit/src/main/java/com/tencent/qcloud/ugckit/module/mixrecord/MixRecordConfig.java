@@ -8,35 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MixRecordConfig extends UGCKitRecordConfig {
-    /**
-     * 视频录制的路径
-     */
-    private String mRecordPath;
-    /**
-     * 跟拍视频的路径
-     */
-    private List<String> mPlayPath;
-    /**
-     * 跟拍视频的时长
-     */
-    private long mDuration;
-    /**
-     * 跟拍视频的视频帧率
-     */
-    private int mFps;
-    /*
-     * 录制视频序号
-     */
-    private int mRecordIndex;
 
-    private int mWidth;
+    private String mRecordPath;           // 视频录制的路径
+    private long   mDuration;            // 跟拍视频的时长
+    private int    mFps;                 // 跟拍视频的视频帧率
+    private int    mRecordIndex;         // 录制视频序号
+    private int    mWidth;
+    private int    mHeight;
 
-    private int mHeight;
-
+    private List<String>     mPlayPath;  // 跟拍视频的路径
     private ArrayList<Float> mVolumes;
 
     public MixRecordConfig() {
-
     }
 
     public void setInfo(List<String> videoPaths, int recordIndex, int width, int height, int recordAspect) {

@@ -22,20 +22,18 @@ import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordButton;
  * 多种拍摄模式的按钮
  */
 public class RecordButton extends RelativeLayout implements IRecordButton, View.OnTouchListener {
-    private Activity mActivity;
-    private int mRecordMode;
+    private Activity  mActivity;
     private ViewGroup mRootLayout;
+    private View      mViewPhotoModeOutter;
+    private View      mViewPhotoModeInner;
+    private View      mViewTapModeOutter;
+    private View      mViewTapModeInner;
+    private View      mViewPressModeOutter;
+    private View      mViewPressModeInner;
+    private ImageView mImageRecordPause;
+    private int       mRecordMode;
+    private boolean   mIsRecording;
 
-    private View mViewPhotoModeOutter;
-    private View mViewPhotoModeInner;
-
-    private View mViewTapModeOutter;
-    private View mViewTapModeInner;
-    private ImageView mIvRecordPause;
-
-    private View mViewPressModeOutter;
-    private View mViewPressModeInner;
-    private boolean mIsRecording;
     private OnRecordButtonListener mOnRecordButtonListener;
 
     public RecordButton(Context context) {
@@ -55,7 +53,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.record_button, this);
+        inflate(mActivity, R.layout.ugckit_record_button, this);
         setOnTouchListener(this);
 
         mRootLayout = (ViewGroup) findViewById(R.id.layout_compose_record_btn);
@@ -66,7 +64,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         mViewTapModeOutter = findViewById(R.id.view_record_click_shot_bkg);
         mViewTapModeInner = findViewById(R.id.view_record_click_shot);
 
-        mIvRecordPause = (ImageView) findViewById(R.id.iv_record_pause);
+        mImageRecordPause = (ImageView) findViewById(R.id.iv_record_pause);
 
         mViewPressModeOutter = findViewById(R.id.view_record_touch_shot_bkg);
         mViewPressModeInner = findViewById(R.id.view_record_touch_shot);
@@ -76,7 +74,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
 
         mViewTapModeOutter.setVisibility(VISIBLE);
         mViewTapModeInner.setVisibility(VISIBLE);
-        mIvRecordPause.setVisibility(GONE);
+        mImageRecordPause.setVisibility(GONE);
 
         mViewPressModeOutter.setVisibility(GONE);
         mViewPressModeInner.setVisibility(GONE);
@@ -324,7 +322,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
         });
         animatorSet.start();
-        mIvRecordPause.setVisibility(View.VISIBLE);
+        mImageRecordPause.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -365,7 +363,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
         });
         animatorSet.start();
-        mIvRecordPause.setVisibility(View.GONE);
+        mImageRecordPause.setVisibility(View.GONE);
     }
 
     /**
@@ -407,7 +405,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
         });
         animatorSet.start();
-        mIvRecordPause.setVisibility(View.GONE);
+        mImageRecordPause.setVisibility(View.GONE);
     }
 
     @Override
@@ -447,7 +445,7 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
 
     @Override
     public void setPauseIconResource(int resid) {
-        mIvRecordPause.setImageResource(resid);
+        mImageRecordPause.setImageResource(resid);
     }
 
 }

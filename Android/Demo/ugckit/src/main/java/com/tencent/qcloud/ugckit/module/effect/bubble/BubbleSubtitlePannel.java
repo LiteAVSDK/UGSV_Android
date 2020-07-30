@@ -32,23 +32,16 @@ import java.util.List;
  * 配置气泡字幕样式、以及字体颜色的控件
  */
 public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitlePannel, BubbleAdapter.OnItemClickListener, View.OnClickListener, TCColorView.OnSelectColorListener {
-    private View mContentView;
-    private RecyclerView mRvBubbles;
-    private BubbleAdapter mBubbleAdapter;
-    private List<TCBubbleInfo> mBubbles;
-    private ImageView mIvClose;
-    /**
-     * 气泡样式
-     */
-    private TextView mTvBubbleStyle;
-    /**
-     * 文字颜色
-     */
-    private TextView mTvTextColor;
-
-    private TCColorView mColorView;
-    private TCCircleView mCvColor;
-    private LinearLayout mLlColor;
+    private View                mContentView;
+    private RecyclerView        mRecycleBubbles;
+    private BubbleAdapter       mBubbleAdapter;
+    private List<TCBubbleInfo>  mBubbles;
+    private ImageView           mImageClose;
+    private TextView            mTextBubbleStyle;   //气泡样式
+    private TextView            mTextColor;         //文字颜色
+    private TCColorView         mColorView;
+    private TCCircleView        mCvColor;
+    private LinearLayout        mLlColor;
 
     @Nullable
     private TCSubtitleInfo mSubtitleInfo;
@@ -72,24 +65,24 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     public void init() {
         mSubtitleInfo = new TCSubtitleInfo();
 
-        mContentView = LayoutInflater.from(getContext()).inflate(R.layout.layout_bubble_window, this, true);
+        mContentView = LayoutInflater.from(getContext()).inflate(R.layout.ugckit_layout_bubble_window, this, true);
         initViews(mContentView);
     }
 
     private void initViews(@NonNull View contentView) {
-        mIvClose = (ImageView)contentView.findViewById(R.id.iv_close);
-        mIvClose.setOnClickListener(this);
-        mRvBubbles = (RecyclerView) contentView.findViewById(R.id.bubble_rv_style);
-        mTvBubbleStyle = (TextView) contentView.findViewById(R.id.bubble_iv_bubble);
-        mTvBubbleStyle.setOnClickListener(this);
-        mTvTextColor = (TextView) contentView.findViewById(R.id.bubble_iv_color);
-        mTvTextColor.setOnClickListener(this);
+        mImageClose = (ImageView)contentView.findViewById(R.id.iv_close);
+        mImageClose.setOnClickListener(this);
+        mRecycleBubbles = (RecyclerView) contentView.findViewById(R.id.bubble_rv_style);
+        mTextBubbleStyle = (TextView) contentView.findViewById(R.id.bubble_iv_bubble);
+        mTextBubbleStyle.setOnClickListener(this);
+        mTextColor = (TextView) contentView.findViewById(R.id.bubble_iv_color);
+        mTextColor.setOnClickListener(this);
         mLlColor = (LinearLayout) contentView.findViewById(R.id.bubble_ll_color);
         mCvColor = (TCCircleView) contentView.findViewById(R.id.bubble_cv_color);
         mColorView = (TCColorView) contentView.findViewById(R.id.bubble_color_view);
         mColorView.setOnSelectColorListener(this);
-        mTvBubbleStyle.setSelected(true);
-        mRvBubbles.setVisibility(View.VISIBLE);
+        mTextBubbleStyle.setSelected(true);
+        mRecycleBubbles.setVisibility(View.VISIBLE);
     }
 
     private void enterAnimator() {
@@ -137,12 +130,12 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     @Override
     public void loadAllBubble(List<TCBubbleInfo> list) {
         mBubbles = list;
-        mRvBubbles.setVisibility(View.VISIBLE);
+        mRecycleBubbles.setVisibility(View.VISIBLE);
         mBubbleAdapter = new BubbleAdapter(list);
         mBubbleAdapter.setOnItemClickListener(this);
         GridLayoutManager manager = new GridLayoutManager(mContentView.getContext(), 4, GridLayoutManager.VERTICAL, false);
-        mRvBubbles.setLayoutManager(manager);
-        mRvBubbles.setAdapter(mBubbleAdapter);
+        mRecycleBubbles.setLayoutManager(manager);
+        mRecycleBubbles.setAdapter(mBubbleAdapter);
     }
 
     @Override
@@ -205,17 +198,17 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
         int i = v.getId();
         if (i == R.id.bubble_iv_bubble) {
             mLlColor.setVisibility(View.GONE);
-            mTvTextColor.setSelected(false);
+            mTextColor.setSelected(false);
 
-            mTvBubbleStyle.setSelected(true);
-            mRvBubbles.setVisibility(View.VISIBLE);
+            mTextBubbleStyle.setSelected(true);
+            mRecycleBubbles.setVisibility(View.VISIBLE);
 
         } else if (i == R.id.bubble_iv_color) {
             mLlColor.setVisibility(View.VISIBLE);
-            mTvTextColor.setSelected(true);
+            mTextColor.setSelected(true);
 
-            mTvBubbleStyle.setSelected(false);
-            mRvBubbles.setVisibility(View.GONE);
+            mTextBubbleStyle.setSelected(false);
+            mRecycleBubbles.setVisibility(View.GONE);
 
         } else if (i == R.id.iv_close) {
             dismiss();
@@ -257,17 +250,17 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
         states[1] = new int[]{android.R.attr.state_enabled};
         ColorStateList colorList = new ColorStateList(states, colors);
 
-        mTvBubbleStyle.setTextColor(colorList);
-        mTvTextColor.setTextColor(colorList);
+        mTextBubbleStyle.setTextColor(colorList);
+        mTextColor.setTextColor(colorList);
     }
 
     public void setTabTextSize(int size) {
-        mTvBubbleStyle.setTextSize(size);
-        mTvTextColor.setTextSize(size);
+        mTextBubbleStyle.setTextSize(size);
+        mTextColor.setTextSize(size);
     }
 
     public void setCancelIconResource(int resid) {
-        mIvClose.setImageResource(resid);
+        mImageClose.setImageResource(resid);
     }
 
 }

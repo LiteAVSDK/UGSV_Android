@@ -30,15 +30,15 @@ import java.util.Collections;
  * 选择器下方"已被选中"列表
  */
 public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteListener, OnItemMoveListener, View.OnClickListener, IPickedLayout {
-
-    private Activity mActivity;
-    private TextView mTvDrag;
-    private Button mBtnNext;
+    private Activity              mActivity;
+    private TextView              mTextDrag;
+    private Button                mButtonNext;
     private SwipeMenuRecyclerView mSwipeMenuRecyclerView;
-    private MenuAdapter mMenuAdapter;
+
+    private MenuAdapter                mMenuAdapter;
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
-    private OnNextStepListener mOnNextStepListener;
-    private String mDragText;
+    private OnNextStepListener         mOnNextStepListener;
+    private String                     mDragText;
 
     public PickedLayout(Context context) {
         super(context);
@@ -57,14 +57,14 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.picture_pick_layout, this);
+        inflate(mActivity, R.layout.ugckit_picture_pick_layout, this);
 
         mTCVideoFileInfoList = new ArrayList<>();
 
-        mTvDrag = (TextView) findViewById(R.id.tv_drag);
-        mBtnNext = (Button) findViewById(R.id.btn_next);
-        mBtnNext.setEnabled(false);
-        mBtnNext.setOnClickListener(this);
+        mTextDrag = (TextView) findViewById(R.id.tv_drag);
+        mButtonNext = (Button) findViewById(R.id.btn_next);
+        mButtonNext.setEnabled(false);
+        mButtonNext.setOnClickListener(this);
         mSwipeMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.swipe_menu_recycler_view);
         mSwipeMenuRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
         mMenuAdapter = new MenuAdapter(mActivity, mTCVideoFileInfoList);
@@ -74,7 +74,7 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
         mSwipeMenuRecyclerView.setOnItemMoveListener(this);
 
         if (!TextUtils.isEmpty(mDragText)) {
-            mTvDrag.setText(mDragText);
+            mTextDrag.setText(mDragText);
         }
     }
 
@@ -84,15 +84,18 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
             mMenuAdapter.addItem(fileInfo);
         }
         if (mMenuAdapter.getItemCount() > 0) {
-            mBtnNext.setEnabled(true);
+            mButtonNext.setEnabled(true);
         }
     }
 
     @Override
     public void onDelete(int position) {
+        if (position < 0) {  // 异常情况处理，getAdapterPosition可能返回为 -1
+            return;
+        }
         mMenuAdapter.removeIndex(position);
         if (mMenuAdapter.getItemCount() == 0) {
-            mBtnNext.setEnabled(false);
+            mButtonNext.setEnabled(false);
         }
     }
 
@@ -125,14 +128,14 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
             TCVideoFileInfo fileInfo = mMenuAdapter.getItem(i);
             File file = new File(fileInfo.getFilePath());
             if (!file.exists()) {
-                showErrorDialog(getResources().getString(R.string.tc_picture_choose_activity_the_selected_file_does_not_exist));
+                showErrorDialog(getResources().getString(R.string.ugckit_picture_choose_activity_the_selected_file_does_not_exist));
                 return null;
             }
             picturePathList.add(fileInfo);
         }
         if (type == TYPE_PICTURE) {
             if (count < 2) {
-                ToastUtil.toastShortMessage(getResources().getString(R.string.tc_picture_choose_activity_please_select_multiple_images));
+                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_picture_choose_activity_please_select_multiple_images));
                 return picturePathList;
             }
         }
@@ -140,31 +143,31 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
     }
 
     private void showErrorDialog(String msg) {
-        AlertDialog.Builder normalDialog = new AlertDialog.Builder(mActivity, R.style.ConfirmDialogStyle);
+        AlertDialog.Builder normalDialog = new AlertDialog.Builder(mActivity, R.style.UGCKitConfirmDialogStyle);
         normalDialog.setMessage(msg);
         normalDialog.setCancelable(false);
-        normalDialog.setPositiveButton(getResources().getString(R.string.tc_picture_choose_activity_got_it), null);
+        normalDialog.setPositiveButton(getResources().getString(R.string.ugckit_picture_choose_activity_got_it), null);
         normalDialog.show();
     }
 
     @Override
     public void setDragTipText(String dragTipText) {
-        mTvDrag.setText(dragTipText);
+        mTextDrag.setText(dragTipText);
     }
 
     @Override
     public void setNextTextSize(int textSize) {
-        mTvDrag.setTextSize(textSize);
+        mTextDrag.setTextSize(textSize);
     }
 
     @Override
     public void setTextColor(int textColor) {
-        mTvDrag.setTextColor(getResources().getColor(textColor));
+        mTextDrag.setTextColor(getResources().getColor(textColor));
     }
 
     @Override
     public void setButtonBackgroundResource(int resid) {
-        mBtnNext.setBackgroundResource(resid);
+        mButtonNext.setBackgroundResource(resid);
     }
 
     @Override

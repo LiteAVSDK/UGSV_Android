@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="#1F2531"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/ic_cover"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ugckit_ic_music_default" />
+
+    <FrameLayout
+        android:id="@+id/layout_use"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+
+        <com.tencent.qcloud.ugckit.component.progressbutton.SampleProgressButton
+            android:id="@+id/btn_use"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            app:sampleProgressButtonBackgroundColor="#6C7B8B"
+            app:sampleProgressButtonForegroundColor="#FF6347"
+            app:sampleProgressButtonText="@string/ugckit_use"
+            app:sampleProgressButtonTextSize="12dp"/>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/bgm_tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/layout_use"
+        android:layout_toRightOf="@id/ic_cover"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textColor="@color/ugckit_white"
+        android:textSize="@dimen/ugckit_h8"
+        tools:text="music name" />
+</RelativeLayout>

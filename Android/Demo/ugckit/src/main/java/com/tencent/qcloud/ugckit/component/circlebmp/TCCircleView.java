@@ -14,7 +14,7 @@ import android.view.View;
  * 一个圆形的View
  */
 public class TCCircleView extends View {
-    private int mColor = Color.RED;
+    private int   mColor = Color.RED;
     private Paint mPaint;
     private RectF mRectF;
 

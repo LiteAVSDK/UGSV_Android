@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -28,19 +29,20 @@ import java.util.List;
 
 public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final String TAG = "TCMusicActivity";
-    private LinearLayout mBackLayout;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private View mEmptyView;
 
-    private TCMusicAdapter mTCMusicAdapter;
+    private LinearLayout       mLayoutBack;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView       mRecyclerView;
+    private View               mEmptyView;
+
+    private TCMusicAdapter                   mTCMusicAdapter;
     private TCMusicManager.LoadMusicListener mLoadMusicListener;
-    private List<TCMusicInfo> mTCMusicInfoList;
+    private List<TCMusicInfo>                mTCMusicInfoList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bgm_select);
+        setContentView(R.layout.ugckit_activity_bgm_select);
 
         initData();
         initView();
@@ -111,7 +113,7 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
                         info.progress = 0;
                         mTCMusicAdapter.updateItem(position, info);
 
-                        ToastUtil.toastShortMessage(getResources().getString(R.string.bgm_select_activity_download_failed));
+                        ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_bgm_select_activity_download_failed));
                     }
                 });
             }
@@ -138,8 +140,8 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
     }
 
     private void initView() {
-        mBackLayout = (LinearLayout) findViewById(R.id.back_ll);
-        mBackLayout.setOnClickListener(this);
+        mLayoutBack = (LinearLayout) findViewById(R.id.back_ll);
+        mLayoutBack.setOnClickListener(this);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);

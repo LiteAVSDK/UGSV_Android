@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TCMotionViewInfoManager {
-    private static TCMotionViewInfoManager instance;
+    private static TCMotionViewInfoManager  sInstance;
     private List<ColorfulProgress.MarkInfo> mMarkInfoList;
 
     public static TCMotionViewInfoManager getInstance() {
-        if (instance == null) {
+        if (sInstance == null) {
             synchronized (TCMotionViewInfoManager.class) {
-                if (instance == null) {
-                    instance = new TCMotionViewInfoManager();
+                if (sInstance == null) {
+                    sInstance = new TCMotionViewInfoManager();
                 }
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private TCMotionViewInfoManager() {

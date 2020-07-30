@@ -19,21 +19,17 @@ import java.util.List;
  * 4. 返回最终的Bitmap图
  */
 public class BubbleViewHelper {
-    private BubbleViewParams mParams;
-
     @Nullable
-    private Bitmap mBubbleBitmap;
-
-    private float mTextDefaultSize = 36; // 字幕的默认代销
-
-    private String mText;
-
-    private Paint mPaint;
-
-    //-------------------------- 字幕区域 ------------------------------
-    private int mTextAreaTop, mTextAreaLeft, mTextAreaRight, mTextAreaBottom;
-    private int mTextAreaHeight, mTextAreaWidth;
-
+    private Bitmap           mBubbleBitmap;
+    private BubbleViewParams mParams;
+    private float            mTextDefaultSize = 36; // 字幕的默认代销
+    private String           mText;
+    private Paint            mPaint;
+    /**
+    * 字幕区域
+    * */
+    private int mTextAreaTop,     mTextAreaLeft, mTextAreaRight, mTextAreaBottom;
+    private int mTextAreaHeight,  mTextAreaWidth;
     private int mTextAreaCenterX, mTextAreaCenterY;
 
     public BubbleViewHelper() {

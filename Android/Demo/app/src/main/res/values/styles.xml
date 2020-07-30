@@ -95,7 +95,7 @@
     </style>
 
     <!-- 定制UGCkit -->
-    <style name="RecordActivityTheme" parent="RecordStyle">
+    <style name="RecordActivityTheme" parent="UGCKitRecordStyle">
 <!--        &lt;!&ndash; 音乐icon &ndash;&gt;-->
 <!--        <item name="recordMusicIcon">@drawable/ugc_record_music</item>-->
 <!--        &lt;!&ndash; 屏比icon&ndash;&gt;-->
@@ -132,12 +132,12 @@
 <!--        <item name="recordTimelineSeperatorColor">@color/colorLabelYellow</item>-->
     </style>
 
-    <style name="PickerActivityTheme" parent="PickerStyle">
+    <style name="PickerActivityTheme" parent="UGCKitPickerStyle">
 <!--        <item name="pickerDelIcon">@drawable/ugc_record_music</item>-->
 <!--        <item name="pickerNextIcon">@drawable/ugc_record_music</item>-->
     </style>
 
-    <style name="EditerActivityTheme" parent="EditerStyle">
+    <style name="EditerActivityTheme" parent="UGCKitEditerStyle">
 <!--        &lt;!&ndash; 裁剪条&ndash;&gt;-->
 <!--        <item name="editerCutViewColor">@color/colorLabelYellow</item>-->
 <!--        <item name="editerCutSliderLeftIcon">@drawable/ugc_record_music</item>-->
@@ -202,12 +202,12 @@
 <!--        <item name="editerPasterDelIcon">@drawable/ugc_record_music</item>-->
     </style>
 
-    <style name="MixRecordActivityTheme" parent="MixRecordStyle">
+    <style name="MixRecordActivityTheme" parent="UGCKitMixRecordStyle">
 <!--        <item name="countDownIcon">@drawable/ugc_record_music</item>-->
 <!--        <item name="recordBeautyIcon">@drawable/ugc_record_music</item>-->
     </style>
 
-    <style name="PictureTransitionActivityStyle" parent="PictureTransitionStyle">
+    <style name="PictureTransitionActivityStyle" parent="UGCKitPictureTransitionStyle">
 <!--        <item name="picLeftRightIcon">@drawable/ugc_record_music</item>-->
 <!--        <item name="picUpDownIcon">@drawable/ugc_record_music</item>-->
 <!--        <item name="picEnlargeIcon">@drawable/ugc_record_music</item>-->

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/ugckit_record_mask_buttom"
+    android:orientation="vertical">
+
+    <!-- 录制时间 -->
+    <TextView
+        android:id="@+id/record_progress_time"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/ugckit_drawable_gray_rect_bg"
+        android:gravity="center"
+        android:textColor="@color/ugckit_white" />
+
+    <!-- 多段录制进度条 -->
+    <com.tencent.qcloud.ugckit.module.record.RecordProgressView
+        android:id="@+id/record_progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginBottom="10dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <!-- 录制按钮 -->
+        <com.tencent.qcloud.ugckit.module.record.RecordButton
+            android:id="@+id/record_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true" />
+
+        <LinearLayout
+            android:id="@+id/record_left_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/record_button"
+            android:orientation="horizontal">
+
+            <!-- 闪光灯 -->
+            <ImageView
+                android:id="@+id/iv_torch"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/ugckit_selector_torch_close" />
+
+            <!-- 切换前后摄像头 -->
+            <ImageView
+                android:id="@+id/iv_switch_camera"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/ugckit_selector_switch_camera" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/record_right_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/record_button">
+
+            <!-- 删除上一段 -->
+            <ImageView
+                android:id="@+id/iv_delete_last_part"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ugckit_selector_delete_last_part" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 拍摄模式View -->
+    <com.tencent.qcloud.ugckit.module.record.RecordModeView
+        android:id="@+id/record_mode_view"
+        android:layout_width="270dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal" />
+
+    <!-- 拍摄模式圆点 -->
+    <View
+        android:id="@+id/record_mode_dot"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/ugckit_record_mode_instruction_bkg" />
+</LinearLayout>

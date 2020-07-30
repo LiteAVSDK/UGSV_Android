@@ -15,8 +15,11 @@ import java.util.List;
  */
 public class FloatLayerViewGroup extends FrameLayout implements View.OnClickListener {
     private final String TAG = "FloatLayerViewGroup";
+
     private List<FloatLayerView> mFloatLayerViewList;
+
     private int mLastSelectedPos = -1;
+
     private boolean mEnableChildSingleClick = true;
     private boolean mEnableChildDoubleClick = false;
 

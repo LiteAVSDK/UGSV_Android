@@ -18,19 +18,23 @@ import com.tencent.qcloud.ugckit.R;
  * 拍摄模式
  */
 public class RecordModeView extends RelativeLayout implements View.OnClickListener {
-    private Activity mActivity;
-    // 拍摄方式选择，目前支持三种（单击拍照，单击录制，长按录制）
+
+    /**
+     * 拍摄方式选择，目前支持三种（单击拍照，单击录制，长按录制）
+     * */
     public static final int RECORD_MODE_TAKE_PHOTO = 1;
     public static final int RECORD_MODE_CLICK = 2;
     public static final int RECORD_MODE_LONG_TOUCH = 3;
 
+    private Activity     mActivity;
+    private TextView     mTextPhoto;
+    private TextView     mTextClick;
+    private TextView     mTextTouch;
     private LinearLayout mLayoutRecordMode;
-    private TextView mTvPhoto;
-    private TextView mTvClick;
-    private TextView mTvTouch;
+    private boolean      mDisableTakePhoto;
+    private boolean      mDisableLongPressRecord;
+
     private OnRecordModeListener mOnRecordModeListener;
-    private boolean mDisableTakePhoto;
-    private boolean mDisableLongPressRecord;
 
     public RecordModeView(Context context) {
         super(context);
@@ -49,35 +53,35 @@ public class RecordModeView extends RelativeLayout implements View.OnClickListen
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.record_mode_layout, this);
+        inflate(mActivity, R.layout.ugckit_record_mode_layout, this);
 
         mLayoutRecordMode = (LinearLayout) findViewById(R.id.layout_record_mode);
-        mTvPhoto = (TextView) findViewById(R.id.tv_photo);
-        mTvClick = (TextView) findViewById(R.id.tv_click);
-        mTvTouch = (TextView) findViewById(R.id.tv_touch);
+        mTextPhoto = (TextView) findViewById(R.id.tv_photo);
+        mTextClick = (TextView) findViewById(R.id.tv_click);
+        mTextTouch = (TextView) findViewById(R.id.tv_touch);
 
-        mTvClick.setSelected(true);
-        mTvPhoto.setOnClickListener(this);
-        mTvClick.setOnClickListener(this);
-        mTvTouch.setOnClickListener(this);
+        mTextClick.setSelected(true);
+        mTextPhoto.setOnClickListener(this);
+        mTextClick.setOnClickListener(this);
+        mTextTouch.setOnClickListener(this);
     }
 
     /**
      * 合唱模式：禁用拍照，仅支持"单击拍"和"按住拍"
      */
     public void disableTakePhoto() {
-        mTvPhoto.setVisibility(View.INVISIBLE);
+        mTextPhoto.setVisibility(View.INVISIBLE);
     }
 
     public void disableLongPressRecord() {
-        mTvTouch.setVisibility(View.INVISIBLE);
+        mTextTouch.setVisibility(View.INVISIBLE);
     }
 
     //如果禁用拍照和长按拍摄，则仅剩下单击拍摄
     public void selectOneRecordMode() {
-        mTvClick.setVisibility(View.INVISIBLE);
-        mTvTouch.setVisibility(View.INVISIBLE);
-        mTvPhoto.setVisibility(View.INVISIBLE);
+        mTextClick.setVisibility(View.INVISIBLE);
+        mTextTouch.setVisibility(View.INVISIBLE);
+        mTextPhoto.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -92,40 +96,40 @@ public class RecordModeView extends RelativeLayout implements View.OnClickListen
             /**
              * 切换为拍照模式
              */
-            if (mTvClick.isSelected()) {
+            if (mTextClick.isSelected()) {
                 xGap = 1.0f / 3;
-            } else if (mTvTouch.isSelected()) {
+            } else if (mTextTouch.isSelected()) {
                 xGap = 2.0f / 3;
             }
-            mTvPhoto.setSelected(true);
-            mTvClick.setSelected(false);
-            mTvTouch.setSelected(false);
+            mTextPhoto.setSelected(true);
+            mTextClick.setSelected(false);
+            mTextTouch.setSelected(false);
 
             if (mOnRecordModeListener != null) {
                 mOnRecordModeListener.onRecordModeSelect(RecordModeView.RECORD_MODE_TAKE_PHOTO);
             }
         } else if (id == R.id.tv_click) {
-            if (mTvPhoto.isSelected()) {
+            if (mTextPhoto.isSelected()) {
                 xGap = -1.0f / 3;
-            } else if (mTvTouch.isSelected()) {
+            } else if (mTextTouch.isSelected()) {
                 xGap = 1.0f / 3;
             }
-            mTvPhoto.setSelected(false);
-            mTvClick.setSelected(true);
-            mTvTouch.setSelected(false);
+            mTextPhoto.setSelected(false);
+            mTextClick.setSelected(true);
+            mTextTouch.setSelected(false);
 
             if (mOnRecordModeListener != null) {
                 mOnRecordModeListener.onRecordModeSelect(RecordModeView.RECORD_MODE_CLICK);
             }
         } else if (id == R.id.tv_touch) {
-            if (mTvPhoto.isSelected()) {
+            if (mTextPhoto.isSelected()) {
                 xGap = -2.0f / 3;
-            } else if (mTvClick.isSelected()) {
+            } else if (mTextClick.isSelected()) {
                 xGap = -1.0f / 3;
             }
-            mTvPhoto.setSelected(false);
-            mTvClick.setSelected(false);
-            mTvTouch.setSelected(true);
+            mTextPhoto.setSelected(false);
+            mTextClick.setSelected(false);
+            mTextTouch.setSelected(true);
 
             if (mOnRecordModeListener != null) {
                 mOnRecordModeListener.onRecordModeSelect(RecordModeView.RECORD_MODE_LONG_TOUCH);

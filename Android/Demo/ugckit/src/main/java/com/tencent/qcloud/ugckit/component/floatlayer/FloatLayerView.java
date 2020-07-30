@@ -46,15 +46,15 @@ public class FloatLayerView extends View implements IFloatLayerView {
     /**
      * 一些默认的常量
      */
-    private static final int DEFAULT_FRAME_PADDING = 0;
-    private static final int DEFAULT_FRAME_WIDTH = 2;
-    private static final int DEFAULT_FRAME_COLOR = Color.WHITE;
-    private static final float DEFAULT_SCALE = 1.0f;
-    private static final float DEFAULT_DEGREE = 0;
-    private static final int DEFAULT_CONTROL_LOCATION = RIGHT_TOP;
+    private static final int     DEFAULT_FRAME_PADDING = 0;
+    private static final int     DEFAULT_FRAME_WIDTH = 2;
+    private static final int     DEFAULT_FRAME_COLOR = Color.WHITE;
+    private static final float   DEFAULT_SCALE = 1.0f;
+    private static final float   DEFAULT_DEGREE = 0;
+    private static final int     DEFAULT_CONTROL_LOCATION = RIGHT_TOP;
     private static final boolean DEFAULT_EDITABLE = true;
-    private static final int DEFAULT_OTHER_DRAWABLE_WIDTH = 50;
-    private static final int DEFAULT_OTHER_DRAWABLE_HEIGHT = 50;
+    private static final int     DEFAULT_OTHER_DRAWABLE_WIDTH = 50;
+    private static final int     DEFAULT_OTHER_DRAWABLE_HEIGHT = 50;
 
     private boolean isMeasured;
 
@@ -287,26 +287,26 @@ public class FloatLayerView extends View implements IFloatLayerView {
         framePadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_FRAME_PADDING, metrics);
         frameWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_FRAME_WIDTH, metrics);
 
-        TypedArray mTypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.FloatLayerView);
+        TypedArray mTypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitFloatLayerView);
 
-        Drawable srcDrawable = mTypedArray.getDrawable(R.styleable.FloatLayerView_src);
+        Drawable srcDrawable = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_src);
         mBitmap = drawable2Bitmap(srcDrawable);
 
-        framePadding = mTypedArray.getDimensionPixelSize(R.styleable.FloatLayerView_framePadding, framePadding);
-        frameWidth = mTypedArray.getDimensionPixelSize(R.styleable.FloatLayerView_frameWidth, frameWidth);
-        frameColor = mTypedArray.getColor(R.styleable.FloatLayerView_frameColor, DEFAULT_FRAME_COLOR);
-        mScale = mTypedArray.getFloat(R.styleable.FloatLayerView_scale, DEFAULT_SCALE);
-        mDegree = mTypedArray.getFloat(R.styleable.FloatLayerView_degree, DEFAULT_DEGREE);
-        mRotateDrawable = mTypedArray.getDrawable(R.styleable.FloatLayerView_controlDrawable);
-        mControlLocation = mTypedArray.getInt(R.styleable.FloatLayerView_controlLocation, RIGHT_BOTTOM);
+        framePadding = mTypedArray.getDimensionPixelSize(R.styleable.UGCKitFloatLayerView_framePadding, framePadding);
+        frameWidth = mTypedArray.getDimensionPixelSize(R.styleable.UGCKitFloatLayerView_frameWidth, frameWidth);
+        frameColor = mTypedArray.getColor(R.styleable.UGCKitFloatLayerView_frameColor, DEFAULT_FRAME_COLOR);
+        mScale = mTypedArray.getFloat(R.styleable.UGCKitFloatLayerView_scale, DEFAULT_SCALE);
+        mDegree = mTypedArray.getFloat(R.styleable.UGCKitFloatLayerView_degree, DEFAULT_DEGREE);
+        mRotateDrawable = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_controlDrawable);
+        mControlLocation = mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_controlLocation, RIGHT_BOTTOM);
 
-        mEditDrawble = mTypedArray.getDrawable(R.styleable.FloatLayerView_editDrawable);
-        mEditLocation = mTypedArray.getInt(R.styleable.FloatLayerView_editLocation, RIGHT_TOP);
+        mEditDrawble = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_editDrawable);
+        mEditLocation = mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_editLocation, RIGHT_TOP);
 
-        mDeleteDrawable = mTypedArray.getDrawable(R.styleable.FloatLayerView_deleteDrawable);
-        mDeleteLocatoin = mTypedArray.getInt(R.styleable.FloatLayerView_deleteLocation, LEFT_TOP);
+        mDeleteDrawable = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_deleteDrawable);
+        mDeleteLocatoin = mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_deleteLocation, LEFT_TOP);
 
-        isEditable = mTypedArray.getBoolean(R.styleable.FloatLayerView_editable, DEFAULT_EDITABLE);
+        isEditable = mTypedArray.getBoolean(R.styleable.UGCKitFloatLayerView_editable, DEFAULT_EDITABLE);
 
         mTypedArray.recycle();
     }

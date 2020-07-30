@@ -94,7 +94,7 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
 
     private void init(Context context) {
         mContext = context;
-        inflate(getContext(), R.layout.item_edit_view, this);
+        inflate(getContext(), R.layout.ugckit_item_edit_view, this);
 
         mRangeSlider = (RangeSlider) findViewById(R.id.range_slider);
         mRangeSlider.setRangeChangeListener(this);
@@ -108,7 +108,7 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
         mAdapter = new TCVideoEditerAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
 
-        mSingleWidth = mContext.getResources().getDimensionPixelOffset(R.dimen.ugc_item_thumb_height);
+        mSingleWidth = mContext.getResources().getDimensionPixelOffset(R.dimen.ugckit_item_thumb_height);
     }
 
     /**
@@ -126,7 +126,7 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
         if (width > screenWidth) {
             width = screenWidth;
         }
-        layoutParams.width = width + 2 * resources.getDimensionPixelOffset(R.dimen.ugc_cut_margin);
+        layoutParams.width = width + 2 * resources.getDimensionPixelOffset(R.dimen.ugckit_cut_margin);
         setLayoutParams(layoutParams);
     }
 

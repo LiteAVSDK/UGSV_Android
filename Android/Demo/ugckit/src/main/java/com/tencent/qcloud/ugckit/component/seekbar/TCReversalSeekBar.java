@@ -87,14 +87,14 @@ public class TCReversalSeekBar extends View {
         int progressColor = Color.parseColor("#FF4081");
         int backgroundColor = Color.parseColor("#BBBBBB");
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TCReversalSeekBar);
-            mPointerDrawable = a.getDrawable(R.styleable.TCReversalSeekBar_rs_pointerBackground);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitTCReversalSeekBar);
+            mPointerDrawable = a.getDrawable(R.styleable.UGCKitTCReversalSeekBar_rs_pointerBackground);
             mHalfDrawableWidth = mPointerDrawable.getIntrinsicWidth() / 2;
-            progressColor = a.getColor(R.styleable.TCReversalSeekBar_rs_progressColor,
+            progressColor = a.getColor(R.styleable.UGCKitTCReversalSeekBar_rs_progressColor,
                     Color.parseColor("#FF4081"));
-            backgroundColor = a.getColor(R.styleable.TCReversalSeekBar_rs_backgroundColor,
+            backgroundColor = a.getColor(R.styleable.UGCKitTCReversalSeekBar_rs_backgroundColor,
                     Color.parseColor("#BBBBBB"));
-            mCurrentProgress = a.getFloat(R.styleable.TCReversalSeekBar_rs_progress, 0f);
+            mCurrentProgress = a.getFloat(R.styleable.UGCKitTCReversalSeekBar_rs_progress, 0f);
             a.recycle();
         }
         mNormalPaint = new Paint();

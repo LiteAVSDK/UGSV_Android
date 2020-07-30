@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MixRecordJoiner implements TXVideoJoiner.TXVideoJoinerListener {
-
-    private Context mContext;
-    private TXVideoJoiner mVideoJoiner;
+    private Context                mContext;
+    private TXVideoJoiner          mVideoJoiner;
     private IMixRecordJoinListener mListener;
-    private String mOutputPath;
+    private String                 mOutputPath;
 
     public MixRecordJoiner(Context mContext) {
         this.mContext = mContext.getApplicationContext();
@@ -38,7 +37,7 @@ public class MixRecordJoiner implements TXVideoJoiner.TXVideoJoinerListener {
     @Override
     public void onJoinComplete(TXVideoEditConstants.TXJoinerResult result) {
         if (result.retCode != TXVideoEditConstants.JOIN_RESULT_OK) {
-            ToastUtil.toastShortMessage(TextUtils.isEmpty(result.descMsg) ? mContext.getResources().getString(R.string.tc_video_record_activity_on_join_complete_synthesis_failed)
+            ToastUtil.toastShortMessage(TextUtils.isEmpty(result.descMsg) ? mContext.getResources().getString(R.string.ugckit_video_record_activity_on_join_complete_synthesis_failed)
                     : result.descMsg);
         }
         if (mListener != null) {

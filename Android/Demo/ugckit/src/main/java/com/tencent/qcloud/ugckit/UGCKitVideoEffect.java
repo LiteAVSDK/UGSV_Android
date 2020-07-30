@@ -17,14 +17,15 @@ import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
 
 public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgressController.VideoProgressSeekListener {
-    private OnVideoEffectListener mOnVideoEffectListener;
+
     private FragmentActivity mActivity;
-    private int confirmIcon;
+    private int              mConfirmIcon;
+
+    private OnVideoEffectListener mOnVideoEffectListener;
 
     public UGCKitVideoEffect(Context context) {
         super(context);
@@ -65,8 +66,8 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
     }
 
     private void initTitlebar() {
-        confirmIcon = UIAttributeUtil.getResResources(mActivity, R.attr.editerConfirmIcon, R.drawable.ic_edit_effect_confirm_selector);
-        getTitleBar().getRightButton().setBackgroundResource(confirmIcon);
+        mConfirmIcon = UIAttributeUtil.getResResources(mActivity, R.attr.editerConfirmIcon, R.drawable.ugckit_ic_edit_effect_confirm_selector);
+        getTitleBar().getRightButton().setBackgroundResource(mConfirmIcon);
         getTitleBar().getRightButton().setText("");
         getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override

@@ -52,22 +52,22 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
-    compile 'com.android.support:design:25.4.0'
-    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile "com.android.support:design:$rootProject.ext.supportSdkVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.ext.supportSdkVersion"
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 //    compile project(':liteav_sdk')
     compile rootProject.ext.liteavSdk
     compile 'com.android.support:multidex:1.0.0'
-    compile 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'de.hdodenhof:circleimageview:3.1.0'
     compile 'com.github.castorflex.verticalviewpager:library:19.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.android.support:support-annotations:24.2.0'
     compile 'com.tencent.bugly:crashreport:3.1.0'
     compile 'com.tencent.bugly:nativecrashreport:3.7.0'
     compile 'com.squareup.okhttp3:okhttp:3.11.0'
-    compile 'com.squareup.okio:okio:1.13.0'
-    compile('com.tencent.qcloud:cosxml:5.4.20') {
+    compile 'com.squareup.okio:okio:1.14.0'
+    compile('com.tencent.qcloud:cosxml:5.5.3') {
         exclude group: 'com.tencent.qcloud', module: 'mtaUtils' //关闭 mta 上报功能}
     }
     compile project(':beautysettingkit')

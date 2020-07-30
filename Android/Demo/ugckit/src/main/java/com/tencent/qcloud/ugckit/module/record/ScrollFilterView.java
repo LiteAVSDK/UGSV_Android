@@ -29,59 +29,33 @@ import com.tencent.qcloud.ugckit.R;
  */
 public class ScrollFilterView extends RelativeLayout implements View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener {
     private static final String TAG = "ScrollFilterView";
-    /**
-     * 当前滤镜Index
-     */
-    private int mCurFilterIndex = 0;
-    /**
-     * 左右滤镜的Index
-     */
-    private int mLeftIndex = 0;
-    private int mRightIndex = 1;
-    /**
-     * 之前左右滤镜的Index
-     */
-    private int mLastLeftIndex = -1;
-    private int mLastRightIndex = -1;
-    /**
-     * 左侧滤镜的比例
-     */
-    private float mLeftBitmapRatio;
-    /**
-     * 滑动的比例大小
-     */
-    private float mMoveRatio;
-    /**
-     * 已经开始滑动了标记
-     */
-    private boolean mStartScroll;
-    /**
-     * 是否往右滑动
-     */
-    private boolean mMoveRight;
-    /**
-     * 滤镜的是否需要发生改变
-     */
-    private boolean mIsNeedChange;
-    /**
-     * 是否正在执行动画
-     */
-    private boolean mIsDoingAnimator;
-    private ValueAnimator mFilterAnimator;
 
-    @Nullable
-    private Bitmap mLeftBitmap;
-    @Nullable
-    private Bitmap mRightBitmap;
+    private int     mCurFilterIndex = 0;     // 当前滤镜Index
+    private int     mLeftIndex = 0;          // 左右滤镜的Index
+    private int     mRightIndex = 1;
+    private int     mLastLeftIndex = -1;     // 之前左右滤镜的Index
+    private int     mLastRightIndex = -1;
+    private float   mLeftBitmapRatio;        // 左侧滤镜的比例
+    private float   mMoveRatio;              // 滑动的比例大小
+    private boolean mStartScroll;            // 已经开始滑动了标记
+    private boolean mMoveRight;              // 是否往右滑动
+    private boolean mIsNeedChange;           // 滤镜的是否需要发生改变
+    private boolean mIsDoingAnimator;        // 是否正在执行动画
+    private float   mLastScaleFactor;
+    private float  mScaleFactor;
 
-    private GestureDetector mGestureDetector;
-    private ScaleGestureDetector mScaleGestureDetector;
-    private TextView mTvFilter;
+    private ValueAnimator          mFilterAnimator;
+    @Nullable
+    private Bitmap                 mLeftBitmap;
+    @Nullable
+    private Bitmap                 mRightBitmap;
+    private GestureDetector        mGestureDetector;
+    private ScaleGestureDetector   mScaleGestureDetector;
+    private TextView               mTextFilter;
+    private BeautyPanel            mBeautyPanel;
+    private FrameLayout            mMaskLayout;
+
     private OnRecordFilterListener mOnRecordFilterListener;
-    private float mLastScaleFactor;
-    private float mScaleFactor;
-    private BeautyPanel mBeautyPanel;
-    private FrameLayout mMaskLayout;
 
     public ScrollFilterView(@NonNull Context context) {
         super(context);
@@ -99,11 +73,11 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.scroll_filter_view, this);
+        inflate(getContext(), R.layout.ugckit_scroll_filter_view, this);
 
         mMaskLayout = (FrameLayout) findViewById(R.id.mask);
         mMaskLayout.setOnTouchListener(this);
-        mTvFilter = (TextView) findViewById(R.id.tv_filter);
+        mTextFilter = (TextView) findViewById(R.id.tv_filter);
 
         mGestureDetector = new GestureDetector(getContext(), this);
         mScaleGestureDetector = new ScaleGestureDetector(getContext(), this);
@@ -211,19 +185,19 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
      */
     public void doTextAnimator(int index) {
         String filterName = ResourceUtils.getString(mBeautyPanel.getFilterItemInfo(index).getItemName());
-        mTvFilter.setText(filterName);
+        mTextFilter.setText(filterName);
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(400);
         alphaAnimation.setInterpolator(new LinearInterpolator());
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                mTvFilter.setVisibility(View.VISIBLE);
+                mTextFilter.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mTvFilter.setVisibility(View.GONE);
+                mTextFilter.setVisibility(View.GONE);
                 mIsDoingAnimator = false;
             }
 
@@ -232,7 +206,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
 
             }
         });
-        mTvFilter.startAnimation(alphaAnimation);
+        mTextFilter.startAnimation(alphaAnimation);
     }
 
     /************************************************************************/

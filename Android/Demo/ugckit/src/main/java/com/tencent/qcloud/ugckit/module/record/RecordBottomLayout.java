@@ -17,42 +17,27 @@ import com.tencent.ugc.TXUGCRecord;
 import java.util.Locale;
 
 public class RecordBottomLayout extends RelativeLayout implements View.OnClickListener {
-    private Activity mActivity;
+    private Activity            mActivity;
+    private ImageView           mImageCameraSwitch;         // 切换摄像头
+    private TextView            mTextProgressTime;
+    private ImageView           mImageDeleteLastPart;       // 删除上一段
+    private ImageView           mImageTorch;                // 闪光灯
+    private RecordProgressView  mRecordProgressView;        // 录制进度条
+    private RecordSpeedLayout   mRecordSpeedLayout;         // 速度面板
+    private RecordButton        mButtonRecord;              // 录制按钮
+    private RecordModeView      mRecordModeView;            // 录制模式[单击/长按]
+    private View                mRecordModeDot;
 
-    // 切换摄像头
-    private ImageView mIvCameraSwitch;
-    private TextView mTvProgressTime;
-    // 删除上一段
-    private ImageView mIvDeleteLastPart;
-    // 闪光灯
-    private ImageView mIvTorch;
-    // 录制进度条
-    private RecordProgressView mRecordProgressView;
-    // 速度面板
-    private RecordSpeedLayout mRecordSpeedLayout;
-    // 录制按钮
-    private RecordButton mRecordButton;
-    // 录制模式[单击/长按]
-    private RecordModeView mRecordModeView;
-    private View mRecordModeDot;
-    /**
-     * 是否前置摄像头UI判断
-     */
-    private boolean mFrontCameraFlag = true;
-    /**
-     * 是否打开闪光灯UI判断
-     */
-    private boolean mIsTorchOpenFlag;
-    /**
-     * 是否点击一次过"删除最有一段分段视频"按钮
-     */
-    private boolean isSelectDeleteLastPartFlag;
-    private OnDeleteLastPartListener mOnDeleteLastPartListener;
-    private int mTorchOnImage;
-    private int mTorchOffImage;
-    private int mTorchDisableImage;
+    private int     mTorchOnImage;
+    private int     mTorchOffImage;
+    private int     mTorchDisableImage;
+    private boolean mFrontCameraFlag = true;                //是否前置摄像头UI判断
+    private boolean mIsTorchOpenFlag;                       // 是否打开闪光灯UI判断
+    private boolean isSelectDeleteLastPartFlag;             // 是否点击一次过"删除最有一段分段视频"按钮
     private boolean mDisableTakePhoto;
     private boolean mDisableLongPressRecord;
+
+    private OnDeleteLastPartListener mOnDeleteLastPartListener;
 
     public RecordBottomLayout(Context context) {
         super(context);
@@ -71,20 +56,20 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.record_bottom_layout, this);
+        inflate(mActivity, R.layout.ugckit_record_bottom_layout, this);
 
-        mTvProgressTime = (TextView) findViewById(R.id.record_progress_time);
-        mTvProgressTime.setText(0.0f + getResources().getString(R.string.unit_second));
-        mTvProgressTime.setVisibility(View.INVISIBLE);
+        mTextProgressTime = (TextView) findViewById(R.id.record_progress_time);
+        mTextProgressTime.setText(0.0f + getResources().getString(R.string.ugckit_unit_second));
+        mTextProgressTime.setVisibility(View.INVISIBLE);
 
-        mIvDeleteLastPart = (ImageView) findViewById(R.id.iv_delete_last_part);
-        mIvDeleteLastPart.setOnClickListener(this);
+        mImageDeleteLastPart = (ImageView) findViewById(R.id.iv_delete_last_part);
+        mImageDeleteLastPart.setOnClickListener(this);
 
-        mIvTorch = (ImageView) findViewById(R.id.iv_torch);
-        mIvTorch.setOnClickListener(this);
+        mImageTorch = (ImageView) findViewById(R.id.iv_torch);
+        mImageTorch.setOnClickListener(this);
 
-        mIvCameraSwitch = (ImageView) findViewById(R.id.iv_switch_camera);
-        mIvCameraSwitch.setOnClickListener(this);
+        mImageCameraSwitch = (ImageView) findViewById(R.id.iv_switch_camera);
+        mImageCameraSwitch.setOnClickListener(this);
 
         mRecordProgressView = (RecordProgressView) findViewById(R.id.record_progress_view);
 
@@ -97,7 +82,7 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
             }
         });
 
-        mRecordButton = (RecordButton) findViewById(R.id.record_button);
+        mButtonRecord = (RecordButton) findViewById(R.id.record_button);
         mRecordModeView = (RecordModeView) findViewById(R.id.record_mode_view);
         mRecordModeDot = findViewById(R.id.record_mode_dot);
 
@@ -105,20 +90,20 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
         mRecordModeView.setOnRecordModeListener(new RecordModeView.OnRecordModeListener() {
             @Override
             public void onRecordModeSelect(int currentMode) {
-                mRecordButton.setCurrentRecordMode(currentMode);
+                mButtonRecord.setCurrentRecordMode(currentMode);
             }
         });
 
-        mTorchDisableImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchDisableIcon, R.drawable.ugc_torch_disable);
-        mTorchOffImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchOffIcon, R.drawable.selector_torch_close);
-        mTorchOnImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchOnIcon, R.drawable.selector_torch_open);
+        mTorchDisableImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchDisableIcon, R.drawable.ugckit_torch_disable);
+        mTorchOffImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchOffIcon, R.drawable.ugckit_selector_torch_close);
+        mTorchOnImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchOnIcon, R.drawable.ugckit_selector_torch_open);
 
         if (mFrontCameraFlag) {
-            mIvTorch.setVisibility(View.GONE);
-            mIvTorch.setImageResource(mTorchDisableImage);
+            mImageTorch.setVisibility(View.GONE);
+            mImageTorch.setImageResource(mTorchDisableImage);
         } else {
-            mIvTorch.setVisibility(View.VISIBLE);
-            mIvTorch.setImageResource(mTorchOffImage);
+            mImageTorch.setVisibility(View.VISIBLE);
+            mImageTorch.setImageResource(mTorchOffImage);
         }
     }
 
@@ -142,11 +127,11 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
         mFrontCameraFlag = !mFrontCameraFlag;
         mIsTorchOpenFlag = false;
         if (mFrontCameraFlag) {
-            mIvTorch.setVisibility(View.GONE);
-            mIvTorch.setImageResource(mTorchDisableImage);
+            mImageTorch.setVisibility(View.GONE);
+            mImageTorch.setImageResource(mTorchDisableImage);
         } else {
-            mIvTorch.setVisibility(View.VISIBLE);
-            mIvTorch.setImageResource(mTorchOffImage);
+            mImageTorch.setVisibility(View.VISIBLE);
+            mImageTorch.setImageResource(mTorchOffImage);
         }
         TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
         if (record != null) {
@@ -160,14 +145,14 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     private void toggleTorch() {
         mIsTorchOpenFlag = !mIsTorchOpenFlag;
         if (mIsTorchOpenFlag) {
-            mIvTorch.setImageResource(mTorchOnImage);
+            mImageTorch.setImageResource(mTorchOnImage);
 
             TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
             if (record != null) {
                 record.toggleTorch(true);
             }
         } else {
-            mIvTorch.setImageResource(mTorchOffImage);
+            mImageTorch.setImageResource(mTorchOffImage);
             TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
             if (record != null) {
                 record.toggleTorch(false);
@@ -182,11 +167,11 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
         if (mIsTorchOpenFlag) {
             mIsTorchOpenFlag = false;
             if (mFrontCameraFlag) {
-                mIvTorch.setVisibility(View.GONE);
-                mIvTorch.setImageResource(mTorchDisableImage);
+                mImageTorch.setVisibility(View.GONE);
+                mImageTorch.setImageResource(mTorchDisableImage);
             } else {
-                mIvTorch.setImageResource(mTorchOffImage);
-                mIvTorch.setVisibility(View.VISIBLE);
+                mImageTorch.setImageResource(mTorchOffImage);
+                mImageTorch.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -213,7 +198,7 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
 
             long duration = VideoRecordSDK.getInstance().getPartManager().getDuration();
             float timeSecond = duration / 1000;
-            mTvProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond) + getResources().getString(R.string.unit_second));
+            mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond) + getResources().getString(R.string.ugckit_unit_second));
 
             mOnDeleteLastPartListener.onUpdateTitle(timeSecond >= UGCKitRecordConfig.getInstance().mMinDuration / 1000);
 
@@ -226,7 +211,7 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     }
 
     public void setOnRecordButtonListener(RecordButton.OnRecordButtonListener listener) {
-        mRecordButton.setOnRecordButtonListener(listener);
+        mButtonRecord.setOnRecordButtonListener(listener);
     }
 
     public void setOnDeleteLastPartListener(OnDeleteLastPartListener lister) {
@@ -262,21 +247,21 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     }
 
     public void startRecord() {
-        mIvDeleteLastPart.setVisibility(View.INVISIBLE);
-        mIvCameraSwitch.setVisibility(View.INVISIBLE);
-        mIvTorch.setVisibility(View.INVISIBLE);
+        mImageDeleteLastPart.setVisibility(View.INVISIBLE);
+        mImageCameraSwitch.setVisibility(View.INVISIBLE);
+        mImageTorch.setVisibility(View.INVISIBLE);
         mRecordModeView.setVisibility(View.INVISIBLE);
         mRecordSpeedLayout.setVisibility(View.INVISIBLE);
-        mTvProgressTime.setVisibility(View.VISIBLE);
+        mTextProgressTime.setVisibility(View.VISIBLE);
     }
 
     public void pauseRecord() {
-        mIvDeleteLastPart.setVisibility(View.VISIBLE);
-        mIvCameraSwitch.setVisibility(View.VISIBLE);
-        mIvTorch.setVisibility(View.VISIBLE);
+        mImageDeleteLastPart.setVisibility(View.VISIBLE);
+        mImageCameraSwitch.setVisibility(View.VISIBLE);
+        mImageTorch.setVisibility(View.VISIBLE);
         mRecordModeView.setVisibility(View.VISIBLE);
         mRecordSpeedLayout.setVisibility(View.VISIBLE);
-        mTvProgressTime.setVisibility(View.INVISIBLE);
+        mTextProgressTime.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -295,11 +280,11 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     public void updateProgress(long milliSecond) {
         mRecordProgressView.setProgress((int) milliSecond);
         float second = milliSecond / 1000f;
-        mTvProgressTime.setText(String.format(Locale.CHINA, "%.1f", second) + getResources().getString(R.string.unit_second));
+        mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", second) + getResources().getString(R.string.ugckit_unit_second));
     }
 
     public RecordButton getRecordButton() {
-        return mRecordButton;
+        return mButtonRecord;
     }
 
     public RecordModeView getRecordModeView() {

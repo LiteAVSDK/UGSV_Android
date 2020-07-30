@@ -11,10 +11,10 @@ import com.tencent.ugc.TXUGCRecord;
  * 录制-音乐管理
  */
 public class RecordMusicManager {
-
     private static final String TAG = "RecordMusicManager";
+
     @NonNull
-    private static RecordMusicManager instance = new RecordMusicManager();
+    private static RecordMusicManager sInstance = new RecordMusicManager();
     private MusicInfo mMusicInfo;
 
     private RecordMusicManager() {
@@ -23,7 +23,7 @@ public class RecordMusicManager {
 
     @NonNull
     public static RecordMusicManager getInstance() {
-        return instance;
+        return sInstance;
     }
 
     public void setRecordMusicInfo(@NonNull MusicInfo musicInfo) {

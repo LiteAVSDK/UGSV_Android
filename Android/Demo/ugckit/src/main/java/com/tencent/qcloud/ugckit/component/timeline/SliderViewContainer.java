@@ -22,7 +22,7 @@ public class SliderViewContainer extends LinearLayout {
     private ViewTouchProcess mViewTouchProcess;
 
     private OnStartTimeChangedListener mOnStartTimeChangedListener;
-    private int sliderIcon = R.drawable.ic_repeate_range;
+    private int sliderIcon = R.drawable.ugckit_ic_repeate_range;
 
     public void setSliderIcon(int icon) {
         sliderIcon = icon;
@@ -53,7 +53,7 @@ public class SliderViewContainer extends LinearLayout {
 
     private void init(Context context) {
         mContext = context;
-        mRootView = LayoutInflater.from(context).inflate(R.layout.layout_repeat_slider, this);
+        mRootView = LayoutInflater.from(context).inflate(R.layout.ugckit_layout_repeat_slider, this);
         mSliderView = (ImageView) mRootView.findViewById(R.id.iv_slider);
         mSliderView.setImageResource(sliderIcon);
 

@@ -2,7 +2,6 @@ package com.tencent.qcloud.ugckit.module.cut;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
@@ -23,12 +22,14 @@ import com.tencent.ugc.TXVideoEditConstants;
 
 public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, View.OnClickListener, Edit.OnCutChangeListener {
     private static final String TAG = "VideoCutLayout";
+
     private FragmentActivity mActivity;
-    private ImageView mIvRotate;
-    private TextView mTvDuration;
-    private VideoCutView mVideoCutView;
+    private ImageView        mImageRotate;
+    private TextView         mTextDuration;
+    private VideoCutView     mVideoCutView;
 
     private int mRotation;
+
     private OnRotateVideoListener mOnRotateVideoListener;
 
     public VideoCutLayout(Context context) {
@@ -48,20 +49,21 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
 
     private void initViews() {
         mActivity = (FragmentActivity) getContext();
-        inflate(mActivity, R.layout.video_cut_kit, this);
+        inflate(mActivity, R.layout.ugckit_video_cut_kit, this);
 
-        mTvDuration = (TextView) findViewById(R.id.tv_choose_duration);
-        mIvRotate = (ImageView) findViewById(R.id.iv_rotate);
+        mTextDuration = (TextView) findViewById(R.id.tv_choose_duration);
+        mImageRotate = (ImageView) findViewById(R.id.iv_rotate);
         mVideoCutView = (VideoCutView) findViewById(R.id.video_edit_view);
 
-        mIvRotate.setOnClickListener(this);
+        mImageRotate.setOnClickListener(this);
         mVideoCutView.setCutChangeListener(this);
     }
 
     @Override
     public void onClick(@NonNull View view) {
         if (view.getId() == R.id.iv_rotate) {
-            mRotation += 90;
+            // 当旋转角度大于等于270度的时候，下一次就是0度；
+            mRotation = mRotation < 270 ? mRotation + 90 : 0;
 
             if (mOnRotateVideoListener != null) {
                 mOnRotateVideoListener.onRotate(mRotation);
@@ -83,8 +85,8 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
     public void onCutChangeKeyUp(long startTime, long endTime, int type) {
         long duration = (endTime - startTime) / 1000;
 
-        String str = getResources().getString(R.string.tc_video_cutter_activity_load_video_success_already_picked) + duration + "s";
-        mTvDuration.setText(str);
+        String str = getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + duration + "s";
+        mTextDuration.setText(str);
 
         PlayerManagerKit.getInstance().startPlay();
         VideoEditerSDK.getInstance().setCutterStartTime(startTime, endTime);
@@ -102,7 +104,7 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
         if (durationS >= MAX_DURATION) {
             durationS = MAX_DURATION;
         }
-        mTvDuration.setText(getResources().getString(R.string.tc_video_cutter_activity_load_video_success_already_picked) + durationS + "s");
+        mTextDuration.setText(getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + durationS + "s");
 
         TXCLog.i(TAG, "[UGCKit][VideoCut]init cut time, start:" + 0 + ", end:" + durationS * 1000);
         VideoEditerSDK.getInstance().setCutterStartTime(0, durationS * 1000);

@@ -9,9 +9,8 @@ import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
 public abstract class AbsPictureJoinUI extends RelativeLayout implements IPictureJoinKit {
-
-    private TitleBarLayout mTitleBar;
-    private VideoPlayLayout mVideoPlayLayout;
+    private TitleBarLayout          mTitleBar;
+    private VideoPlayLayout         mVideoPlayLayout;
     private PictureTransitionLayout mPictureTransitionLayout;
 
     public AbsPictureJoinUI(Context context) {
@@ -30,7 +29,7 @@ public abstract class AbsPictureJoinUI extends RelativeLayout implements IPictur
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.pic_join_layout, this);
+        inflate(getContext(), R.layout.ugckit_pic_join_layout, this);
 
         mTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
         mVideoPlayLayout = (VideoPlayLayout) findViewById(R.id.picture_play_layout);

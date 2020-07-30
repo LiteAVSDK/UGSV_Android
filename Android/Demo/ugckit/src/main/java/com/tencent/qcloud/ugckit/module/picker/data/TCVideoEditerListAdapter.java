@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.picker.data;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -16,18 +15,18 @@ import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 import com.tencent.qcloud.ugckit.R;
 
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditerListAdapter.ViewHolder> {
 
     private Context mContext;
-    @NonNull
-    private ArrayList<TCVideoFileInfo> data = new ArrayList<TCVideoFileInfo>();
-    private int mLastSelected = -1;
+    private int     mLastSelected = -1;
     private boolean mMultiplePick;
-    private boolean isOrdered;
-    private ItemView.OnAddListener mOnAddListener;
+    private boolean mIsOrdered;
+
+    @NonNull
+    private ArrayList<TCVideoFileInfo> mData = new ArrayList<TCVideoFileInfo>();
+    private ItemView.OnAddListener     mOnAddListener;
     private ArrayList<TCVideoFileInfo> mOrderFileList;
 
     public TCVideoEditerListAdapter(Context context) {
@@ -37,13 +36,13 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = View.inflate(parent.getContext(), R.layout.item_ugc_video, null);
+        View view = View.inflate(parent.getContext(), R.layout.ugckit_item_ugc_video, null);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final TCVideoFileInfo fileInfo = data.get(position);
+        final TCVideoFileInfo fileInfo = mData.get(position);
         if (fileInfo.getFileType() == TCVideoFileInfo.FILE_TYPE_VIDEO) {
             holder.duration.setText(DateTimeUtil.formattedTime(fileInfo.getDuration() / 1000));
         }
@@ -65,7 +64,7 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     /**
@@ -76,7 +75,7 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
      */
     public void setMultiplePick(boolean multiplePick, boolean order) {
         mMultiplePick = multiplePick;
-        isOrdered = order;
+        mIsOrdered = order;
     }
 
     public void setOnItemAddListener(ItemView.OnAddListener onAddListener) {
@@ -100,9 +99,9 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
     public ArrayList<TCVideoFileInfo> getMultiSelected() {
         ArrayList<TCVideoFileInfo> infos = new ArrayList<TCVideoFileInfo>();
 
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).isSelected()) {
-                infos.add(data.get(i));
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).isSelected()) {
+                infos.add(mData.get(i));
             }
         }
         return infos;
@@ -110,9 +109,9 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
 
     @Nullable
     public TCVideoFileInfo getSingleSelected() {
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).isSelected()) {
-                return data.get(i);
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).isSelected()) {
+                return mData.get(i);
             }
         }
         return null;
@@ -120,8 +119,8 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
 
     public void addAll(@NonNull ArrayList<TCVideoFileInfo> files) {
         try {
-            this.data.clear();
-            this.data.addAll(files);
+            this.mData.clear();
+            this.mData.addAll(files);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,11 +129,11 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
 
     public void changeSingleSelection(int position) {
         if (mLastSelected != -1) {
-            data.get(mLastSelected).setSelected(false);
+            mData.get(mLastSelected).setSelected(false);
         }
         notifyItemChanged(mLastSelected);
 
-        TCVideoFileInfo info = data.get(position);
+        TCVideoFileInfo info = mData.get(position);
         info.setSelected(true);
         notifyItemChanged(position);
 
@@ -142,11 +141,11 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
     }
 
     public void changeMultiSelection(int position) {
-        if (isOrdered) {
+        if (mIsOrdered) {
             if (mOrderFileList == null) {
                 mOrderFileList = new ArrayList<>();
             }
-            TCVideoFileInfo fileInfo = data.get(position);
+            TCVideoFileInfo fileInfo = mData.get(position);
 
             if (fileInfo.isSelected()) {
                 fileInfo.setSelected(false);
@@ -162,10 +161,10 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
                 mOrderFileList.add(fileInfo);
             }
         } else {
-            if (data.get(position).isSelected()) {
-                data.get(position).setSelected(false);
+            if (mData.get(position).isSelected()) {
+                mData.get(position).setSelected(false);
             } else {
-                data.get(position).setSelected(true);
+                mData.get(position).setSelected(true);
             }
         }
         notifyItemChanged(position);

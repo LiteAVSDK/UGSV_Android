@@ -23,8 +23,9 @@ import java.util.List;
  */
 public class TCBubbleManager {
     private static final String ROOT_DIR = "bubble";
+
     private static TCBubbleManager sInstance;
-    private final Context mContext;
+    private final Context          mContext;
 
     public static TCBubbleManager getInstance(@NonNull Context context) {
         if (sInstance == null)

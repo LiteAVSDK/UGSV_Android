@@ -55,7 +55,7 @@ public class ColorfulProgress extends View {
         mPaint.setAntiAlias(true);
         mColorPaint.setAntiAlias(true);
 
-        mPaint.setColor(getResources().getColor(R.color.transparent));
+        mPaint.setColor(getResources().getColor(R.color.ugckit_transparent));
 
         mMarkInfoList = new ArrayList<>();
     }
