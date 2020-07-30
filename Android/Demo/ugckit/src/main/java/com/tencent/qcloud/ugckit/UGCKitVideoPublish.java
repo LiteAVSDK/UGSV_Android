@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
 import com.tencent.qcloud.ugckit.module.upload.TCVideoPublishKit;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublish;
@@ -27,7 +28,6 @@ import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.NetworkUtil;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
-import com.tencent.qcloud.ugckit.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -39,38 +39,28 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
     @NonNull
     private String TAG = "UGCKitVideoPublish";
 
-    private Context mContext;
-    // 返回
-    private ImageView mBtnBack;
-    private ImageView mImageViewBg;
-    // 发布视频进度条
-    private ProgressBar mProgressBar;
-    // 发布视频进度文字
-    private TextView mTvProgress;
-
+    private Context      mContext;
+    private ImageView    mImageBack;      // 返回
+    private ImageView    mImageViewBg;
+    private ProgressBar  mProgressBar;     // 发布视频进度条
+    private TextView     mTextProgress;     // 发布视频进度文字
     @Nullable
     private TXUGCPublish mVideoPublish = null;
+
     private boolean mIsFetchCosSig = false;
     @Nullable
-    private String mCosSignature = null;
+    private String  mCosSignature = null;
     @NonNull
     private Handler mHandler = new Handler();
-
     private boolean mAllDone = false;
     private boolean mDisableCache;
-    private String mLocalVideoPath;
+    private String  mLocalVideoPath;
+    @Nullable
+    private String  mVideoPath = null;  // 视频路径
+    @Nullable
+    private String  mCoverPath = null;  // 视频封面路径
 
     private TCVideoPublishKit.OnPublishListener mOnPublishListener;
-    /**
-     * 视频路径
-     */
-    @Nullable
-    private String mVideoPath = null;
-    /**
-     * 视频封面路径
-     */
-    @Nullable
-    private String mCoverPath = null;
 
     public UGCKitVideoPublish(Context context) {
         super(context);
@@ -97,13 +87,13 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
      */
     private void init(Context context) {
         mContext = context;
-        inflate(getContext(), R.layout.publish_video_layout, this);
+        inflate(getContext(), R.layout.ugckit_publish_video_layout, this);
 
-        mBtnBack = (ImageView) findViewById(R.id.btn_back);
-        mBtnBack.setOnClickListener(this);
+        mImageBack = (ImageView) findViewById(R.id.btn_back);
+        mImageBack.setOnClickListener(this);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
-        mTvProgress = (TextView) findViewById(R.id.tv_progress);
+        mTextProgress = (TextView) findViewById(R.id.tv_progress);
         mImageViewBg = (ImageView) findViewById(R.id.bg_iv);
 
         publishVideo();
@@ -118,7 +108,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
 //            startActivity(intent);
         } else {
             if (!NetworkUtil.isNetworkAvailable(mContext)) {
-                ToastUtil.toastShortMessage(getResources().getString(R.string.tc_video_publisher_activity_no_network_connection));
+                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_video_publisher_activity_no_network_connection));
                 return;
             }
             fetchSignature();
@@ -185,7 +175,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
                 NetworkUtil.getInstance(UGCKitImpl.getAppContext()).setNetchangeListener(new NetworkUtil.NetchangeListener() {
                     @Override
                     public void onNetworkAvailable() {
-                        mTvProgress.setText(getResources().getString(R.string.tc_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
+                        mTextProgress.setText(getResources().getString(R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
                     }
                 });
                 NetworkUtil.getInstance(UGCKitImpl.getAppContext()).registerNetChangeReceiver();
@@ -227,7 +217,11 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
      */
     private void loadCoverImage() {
         if (mCoverPath != null) {
-            Glide.with(mContext).load(Uri.fromFile(new File(mCoverPath))).into(mImageViewBg);
+            Glide.with(mContext)
+                    .load(Uri.fromFile(new File(mCoverPath)))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(mImageViewBg);
         }
     }
 
@@ -236,8 +230,8 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
      */
     private void showCancelPublishDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        AlertDialog alertDialog = builder.setTitle(mContext.getString(R.string.cancel_publish_title)).setCancelable(false).setMessage(R.string.cancel_publish_msg)
-                .setPositiveButton(R.string.cancel_publish_title, new DialogInterface.OnClickListener() {
+        AlertDialog alertDialog = builder.setTitle(mContext.getString(R.string.ugckit_cancel_publish_title)).setCancelable(false).setMessage(R.string.ugckit_cancel_publish_msg)
+                .setPositiveButton(R.string.ugckit_cancel_publish_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         if (mVideoPublish != null) {
@@ -249,7 +243,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
                         }
                     }
                 })
-                .setNegativeButton(mContext.getString(R.string.wrong_click), new DialogInterface.OnClickListener() {
+                .setNegativeButton(mContext.getString(R.string.ugckit_wrong_click), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -269,7 +263,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
         int progress = (int) (uploadBytes * 100 / totalBytes);
         Log.d(TAG, "onPublishProgress:" + progress);
         mProgressBar.setProgress(progress);
-        mTvProgress.setText(getResources().getString(R.string.tc_video_publisher_activity_is_uploading) + progress + "%");
+        mTextProgress.setText(getResources().getString(R.string.ugckit_video_publisher_activity_is_uploading) + progress + "%");
     }
 
     /**
@@ -288,13 +282,13 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
         LogReport.getInstance().reportPublishVideo(publishResult);
 
         if (publishResult.retCode == TXUGCPublishTypeDef.PUBLISH_RESULT_OK) {
-            mBtnBack.setVisibility(View.GONE);
+            mImageBack.setVisibility(View.GONE);
             UploadUGCVideo(publishResult.videoId, publishResult.videoURL, publishResult.coverURL);
         } else {
             if (publishResult.descMsg.contains("java.net.UnknownHostException") || publishResult.descMsg.contains("java.net.ConnectException")) {
-                mTvProgress.setText(mContext.getResources().getString(R.string.tc_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
+                mTextProgress.setText(mContext.getResources().getString(R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
             } else {
-                mTvProgress.setText(publishResult.descMsg);
+                mTextProgress.setText(publishResult.descMsg);
             }
             Log.e(TAG, publishResult.descMsg);
         }

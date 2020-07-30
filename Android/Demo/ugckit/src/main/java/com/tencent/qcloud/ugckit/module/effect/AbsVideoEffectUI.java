@@ -20,25 +20,22 @@ import com.tencent.qcloud.ugckit.module.effect.paster.view.PasterPannel;
 import com.tencent.qcloud.ugckit.module.effect.time.TCTimeFragment;
 
 public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoEffectKit {
-    private TitleBarLayout mTitleBar;
-    private VideoPlayLayout mVideoPlayLayout;
-
-    private TimeLineView mTimeLineView;
-    private PlayControlLayout mPlayControlLayout;
-
-    private FloatLayerViewGroup mBubbleContainer;
-    private FloatLayerViewGroup mPasterContainer;
-
-    private PasterPannel mPasterSelectView;
-    private BubbleSubtitlePannel mBubbleSettingView;
-
-    private Fragment mCurrentFragment;
-    private TCTimeFragment mTimeFragment;
-    private TCStaticFilterFragment mStaticFilterFragment;
-    private TCMotionFragment mMotionFragment;
-    private TCPasterFragment mPasterFragment;
+    private TitleBarLayout           mTitleBar;
+    private VideoPlayLayout          mVideoPlayLayout;
+    private TimeLineView             mTimeLineView;
+    private PlayControlLayout        mPlayControlLayout;
+    private FloatLayerViewGroup      mBubbleContainer;
+    private FloatLayerViewGroup      mPasterContainer;
+    private PasterPannel             mPasterSelectView;
+    private BubbleSubtitlePannel     mBubbleSettingView;
+    private Fragment                 mCurrentFragment;
+    private TCTimeFragment           mTimeFragment;
+    private TCStaticFilterFragment   mStaticFilterFragment;
+    private TCMotionFragment         mMotionFragment;
+    private TCPasterFragment         mPasterFragment;
     private TCBubbleSubtitleFragment mBubbleFragment;
-    private TCMusicSettingFragment mMusicFragment;
+    private TCMusicSettingFragment   mMusicFragment;
+
     private TimeLineView.OnTimeLineListener mOnTimeLineListener = new TimeLineView.OnTimeLineListener() {
         @Override
         public void onAddSlider(int type, long startEffectTime) {
@@ -86,7 +83,7 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.video_eff_layout, this);
+        inflate(getContext(), R.layout.ugckit_video_eff_layout, this);
 
         mTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
         mVideoPlayLayout = (VideoPlayLayout) findViewById(R.id.video_play_layout);

@@ -28,13 +28,15 @@ import java.io.IOException;
 public class AlbumSaver {
 
     private static final String TAG = "AlbumSaver";
-    public static final String VOLUME_EXTERNAL_PRIMARY = "external_primary";
+    public static final String  VOLUME_EXTERNAL_PRIMARY = "external_primary";
     private static final String IS_PENDING = "is_pending";
-    private static AlbumSaver sInstance;
+
+    private static AlbumSaver     sInstance;
     private final ContentResolver mContentResolver;
-    private final Context mContext;
-    private String mVideoOutputPath;
-    private long mVideoDuration;
+    private final Context         mContext;
+
+    private long    mVideoDuration;
+    private String  mVideoOutputPath;
     private String mCoverImagePath;
 
     public static AlbumSaver getInstance(@NonNull Context context) {

@@ -15,14 +15,17 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
 
     private static final String TAG = "PlayerKit";
     @NonNull
-    private static PlayerManagerKit instance = new PlayerManagerKit();
-    private int mCurrentState;
-    private long mPreviewAtTime;
+    private static PlayerManagerKit sInstance = new PlayerManagerKit();
+
+    private int    mCurrentState;
+    private long   mPreviewAtTime;
     public boolean isPreviewFinish;
-    private List<OnPreviewListener> mProgressListenerList;
-    private List<OnPlayStateListener> mStateListenerList;
+
     private Object mProgressObject = new Object();
-    private Object mStateObject = new Object();
+    private Object mStateObject    = new Object();
+
+    private List<OnPreviewListener>   mProgressListenerList;
+    private List<OnPlayStateListener> mStateListenerList;
 
     private PlayerManagerKit() {
         mProgressListenerList = new ArrayList<OnPreviewListener>();
@@ -32,7 +35,7 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
 
     @NonNull
     public static PlayerManagerKit getInstance() {
-        return instance;
+        return sInstance;
     }
 
     /**

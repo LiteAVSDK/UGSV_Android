@@ -11,14 +11,15 @@ import java.io.Serializable;
 public class TCVideoFileInfo implements Parcelable {
     public static final int FILE_TYPE_VIDEO = 0;
     public static final int FILE_TYPE_PICTURE = 1;
-    private int fileId;
-    private String filePath;
-    private String fileName;
-    private String thumbPath;
+
+    private int     fileId;
+    private String  filePath;
+    private String  fileName;
+    private String  thumbPath;
+    private long    duration;
+    private Uri     fileUri;
+    private int     fileType   = FILE_TYPE_VIDEO;
     private boolean isSelected = false;
-    private long duration;
-    private int fileType = FILE_TYPE_VIDEO;
-    private Uri fileUri;
 
     public TCVideoFileInfo() {
     }

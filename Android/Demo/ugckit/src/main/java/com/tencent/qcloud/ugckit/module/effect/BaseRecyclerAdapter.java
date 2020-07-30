@@ -14,9 +14,11 @@ import java.lang.ref.WeakReference;
  * 2. 添加item的长安点击事件
  */
 public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<V> implements View.OnClickListener, View.OnLongClickListener {
-    protected OnItemClickListener mOnItemClickListener;
-    protected OnItemLongClickListener mOnItemLongClickListener;
+
     private WeakReference<RecyclerView> mRecyclerView;
+
+    protected OnItemClickListener       mOnItemClickListener;
+    protected OnItemLongClickListener   mOnItemLongClickListener;
 
     @Override
     public void onBindViewHolder(@Nullable V holder, int position) {

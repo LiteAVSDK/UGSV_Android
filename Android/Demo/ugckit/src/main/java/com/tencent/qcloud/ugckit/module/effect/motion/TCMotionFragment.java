@@ -36,19 +36,18 @@ import java.util.Map;
 public class TCMotionFragment extends AbsMotionFragment implements View.OnClickListener, View.OnTouchListener {
     private static final String TAG = "TCMotionFragment";
 
-    private boolean mIsOnTouch; // 是否已经有按下的
-    private TXVideoEditer mTXVideoEditer;
-
-    private ColorfulProgress mColorfulProgress;
-    private VideoProgressController mVideoProgressController;
-    private ImageView mIvUndo;
-    private boolean mStartMark;
+    private boolean                   mIsOnTouch;       // 是否已经有按下的
+    private TXVideoEditer              mTXVideoEditer;
+    private ColorfulProgress           mColorfulProgress;
+    private ImageView                  mImageUndo;
+    private VideoProgressController    mVideoProgressController;
+    private boolean                    mStartMark;
     private Map<Integer, TCMotionItem> mMotionMap;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_motion, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_motion, container, false);
     }
 
     @Override
@@ -85,39 +84,39 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
     }
 
     private void initViews(@NonNull View view) {
-        mIvUndo = (ImageView) view.findViewById(R.id.iv_undo);
-        mIvUndo.setOnClickListener(this);
+        mImageUndo = (ImageView) view.findViewById(R.id.iv_undo);
+        mImageUndo.setOnClickListener(this);
 
         mColorfulProgress = new ColorfulProgress(getContext());
-        mColorfulProgress.setWidthHeight(mVideoProgressController.getThumbnailPicListDisplayWidth(), getResources().getDimensionPixelOffset(R.dimen.video_progress_height));
+        mColorfulProgress.setWidthHeight(mVideoProgressController.getThumbnailPicListDisplayWidth(), getResources().getDimensionPixelOffset(R.dimen.ugckit_video_progress_height));
         mColorfulProgress.setMarkInfoList(TCMotionViewInfoManager.getInstance().getMarkInfoList());
         mVideoProgressController.addColorfulProgress(mColorfulProgress);
     }
 
     private void setDefaultValue(Context context, View view) {
-        soulOutGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionSoulOutIcon, R.drawable.motion_soul_out);
-        splitScreenGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionSplitScreenIcon, R.drawable.motion_split_screen);
-        rockLightGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionRockLightIcon, R.drawable.motion_rock_light);
-        darkDreamGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionDarkDreamIcon, R.drawable.motion_dark_dream);
-        winShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionWinShadowIcon, R.drawable.motion_win_shaddow);
-        ghostShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionGhostIcon, R.drawable.motion_ghost);
-        phantomShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionPhantomShadowIcon, R.drawable.motion_phantom_shaddow);
-        ghostShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionGhostShadowIcon, R.drawable.motion_ghost_shaddow);
-        lightningGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionLightningIcon, R.drawable.motion_lightning);
-        mirrorGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionMirrorIcon, R.drawable.motion_mirror);
-        illusionGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionIllusionIcon, R.drawable.motion_illusion);
+        soulOutGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionSoulOutIcon, R.drawable.ugckit_motion_soul_out);
+        splitScreenGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionSplitScreenIcon, R.drawable.ugckit_motion_split_screen);
+        rockLightGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionRockLightIcon, R.drawable.ugckit_motion_rock_light);
+        darkDreamGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionDarkDreamIcon, R.drawable.ugckit_motion_dark_dream);
+        winShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionWinShadowIcon, R.drawable.ugckit_motion_win_shaddow);
+        ghostShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionGhostIcon, R.drawable.ugckit_motion_ghost);
+        phantomShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionPhantomShadowIcon, R.drawable.ugckit_motion_phantom_shaddow);
+        ghostShadowGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionGhostShadowIcon, R.drawable.ugckit_motion_ghost_shaddow);
+        lightningGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionLightningIcon, R.drawable.ugckit_motion_lightning);
+        mirrorGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionMirrorIcon, R.drawable.ugckit_motion_mirror);
+        illusionGif = UIAttributeUtil.getResResources(context, R.attr.editerMotionIllusionIcon, R.drawable.ugckit_motion_illusion);
 
-        soulOutColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionSoulOutCoverColor, R.color.soul_out_color_press);
-        splitScreenColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionSplitScreenCoverColor, R.color.screen_split_press);
-        rockLightColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionRockLightCoverColor, R.color.rock_light_press);
-        darkDreamColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionDarkDreamCoverColor, R.color.dark_dream_press);
-        winShadowColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionWinShadowCoverColor, R.color.win_shaddow_color_press);
-        ghostShadowColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionGhostShadowCoverColor, R.color.ghost_shaddow_color_press);
-        phantomShadowColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionPhantomShadowCoverColor, R.color.phantom_shaddow_color_press);
-        ghostColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionGhostCoverColor, R.color.ghost_color_press);
-        lightningColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionLightningCoverColor, R.color.lightning_color_press);
-        mirrorColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionMirrorCoverColor, R.color.mirror_color_press);
-        illusionColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionIllusionCoverColor, R.color.illusion_color_press);
+        soulOutColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionSoulOutCoverColor, R.color.ugckit_soul_out_color_press);
+        splitScreenColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionSplitScreenCoverColor, R.color.ugckit_screen_split_press);
+        rockLightColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionRockLightCoverColor, R.color.ugckit_rock_light_press);
+        darkDreamColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionDarkDreamCoverColor, R.color.ugckit_dark_dream_press);
+        winShadowColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionWinShadowCoverColor, R.color.ugckit_win_shaddow_color_press);
+        ghostShadowColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionGhostShadowCoverColor, R.color.ugckit_ghost_shaddow_color_press);
+        phantomShadowColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionPhantomShadowCoverColor, R.color.ugckit_phantom_shaddow_color_press);
+        ghostColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionGhostCoverColor, R.color.ugckit_ghost_color_press);
+        lightningColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionLightningCoverColor, R.color.ugckit_lightning_color_press);
+        mirrorColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionMirrorCoverColor, R.color.ugckit_mirror_color_press);
+        illusionColor = UIAttributeUtil.getColorRes(context, R.attr.editerMotionIllusionCoverColor, R.color.ugckit_illusion_color_press);
 
         mMotionMap = new HashMap<>();
         mMotionMap.put(R.id.btn_soul_out, new TCMotionItem(R.id.btn_soul_out, R.id.rl_spirit_out_select_container, soulOutGif, TXVideoEditConstants.TXEffectType_SOUL_OUT));
@@ -161,9 +160,9 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
 
         mTXVideoEditer.deleteLastEffect();
         if (mColorfulProgress.getMarkListSize() > 0) {
-            mIvUndo.setVisibility(View.VISIBLE);
+            mImageUndo.setVisibility(View.VISIBLE);
         } else {
-            mIvUndo.setVisibility(View.GONE);
+            mImageUndo.setVisibility(View.GONE);
         }
     }
 
@@ -260,7 +259,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         mTXVideoEditer.stopEffect(type, currentTime);
         // 显示撤销的按钮
         if (mColorfulProgress.getMarkListSize() > 0) {
-            mIvUndo.setVisibility(View.VISIBLE);
+            mImageUndo.setVisibility(View.VISIBLE);
         }
     }
 }

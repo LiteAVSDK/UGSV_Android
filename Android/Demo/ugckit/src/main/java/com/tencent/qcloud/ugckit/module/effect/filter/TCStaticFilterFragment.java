@@ -27,69 +27,69 @@ import java.util.List;
  */
 public class TCStaticFilterFragment extends Fragment implements BaseRecyclerAdapter.OnItemClickListener {
     private static final int[] FILTER_ARR = {
-            R.drawable.filter_biaozhun, R.drawable.filter_yinghong,
-            R.drawable.filter_yunshang, R.drawable.filter_chunzhen,
-            R.drawable.filter_bailan, R.drawable.filter_yuanqi,
-            R.drawable.filter_chaotuo, R.drawable.filter_xiangfen,
+            R.drawable.ugckit_filter_biaozhun, R.drawable.ugckit_filter_yinghong,
+            R.drawable.ugckit_filter_yunshang, R.drawable.ugckit_filter_chunzhen,
+            R.drawable.ugckit_filter_bailan, R.drawable.ugckit_filter_yuanqi,
+            R.drawable.ugckit_filter_chaotuo, R.drawable.ugckit_filter_xiangfen,
 
-            R.drawable.filter_langman, R.drawable.filter_qingxin,
-            R.drawable.filter_weimei, R.drawable.filter_fennen,
-            R.drawable.filter_huaijiu, R.drawable.filter_landiao,
-            R.drawable.filter_qingliang, R.drawable.filter_rixi};
+            R.drawable.ugckit_filter_langman, R.drawable.ugckit_filter_qingxin,
+            R.drawable.ugckit_filter_weimei, R.drawable.ugckit_filter_fennen,
+            R.drawable.ugckit_filter_huaijiu, R.drawable.ugckit_filter_landiao,
+            R.drawable.ugckit_filter_qingliang, R.drawable.ugckit_filter_rixi};
 
-    private List<Integer> mFilterList;
-    private List<String> mFilerNameList;
-    private RecyclerView mRvFilter;
+    private List<Integer>       mFilterList;
+    private List<String>        mFilerNameList;
+    private RecyclerView        mRvFilter;
     private StaticFilterAdapter mAdapter;
-    private int mCurrentPosition = 0;
-
-    //定制化Icon
-    private int originIcon = R.drawable.orginal;
-    private int normalIcon = R.drawable.biaozhun;
-    private int yinghongIcon = R.drawable.yinghong;
-    private int yunchangIcon = R.drawable.yunshang;
-    private int chunzhenIcon = R.drawable.chunzhen;
-    private int bailanIcon = R.drawable.bailan;
-    private int yuanqiIcon = R.drawable.yuanqi;
-    private int chaotuoIcon = R.drawable.chaotuo;
-    private int xiangfengIcon = R.drawable.xiangfen;
-    private int langmanIcon = R.drawable.langman;
-    private int qingxinIcon = R.drawable.qingxin;
-    private int weimeiIcon = R.drawable.weimei;
-    private int fennenIcon = R.drawable.fennen;
-    private int huaijiuIcon = R.drawable.huaijiu;
-    private int landiaoIcon = R.drawable.landiao;
-    private int qingliangIcon = R.drawable.qingliang;
-    private int rixiIcon = R.drawable.rixi;
-
+    private int                 mCurrentPosition = 0;
+    /**
+     * 定制化Icon
+     * */
+    private int originIcon    = R.drawable.ugckit_orginal;
+    private int normalIcon    = R.drawable.ugckit_biaozhun;
+    private int yinghongIcon  = R.drawable.ugckit_yinghong;
+    private int yunchangIcon  = R.drawable.ugckit_yunshang;
+    private int chunzhenIcon  = R.drawable.ugckit_chunzhen;
+    private int bailanIcon    = R.drawable.ugckit_bailan;
+    private int yuanqiIcon    = R.drawable.ugckit_yuanqi;
+    private int chaotuoIcon   = R.drawable.ugckit_chaotuo;
+    private int xiangfengIcon = R.drawable.ugckit_xiangfen;
+    private int langmanIcon   = R.drawable.ugckit_langman;
+    private int qingxinIcon   = R.drawable.ugckit_qingxin;
+    private int weimeiIcon    = R.drawable.ugckit_weimei;
+    private int fennenIcon    = R.drawable.ugckit_fennen;
+    private int huaijiuIcon   = R.drawable.ugckit_huaijiu;
+    private int landiaoIcon   = R.drawable.ugckit_landiao;
+    private int qingliangIcon = R.drawable.ugckit_qingliang;
+    private int rixiIcon      = R.drawable.ugckit_rixi;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_static_filter, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_static_filter, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        originIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterOriginIcon, R.drawable.orginal);
-        normalIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterNormalIcon, R.drawable.biaozhun);
-        yinghongIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterYinghongIcon, R.drawable.yinghong);
-        yunchangIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterYunchangIcon, R.drawable.yunshang);
-        chunzhenIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterChunzhenIcon, R.drawable.chunzhen);
-        bailanIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterBailanIcon, R.drawable.bailan);
-        yuanqiIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterYuanqiIcon, R.drawable.yuanqi);
-        chaotuoIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterChaotuoIcon, R.drawable.chaotuo);
-        xiangfengIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterXiangfenIcon, R.drawable.xiangfen);
-        langmanIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterLangmanIcon, R.drawable.langman);
-        qingxinIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterQingxinIcon, R.drawable.qingxin);
-        weimeiIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterWeimeiIcon, R.drawable.weimei);
-        fennenIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterFennenIcon, R.drawable.fennen);
-        huaijiuIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterHuaijiuIcon, R.drawable.huaijiu);
-        landiaoIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterLandiaoIcon, R.drawable.landiao);
-        qingliangIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterQingliangIcon, R.drawable.qingliang);
-        rixiIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterRixiIcon, R.drawable.rixi);
+        originIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterOriginIcon, R.drawable.ugckit_orginal);
+        normalIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterNormalIcon, R.drawable.ugckit_biaozhun);
+        yinghongIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterYinghongIcon, R.drawable.ugckit_yinghong);
+        yunchangIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterYunchangIcon, R.drawable.ugckit_yunshang);
+        chunzhenIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterChunzhenIcon, R.drawable.ugckit_chunzhen);
+        bailanIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterBailanIcon, R.drawable.ugckit_bailan);
+        yuanqiIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterYuanqiIcon, R.drawable.ugckit_yuanqi);
+        chaotuoIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterChaotuoIcon, R.drawable.ugckit_chaotuo);
+        xiangfengIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterXiangfenIcon, R.drawable.ugckit_xiangfen);
+        langmanIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterLangmanIcon, R.drawable.ugckit_langman);
+        qingxinIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterQingxinIcon, R.drawable.ugckit_qingxin);
+        weimeiIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterWeimeiIcon, R.drawable.ugckit_weimei);
+        fennenIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterFennenIcon, R.drawable.ugckit_fennen);
+        huaijiuIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterHuaijiuIcon, R.drawable.ugckit_huaijiu);
+        landiaoIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterLandiaoIcon, R.drawable.ugckit_landiao);
+        qingliangIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterQingliangIcon, R.drawable.ugckit_qingliang);
+        rixiIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerFilterRixiIcon, R.drawable.ugckit_rixi);
 
         mFilterList = new ArrayList<Integer>();
         mFilterList.add(originIcon);
@@ -112,23 +112,23 @@ public class TCStaticFilterFragment extends Fragment implements BaseRecyclerAdap
 
 
         mFilerNameList = new ArrayList<>();
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_original));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_standard));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_cheery));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_cloud));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_pure));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_orchid));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_vitality));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_super));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_fragrance));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_romantic));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_fresh));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_beautiful));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_pink));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_reminiscence));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_blues));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_cool));
-        mFilerNameList.add(getResources().getString(R.string.tc_static_filter_fragment_Japanese));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_original));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_standard));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_cheery));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_cloud));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_pure));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_orchid));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_vitality));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_super));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_fragrance));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_romantic));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_fresh));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_beautiful));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_pink));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_reminiscence));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_blues));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_cool));
+        mFilerNameList.add(getResources().getString(R.string.ugckit_static_filter_fragment_Japanese));
 
         mRvFilter = (RecyclerView) view.findViewById(R.id.paster_rv_list);
         mRvFilter.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

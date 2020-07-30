@@ -141,6 +141,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
             }
             intent.putExtra(UGCKitConstants.VIDEO_RECORD_DURATION, duration);
             startActivity(intent);
+            finish();
         } else {
             Intent intent = new Intent(this, TCMainActivity.class);
             startActivity(intent);

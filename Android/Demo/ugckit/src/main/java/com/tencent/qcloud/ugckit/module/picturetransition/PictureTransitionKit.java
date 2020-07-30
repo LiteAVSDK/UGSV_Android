@@ -10,17 +10,10 @@ import com.tencent.ugc.TXVideoEditer;
 import java.util.ArrayList;
 
 public class PictureTransitionKit {
-
     @NonNull
-    private static PictureTransitionKit instance = new PictureTransitionKit();
-    /**
-     * 默认图片帧率
-     */
-    private static final int DEFAULT_FPS = 20;
-    /**
-     * 默认转场动画类型
-     */
-    public static final int DEFAULT_TRANSITION = TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;
+    private static PictureTransitionKit sInstance = new PictureTransitionKit();
+    private static final int DEFAULT_FPS = 20;  // 默认图片帧率
+    public static final int  DEFAULT_TRANSITION = TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;  //  默认转场动画类型
 
     private PictureTransitionKit() {
 
@@ -28,7 +21,7 @@ public class PictureTransitionKit {
 
     @NonNull
     public static PictureTransitionKit getInstance() {
-        return instance;
+        return sInstance;
     }
 
     /**

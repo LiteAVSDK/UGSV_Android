@@ -51,7 +51,7 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
                 return viewHolder;
 
             case TYPE_THUMBNAIL:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_video_progress_thumbnail, null);
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_item_video_progress_thumbnail, null);
                 viewHolder = new ThumbnailViewHolder(itemView);
                 viewHolder.ivThumbnail = (ImageView) itemView.findViewById(R.id.iv_video_progress_thumbnail);
                 return viewHolder;

@@ -21,16 +21,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class TCMusicDownloadProgress {
-    public static final String BGM_FOLDER = "bgm";
-    private static final int CORE_POOL_SIZE = 8;
-    private boolean mProcessing;
 
-    private String mUrl;
+    public static final String BGM_FOLDER = "bgm";
+    private static final int   CORE_POOL_SIZE = 8;
+
+    private int     mBgmPosition;
+    private boolean mProcessing;
+    private String  mUrl;
+    private String  mBgmName;
+
     @Nullable
     private Downloadlistener mListener;
     private DownloadThreadPool sDownloadThreadPool;
-    private String mBgmName;
-    private int mBgmPosition;
 
     public TCMusicDownloadProgress(String bgmName, int position, String url) {
         this.mBgmName = bgmName;
@@ -72,7 +74,7 @@ public class TCMusicDownloadProgress {
         };
         File onlineMaterialDir = VideoDeviceUtil.getExternalFilesDir(UGCKitImpl.getAppContext(), BGM_FOLDER);
         if (onlineMaterialDir == null || onlineMaterialDir.getName().startsWith("null")) {
-            mListener.onDownloadFail(UGCKitImpl.getAppContext().getResources().getString(R.string.tc_bgm_download_progress_no_enough_storage_space));
+            mListener.onDownloadFail(UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_bgm_download_progress_no_enough_storage_space));
             stop();
             return;
         }

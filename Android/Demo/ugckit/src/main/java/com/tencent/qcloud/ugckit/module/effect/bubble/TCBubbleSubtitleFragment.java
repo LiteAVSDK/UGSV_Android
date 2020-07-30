@@ -47,39 +47,34 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
         TCWordInputDialog.OnWordInputCallback,
         View.OnClickListener,
         PlayerManagerKit.OnPlayStateListener {
+
     private final String TAG = "TCBubbleSubtitleFragment";
 
-    private TXVideoEditer mTXVideoEditer;
-
-    private ImageView mIvDel;
-    private RecyclerView mRvBubble;
-    private View mFootView;
-    private AddBubbleAdapter mAddBubbleAdapter;
-    private List<BubbleViewParams> mAddBubbleInfoList;
-
-    private FloatLayerViewGroup mTCBubbleViewGroup; // 图层父布局，承载字幕
-    private int mCurrentSelectedPos = -1;// 当前被选中的气泡字幕控件
+    private TXVideoEditer           mTXVideoEditer;
+    private ImageView               mImageDel;
+    private RecyclerView            mRecycleBubble;
+    private View                    mFootView;
+    private FloatLayerViewGroup     mTCBubbleViewGroup;     // 图层父布局，承载字幕
     @Nullable
-    private TCWordInputDialog mWordInputDialog;
-    /**
-     * 气泡字幕的 背景、颜色的配置板
-     */
-    private BubbleSubtitlePannel mBubbleSubtitlePannel;
-    private boolean mIsEditWordAgain = false;// 用于判定当前是否修改字幕内容
+    private TCWordInputDialog       mWordInputDialog;
+    private BubbleSubtitlePannel    mBubbleSubtitlePannel;  // 气泡字幕的 背景、颜色的配置板
+    private AddBubbleAdapter        mAddBubbleAdapter;
+    private List<BubbleViewParams>  mAddBubbleInfoList;
+
+    private int     mCurrentSelectedPos = -1;                               // 当前被选中的气泡字幕控件
+    private boolean mIsEditWordAgain    = false;                            // 用于判定当前是否修改字幕内容
+    private long    mDuration;                                              // 默认的时间
+    private long    mDefaultWordStartTime;
+    private long    mDefaultWordEndTime;
+    private int     mPasterTextSize;
+    private int     mPasterTextColor;
+    private int     mCoverIcon;
+    private int     mAddIcon    = R.drawable.ugckit_ic_edit_add_selector;   //定制UI
+    private int     mDeleteIcon = R.drawable.ugckit_ic_word_del_normal;
+
+    private VideoProgressController mVideoProgressController;
     @Nullable
     private RangeSliderViewContainer.OnDurationChangeListener mOnDurationChangeListener;
-
-    //================================== 默认的时间 ==============================
-    private long mDuration;
-    private long mDefaultWordStartTime;
-    private long mDefaultWordEndTime;
-    private VideoProgressController mVideoProgressController;
-    //定制UI
-    private int addIcon = R.drawable.ic_edit_add_selector;
-    private int deleteIcon = R.drawable.ic_word_del_normal;
-    private int pasterTextSize;
-    private int pasterTextColor;
-    private int mCoverIcon;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +86,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bubble_subtitle, container, false);
+        return inflater.inflate(R.layout.ugckit_fragment_bubble_subtitle, container, false);
     }
 
     @Override
@@ -137,19 +132,19 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
     }
 
     private void initView(@NonNull View view) {
-        mFootView = LayoutInflater.from(view.getContext()).inflate(R.layout.item_add, null);
+        mFootView = LayoutInflater.from(view.getContext()).inflate(R.layout.ugckit_item_add, null);
         CircleImageView addView = (CircleImageView) mFootView.findViewById(R.id.add_paster_image);
-        addView.setImageResource(addIcon);
+        addView.setImageResource(mAddIcon);
 
         mAddBubbleInfoList = new ArrayList<>();
-        mRvBubble = (RecyclerView) view.findViewById(R.id.bubble_rv_list);
-        mRvBubble.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRecycleBubble = (RecyclerView) view.findViewById(R.id.bubble_rv_list);
+        mRecycleBubble.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mAddBubbleAdapter = new AddBubbleAdapter(mAddBubbleInfoList, getActivity());
         mAddBubbleAdapter.setCoverIconResouce(mCoverIcon);
-        mAddBubbleAdapter.setPasterTextSize(pasterTextSize);
-        mAddBubbleAdapter.setPasterTextColor(pasterTextColor);
+        mAddBubbleAdapter.setPasterTextSize(mPasterTextSize);
+        mAddBubbleAdapter.setPasterTextColor(mPasterTextColor);
         mAddBubbleAdapter.setOnItemClickListener(this);
-        mRvBubble.setAdapter(mAddBubbleAdapter);
+        mRecycleBubble.setAdapter(mAddBubbleAdapter);
         mAddBubbleAdapter.setFooterView(mFootView);
 
         mTCBubbleViewGroup = (FloatLayerViewGroup) getActivity().findViewById(R.id.bubble_container);
@@ -162,8 +157,8 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
         mBubbleSubtitlePannel.loadAllBubble(TCBubbleManager.getInstance(getActivity()).loadBubbles());
         mBubbleSubtitlePannel.setOnBubbleSubtitleCallback(this);
 
-        mIvDel = (ImageView) view.findViewById(R.id.iv_bubble_del);
-        mIvDel.setOnClickListener(this);
+        mImageDel = (ImageView) view.findViewById(R.id.iv_bubble_del);
+        mImageDel.setOnClickListener(this);
     }
 
     private void initRangeDurationChangeListener() {
@@ -207,7 +202,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
         } else {
             if (!mTCBubbleViewGroup.isShown()) {
                 mTCBubbleViewGroup.setVisibility(View.VISIBLE);
-                mIvDel.setVisibility(View.VISIBLE);
+                mImageDel.setVisibility(View.VISIBLE);
                 // 暂停播放
                 mTXVideoEditer.refreshOneFrame();// 将视频画面中的字幕清除  ，避免与上层控件造成混淆导致体验不好的问题。
 
@@ -236,7 +231,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
     private void clickBtnAdd() {
         mBubbleSubtitlePannel.show(null);
         mTCBubbleViewGroup.setVisibility(View.VISIBLE);
-        mIvDel.setVisibility(View.VISIBLE);
+        mImageDel.setVisibility(View.VISIBLE);
         // 暂停播放
         mTXVideoEditer.refreshOneFrame();// 将视频画面中的字幕清除  ，避免与上层控件造成混淆导致体验不好的问题。
 
@@ -263,7 +258,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
     public void onBubbleSubtitleCallback(TCSubtitleInfo info) {
         // 新增气泡字幕
         if (!mIsEditWordAgain) {
-            String defaultText = getResources().getString(R.string.tc_bubble_fragment_double_click_to_edit_text);
+            String defaultText = getResources().getString(R.string.ugckit_bubble_fragment_double_click_to_edit_text);
             // 创建一个默认的参数
             BubbleViewParams params = BubbleViewParams.createDefaultParams(defaultText);
             // 添加到气泡view

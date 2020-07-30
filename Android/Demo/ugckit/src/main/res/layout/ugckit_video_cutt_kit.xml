@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="18dp"
+    android:layout_marginLeft="18dp"
+    android:layout_marginRight="18dp">
+
+    <TextView
+        android:id="@+id/tv_bgm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuBgmIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_music"
+        android:textColor="@color/ugckit_white" />
+
+    <TextView
+        android:id="@+id/tv_motion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuMotionIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_motion"
+        android:textColor="@color/ugckit_white" />
+
+    <TextView
+        android:id="@+id/tv_speed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuSpeedIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_speed"
+        android:textColor="@color/ugckit_white" />
+
+    <TextView
+        android:id="@+id/tv_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuFilterIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_filter"
+        android:textColor="@color/ugckit_white" />
+
+    <TextView
+        android:id="@+id/tv_paster"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuPasterIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_paster"
+        android:textColor="@color/ugckit_white" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuSubtitleIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_subtitle"
+        android:textColor="@color/ugckit_white" />
+</LinearLayout>

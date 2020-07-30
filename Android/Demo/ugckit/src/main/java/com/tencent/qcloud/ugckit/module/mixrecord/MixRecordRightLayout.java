@@ -14,14 +14,14 @@ import com.tencent.qcloud.ugckit.R;
 
 public class MixRecordRightLayout extends RelativeLayout implements View.OnClickListener, IMixRecordRightLayout {
     private Activity mActivity;
-    // 美颜
-    private ImageView mIvBeauty;
-    private TextView mTvBeauty;
-    private RelativeLayout mLayoutBeauty;
-    // 倒计时
-    private ImageView mIvCountDown;
-    private TextView mTvCountDown;
-    private RelativeLayout mLayoutCountdown;
+
+    private ImageView       mImageBeauty;       // 美颜
+    private TextView        mTextBeauty;
+    private RelativeLayout  mLayoutBeauty;
+    private ImageView       mImageCountDown;    // 倒计时
+    private TextView        mTextCountDown;
+    private RelativeLayout  mLayoutCountdown;
+
     private OnItemClickListener mOnItemClickListener;
 
     public MixRecordRightLayout(Context context) {
@@ -41,17 +41,17 @@ public class MixRecordRightLayout extends RelativeLayout implements View.OnClick
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.chorus_right_layout, this);
+        inflate(mActivity, R.layout.ugckit_chorus_right_layout, this);
 
         mLayoutBeauty = (RelativeLayout) findViewById(R.id.layout_beauty);
-        mIvBeauty = (ImageView) findViewById(R.id.iv_beauty);
-        mTvBeauty = (TextView) findViewById(R.id.tv_beauty);
-        mIvBeauty.setOnClickListener(this);
+        mImageBeauty = (ImageView) findViewById(R.id.iv_beauty);
+        mTextBeauty = (TextView) findViewById(R.id.tv_beauty);
+        mImageBeauty.setOnClickListener(this);
 
         mLayoutCountdown = (RelativeLayout) findViewById(R.id.layout_countdown);
-        mIvCountDown = (ImageView) findViewById(R.id.iv_countdown);
-        mTvCountDown = (TextView) findViewById(R.id.tv_countdown);
-        mIvCountDown.setOnClickListener(this);
+        mImageCountDown = (ImageView) findViewById(R.id.iv_countdown);
+        mTextCountDown = (TextView) findViewById(R.id.tv_countdown);
+        mImageCountDown.setOnClickListener(this);
     }
 
     @Override
@@ -79,32 +79,32 @@ public class MixRecordRightLayout extends RelativeLayout implements View.OnClick
 
     @Override
     public void setBeautyIconResource(int resid) {
-        mIvBeauty.setImageResource(resid);
+        mImageBeauty.setImageResource(resid);
     }
 
     @Override
     public void setBeautyTextSize(int size) {
-        mTvBeauty.setTextSize(size);
+        mTextBeauty.setTextSize(size);
     }
 
     @Override
     public void setBeautyTextColor(int color) {
-        mTvBeauty.setTextColor(getResources().getColor(color));
+        mTextBeauty.setTextColor(getResources().getColor(color));
     }
 
     @Override
     public void setCountDownIconResource(int resid) {
-        mIvCountDown.setImageResource(resid);
+        mImageCountDown.setImageResource(resid);
     }
 
     @Override
     public void setCountDownTextSize(int size) {
-        mTvCountDown.setTextSize(size);
+        mTextCountDown.setTextSize(size);
     }
 
     @Override
     public void setCountDownTextColor(int color) {
-        mTvCountDown.setTextColor(getResources().getColor(color));
+        mTextCountDown.setTextColor(getResources().getColor(color));
     }
 
 }

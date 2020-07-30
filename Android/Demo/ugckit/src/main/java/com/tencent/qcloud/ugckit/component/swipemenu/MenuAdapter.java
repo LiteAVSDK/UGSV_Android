@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 import com.tencent.qcloud.ugckit.R;
 
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder> {
@@ -66,7 +64,7 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
 
     @Override
     public View onCreateContentView(@NonNull ViewGroup parent, int viewType) {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.swipe_menu_item, parent, false);
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_swipe_menu_item, parent, false);
     }
 
     @NonNull

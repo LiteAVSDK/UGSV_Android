@@ -10,9 +10,8 @@ import java.util.List;
  */
 public class RecordDraftInfo {
     // TODO：您还可以在草稿箱中保存该分段设置的、美颜、大眼等效果值，按需完善
-    private int aspectRatio; // 屏比
-    // 草稿箱分段的路径
-    private List<RecordPart> partList;
+    private int              aspectRatio; // 屏比
+    private List<RecordPart> partList;    // 草稿箱分段的路径
 
     public RecordDraftInfo() {
         aspectRatio = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16; // 视频比例

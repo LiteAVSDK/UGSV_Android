@@ -8,9 +8,9 @@ import android.support.annotation.NonNull;
 public class JumpActivityMgr {
 
     @NonNull
-    private static JumpActivityMgr instance = new JumpActivityMgr();
-    private boolean mCutVideoFlag = true;
-    private boolean mQuickImport = false;
+    private static JumpActivityMgr sInstance     = new JumpActivityMgr();
+    private boolean                mCutVideoFlag = true;
+    private boolean                mQuickImport  = false;
 
     private JumpActivityMgr() {
         mCutVideoFlag = true;
@@ -18,7 +18,7 @@ public class JumpActivityMgr {
 
     @NonNull
     public static JumpActivityMgr getInstance() {
-        return instance;
+        return sInstance;
     }
 
     /**

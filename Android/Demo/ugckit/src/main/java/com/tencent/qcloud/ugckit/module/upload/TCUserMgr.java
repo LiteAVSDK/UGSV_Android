@@ -505,9 +505,9 @@ public class TCUserMgr {
                     if (callback != null) {
                         String errorMsg = msg;
                         if (code == 620) {
-                            errorMsg = UGCKitImpl.getAppContext().getResources().getString(R.string.tc_user_mgr_user_does_not_exist);
+                            errorMsg = UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_user_mgr_user_does_not_exist);
                         } else if (code == 621) {
-                            errorMsg = UGCKitImpl.getAppContext().getResources().getString(R.string.tc_user_mgr_wrong_password);
+                            errorMsg = UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_user_mgr_wrong_password);
                         }
                         callback.onFailure(code, errorMsg);
                     }

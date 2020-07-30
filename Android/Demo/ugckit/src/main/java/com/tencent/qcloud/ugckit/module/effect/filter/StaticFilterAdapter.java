@@ -48,7 +48,7 @@ public class StaticFilterAdapter extends BaseRecyclerAdapter<StaticFilterAdapter
     @NonNull
     @Override
     public FilterViewHolder onCreateVH(@NonNull ViewGroup parent, int viewType) {
-        return new FilterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.filter_layout, parent, false));
+        return new FilterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_filter_layout, parent, false));
     }
 
     @Override

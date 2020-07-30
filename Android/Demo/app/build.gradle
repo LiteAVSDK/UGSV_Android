@@ -54,4 +54,3 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile project(':ugckit')
 }
-

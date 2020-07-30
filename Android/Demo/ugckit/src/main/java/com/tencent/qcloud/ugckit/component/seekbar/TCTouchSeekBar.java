@@ -54,9 +54,9 @@ public class TCTouchSeekBar extends View {
         super(context, attrs, defStyleAttr);
 
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TCTouchSeekBar);
-            mDotDefaultBitmap = ((BitmapDrawable) a.getDrawable(R.styleable.TCTouchSeekBar_tsb_dotDefault)).getBitmap();
-            mDotCheckedBitmap = ((BitmapDrawable) a.getDrawable(R.styleable.TCTouchSeekBar_tsb_dotChecked)).getBitmap();
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitTCTouchSeekBar);
+            mDotDefaultBitmap = ((BitmapDrawable) a.getDrawable(R.styleable.UGCKitTCTouchSeekBar_tsb_dotDefault)).getBitmap();
+            mDotCheckedBitmap = ((BitmapDrawable) a.getDrawable(R.styleable.UGCKitTCTouchSeekBar_tsb_dotChecked)).getBitmap();
             a.recycle();
         }
         mPaint = new Paint();
@@ -78,9 +78,9 @@ public class TCTouchSeekBar extends View {
         } else {
             //随便写的
             String[] str = new String[]{
-                    getResources().getString(R.string.tc_touch_seekbar_low),
-                    getResources().getString(R.string.tc_touch_seekbar_mid),
-                    getResources().getString(R.string.tc_touch_seekbar_high),
+                    getResources().getString(R.string.ugckit_touch_seekbar_low),
+                    getResources().getString(R.string.ugckit_touch_seekbar_mid),
+                    getResources().getString(R.string.ugckit_touch_seekbar_high),
             };
             mSelectionList = new ArrayList<String>();
             mSelectionList.addAll(Arrays.asList(str));

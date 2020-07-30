@@ -20,42 +20,37 @@ import com.tencent.qcloud.ugckit.R;
 
 public class RangeSeekBar extends View {
     private static final String TAG = "RangeSeekBar";
-    private int mViewWidth;
-    private int mViewHeight;
+    private int   mViewWidth;
+    private int   mViewHeight;
 
-    private int mSeekBarWidth;
-    private int mSeekBarHeight;
+    private int   mSeekBarWidth;
+    private int   mSeekBarHeight;
     private float mSbLeft, mSbTop, mSbRight, mSbBottom;
     private float mSbRound;
-
-    private float mLPLeft;//left-pointer  left
-    private float mLPRight;//right-pointer right
+    private float mLPLeft;      //left-pointer  left
+    private float mLPRight;     //right-pointer right
     private float mLPOffset;
     private float mLPLastX;
-
-    private float mRPLeft;//right-pointer left
-    private float mRPRight;//right-pointer right
+    private float mRPLeft;      //right-pointer left
+    private float mRPRight;     //right-pointer right
     private float mRPOffset;
     private float mRPLastX;
 
     @Nullable
     private Drawable mPointerDrawable;
+    private Paint    mNormalPaint;
+    private Paint    mProgressPaint;
+    private boolean  mIsDragLeft;
+    private boolean  mIsDragRight;
+    private boolean  mLastIsDragLeft;
+    private boolean  mIsRangeEnable;
+    private int      mRange;
+    private int      mBackgroundColor;
+    private int      mProgressColor;
+    private int      mLeftIndex;
+    private int      mRightIndex;
 
-    private Paint mNormalPaint;
-    private Paint mProgressPaint;
-
-    private boolean mIsDragLeft;
-    private boolean mIsDragRight;
-    private boolean mLastIsDragLeft;
-
-    private int mRange;
     private OnRangeProgressListener mListener;
-
-    private boolean mIsRangeEnable;
-    private int backgroundColor;
-    private int progressColor;
-    private int mLeftIndex;
-    private int mRightIndex;
 
     public RangeSeekBar(Context context) {
         super(context);
@@ -126,21 +121,21 @@ public class RangeSeekBar extends View {
         mIsRangeEnable = true;
         mRange = 100;
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.RangeSeekBar);
-            mPointerDrawable = a.getDrawable(R.styleable.RangeSeekBar_rsb_pointerBackground);
-            progressColor = a.getColor(R.styleable.RangeSeekBar_rsb_progressColor,
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitRangeSeekBar);
+            mPointerDrawable = a.getDrawable(R.styleable.UGCKitRangeSeekBar_rsb_pointerBackground);
+            mProgressColor = a.getColor(R.styleable.UGCKitRangeSeekBar_rsb_progressColor,
                     Color.parseColor("#FF4081"));
-            backgroundColor = a.getColor(R.styleable.RangeSeekBar_rsb_backgroundColor,
-                    getResources().getColor(R.color.line_btn));
-            mRange = a.getInt(R.styleable.RangeSeekBar_rsb_range, 100);
+            mBackgroundColor = a.getColor(R.styleable.UGCKitRangeSeekBar_rsb_backgroundColor,
+                    getResources().getColor(R.color.ugckit_line_btn));
+            mRange = a.getInt(R.styleable.UGCKitRangeSeekBar_rsb_range, 100);
             a.recycle();
         }
 
         mNormalPaint = new Paint();
-        mNormalPaint.setColor(backgroundColor);
+        mNormalPaint.setColor(mBackgroundColor);
 
         mProgressPaint = new Paint();
-        mProgressPaint.setColor(progressColor);
+        mProgressPaint.setColor(mProgressColor);
     }
 
     @Override

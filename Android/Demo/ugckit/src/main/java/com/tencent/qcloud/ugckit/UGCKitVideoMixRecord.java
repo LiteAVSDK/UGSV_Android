@@ -44,12 +44,12 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         ScrollFilterView.OnRecordFilterListener, VideoRecordSDK.OnVideoRecordListener,
         IMixRecordJoinListener {
     private static final String TAG = "UGCKitVideoTripleRecord";
-    private OnMixRecordListener mOnMixRecordListener;
-    private ProgressDialogUtil mProgressDialogUtil;
+    private OnMixRecordListener  mOnMixRecordListener;
+    private ProgressDialogUtil   mProgressDialogUtil;
     private ProgressFragmentUtil mProgressFragmentUtil;
-    private FragmentActivity mActivity;
-    private MixRecordJoiner mJoiner;
-    private MixRecordConfig mConfig;
+    private FragmentActivity     mActivity;
+    private MixRecordJoiner      mJoiner;
+    private MixRecordConfig      mConfig;
 
     public UGCKitVideoMixRecord(Context context) {
         super(context);
@@ -95,8 +95,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         });
 
         TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
-        UGCBeautyKit ugcBeautyKit = new UGCBeautyKit(txugcRecord);
-        getBeautyPanel().setBeautyKit(ugcBeautyKit);
+        getBeautyPanel().setBeautyManager(txugcRecord.getBeautyManager());
     }
 
     @Override
@@ -318,7 +317,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
 
             mProgressDialogUtil.showProgressDialog();
-            mProgressDialogUtil.setProgressDialogMessage(getResources().getString(R.string.tc_video_record_activity_on_record_complete_synthesizing));
+            mProgressDialogUtil.setProgressDialogMessage(getResources().getString(R.string.ugckit_video_record_activity_on_record_complete_synthesizing));
 
             mConfig.setRecordPath(result.videoPath);
             new Thread(new Runnable() {
@@ -343,7 +342,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     @Override
     public void onChorusProgress(float progress) {
         int progressInt = (int) (progress * 100);
-        mProgressDialogUtil.setProgressDialogMessage(getResources().getString(R.string.tc_video_record_activity_on_join_progress_synthesizing) + progressInt + "%");
+        mProgressDialogUtil.setProgressDialogMessage(getResources().getString(R.string.ugckit_video_record_activity_on_join_progress_synthesizing) + progressInt + "%");
     }
 
     @Override
@@ -395,8 +394,8 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    DialogUtil.showDialog(mActivity, getResources().getString(R.string.tc_video_preprocess_activity_edit_failed),
-                            getResources().getString(R.string.tc_video_preprocess_activity_does_not_support_android_version_below_4_3), null);
+                    DialogUtil.showDialog(mActivity, getResources().getString(R.string.ugckit_video_preprocess_activity_edit_failed),
+                            getResources().getString(R.string.ugckit_video_preprocess_activity_does_not_support_android_version_below_4_3), null);
                 }
             });
         } else {

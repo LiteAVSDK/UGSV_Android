@@ -1,18 +1,18 @@
 package com.tencent.qcloud.ugckit.module.effect.filter;
 
 public class TCStaticFilterViewInfoManager {
-    private static TCStaticFilterViewInfoManager instance;
+    private static TCStaticFilterViewInfoManager sInstance;
     private int mCurrentPosition = 0;
 
     public static TCStaticFilterViewInfoManager getInstance(){
-        if(instance == null){
+        if(sInstance == null){
             synchronized (TCStaticFilterViewInfoManager.class){
-                if(instance == null){
-                    instance = new TCStaticFilterViewInfoManager();
+                if(sInstance == null){
+                    sInstance = new TCStaticFilterViewInfoManager();
                 }
             }
         }
-        return instance;
+        return sInstance;
     }
 
     public void setCurrentPosition(int position){

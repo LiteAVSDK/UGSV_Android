@@ -1,19 +1,20 @@
 package com.tencent.qcloud.ugckit.module.effect.time;
 
 public class TCTimeViewInfoManager {
-    private static TCTimeViewInfoManager instance;
-    private int mEffect = TimeEffect.NONE_EFFECT;
+    private static TCTimeViewInfoManager sInstance;
+
+    private int  mEffect = TimeEffect.NONE_EFFECT;
     private long mCurrentStartMs;
 
     public static TCTimeViewInfoManager getInstance(){
-        if(instance == null){
+        if(sInstance == null){
             synchronized (TCTimeViewInfoManager.class){
-                if(instance == null){
-                    instance = new TCTimeViewInfoManager();
+                if(sInstance == null){
+                    sInstance = new TCTimeViewInfoManager();
                 }
             }
         }
-        return instance;
+        return sInstance;
     }
 
     public void setCurrentEffect(int effect, long startMs){

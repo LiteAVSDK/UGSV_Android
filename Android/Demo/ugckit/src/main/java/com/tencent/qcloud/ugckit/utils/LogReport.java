@@ -90,22 +90,22 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXRecordCommon.START_RECORD_OK:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.tc_video_record_activity_start_record_start_record_ok);
+                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_ok);
                 break;
             case TXRecordCommon.START_RECORD_ERR_IS_IN_RECORDING:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.tc_video_record_activity_start_record_start_record_err_is_in_recording);
+                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_is_in_recording);
                 break;
             case TXRecordCommon.START_RECORD_ERR_VIDEO_PATH_IS_EMPTY:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.tc_video_record_activity_start_record_start_record_err_video_path_is_empty);
+                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_video_path_is_empty);
                 break;
             case TXRecordCommon.START_RECORD_ERR_API_IS_LOWER_THAN_18:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.tc_video_record_activity_start_record_start_record_err_api_is_lower_than_18);
+                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_api_is_lower_than_18);
                 break;
             case TXRecordCommon.START_RECORD_ERR_NOT_INIT:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.tc_video_record_activity_start_record_start_record_err_not_init);
+                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_not_init);
                 break;
             case TXRecordCommon.START_RECORD_ERR_LICENCE_VERIFICATION_FAILED:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.tc_video_record_activity_start_record_start_record_err_licence_verification_failed);
+                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_licence_verification_failed);
                 break;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_START_RECORD, retCode, desc);

@@ -3,8 +3,8 @@ package com.tencent.qcloud.ugckit.module.effect.paster;
 public class TCPasterInfo {
     private String iconPath;
     private String name;
-    private int pasterType;
     private String pasterPath;
+    private int    pasterType;
 
     public int getPasterType() {
         return pasterType;

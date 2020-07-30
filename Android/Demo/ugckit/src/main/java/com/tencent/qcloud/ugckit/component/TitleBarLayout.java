@@ -16,12 +16,12 @@ import com.tencent.qcloud.ugckit.R;
 
 public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
 
-    private LinearLayout mLeftGroup;
-    private TextView mLeftTitle;
-    private TextView mCenterTitle;
-    private ImageView mLeftIcon;
-    private Button mRightButton;
-    private RelativeLayout mTitleLayout;
+    private LinearLayout    mLeftGroup;
+    private TextView        mLeftTitle;
+    private TextView        mCenterTitle;
+    private ImageView       mLeftIcon;
+    private Button          mRightButton;
+    private RelativeLayout  mTitleLayout;
 
     public TitleBarLayout(Context context) {
         super(context);
@@ -39,7 +39,7 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.title_bar_layout, this);
+        inflate(getContext(), R.layout.ugckit_title_bar_layout, this);
         mTitleLayout = (RelativeLayout) findViewById(R.id.page_title_layout);
         mLeftGroup = (LinearLayout) findViewById(R.id.page_title_left_group);
         mLeftTitle = (TextView) findViewById(R.id.page_title_left_text);

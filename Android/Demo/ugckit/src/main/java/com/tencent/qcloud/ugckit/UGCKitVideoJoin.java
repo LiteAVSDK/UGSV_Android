@@ -11,7 +11,6 @@ import com.tencent.qcloud.ugckit.utils.DialogUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 
@@ -39,15 +38,15 @@ import java.util.List;
  */
 public class UGCKitVideoJoin implements IVideoJoinKit, TXVideoJoiner.TXVideoJoinerListener {
     private static final String TAG = "UGCKitVideoJoin";
+
     private final FragmentActivity mContext;
-
-    private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
-
-    private TXVideoJoiner mTXVideoJoiner;
-    private boolean mGenerateSuccess;
-    private String mOutputPath;
+    private TXVideoJoiner          mTXVideoJoiner;
+    private boolean                mGenerateSuccess;
+    private String                 mOutputPath;
+    
     private IVideoJoinKit.OnVideoJoinListener mOnVideoJoinListener;
-    private ProgressFragmentUtil mProgressFragmentUtil;
+    private ProgressFragmentUtil              mProgressFragmentUtil;
+    private ArrayList<TCVideoFileInfo>        mTCVideoFileInfoList;
 
     public UGCKitVideoJoin(FragmentActivity context) {
         mContext = context;
@@ -93,12 +92,12 @@ public class UGCKitVideoJoin implements IVideoJoinKit, TXVideoJoiner.TXVideoJoin
         mTXVideoJoiner.setVideoJoinerListener(this);
         mOutputPath = VideoPathUtil.generateVideoPath();
 
-        mProgressFragmentUtil = new ProgressFragmentUtil(mContext, mContext.getResources().getString(R.string.video_joining));
+        mProgressFragmentUtil = new ProgressFragmentUtil(mContext, mContext.getResources().getString(R.string.ugckit_video_joining));
         mProgressFragmentUtil.showLoadingProgress(new ProgressFragmentUtil.IProgressListener() {
             @Override
             public void onStop() {
                 mProgressFragmentUtil.dismissLoadingProgress();
-                ToastUtil.toastShortMessage(mContext.getString(R.string.cancel_joining));
+                ToastUtil.toastShortMessage(mContext.getString(R.string.ugckit_cancel_joining));
                 cancelJoin();
             }
         });

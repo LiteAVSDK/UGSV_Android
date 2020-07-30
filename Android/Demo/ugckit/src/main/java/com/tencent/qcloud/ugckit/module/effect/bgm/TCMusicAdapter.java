@@ -20,9 +20,8 @@ import java.util.List;
 
 public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMusicViewHolder> implements View.OnClickListener {
     private static final String TAG = "TCMusicAdapter";
-    private Context mContext;
-    private List<TCMusicInfo> mBGMList;
-
+    private Context                mContext;
+    private List<TCMusicInfo>      mBGMList;
     private OnClickSubItemListener mOnClickSubItemListener;
 
     @NonNull
@@ -36,7 +35,7 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
     @NonNull
     @Override
     public LinearMusicViewHolder onCreateVH(@NonNull ViewGroup parent, int viewType) {
-        LinearMusicViewHolder linearMusicViewHolder = new LinearMusicViewHolder(View.inflate(parent.getContext(), R.layout.item_editer_bgm, null));
+        LinearMusicViewHolder linearMusicViewHolder = new LinearMusicViewHolder(View.inflate(parent.getContext(), R.layout.ugckit_item_editer_bgm, null));
         return linearMusicViewHolder;
     }
 
@@ -46,15 +45,15 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
 
         holder.btnUse.setMax(100);
         if (info.status == TCMusicInfo.STATE_UNDOWNLOAD) {
-            holder.btnUse.setText(mContext.getString(R.string.download));
+            holder.btnUse.setText(mContext.getString(R.string.ugckit_download));
             holder.btnUse.setState(SampleProgressButton.STATE_NORMAL);
             holder.btnUse.setNormalColor(Color.parseColor("#6C7B8B"));
         } else if (info.status == TCMusicInfo.STATE_DOWNLOADED) {
-            holder.btnUse.setText(mContext.getString(R.string.use));
+            holder.btnUse.setText(mContext.getString(R.string.ugckit_use));
             holder.btnUse.setState(SampleProgressButton.STATE_NORMAL);
             holder.btnUse.setNormalColor(Color.parseColor("#FF6347"));
         } else if (info.status == TCMusicInfo.STATE_DOWNLOADING) {
-            holder.btnUse.setText(mContext.getString(R.string.downloading));
+            holder.btnUse.setText(mContext.getString(R.string.ugckit_downloading));
             holder.btnUse.setState(SampleProgressButton.STATE_PROGRESS);
             holder.btnUse.setProgress(info.progress);
             holder.btnUse.setNormalColor(Color.parseColor("#FF6347"));
@@ -86,15 +85,15 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
             return;
         }
         if (info.status == TCMusicInfo.STATE_UNDOWNLOAD) {
-            holder.btnUse.setText(mContext.getString(R.string.download));
+            holder.btnUse.setText(mContext.getString(R.string.ugckit_download));
             holder.btnUse.setState(SampleProgressButton.STATE_NORMAL);
             holder.btnUse.setNormalColor(Color.parseColor("#6C7B8B"));
         } else if (info.status == TCMusicInfo.STATE_DOWNLOADED) {
-            holder.btnUse.setText(mContext.getString(R.string.use));
+            holder.btnUse.setText(mContext.getString(R.string.ugckit_use));
             holder.btnUse.setState(SampleProgressButton.STATE_NORMAL);
             holder.btnUse.setNormalColor(Color.parseColor("#FF6347"));
         } else if (info.status == TCMusicInfo.STATE_DOWNLOADING) {
-            holder.btnUse.setText(mContext.getString(R.string.downloading));
+            holder.btnUse.setText(mContext.getString(R.string.ugckit_downloading));
             holder.btnUse.setState(SampleProgressButton.STATE_PROGRESS);
             holder.btnUse.setProgress(info.progress);
             holder.btnUse.setNormalColor(Color.parseColor("#FF6347"));

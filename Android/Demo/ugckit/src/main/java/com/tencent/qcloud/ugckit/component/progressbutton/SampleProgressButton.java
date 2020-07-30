@@ -22,28 +22,26 @@ import com.tencent.qcloud.ugckit.R;
  */
 public class SampleProgressButton extends View {
 
-    private FontMetrics mFontMetrics;
-    private int mProgress = 0;
-    private int mTextColor = Color.WHITE;
-    private Paint mTextPaint;
-    private float mTextSize = 10;
-    private int mForegroundColor;
-    private int mBackgroundColor;
-    private int mNormalColor;
-    @Nullable
-    private String mText = "";
-    private int mMaxProgress = 100;
-
-    private Paint mBackgroundPaintNormal;
-    private Paint mBackgroundPaintProgress;
-
-    private RectF mBackgroundBounds;
-    private LinearGradient mProgressBgGradient;
-
-    private int mState = STATE_NORMAL;
-
     public static final int STATE_NORMAL = 1;
     public static final int STATE_PROGRESS = 2;
+
+    private FontMetrics    mFontMetrics;
+    private Paint          mTextPaint;
+    private Paint          mBackgroundPaintNormal;
+    private Paint          mBackgroundPaintProgress;
+    private RectF          mBackgroundBounds;
+    private LinearGradient mProgressBgGradient;
+
+    private int     mForegroundColor;
+    private int     mBackgroundColor;
+    private int     mNormalColor;
+    private int     mProgress    = 0;
+    private int     mTextColor   = Color.WHITE;
+    private float   mTextSize    = 10;
+    private int     mMaxProgress = 100;
+    private int     mState       = STATE_NORMAL;
+    @Nullable
+    private String  mText        = "";
 
     public SampleProgressButton(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -58,15 +56,15 @@ public class SampleProgressButton extends View {
     private void init(@NonNull Context context, AttributeSet attrs) {
         TypedArray typedArray = null;
         try {
-            typedArray = context.obtainStyledAttributes(attrs, R.styleable.SampleProgressButton);
-            mBackgroundColor = typedArray.getInteger(R.styleable.SampleProgressButton_sampleProgressButtonBackgroundColor, Color.GRAY);
-            mForegroundColor = typedArray.getInteger(R.styleable.SampleProgressButton_sampleProgressButtonForegroundColor, Color.RED);
-            mNormalColor = typedArray.getInteger(R.styleable.SampleProgressButton_sampleProgressButtonNormalColor, Color.BLUE);
-            mTextColor = typedArray.getInteger(R.styleable.SampleProgressButton_sampleProgressButtonTextcolor, Color.WHITE);
-            mMaxProgress = typedArray.getInteger(R.styleable.SampleProgressButton_sampleProgressButtonMax, 100);
-            mProgress = typedArray.getInteger(R.styleable.SampleProgressButton_sampleProgressButtonProgress, 0);
-            mText = typedArray.getString(R.styleable.SampleProgressButton_sampleProgressButtonText);
-            mTextSize = typedArray.getDimension(R.styleable.SampleProgressButton_sampleProgressButtonTextSize, 20);
+            typedArray = context.obtainStyledAttributes(attrs, R.styleable.UGCKitSampleProgressButton);
+            mBackgroundColor = typedArray.getInteger(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonBackgroundColor, Color.GRAY);
+            mForegroundColor = typedArray.getInteger(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonForegroundColor, Color.RED);
+            mNormalColor = typedArray.getInteger(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonNormalColor, Color.BLUE);
+            mTextColor = typedArray.getInteger(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonTextcolor, Color.WHITE);
+            mMaxProgress = typedArray.getInteger(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonMax, 100);
+            mProgress = typedArray.getInteger(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonProgress, 0);
+            mText = typedArray.getString(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonText);
+            mTextSize = typedArray.getDimension(R.styleable.UGCKitSampleProgressButton_sampleProgressButtonTextSize, 20);
         } finally {
             if (typedArray != null) {
                 typedArray.recycle();

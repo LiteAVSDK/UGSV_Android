@@ -12,7 +12,7 @@
 
     <include
         android:id="@+id/video_edit_layout"
-        layout="@layout/video_cutt_kit"
+        layout="@layout/ugckit_video_cutt_kit"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true" />

@@ -7,14 +7,14 @@ package com.tencent.qcloud.ugckit.module.effect.paster;
  * 主要是用于恢复编辑贴纸的场景
  */
 public class TCPasterViewInfo {
-    private int viewType;
-    private float viewCenterX, viewCenterY;// 控件的x y
-    private float imageRotation;
-    private float imageScale;
+    private int    viewType;
+    private float  viewCenterX, viewCenterY;// 控件的x y
+    private float  imageRotation;
+    private float  imageScale;
     private String pasterPath;
     private String iconPath;
     private String name;
-    private long startTime,endTime;
+    private long   startTime,endTime;
 
     public String getIconPath() {
         return iconPath;

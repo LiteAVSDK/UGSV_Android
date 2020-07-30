@@ -2,7 +2,6 @@ package com.tencent.qcloud.ugckit;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Picture;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
@@ -20,7 +19,6 @@ import com.tencent.qcloud.ugckit.module.picturetransition.IPictureTransitionLayo
 import com.tencent.qcloud.ugckit.module.picturetransition.PictureTransitionKit;
 import com.tencent.qcloud.ugckit.utils.BitmapUtils;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
@@ -56,8 +54,8 @@ import java.util.List;
  * 4、SDK版本更新说明：5.0以前版本是按照第一张图片的宽高来决定最终的宽高，导致的问题是如果第一张图片有一边比较短，后面的图片会以最短边等比例缩放，显示出来就小了</p>
  */
 public class UGCKitPictureJoin extends AbsPictureJoinUI {
-
     private static final String TAG = "UGCKitPictureJoin";
+
     private ProgressFragmentUtil mProgressFragmentUtil;
 
     public UGCKitPictureJoin(Context context) {
@@ -129,14 +127,14 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
     @Override
     public void setInputPictureList(@Nullable List<String> pictureList) {
         if (pictureList == null || pictureList.size() == 0) {
-            ToastUtil.toastShortMessage(getResources().getString(R.string.tc_picture_choose_activity_please_select_multiple_images));
+            ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_picture_choose_activity_please_select_multiple_images));
             return;
         }
         ArrayList<Bitmap> bitmapList = BitmapUtils.decodeFileToBitmap(pictureList);
 
         int retCode = PictureTransitionKit.getInstance().setPictureList(bitmapList);
         if (retCode == TXVideoEditConstants.PICTURE_TRANSITION_FAILED) {
-            ToastUtil.toastShortMessage(getResources().getString(R.string.tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing));
+            ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing));
 
             PictureGenerateKit.getInstance().stopGenerate();
             return;

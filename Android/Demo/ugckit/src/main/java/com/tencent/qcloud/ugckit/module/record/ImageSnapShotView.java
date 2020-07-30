@@ -39,7 +39,7 @@ public class ImageSnapShotView extends RelativeLayout {
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.image_snap_shot_view, this);
+        inflate(getContext(), R.layout.ugckit_image_snap_shot_view, this);
         mIvSnapshotView = (ImageView)findViewById(R.id.iv_snapshot_photo);
     }
 
@@ -104,7 +104,7 @@ public class ImageSnapShotView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mIvSnapshotView.setVisibility(View.INVISIBLE);
-                ToastUtil.toastShortMessage(getResources().getString(R.string.activity_video_record_take_photo_success));
+                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_activity_video_record_take_photo_success));
 //                mIsTakingPhoto = false;
             }
 

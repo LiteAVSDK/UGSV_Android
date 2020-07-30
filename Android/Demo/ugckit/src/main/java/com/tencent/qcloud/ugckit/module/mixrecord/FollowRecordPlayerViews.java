@@ -33,7 +33,7 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.follow_record_player_view_inner, this);
+        inflate(getContext(), R.layout.ugckit_follow_record_player_view_inner, this);
         mLeftView = (MixRecordPlayerView) findViewById(R.id.left);
         mRightView = (MixRecordPlayerView) findViewById(R.id.right);
         int widthPixels = ScreenUtils.getScreenWidth(getContext());

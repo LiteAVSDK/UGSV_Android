@@ -14,6 +14,6 @@ public class BubbleViewFactory {
 
     @NonNull
     public static BubbleView newOperationView(Context context) {
-        return (BubbleView) View.inflate(context, R.layout.layout_default_bubble_view, null);
+        return (BubbleView) View.inflate(context, R.layout.ugckit_layout_default_bubble_view, null);
     }
 }

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +20,13 @@ import com.tencent.qcloud.ugckit.component.progressbar.NumberProgressBar;
 
 public class VideoWorkProgressFragment extends DialogFragment {
     private static final String KEY_TITLE = "key_title";
-    private View mContentView;
-    private ImageView mIvStop;
-    private TextView mTvTips;
-    private NumberProgressBar mPbLoading;
-    private int mProgress;
-    private boolean mCanCancel = true;
+    private View                 mViewContent;
+    private ImageView            mImageStop;
+    private TextView             mTextTips;
+    private NumberProgressBar    mProgressLoading;
     private View.OnClickListener mListener;
+    private int                  mProgress;
+    private boolean              mCanCancel = true;
 
     @NonNull
     public static VideoWorkProgressFragment newInstance(String title) {
@@ -41,30 +40,30 @@ public class VideoWorkProgressFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(R.style.ConfirmDialogStyle, R.style.DialogFragmentStyle);
+        setStyle(R.style.UGCKitConfirmDialogStyle, R.style.UGCKitDialogFragmentStyle);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mContentView = inflater.inflate(R.layout.layout_joiner_progress, null);
-        mTvTips = (TextView) mContentView.findViewById(R.id.joiner_tv_msg);
+        mViewContent = inflater.inflate(R.layout.ugckit_layout_joiner_progress, null);
+        mTextTips = (TextView) mViewContent.findViewById(R.id.joiner_tv_msg);
         Bundle bundle = getArguments();
         if (bundle != null) {
             String msg = bundle.getString(KEY_TITLE);
             if (!TextUtils.isEmpty(msg)) {
-                mTvTips.setText(msg);
+                mTextTips.setText(msg);
             }
         }
-        mIvStop = (ImageView) mContentView.findViewById(R.id.joiner_iv_stop);
-        mPbLoading = (NumberProgressBar) mContentView.findViewById(R.id.joiner_pb_loading);
-        mPbLoading.setMax(100);
-        mPbLoading.setProgress(mProgress);
-        mIvStop.setOnClickListener(mListener);
+        mImageStop = (ImageView) mViewContent.findViewById(R.id.joiner_iv_stop);
+        mProgressLoading = (NumberProgressBar) mViewContent.findViewById(R.id.joiner_pb_loading);
+        mProgressLoading.setMax(100);
+        mProgressLoading.setProgress(mProgress);
+        mImageStop.setOnClickListener(mListener);
         if (mCanCancel) {
-            mIvStop.setVisibility(View.VISIBLE);
+            mImageStop.setVisibility(View.VISIBLE);
         } else {
-            mIvStop.setVisibility(View.INVISIBLE);
+            mImageStop.setVisibility(View.INVISIBLE);
         }
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
@@ -75,7 +74,7 @@ public class VideoWorkProgressFragment extends DialogFragment {
                 return false;
             }
         });
-        return mContentView;
+        return mViewContent;
     }
 
 
@@ -85,11 +84,11 @@ public class VideoWorkProgressFragment extends DialogFragment {
      * @param listener
      */
     public void setOnClickStopListener(View.OnClickListener listener) {
-        if (mIvStop == null) {
+        if (mImageStop == null) {
             mListener = listener;
         } else {
             mListener = listener;
-            mIvStop.setOnClickListener(listener);
+            mImageStop.setOnClickListener(listener);
         }
     }
 
@@ -99,11 +98,11 @@ public class VideoWorkProgressFragment extends DialogFragment {
      * @param progress
      */
     public void setProgress(int progress) {
-        if (mPbLoading == null) {
+        if (mProgressLoading == null) {
             mProgress = progress;
             return;
         }
-        mPbLoading.setProgress(progress);
+        mProgressLoading.setProgress(progress);
     }
 
     @Override
@@ -133,17 +132,17 @@ public class VideoWorkProgressFragment extends DialogFragment {
         if (getFragmentManager() != null && isAdded()) {
             getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
         }
-        mPbLoading.setProgress(0);
+        mProgressLoading.setProgress(0);
     }
 
     public void setCanCancel(boolean canCancel) {
         mCanCancel = canCancel;
-        if (mIvStop == null) {
+        if (mImageStop == null) {
         } else {
             if (canCancel) {
-                mIvStop.setVisibility(View.VISIBLE);
+                mImageStop.setVisibility(View.VISIBLE);
             } else {
-                mIvStop.setVisibility(View.INVISIBLE);
+                mImageStop.setVisibility(View.INVISIBLE);
             }
         }
     }

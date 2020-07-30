@@ -11,13 +11,13 @@ import java.util.Map;
  * 保存信息配置类
  */
 public class SharedPreferenceUtils {
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences        mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
 
     public SharedPreferenceUtils(@NonNull Context context, String FILE_NAME) {
-        sharedPreferences = context.getSharedPreferences(FILE_NAME,
+        mSharedPreferences = context.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        mEditor = mSharedPreferences.edit();
     }
 
     /**
@@ -25,19 +25,19 @@ public class SharedPreferenceUtils {
      */
     public void put(String key, Object object) {
         if (object instanceof String) {
-            editor.putString(key, (String) object);
+            mEditor.putString(key, (String) object);
         } else if (object instanceof Integer) {
-            editor.putInt(key, (Integer) object);
+            mEditor.putInt(key, (Integer) object);
         } else if (object instanceof Boolean) {
-            editor.putBoolean(key, (Boolean) object);
+            mEditor.putBoolean(key, (Boolean) object);
         } else if (object instanceof Float) {
-            editor.putFloat(key, (Float) object);
+            mEditor.putFloat(key, (Float) object);
         } else if (object instanceof Long) {
-            editor.putLong(key, (Long) object);
+            mEditor.putLong(key, (Long) object);
         } else {
-            editor.putString(key, object.toString());
+            mEditor.putString(key, object.toString());
         }
-        editor.commit();
+        mEditor.commit();
     }
 
     /**
@@ -46,17 +46,17 @@ public class SharedPreferenceUtils {
     @Nullable
     public Object getSharedPreference(String key, Object defaultObject) {
         if (defaultObject instanceof String) {
-            return sharedPreferences.getString(key, (String) defaultObject);
+            return mSharedPreferences.getString(key, (String) defaultObject);
         } else if (defaultObject instanceof Integer) {
-            return sharedPreferences.getInt(key, (Integer) defaultObject);
+            return mSharedPreferences.getInt(key, (Integer) defaultObject);
         } else if (defaultObject instanceof Boolean) {
-            return sharedPreferences.getBoolean(key, (Boolean) defaultObject);
+            return mSharedPreferences.getBoolean(key, (Boolean) defaultObject);
         } else if (defaultObject instanceof Float) {
-            return sharedPreferences.getFloat(key, (Float) defaultObject);
+            return mSharedPreferences.getFloat(key, (Float) defaultObject);
         } else if (defaultObject instanceof Long) {
-            return sharedPreferences.getLong(key, (Long) defaultObject);
+            return mSharedPreferences.getLong(key, (Long) defaultObject);
         } else {
-            return sharedPreferences.getString(key, null);
+            return mSharedPreferences.getString(key, null);
         }
     }
 
@@ -64,29 +64,29 @@ public class SharedPreferenceUtils {
      * 移除某个key值已经对应的值
      */
     public void remove(String key) {
-        editor.remove(key);
-        editor.commit();
+        mEditor.remove(key);
+        mEditor.commit();
     }
 
     /**
      * 清除所有数据
      */
     public void clear() {
-        editor.clear();
-        editor.commit();
+        mEditor.clear();
+        mEditor.commit();
     }
 
     /**
      * 查询某个key是否存在
      */
     public Boolean contain(String key) {
-        return sharedPreferences.contains(key);
+        return mSharedPreferences.contains(key);
     }
 
     /**
      * 返回所有的键值对
      */
     public Map<String, ?> getAll() {
-        return sharedPreferences.getAll();
+        return mSharedPreferences.getAll();
     }
 }

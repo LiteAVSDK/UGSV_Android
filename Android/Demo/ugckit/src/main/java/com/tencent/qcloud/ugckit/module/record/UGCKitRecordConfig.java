@@ -11,7 +11,7 @@ import com.tencent.ugc.TXRecordCommon;
  */
 public class UGCKitRecordConfig {
     @NonNull
-    private static UGCKitRecordConfig instance = new UGCKitRecordConfig();
+    private static UGCKitRecordConfig sInstance = new UGCKitRecordConfig();
 
     protected UGCKitRecordConfig() {
 
@@ -19,7 +19,7 @@ public class UGCKitRecordConfig {
 
     @NonNull
     public static UGCKitRecordConfig getInstance() {
-        return instance;
+        return sInstance;
     }
 
     public int mQuality = TXRecordCommon.VIDEO_QUALITY_HIGH;

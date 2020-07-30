@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class PickerListLayout extends RelativeLayout implements IPickerListLayout, ItemView.OnAddListener {
     private static final int VIDEO_SPAN_COUNT = 4;
-    private Activity mActivity;
-    private RecyclerView mRecyclerView;
+    private Activity                 mActivity;
+    private RecyclerView             mRecyclerView;
     private TCVideoEditerListAdapter mAdapter;
-    private ItemView.OnAddListener mOnAddListener;
+    private ItemView.OnAddListener   mOnAddListener;
 
     public PickerListLayout(Context context) {
         super(context);
@@ -41,7 +41,7 @@ public class PickerListLayout extends RelativeLayout implements IPickerListLayou
 
     private void initViews() {
         mActivity = (Activity) getContext();
-        inflate(mActivity, R.layout.picture_list_layout, this);
+        inflate(mActivity, R.layout.ugckit_picture_list_layout, this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, VIDEO_SPAN_COUNT));

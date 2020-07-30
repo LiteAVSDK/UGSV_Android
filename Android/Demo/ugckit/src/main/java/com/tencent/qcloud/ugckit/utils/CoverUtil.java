@@ -3,10 +3,8 @@ package com.tencent.qcloud.ugckit.utils;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
@@ -22,18 +20,18 @@ import java.io.IOException;
  * 封面工具类
  */
 public class CoverUtil {
-
     private String TAG = "CoverUtil";
+
     @NonNull
-    private static CoverUtil instance = new CoverUtil();
-    private String mVideoPath;
+    private static CoverUtil sInstance = new CoverUtil();
+    private String           mVideoPath;
 
     private CoverUtil() {
     }
 
     @NonNull
     public static CoverUtil getInstance() {
-        return instance;
+        return sInstance;
     }
 
 

@@ -18,8 +18,8 @@ import com.tencent.qcloud.ugckit.R;
 public class DialogUtil {
 
     public static void showDialog(@NonNull Context context, String title, String content, @Nullable final View.OnClickListener listener) {
-        final Dialog dialog = new Dialog(context, R.style.ConfirmDialogStyle);
-        final View v = LayoutInflater.from(context).inflate(R.layout.dialog_ugc_tip, null);
+        final Dialog dialog = new Dialog(context, R.style.UGCKitConfirmDialogStyle);
+        final View v = LayoutInflater.from(context).inflate(R.layout.ugckit_dialog_ugc_tip, null);
         dialog.setContentView(v);
         TextView tvTitle = (TextView) dialog.findViewById(R.id.tv_title);
         TextView tvContent = (TextView) dialog.findViewById(R.id.tv_msg);

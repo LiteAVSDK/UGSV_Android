@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.tencent.liteav.demo.beauty.Beauty;
 import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.demo.beauty.model.ItemInfo;
 import com.tencent.liteav.demo.beauty.model.TabInfo;
@@ -51,14 +52,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         IRecordMusicPannel.MusicChangeListener,
         ScrollFilterView.OnRecordFilterListener,
         VideoRecordSDK.OnVideoRecordListener {
-
     private static final String TAG = "UGCKitVideoRecord";
-    private OnRecordListener mOnRecordListener;
+    
+    private OnRecordListener      mOnRecordListener;
     private OnMusicChooseListener mOnMusicListener;
-    private FragmentActivity mActivity;
-    private ProgressFragmentUtil mProgressFragmentUtil;
-    private ProgressDialogUtil mProgressDialogUtil;
-    private UGCBeautyKit mUGCBeautyKit;
+    private FragmentActivity      mActivity;
+    private ProgressFragmentUtil  mProgressFragmentUtil;
+    private ProgressDialogUtil    mProgressDialogUtil;
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -151,15 +151,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         VideoRecordSDK.getInstance().updateBeautyParam(config.mBeautyParams);
 
         TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
-        mUGCBeautyKit = new UGCBeautyKit(txugcRecord);
-        mUGCBeautyKit.setOnFilterScrollViewListener(new OnFilterScrollViewListener() {
-
+        getBeautyPanel().setBeautyManager(txugcRecord.getBeautyManager());
+        getBeautyPanel().setOnFilterChangeListener(new Beauty.OnFilterChangeListener() {
             @Override
-            public void onFilerChange(Bitmap filterImage, int index) {
+            public void onChanged(Bitmap filterImage, int index) {
                 getScrollFilterView().doTextAnimator(index);
             }
         });
-        getBeautyPanel().setBeautyKit(mUGCBeautyKit);
         getBeautyPanel().setOnBeautyListener(new BeautyPanel.OnBeautyListener() {
             @Override
             public void onTabChange(TabInfo tabInfo, int position) {
@@ -230,7 +228,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         getBeautyPanel().clear();
 
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
-        mUGCBeautyKit.setOnFilterScrollViewListener(null);
+        getBeautyPanel().setOnFilterChangeListener(null);
     }
 
     @Override
@@ -298,8 +296,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
      */
     private void showGiveupRecordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle(getResources().getString(R.string.cancel_record)).setCancelable(false).setMessage(R.string.confirm_cancel_record_content)
-                .setPositiveButton(R.string.give_up, new DialogInterface.OnClickListener() {
+        AlertDialog alertDialog = builder.setTitle(getResources().getString(R.string.ugckit_cancel_record)).setCancelable(false).setMessage(R.string.ugckit_confirm_cancel_record_content)
+                .setPositiveButton(R.string.ugckit_give_up, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -312,7 +310,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                         return;
                     }
                 })
-                .setNegativeButton(getResources().getString(R.string.wrong_click), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.ugckit_wrong_click), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -521,8 +519,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
     private void showDeleteMusicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle(getResources().getString(R.string.tips)).setCancelable(false).setMessage(R.string.delete_bgm_or_not)
-                .setPositiveButton(R.string.confirm_delete, new DialogInterface.OnClickListener() {
+        AlertDialog alertDialog = builder.setTitle(getResources().getString(R.string.ugckit_tips)).setCancelable(false).setMessage(R.string.ugckit_delete_bgm_or_not)
+                .setPositiveButton(R.string.ugckit_confirm_delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -535,7 +533,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                         getRecordMusicPannel().setVisibility(View.GONE);
                     }
                 })
-                .setNegativeButton(getResources().getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.ugckit_btn_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -618,10 +616,10 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
      *
      * @param videoPath
      */
-    private void loadVideoInfo(String videoPath) {
+    private void loadVideoInfo(final String videoPath) {
         TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.tc_video_preprocess_activity_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
+            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.ugckit_video_preprocess_activity_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {
             // 设置视频基本信息
             VideoEditerSDK.getInstance().initSDK();
@@ -643,6 +641,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                         UGCKitResult ugcKitResult = new UGCKitResult();
                         ugcKitResult.errorCode = retCode;
                         ugcKitResult.descMsg = descMsg;
+                        ugcKitResult.outputPath = videoPath;
                         mOnRecordListener.onRecordCompleted(ugcKitResult);
                     }
                 }

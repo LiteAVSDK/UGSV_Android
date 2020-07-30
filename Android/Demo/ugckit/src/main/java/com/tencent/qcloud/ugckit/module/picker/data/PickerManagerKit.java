@@ -13,12 +13,12 @@ import com.tencent.liteav.basic.log.TXCLog;
 import java.util.ArrayList;
 
 public class PickerManagerKit {
-
     private static final String TAG = "PickerManagerKit";
+
     private static PickerManagerKit sInstance;
-    private final ContentResolver mContentResolver;
-    private final Context mContext;
-    private final Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+    private final Context           mContext;
+    private final ContentResolver   mContentResolver;
+    private final Uri mUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
     public static PickerManagerKit getInstance(@NonNull Context context) {
         if (sInstance == null)
@@ -41,7 +41,7 @@ public class PickerManagerKit {
                 MediaStore.Video.VideoColumns.DISPLAY_NAME,
                 MediaStore.Video.VideoColumns.DURATION
         };
-        Cursor cursor = mContentResolver.query(uri, mediaColumns, null, null, null);
+        Cursor cursor = mContentResolver.query(mUri, mediaColumns, null, null, null);
 
         if (cursor == null) return videos;
 

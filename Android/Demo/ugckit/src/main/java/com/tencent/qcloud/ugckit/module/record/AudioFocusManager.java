@@ -9,9 +9,9 @@ import com.tencent.qcloud.ugckit.UGCKit;
 
 public class AudioFocusManager {
     @Nullable
-    private AudioManager mAudioManager;
-    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusListener;
+    private AudioManager         mAudioManager;
     private OnAudioFocusListener mListener;
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusListener;
 
     @NonNull
     private static AudioFocusManager instance = new AudioFocusManager();

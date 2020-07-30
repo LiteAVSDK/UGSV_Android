@@ -27,7 +27,7 @@ public class BubbleAdapter extends RecyclerView.Adapter<BubbleAdapter.BubbleView
     public BubbleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (mRecyclerView == null)
             mRecyclerView = new WeakReference<RecyclerView>((RecyclerView) parent);
-        return new BubbleViewHolder(View.inflate(parent.getContext(), R.layout.item_bubble_img, null));
+        return new BubbleViewHolder(View.inflate(parent.getContext(), R.layout.ugckit_item_bubble_img, null));
     }
 
     @Override

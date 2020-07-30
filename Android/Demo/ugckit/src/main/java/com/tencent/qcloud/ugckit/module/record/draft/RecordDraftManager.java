@@ -72,9 +72,9 @@ import java.util.List;
  */
 public class RecordDraftManager {
     private final String TAG = "RecordDraftManager";
-    public static RecordDraftManager instance;
-
-    private SharedPreferenceUtils mSharedPreferenceUtils;
+    
+    public static RecordDraftManager sInstance;
+    private SharedPreferenceUtils    mSharedPreferenceUtils;
 
     public RecordDraftManager(@NonNull Context context) {
         mSharedPreferenceUtils = new SharedPreferenceUtils(context, UGCKitConstants.SP_NAME_RECORD);

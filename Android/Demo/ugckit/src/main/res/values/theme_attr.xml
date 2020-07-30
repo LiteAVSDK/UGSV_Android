@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="BasicStyle">
+    <declare-styleable name="UGCKitBasicStyle">
         <attr name="titleColor" format="reference" />
         <attr name="titleTextSize" format="dimension" />
         <attr name="backIcon" format="reference" />
@@ -11,12 +11,12 @@
         <attr name="ugckitColorPrimary" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="PickerStyle">
+    <declare-styleable name="UGCKitPickerStyle">
         <attr name="pickerDelIcon" format="reference" />
         <attr name="pickerNextIcon" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="RecordStyle">
+    <declare-styleable name="UGCKitRecordStyle">
         <!-- 音乐icon -->
         <attr name="recordMusicIcon" format="reference" />
         <!-- 屏比icon-->
@@ -102,7 +102,7 @@
         <attr name="audioEffectReverbMagnetic" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="EditerStyle">
+    <declare-styleable name="UGCKitEditerStyle">
         <!-- 裁剪条-->
         <attr name="editerCutViewColor" format="color" />
         <attr name="editerCutSliderLeftIcon" format="reference" />
@@ -178,11 +178,11 @@
         <attr name="editerConfirmIcon" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="FollowRecordStyle">
+    <declare-styleable name="UGCKitFollowRecordStyle">
         <attr name="countDownIcon" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="PictureTransitionStyle">
+    <declare-styleable name="UGCKitPictureTransitionStyle">
         <attr name="transitionLeftRightIcon" format="reference" />
         <attr name="transitionUpDownIcon" format="reference" />
         <attr name="transitionEnlargeIcon" format="reference" />

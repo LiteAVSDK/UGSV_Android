@@ -22,31 +22,29 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
 
     public static final int DEFAULT_SCROLLER_DURATION = 200;
 
-    private int mLeftViewId = 0;
-    private int mContentViewId = 0;
-    private int mRightViewId = 0;
-
-    private float mOpenPercent = 0.5f;
-    private int mScrollerDuration = DEFAULT_SCROLLER_DURATION;
-
-    private int mScaledTouchSlop;
-    private int mLastX;
-    private int mLastY;
-    private int mDownX;
-    private int mDownY;
-    private View mContentView;
-    private SwipeLeftHorizontal mSwipeLeftHorizontal;
-    private SwipeRightHorizontal mSwipeRightHorizontal;
-    private SwipeHorizontal mSwipeCurrentHorizontal;
+    private int     mLeftViewId       = 0;
+    private int     mContentViewId    = 0;
+    private int     mRightViewId      = 0;
+    private int     mScrollerDuration = DEFAULT_SCROLLER_DURATION;
+    private int     mScaledTouchSlop;
+    private int     mLastX;
+    private int     mLastY;
+    private int     mDownX;
+    private int     mDownY;
+    private int     mScaledMinimumFlingVelocity;
+    private int     mScaledMaximumFlingVelocity;
+    private float   mOpenPercent       = 0.5f;
     private boolean shouldResetSwipe;
     private boolean mDragging;
-    private boolean swipeEnable = true;
-    private OverScroller mScroller;
-    @Nullable
-    private VelocityTracker mVelocityTracker;
-    private int mScaledMinimumFlingVelocity;
-    private int mScaledMaximumFlingVelocity;
+    private boolean swipeEnable        = true;
 
+    private View                 mContentView;
+    private SwipeLeftHorizontal  mSwipeLeftHorizontal;
+    private SwipeRightHorizontal mSwipeRightHorizontal;
+    private SwipeHorizontal      mSwipeCurrentHorizontal;
+    private OverScroller         mScroller;
+    @Nullable
+    private VelocityTracker      mVelocityTracker;
 
     public SwipeMenuLayout(@NonNull Context context) {
         this(context, null);
@@ -59,10 +57,10 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
     public SwipeMenuLayout(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SwipeMenuLayout);
-        mLeftViewId = typedArray.getResourceId(R.styleable.SwipeMenuLayout_leftViewId, mLeftViewId);
-        mContentViewId = typedArray.getResourceId(R.styleable.SwipeMenuLayout_contentViewId, mContentViewId);
-        mRightViewId = typedArray.getResourceId(R.styleable.SwipeMenuLayout_rightViewId, mRightViewId);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.UGCKitSwipeMenuLayout);
+        mLeftViewId = typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_leftViewId, mLeftViewId);
+        mContentViewId = typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_contentViewId, mContentViewId);
+        mRightViewId = typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_rightViewId, mRightViewId);
         typedArray.recycle();
 
         ViewConfiguration configuration = ViewConfiguration.get(getContext());

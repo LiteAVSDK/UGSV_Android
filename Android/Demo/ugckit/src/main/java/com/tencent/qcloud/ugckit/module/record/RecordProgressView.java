@@ -22,39 +22,25 @@ import java.util.ArrayList;
 public class RecordProgressView extends View implements IRecordProgressView {
     private final String TAG = "RecordProgressView";
 
-    private Paint mRecordPaint;
-    private Paint mPendingPaint;
-    private Paint mSpacePaint;
+    private Paint               mRecordPaint;
+    private Paint               mPendingPaint;
+    private Paint               mSpacePaint;
+    @Nullable
+    private Handler             mHandler;
+    private ArrayList<ClipInfo> mClipInfoList;
+    private ClipInfo            mCurClipInfo;
 
+    private int     mMaxDuration;
+    private int     mMinDuration;
+    private int     mLastTotalDuration;
+    public int      mNormalColor;           // 已经录制的视频进度条颜色
+    public int      mDeleteColor;           // 删除上一段选中的进度条颜色
+    public int      mBackgroundColor;       // 进度条背景颜色
+    public int      mSpaceColor;            // 多段录制间隔颜色
+
+    private boolean isPending;
     private boolean isCursorShow = false;
     private boolean isInProgress = false;
-    @Nullable
-    private Handler mHandler;
-
-    private ArrayList<ClipInfo> mClipInfoList;
-    private ClipInfo mCurClipInfo;
-    private boolean isPending;
-
-    private int mMaxDuration;
-    private int mMinDuration;
-    private int mLastTotalDuration;
-
-    /**
-     * 已经录制的视频进度条颜色
-     */
-    public int normalColor;
-    /**
-     * 删除上一段选中的进度条颜色
-     */
-    public int deleteColor;
-    /**
-     * 进度条背景颜色
-     */
-    public int backgroundColor;
-    /**
-     * 多段录制间隔颜色
-     */
-    public int spaceColor;
 
     public RecordProgressView(Context context) {
         super(context);
@@ -80,14 +66,14 @@ public class RecordProgressView extends View implements IRecordProgressView {
         mPendingPaint.setAntiAlias(true);
         mSpacePaint.setAntiAlias(true);
 
-        backgroundColor = getResources().getColor(R.color.record_progress_bg);
-        normalColor = getResources().getColor(R.color.record_progress);
-        deleteColor = getResources().getColor(R.color.record_progress_pending);
-        spaceColor = getResources().getColor(R.color.white);
+        mBackgroundColor = getResources().getColor(R.color.ugckit_record_progress_bg);
+        mNormalColor = getResources().getColor(R.color.ugckit_record_progress);
+        mDeleteColor = getResources().getColor(R.color.ugckit_record_progress_pending);
+        mSpaceColor = getResources().getColor(R.color.ugckit_white);
 
-        mRecordPaint.setColor(normalColor);
-        mPendingPaint.setColor(deleteColor);
-        mSpacePaint.setColor(spaceColor);
+        mRecordPaint.setColor(mNormalColor);
+        mPendingPaint.setColor(mDeleteColor);
+        mSpacePaint.setColor(mSpaceColor);
 
         mClipInfoList = new ArrayList<ClipInfo>();
         mCurClipInfo = new ClipInfo();
@@ -101,7 +87,7 @@ public class RecordProgressView extends View implements IRecordProgressView {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawColor(backgroundColor);
+        canvas.drawColor(mBackgroundColor);
 
         int lastTotalProgress = 0;
         float totalWidth = 0;
@@ -109,7 +95,7 @@ public class RecordProgressView extends View implements IRecordProgressView {
             float newWidth = (lastTotalProgress + clipInfo.progress) / (float) mMaxDuration * getWidth();
             switch (clipInfo.clipType) {
                 case ClipInfo.CLIP_TYPE_SPACE:
-                    canvas.drawRect(totalWidth - getResources().getDimension(R.dimen.ugc_progress_divider), 0f, newWidth, getHeight(), mSpacePaint);
+                    canvas.drawRect(totalWidth - getResources().getDimension(R.dimen.ugckit_progress_divider), 0f, newWidth, getHeight(), mSpacePaint);
                     break;
                 case ClipInfo.CLIP_TYPE_PROGRESS:
                     canvas.drawRect(totalWidth, 0f, newWidth, getHeight(), mRecordPaint);
@@ -127,29 +113,29 @@ public class RecordProgressView extends View implements IRecordProgressView {
         }
         if (lastTotalProgress + mCurClipInfo.progress < mMinDuration) {
             canvas.drawRect(mMinDuration / (float) mMaxDuration * getWidth(), 0f,
-                    mMinDuration / (float) mMaxDuration * getWidth() + getResources().getDimension(R.dimen.ugc_progress_min_pos), getHeight(), mSpacePaint);
+                    mMinDuration / (float) mMaxDuration * getWidth() + getResources().getDimension(R.dimen.ugckit_progress_min_pos), getHeight(), mSpacePaint);
         }
         if (isCursorShow || isInProgress) {
-            canvas.drawRect(totalWidth, 0f, totalWidth + getResources().getDimension(R.dimen.ugc_progress_cursor), getHeight(), mSpacePaint);
+            canvas.drawRect(totalWidth, 0f, totalWidth + getResources().getDimension(R.dimen.ugckit_progress_cursor), getHeight(), mSpacePaint);
         }
     }
 
     @Override
     public void setNormalColor(@ColorInt int color) {
-        normalColor = color;
-        mRecordPaint.setColor(normalColor);
+        mNormalColor = color;
+        mRecordPaint.setColor(mNormalColor);
     }
 
     @Override
     public void setDeleteColor(@ColorInt int color) {
-        deleteColor = color;
-        mPendingPaint.setColor(deleteColor);
+        mDeleteColor = color;
+        mPendingPaint.setColor(mDeleteColor);
     }
 
     @Override
     public void setSpaceColor(@ColorInt int color) {
-        spaceColor = color;
-        mSpacePaint.setColor(spaceColor);
+        mSpaceColor = color;
+        mSpacePaint.setColor(mSpaceColor);
     }
 
     private class ClipInfo {

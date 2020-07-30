@@ -14,6 +14,6 @@ public class TCPasterOperationViewFactory {
 
     @NonNull
     public static PasterView newOperationView(Context context) {
-        return (PasterView) View.inflate(context, R.layout.layout_paster_operation_view, null);
+        return (PasterView) View.inflate(context, R.layout.ugckit_layout_paster_operation_view, null);
     }
 }
