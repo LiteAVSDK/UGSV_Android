@@ -725,6 +725,14 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     }
     
     CGFloat width = (CGRectGetWidth(self.view.frame) - 2.0 * (numberOfColumns - 1)) / numberOfColumns;
+    if (width < 0.000001) {
+        /// bug fix：iPhone6上偶现width <= 0，导致崩溃
+        CGRect frame = self.view.window ? self.view.window.frame : UIScreen.mainScreen.bounds;
+        width = (CGRectGetWidth(frame) - 2.0 * (numberOfColumns - 1)) / numberOfColumns;
+        if (width < 0.000001) {
+            width = 120.0;
+        }
+    }
     
     return CGSizeMake(width, width);
 }

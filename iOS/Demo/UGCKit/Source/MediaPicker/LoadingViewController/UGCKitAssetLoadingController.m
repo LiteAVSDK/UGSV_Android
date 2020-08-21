@@ -154,7 +154,7 @@
     [self exportAssetInternal];
 }
 
-- (void)_exportVideo:(PHAsset*)expAsset index:(NSInteger)index completion:(void(^)(AVAsset *asset, NSError *error))completion {
+- (void)_exportVideo:(PHAsset*)expAsset index:(NSInteger)index completion:(void(^)(AVAsset *asset, NSError *error, NSInteger index))completion {
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     // 最高质量的视频
     options.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
@@ -173,15 +173,15 @@
     };
     [[PHImageManager defaultManager] requestAVAssetForVideo:expAsset options:options resultHandler:^(AVAsset * _Nullable avAsset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         if (avAsset) {
-            completion(avAsset, nil);
+            completion(avAsset, nil, index);
         } else {
             NSError *error = info[PHImageErrorKey];
-            completion(nil, error);
+            completion(nil, error, index);
         }
     }];
 }
 
-- (void)_exportPhoto:(PHAsset*)expAsset index:(NSInteger)index completion:(void(^)(UIImage *image, NSError *error))completion {
+- (void)_exportPhoto:(PHAsset*)expAsset index:(NSInteger)index completion:(void(^)(UIImage *image, NSError *error, NSInteger index))completion {
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.version = PHImageRequestOptionsVersionCurrent;
     options.networkAccessAllowed = YES;
@@ -202,10 +202,10 @@
     CGSize maximumSize = CGSizeMake(1280, 1280);
     [[PHImageManager defaultManager] requestImageForAsset:expAsset targetSize:maximumSize contentMode:PHImageContentModeDefault options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (result) {
-            completion(result, nil);
+            completion(result, nil, index);
         } else {
             NSError *error = info[PHImageErrorKey];
-            completion(nil, error);
+            completion(nil, error, index);
         }
     }];
 }
@@ -218,34 +218,35 @@
     for (NSInteger i = 0; i < _assets.count; ++i) {
         _progressCache[@(i)] = @0;
     }
+    NSMutableDictionary *sortAssetDic = [[NSMutableDictionary alloc] initWithCapacity:_assets.count];
     __block NSError *blockError = nil;
     dispatch_group_t grp = dispatch_group_create();
-    for (NSInteger i = 0; i < _assets.count; ++i) {
+    for (NSInteger i = 0; i < _assets.count; i+=1) {
         PHAsset *asset = _assets[i];
         if (blockError) {
             break;
         }
         dispatch_group_enter(grp);
         if (_assetType == AssetType_Video) {
-            [self _exportVideo:asset index:i completion:^(AVAsset *asset, NSError *error) {
+            [self _exportVideo:asset index:i completion:^(AVAsset *asset, NSError *error, NSInteger index) {
                 if (error) {
                     blockError = error;
                     NSLog(@"Error: %@", error);
                 } else {
-                    @synchronized (self->_avAssets) {
-                        [self->_avAssets addObject:asset];
+                    @synchronized (sortAssetDic) {
+                        [sortAssetDic setObject:asset forKey:@(index)];
                     }
                 }
                 dispatch_group_leave(grp);
             }];
         } else {
-            [self _exportPhoto:asset index:i completion:^(UIImage *image, NSError *error) {
+            [self _exportPhoto:asset index:i completion:^(UIImage *image, NSError *error, NSInteger index) {
                 if (error) {
                     blockError = error;
                     NSLog(@"Error: %@", error);
                 } else {
-                    @synchronized (self->_imagesToEdit) {
-                        [self->_imagesToEdit addObject:image];
+                    @synchronized (sortAssetDic) {
+                        [sortAssetDic setObject:image forKey:@(index)];
                     }
                 }
                 dispatch_group_leave(grp);
@@ -253,6 +254,13 @@
         }
     }
     dispatch_group_notify(grp, dispatch_get_main_queue(), ^{
+        for (NSInteger i = 0; i < self->_assets.count; i+=1) {
+            if (self->_assetType == AssetType_Video) {
+                [self->_avAssets addObject:sortAssetDic[@(i)]];
+            } else {
+                [self->_imagesToEdit addObject:sortAssetDic[@(i)]];
+            }
+        }
         if (blockError) {
             UGCKitResult *result = [[UGCKitResult alloc] init];
             if (blockError.code == 3072 /* PHPhotosErrorUserCancelled */) {
