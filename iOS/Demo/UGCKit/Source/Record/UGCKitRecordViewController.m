@@ -905,6 +905,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     UGCKitRecordControlView *controlView = _controlView;
     controlView.btnStartRecord.enabled = NO;
     [self _pauseAndAddMark:^{
+        controlView.controlButtonsHidden = NO;
         [weakSelf saveVideoClipPathToPlist];
         controlView.btnStartRecord.enabled = YES;
         if (completion) {
@@ -915,17 +916,13 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (_captureMode != CaptureModePress) {
         [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
     }
-    _controlView.controlButtonsHidden = NO;
     if (UGCKitRecordStyleRecord != _config.recordStyle) {
         _controlView.btnMusic.hidden = YES;
         _controlView.btnRatioGroup.hidden = YES;
         _controlView.btnAudioEffect.hidden = YES;
     }
-    
     [self setSpeedBtnHidden:NO];
-    
     _recordState = RecordStatePaused;
-    
     [self.previewController stopPlayChorusVideos];
 }
 
@@ -1158,9 +1155,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 
 - (void)resetBeautySettings {
     [_vBeauty resetAndApplyValues];
-
-    [[TXUGCRecord shareInstance] setFilter:nil];
-    [[TXUGCRecord shareInstance] setGreenScreenFile:nil];
+    [[[TXUGCRecord shareInstance] getBeautyManager] setFilter:nil];
+    [[[TXUGCRecord shareInstance] getBeautyManager] setGreenScreenFile:nil];
 }
 
 -(void)stopCameraPreview
