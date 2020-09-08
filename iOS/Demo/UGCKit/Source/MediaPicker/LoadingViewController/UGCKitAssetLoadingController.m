@@ -234,7 +234,9 @@
                     NSLog(@"Error: %@", error);
                 } else {
                     @synchronized (sortAssetDic) {
-                        [sortAssetDic setObject:asset forKey:@(index)];
+                        if (asset) {
+                            [sortAssetDic setObject:asset forKey:@(index)];
+                        }
                     }
                 }
                 dispatch_group_leave(grp);
@@ -246,7 +248,9 @@
                     NSLog(@"Error: %@", error);
                 } else {
                     @synchronized (sortAssetDic) {
-                        [sortAssetDic setObject:image forKey:@(index)];
+                        if (image) {
+                            [sortAssetDic setObject:image forKey:@(index)];
+                        }
                     }
                 }
                 dispatch_group_leave(grp);
@@ -255,6 +259,9 @@
     }
     dispatch_group_notify(grp, dispatch_get_main_queue(), ^{
         for (NSInteger i = 0; i < self->_assets.count; i+=1) {
+            if (!sortAssetDic[@(i)]) {
+                continue;
+            }
             if (self->_assetType == AssetType_Video) {
                 [self->_avAssets addObject:sortAssetDic[@(i)]];
             } else {

@@ -905,9 +905,15 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     UGCKitRecordControlView *controlView = _controlView;
     controlView.btnStartRecord.enabled = NO;
     [self _pauseAndAddMark:^{
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
         controlView.controlButtonsHidden = NO;
-        [weakSelf saveVideoClipPathToPlist];
+        [strongSelf saveVideoClipPathToPlist];
         controlView.btnStartRecord.enabled = YES;
+        if (UGCKitRecordStyleRecord != strongSelf->_config.recordStyle) {
+            strongSelf->_controlView.btnMusic.hidden = YES;
+            strongSelf->_controlView.btnRatioGroup.hidden = YES;
+            strongSelf->_controlView.btnAudioEffect.hidden = YES;
+        }
         if (completion) {
             completion();
         }
@@ -916,11 +922,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (_captureMode != CaptureModePress) {
         [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
     }
-    if (UGCKitRecordStyleRecord != _config.recordStyle) {
-        _controlView.btnMusic.hidden = YES;
-        _controlView.btnRatioGroup.hidden = YES;
-        _controlView.btnAudioEffect.hidden = YES;
-    }
+    
     [self setSpeedBtnHidden:NO];
     _recordState = RecordStatePaused;
     [self.previewController stopPlayChorusVideos];
