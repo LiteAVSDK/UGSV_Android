@@ -131,7 +131,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
         // 加载视频信息
         TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.ugckit_video_cutter_activity_video_main_handler_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
+            DialogUtil.showDialog(getContext(), getResources().getString(R.string.ugckit_video_cutter_activity_video_main_handler_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
             getVideoCutLayout().setVideoInfo(info);

@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
 import com.tencent.qcloud.xiaoshipin.mainui.TCSettingActivity;
-import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.BitmapUtils;
 

@@ -9,9 +9,15 @@
 | iOS      | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 7.7 @ 2020.09.08
-- Android：P图基础美颜优化，新增白皙和自然两种滤镜；
-- iOS：短视频iOS14系统兼容性问题f
+### Version 7.8 @ 2020.09.27
+- iOS：推流基础美颜优化，新增白皙和自然两种滤镜；
+- iOS：超级播放器修复iOS14兼容性问题；
+- Android：修复高级美颜Android4.4系统Crash的问题；
+- Android：修复短视频SDK录制偶现音画不同步的问题；
+- Android：修复短视频SDK反初始化打印错误日志的问题；
+- Andorid：修复短视频SDK结束录制回调慢的问题；
+- Android：更新UGCKit中VideoUploadSDK;
+- Android：修复短视频SDK近期反馈的多个崩溃问题；
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  

@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.xiaoshipin.R;

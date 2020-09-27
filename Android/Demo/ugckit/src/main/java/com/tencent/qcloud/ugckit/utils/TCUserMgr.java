@@ -1,4 +1,4 @@
-package com.tencent.qcloud.ugckit.module.upload;
+package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,9 +8,7 @@ import android.text.TextUtils;
 
 import com.tencent.liteav.basic.log.TXCLog;
 
-import com.tencent.qcloud.ugckit.UGCKitImpl;
-import com.tencent.qcloud.ugckit.utils.LogReport;
-import com.tencent.qcloud.ugckit.utils.TCUtils;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.R;
 
@@ -505,9 +503,9 @@ public class TCUserMgr {
                     if (callback != null) {
                         String errorMsg = msg;
                         if (code == 620) {
-                            errorMsg = UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_user_mgr_user_does_not_exist);
+                            errorMsg = UGCKit.getAppContext().getResources().getString(R.string.ugckit_user_mgr_user_does_not_exist);
                         } else if (code == 621) {
-                            errorMsg = UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_user_mgr_wrong_password);
+                            errorMsg = UGCKit.getAppContext().getResources().getString(R.string.ugckit_user_mgr_wrong_password);
                         }
                         callback.onFailure(code, errorMsg);
                     }

@@ -1,22 +1,25 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
-import android.content.Context;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+
+
+import com.tencent.qcloud.ugckit.module.upload.impl.compute.TXOkHTTPEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Callback;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 /**
@@ -24,36 +27,80 @@ import okhttp3.RequestBody;
  */
 public class UGCClient {
     private final static String TAG = "TVC-UGCClient";
-    private Context context;
     private String signature;
     private OkHttpClient okHttpClient;
-    private Handler mainHandler;
-    @NonNull
-    public static String SERVER = "https://vod2.qcloud.com/v3/index.php?Action=";
+    private TXOkHTTPEventListener mTXOkHTTPEventListener;
+
     private String serverIP = "";
 
+    private static UGCClient ourInstance;
 
-    public UGCClient(@NonNull Context context, String signature, int iTimeOut) {
-        this.context = context;
+    public static UGCClient getInstance(String signature, int iTimeOut) {
+        synchronized (UGCClient.class) {
+            if (ourInstance == null) {
+                ourInstance = new UGCClient(signature, iTimeOut);
+            } else if (signature != null && !TextUtils.isEmpty(signature)) {
+                ourInstance.updateSignature(signature);
+            }
+        }
+
+        return ourInstance;
+    }
+
+
+    private UGCClient(String signature, int iTimeOut) {
         this.signature = signature;
-
+        mTXOkHTTPEventListener = new TXOkHTTPEventListener();
         okHttpClient = new OkHttpClient().newBuilder()
+                .dns(new HttpDNS())
                 .connectTimeout(iTimeOut, TimeUnit.SECONDS)    // 设置超时时间
                 .readTimeout(iTimeOut, TimeUnit.SECONDS)       // 设置读取超时时间
                 .writeTimeout(iTimeOut, TimeUnit.SECONDS)      // 设置写入超时时间
+                .addNetworkInterceptor(new LoggingInterceptor())
+                .eventListener(mTXOkHTTPEventListener)
                 .build();
-
-        mainHandler = new Handler(context.getMainLooper());
     }
 
-//    private String getCommonReqPath(String interfaceName) {
-//        return SERVER + interfaceName
-//                + "&Region=gz"
-//                + "&Timestamp=" + String.valueOf(System.currentTimeMillis() / 1000)
-//                + "&Nonce=" + String.valueOf((int) Math.random() * 65535 + 1)
-//                + "&SecretId=" + URLEncoder.encode(scretId)
-//                + "&Signature=" + URLEncoder.encode(UGCSignature);
-//    }
+
+    /**
+     * 预上传（UGC接口）
+     *@param callback 回调
+     */
+    public void PrepareUploadUGC(Callback callback) {
+        String reqUrl = "https://" + TVCConstants.VOD_SERVER_HOST + "/v3/index.php?Action=PrepareUploadUGC";
+        Log.d(TAG, "PrepareUploadUGC->request url:" + reqUrl);
+
+        String body = "";
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("clientVersion", TVCConstants.TVCVERSION);
+            jsonObject.put("signature", signature);
+            body = jsonObject.toString();
+            Log.d(TAG, body);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
+        Request request = new Request.Builder()
+                .url(reqUrl)
+                .post(requestBody)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * 发送head请求探测
+     *@param callback 回调
+     */
+    public void detectDomain(String domain, Callback callback) {
+        String reqUrl = "http://" + domain;
+        Log.d(TAG, "detectDomain->request url:" + reqUrl);
+        Request request = new Request.Builder()
+                .url(reqUrl)
+                .method("HEAD", null)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
 
     /**
      * 申请上传（UGC接口）
@@ -62,8 +109,8 @@ public class UGCClient {
      * @param customKey
      *@param callback 回调  @return
      */
-    public int initUploadUGC(@NonNull TVCUploadInfo info, String customKey, String vodSessionKey, Callback callback) {
-        String reqUrl = SERVER + "ApplyUploadUGC";
+    public int initUploadUGC(String domain, TVCUploadInfo info, String customKey, String vodSessionKey, final Callback callback) {
+        String reqUrl = "https://" + domain + "/v3/index.php?Action=ApplyUploadUGC";
         Log.d(TAG, "initUploadUGC->request url:" + reqUrl);
 
         String body = "";
@@ -72,15 +119,22 @@ public class UGCClient {
             jsonObject.put("signature", signature);
             jsonObject.put("videoName", info.getFileName());
             jsonObject.put("videoType", info.getFileType());
+            jsonObject.put("videoSize", info.getFileSize());
+
             // 判断是否需要上传封面
             if (info.isNeedCover()) {
                 jsonObject.put("coverName",info.getCoverName());
                 jsonObject.put("coverType",info.getCoverImgType());
+                jsonObject.put("coverSize",info.getCoverFileSize());
             }
             jsonObject.put("clientReportId", customKey);
             jsonObject.put("clientVersion", TVCConstants.TVCVERSION);
             if (!TextUtils.isEmpty(vodSessionKey)) {
                 jsonObject.put("vodSessionKey", vodSessionKey);
+            }
+            String region = TXUGCPublishOptCenter.getInstance().getCosRegion();
+            if (!TextUtils.isEmpty(region)) {
+                jsonObject.put("storageRegion", region);
             }
             body = jsonObject.toString();
             Log.d(TAG, body);
@@ -92,19 +146,20 @@ public class UGCClient {
                 .url(reqUrl)
                 .post(requestBody)
                 .build();
-
-        final String host = request.url().host();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InetAddress address = InetAddress.getByName(host);
-                    serverIP = address.getHostAddress();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (TVCDnsCache.useProxy()) {
+            final String host = request.url().host();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        InetAddress address = InetAddress.getByName(host);
+                        serverIP = address.getHostAddress();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }
 
         okHttpClient.newCall(request).enqueue(callback);
 
@@ -140,39 +195,20 @@ public class UGCClient {
                 .post(requestBody)
                 .build();
 
-        final String host = request.url().host();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InetAddress address = InetAddress.getByName(host);
-                    serverIP = address.getHostAddress();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (TVCDnsCache.useProxy()) {
+            final String host = request.url().host();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        InetAddress address = InetAddress.getByName(host);
+                        serverIP = address.getHostAddress();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
-
-        okHttpClient.newCall(request).enqueue(callback);
-
-        return TVCConstants.NO_ERROR;
-    }
-
-    /**
-     * 数据上报(UGC接口)
-     *
-     * @param context  json格式的上报内容
-     * @param callback 回调
-     * @return
-     */
-    public int reportEvent(String context, final Callback callback) {
-        String reqUrl = "https://vodreport.qcloud.com/ugcupload";
-        Log.d(TAG, "reportUGCEvent->request url:" + reqUrl + " body:" + context);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), context);
-        Request request = new Request.Builder()
-                .url(reqUrl)
-                .post(requestBody)
-                .build();
+            }).start();
+        }
 
         okHttpClient.newCall(request).enqueue(callback);
 
@@ -183,7 +219,31 @@ public class UGCClient {
         return serverIP;
     }
 
+    public long getTcpConnTimeCost() {
+        return mTXOkHTTPEventListener.getTCPConnectionTimeCost();
+    }
+
+    public long getRecvRespTimeCost() {
+        return mTXOkHTTPEventListener.getRecvRspTimeCost();
+    }
+
     public void updateSignature(String signature) {
         this.signature = signature;
+    }
+
+    private class LoggingInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+
+            Log.d(TAG, "Sending request " + request.url() + " on " + chain.connection() + "\n" + request.headers());
+            if (!TVCDnsCache.useProxy()) {
+                serverIP = chain.connection().route().socketAddress().getAddress().getHostAddress();
+            }
+
+            Response response = chain.proceed(request);
+
+            return response;
+        }
     }
 }

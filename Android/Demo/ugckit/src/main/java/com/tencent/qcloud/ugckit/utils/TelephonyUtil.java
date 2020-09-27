@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-import com.tencent.qcloud.ugckit.UGCKitImpl;
+import com.tencent.qcloud.ugckit.UGCKit;
 
 import java.lang.ref.WeakReference;
 
@@ -31,14 +31,14 @@ public class TelephonyUtil {
         //设置电话监听
         if (mPhoneListener == null) {
             mPhoneListener = new TXPhoneStateListener(this);
-            TelephonyManager tm = (TelephonyManager) UGCKitImpl.getAppContext().getSystemService(Service.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) UGCKit.getAppContext().getSystemService(Service.TELEPHONY_SERVICE);
             tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
     }
 
     public void uninitPhoneListener() {
         if (mPhoneListener != null) {
-            TelephonyManager tm = (TelephonyManager) UGCKitImpl.getAppContext().getSystemService(Service.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) UGCKit.getAppContext().getSystemService(Service.TELEPHONY_SERVICE);
             tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
         }
     }

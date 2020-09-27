@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 
-import com.tencent.qcloud.ugckit.UGCKitImpl;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.HttpFileListener;
 import com.tencent.qcloud.ugckit.utils.HttpFileUtil;
 import com.tencent.qcloud.ugckit.utils.VideoDeviceUtil;
@@ -72,9 +72,9 @@ public class TCMusicDownloadProgress {
             }
 
         };
-        File onlineMaterialDir = VideoDeviceUtil.getExternalFilesDir(UGCKitImpl.getAppContext(), BGM_FOLDER);
+        File onlineMaterialDir = VideoDeviceUtil.getExternalFilesDir(UGCKit.getAppContext(), BGM_FOLDER);
         if (onlineMaterialDir == null || onlineMaterialDir.getName().startsWith("null")) {
-            mListener.onDownloadFail(UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_bgm_download_progress_no_enough_storage_space));
+            mListener.onDownloadFail(UGCKit.getAppContext().getResources().getString(R.string.ugckit_bgm_download_progress_no_enough_storage_space));
             stop();
             return;
         }

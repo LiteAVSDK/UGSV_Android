@@ -23,7 +23,7 @@ import com.tencent.qcloud.xiaoshipin.common.ShortVideoDialog;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
 import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCUGCListFragment;
-import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.FileUtils;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftInfo;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftManager;

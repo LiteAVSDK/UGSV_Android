@@ -3,6 +3,7 @@ package com.tencent.qcloud.ugckit;
 import android.content.Context;
 
 public class UGCKit {
+    private static Context sAppContext;
 
     /**
      * UGCKit的初始化函数
@@ -10,7 +11,7 @@ public class UGCKit {
      * @param context 应用的上下文，一般为对应应用的ApplicationContext
      */
     public static void init(Context context) {
-        UGCKitImpl.init(context);
+        sAppContext = context;
     }
 
     /**
@@ -19,7 +20,7 @@ public class UGCKit {
      * @return
      */
     public static Context getAppContext() {
-        return UGCKitImpl.getAppContext();
+        return sAppContext;
     }
 
 }

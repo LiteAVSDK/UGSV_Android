@@ -6,7 +6,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.ugckit.UGCKit;
-import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;

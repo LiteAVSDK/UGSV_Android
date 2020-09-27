@@ -68,7 +68,9 @@ public class ProgressFragmentUtil {
         BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mLoadingProgress.setProgress(progress);
+                if (mLoadingProgress != null) {
+                    mLoadingProgress.setProgress(progress);
+                }
             }
         });
     }

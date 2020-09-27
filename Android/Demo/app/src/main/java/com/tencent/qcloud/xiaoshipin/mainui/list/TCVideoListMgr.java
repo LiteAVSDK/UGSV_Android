@@ -1,6 +1,6 @@
 package com.tencent.qcloud.xiaoshipin.mainui.list;
 
-import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

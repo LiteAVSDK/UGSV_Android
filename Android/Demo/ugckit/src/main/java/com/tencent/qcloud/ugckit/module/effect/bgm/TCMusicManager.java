@@ -4,12 +4,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.liteav.basic.log.TXCLog;
-import com.tencent.qcloud.ugckit.UGCKitImpl;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.utils.TCHttpURLClient;
 
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 public class TCMusicManager {
     private static final String TAG = "TCBgmManager";
     private boolean isLoading;
-    private SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(UGCKitImpl.getAppContext());
+    private SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(UGCKit.getAppContext());
     private LoadMusicListener mLoadMusicListener;
 
     private static class TCMusicMgrHolder {

@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
-import com.tencent.qcloud.ugckit.UGCKitImpl;
 import com.tencent.qcloud.ugckit.module.cut.IVideoCutLayout;
 import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
 import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
@@ -200,7 +199,7 @@ public class VideoEditerSDK {
      * 初始化新的TXVideoEditer
      */
     public void initSDK() {
-        mTXVideoEditer = new TXVideoEditer(UGCKitImpl.getAppContext());
+        mTXVideoEditer = new TXVideoEditer(UGCKit.getAppContext());
     }
 
     /**

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.tencent.qcloud.ugckit.UGCKitImpl;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 import com.tencent.qcloud.ugckit.R;
 
@@ -70,7 +70,7 @@ public class AddPasterAdapter extends BaseRecyclerAdapter<AddPasterAdapter.AddPa
         if (!TextUtils.isEmpty(pasterPath)) {
             holder.ivAddPaster.setImageBitmap(BitmapFactory.decodeFile(pasterPath));
         }
-        holder.tvAddPasterText.setText(UGCKitImpl.getAppContext().getResources().getString(R.string.ugckit_add_paster_adapter_paster) + String.valueOf(position + 1));
+        holder.tvAddPasterText.setText(UGCKit.getAppContext().getResources().getString(R.string.ugckit_add_paster_adapter_paster) + String.valueOf(position + 1));
         if (mCoverIcon != 0) {
             if (mPasterTextSize != 0) {
                 holder.tvAddPasterText.setTextSize(mPasterTextSize);

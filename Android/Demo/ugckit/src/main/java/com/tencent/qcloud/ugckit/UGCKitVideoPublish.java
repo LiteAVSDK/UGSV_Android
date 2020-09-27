@@ -20,8 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.tencent.qcloud.ugckit.module.upload.TCUserMgr;
-import com.tencent.qcloud.ugckit.module.upload.TCVideoPublishKit;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublish;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublishTypeDef;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
@@ -35,7 +34,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublishKit, View.OnClickListener, TXUGCPublishTypeDef.ITXVideoPublishListener {
+public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickListener, TXUGCPublishTypeDef.ITXVideoPublishListener {
     @NonNull
     private String TAG = "UGCKitVideoPublish";
 
@@ -60,7 +59,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
     @Nullable
     private String  mCoverPath = null;  // 视频封面路径
 
-    private TCVideoPublishKit.OnPublishListener mOnPublishListener;
+    private OnPublishListener mOnPublishListener;
 
     public UGCKitVideoPublish(Context context) {
         super(context);
@@ -157,7 +156,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
             @Override
             public void run() {
                 if (mVideoPublish == null) {
-                    mVideoPublish = new TXUGCPublish(UGCKitImpl.getAppContext(), TCUserMgr.getInstance().getUserId());
+                    mVideoPublish = new TXUGCPublish(UGCKit.getAppContext(), TCUserMgr.getInstance().getUserId());
                 }
                 /**
                  * 设置视频发布监听器
@@ -172,21 +171,24 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
 //                if (publishCode != 0) {
 //                    mTVPublish.setText("发布失败，错误码：" + publishCode);
 //                }
-                NetworkUtil.getInstance(UGCKitImpl.getAppContext()).setNetchangeListener(new NetworkUtil.NetchangeListener() {
+                NetworkUtil.getInstance(UGCKit.getAppContext()).setNetchangeListener(new NetworkUtil.NetchangeListener() {
                     @Override
                     public void onNetworkAvailable() {
                         mTextProgress.setText(getResources().getString(R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
                     }
                 });
-                NetworkUtil.getInstance(UGCKitImpl.getAppContext()).registerNetChangeReceiver();
+                NetworkUtil.getInstance(UGCKit.getAppContext()).registerNetChangeReceiver();
             }
         });
     }
 
-    /************************************************************************/
-    /*****                     UGCKit外部接口调用                         *****/
-    /************************************************************************/
-    @Override
+    /**
+     * 设置发布视频的路径和封面<br>
+     * 注意：请检查路径是否正确
+     *
+     * @param videoPath 视频的路径
+     * @param coverPath 封面的路径
+     */
     public void setPublishPath(String videoPath, String coverPath) {
         mVideoPath = videoPath;
         mCoverPath = coverPath;
@@ -194,13 +196,23 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
         loadCoverImage();
     }
 
-    @Override
+    /**
+     * 开启本地缓存，若关闭本地缓存，则发布完成后删除"已发布"的视频和封面
+     *
+     * @param disableCache {@code true} 开启本地缓存，设置的视频文件和封面文件不会被删除。<br>
+     *               {@code false} 关闭本地缓存，则发布完成后删除"已发布"的视频和封面；<br>
+     *               默认为true
+     */
     public void setCacheEnable(boolean disableCache) {
         mDisableCache = disableCache;
     }
 
-    @Override
-    public void setOnPublishListener(TCVideoPublishKit.OnPublishListener onUIClickListener) {
+    /**
+     * 设置发布视频的监听器
+     *
+     * @param onUIClickListener
+     */
+    public void setOnPublishListener(OnPublishListener onUIClickListener) {
         mOnPublishListener = onUIClickListener;
     }
 
@@ -239,7 +251,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
                         }
                         dialog.dismiss();
                         if (mOnPublishListener != null) {
-                            mOnPublishListener.onPublishCanceled();
+                            mOnPublishListener.onPublishCancel();
                         }
                     }
                 })
@@ -349,7 +361,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
                             EventBus.getDefault().post(UGCKitConstants.EVENT_MSG_PUBLISH_DONE);
 
                             if (mOnPublishListener != null) {
-                                mOnPublishListener.onPublishCompleted();
+                                mOnPublishListener.onPublishComplete();
                             }
                         }
                     });
@@ -369,9 +381,16 @@ public class UGCKitVideoPublish extends RelativeLayout implements TCVideoPublish
     }
 
     public void release() {
-        NetworkUtil.getInstance(UGCKitImpl.getAppContext()).unregisterNetChangeReceiver();
+        NetworkUtil.getInstance(UGCKit.getAppContext()).unregisterNetChangeReceiver();
 
         deleteCache();
     }
 
+
+    public interface OnPublishListener {
+
+        void onPublishComplete();
+
+        void onPublishCancel();
+    }
 }

@@ -2,16 +2,18 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Environment;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import com.tencent.liteav.basic.util.TXCTimeUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +22,10 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 public class TVCUtils {
-    private static String byteArrayToHexString(@NonNull byte[] data) {
+    private static final String TAG = "TVCUtils";
+    private static String g_simulate_idfa = "";
+
+    private static String byteArrayToHexString(byte[] data) {
         char[] out = new char[data.length << 1];
 
         for (int i = 0, j = 0; i < data.length; i++) {
@@ -33,8 +38,7 @@ public class TVCUtils {
     private static final char[] DIGITS_LOWER =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    @NonNull
-    public static String string2Md5(@Nullable String value)
+    public static String string2Md5(String value)
     {
         String MD5 = "";
 
@@ -53,8 +57,7 @@ public class TVCUtils {
     }
 
     //IMEI：
-    @NonNull
-    public static String doRead(@NonNull Context context) {
+    public static String doRead(Context context) {
         String imei = "";
         try {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -66,8 +69,7 @@ public class TVCUtils {
     }
 
     //Android_ID
-    @NonNull
-    public static String getOrigAndroidID(@NonNull Context context) {
+    public static String getOrigAndroidID(Context context) {
 
         String aid = "";
         try {
@@ -80,8 +82,7 @@ public class TVCUtils {
     }
 
     //MAC
-    @Nullable
-    public static String getOrigMacAddr(@NonNull Context context) {
+    public static String getOrigMacAddr(Context context) {
         String macAddress = "";
         try {
             WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
@@ -99,29 +100,25 @@ public class TVCUtils {
     }
 
     // SimulateIDFA
-    public  static String getSimulateIDFA(@NonNull Context context) {
-        return doRead(context) + ";" + getOrigMacAddr(context) + ";" + getOrigAndroidID(context);
-    }
+    public  static String getSimulateIDFA(Context context) {
+        if (g_simulate_idfa != null && g_simulate_idfa.length() > 0) {
+            return g_simulate_idfa;
+        }
 
-    @Nullable
-    public static String getDevUUID(@NonNull Context context) {
-        return getDevUUID(context, getSimulateIDFA(context));
-    }
-
-    @Nullable
-    public static String getDevUUID(@NonNull Context context, String simulateIDFA) {
-        // get dev uuid from SharedPreferences
-        SharedPreferences sp = context.getSharedPreferences("com.tencent.ugcpublish.dev_uuid", Context.MODE_PRIVATE);
-        String userIdFromSp = sp.getString("com.tencent.ugcpublish.key_dev_uuid", "");
-
-        // get dev uuid from file
-        String userIdFromFile = "";
+        String idfa = null;
+        String idfaInSP = null;
+        String idfaInFile = null;
 
         File sdcardDir = context.getExternalFilesDir(null);
         if (sdcardDir == null) {
-            return "";
+            return g_simulate_idfa;
         }
+        //读SP
+        SharedPreferences sp = context.getSharedPreferences("com.tencent.ugcpublish.dev_uuid", Context.MODE_PRIVATE);
+        idfaInSP = sp.getString("key_user_id", "");
+
         try {
+            //读文件
             String userIdFilePath = sdcardDir.getAbsolutePath() + "/txrtmp/spuid";
             File userIdFile = new File(userIdFilePath);
             if (userIdFile.exists()) {
@@ -130,25 +127,40 @@ public class TVCUtils {
                 if (length > 0) {
                     byte[] buffer = new byte[length];
                     fin.read(buffer);
-                    userIdFromFile = new String(buffer, "UTF-8");
+                    idfaInFile = new String(buffer, "UTF-8");
                 }
                 fin.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "read UUID from file failed! reason: " + e.getMessage());
         }
 
-        String userId = "";
-        if (!userIdFromSp.isEmpty()) userId = userIdFromSp;
-        if (!userIdFromFile.isEmpty()) userId = userIdFromFile;
-
-        if (userId.isEmpty()) {
-            userId = string2Md5(simulateIDFA + UUID.randomUUID().toString());
+        if (idfaInSP != null && idfaInSP.length() > 0) {
+            idfa = idfaInSP;
+        } else if (idfaInFile != null && idfaInFile.length() > 0) {
+            idfa = idfaInFile;
         }
-        if (userIdFromFile.isEmpty()){
-            userIdFromFile = userId;
-            // set dev uuid to file
-            try{
+
+        if (idfa == null || idfa.length() == 0) {
+            //UUID：16进制字符串(UTC毫秒时间(6字节) + 以开机到现在的时间戳为种子的随机数(4字节) + MD5(应用包名 + 系统生成UUID)(16字节)
+            idfa = "";
+            long utcTimeMS = System.currentTimeMillis();
+            long tickTimeMS = TXCTimeUtil.getTimeTick();
+            String packetName = getPackageName(context);
+            for (int i = 5; i >= 0; --i) {
+                idfa += String.format("%02x", (byte)((utcTimeMS >> (i*8)) & 0xff));
+            }
+            for (int i = 3; i >= 0; --i) {
+                idfa += String.format("%02x", (byte)((tickTimeMS >> (i*8)) & 0xff));
+            }
+            idfa += string2Md5(packetName + UUID.randomUUID().toString());
+        }
+
+        g_simulate_idfa = idfa;
+        Log.i(TAG, "UUID:" + g_simulate_idfa);
+        if (idfaInFile == null || !idfaInFile.equals(idfa)) {
+            try {
+                //存文件
                 String userIdDirPath = sdcardDir.getAbsolutePath() + "/txrtmp";
                 File userIdDir = new File(userIdDirPath);
                 if (!userIdDir.exists()) userIdDir.mkdir();
@@ -156,27 +168,31 @@ public class TVCUtils {
                 File userIdFile = new File(userIdFilePath);
                 if (!userIdFile.exists()) userIdFile.createNewFile();
                 FileOutputStream fout = new FileOutputStream(userIdFile);
-                byte [] bytes = userId.getBytes();
+                byte[] bytes = idfa.getBytes();
                 fout.write(bytes);
                 fout.close();
-            } catch(Exception e){
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.e(TAG, "write UUID to file failed! reason: " + e.getMessage());
             }
         }
-        if (!userIdFromSp.equals(userIdFromFile)) {
-            // set dev uuid to SharedPreferences
+
+        if (idfaInSP == null || !idfaInSP.equals(idfa)) {
+            //存SP
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("key_user_id", userId);
+            editor.putString("key_user_id", idfa);
             editor.commit();
         }
+        return g_simulate_idfa;
+    }
 
-        return userId;
+    public static String getDevUUID(Context context) {
+        return getSimulateIDFA(context);
     }
 
     /*
     * 获取网络类型
     */
-    public static boolean isNetworkAvailable(@NonNull Context context) {
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
@@ -198,7 +214,7 @@ public class TVCUtils {
      * @param context Context
      * @return true 表示网络可用
      */
-    public static int getNetWorkType(@NonNull Context context) {
+    public static int getNetWorkType(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
 
@@ -240,5 +256,48 @@ public class TVCUtils {
         }
 
         return TVCConstants.NETTYPE_NONE;
+    }
+
+    /**
+     * 获取 应用包名
+     * @param context
+     * @return
+     */
+    public static String getPackageName(Context context) {
+        String packagename = "";
+        if (context != null) {
+            try {
+                PackageInfo info;
+                info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                // 当前版本的包名
+                packagename = info.packageName;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return packagename;
+    }
+
+    /**
+     * 获取 应用名
+     * @param context
+     * @return
+     */
+    public static String getAppName(Context context) {
+        String appname = "";
+        if (context != null) {
+            try {
+                PackageManager packageManager;
+                ApplicationInfo info;
+                packageManager =  context.getPackageManager();
+                info = packageManager.getApplicationInfo(context.getPackageName(), 0);
+
+                // 当前版本的包名
+                appname = (String)packageManager.getApplicationLabel(info);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return appname;
     }
 }

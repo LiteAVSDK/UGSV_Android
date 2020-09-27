@@ -62,7 +62,9 @@ public class NetworkUtil {
      * 取消注册网络变化监听器
      */
     public void unregisterNetChangeReceiver() {
-        mContext.unregisterReceiver(mNetchangeReceiver);
+        if (mContext != null && mNetchangeReceiver != null) {
+            mContext.unregisterReceiver(mNetchangeReceiver);
+        }
     }
 
     /**

@@ -26,7 +26,6 @@ import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.module.record.AbsVideoRecordUI;
 import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
-import com.tencent.qcloud.ugckit.module.record.OnFilterScrollViewListener;
 import com.tencent.qcloud.ugckit.module.record.PhotoSoundPlayer;
 import com.tencent.qcloud.ugckit.module.record.RecordBottomLayout;
 import com.tencent.qcloud.ugckit.module.record.RecordModeView;
@@ -619,7 +618,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     private void loadVideoInfo(final String videoPath) {
         TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
         if (info == null) {
-            DialogUtil.showDialog(UGCKitImpl.getAppContext(), getResources().getString(R.string.ugckit_video_preprocess_activity_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
+            DialogUtil.showDialog(getContext(), getResources().getString(R.string.ugckit_video_preprocess_activity_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {
             // 设置视频基本信息
             VideoEditerSDK.getInstance().initSDK();

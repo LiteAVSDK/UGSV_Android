@@ -1,7 +1,5 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,7 +19,6 @@ public class TVCUploadInfo {
     private String coverPath;
     private long coverLastModTime;
 
-    @Nullable
     private String fileName = null;
     private long videoFileSize = 0;
     private long coverFileSize = 0;
@@ -39,6 +36,14 @@ public class TVCUploadInfo {
         this.filePath = filePath;
         this.coverType = coverType;
         this.coverPath = coverPath;
+    }
+
+    public TVCUploadInfo(String fileType, String filePath, String coverType, String coverPath, String fileName){
+        this.fileType = fileType;
+        this.filePath = filePath;
+        this.coverType = coverType;
+        this.coverPath = coverPath;
+        this.fileName = fileName;
     }
 
     public String getFileType() {
@@ -61,7 +66,6 @@ public class TVCUploadInfo {
         return !TextUtils.isEmpty(coverType) && !TextUtils.isEmpty(coverPath);
     }
 
-    @Nullable
     public String getFileName(){
         if (null == fileName) {
             int pos = filePath.lastIndexOf('/');
@@ -137,8 +141,8 @@ public class TVCUploadInfo {
         return fileLastModTime;
     }
 
-    public boolean isContainSpecialCharacters(@NonNull String string){
-        String regEx = "[/ : * ? \" < >]";
+    public boolean isContainSpecialCharacters(String string){
+        String regEx = "[/:*?\"<>]";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(string);
         return matcher.find();

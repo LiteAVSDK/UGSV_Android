@@ -260,7 +260,7 @@
     <string name="ugckit_video_cutter_activity_load_video_success_already_picked">已选取</string>
 
     <string name="ugckit_video_cutter_activity_video_main_handler_edit_failed">编辑失败</string>
-    <string name="ugckit_does_not_support_android_version_below_4_3">暂不支持Android 4.3以下的系统</string>
+    <string name="ugckit_does_not_support_android_version_below_4_3">暂不支持Android 4.3以下的系统或者空视频文件</string>
 
     <string name="ugckit_live_list_fragment_refresh_list_failed">刷新列表失败</string>
 

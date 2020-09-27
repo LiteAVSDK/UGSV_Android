@@ -2,7 +2,7 @@ package com.tencent.qcloud.ugckit.utils;
 
 import android.text.TextUtils;
 
-import com.tencent.qcloud.ugckit.UGCKitImpl;
+import com.tencent.qcloud.ugckit.UGCKit;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +42,7 @@ public class HttpFileUtil extends HttpCommon {
 
     @Override
     public void run() {
-        if (!VideoDeviceUtil.isNetworkAvailable(UGCKitImpl.getAppContext()) ||
+        if (!VideoDeviceUtil.isNetworkAvailable(UGCKit.getAppContext()) ||
                 TextUtils.isEmpty(mUrl) || TextUtils.isEmpty(mFolder) || TextUtils.isEmpty(mFilename) || !mUrl.startsWith("http")) {
             fail(null, 0);
             return;

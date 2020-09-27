@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.tencent.qcloud.ugckit.module.upload.TCVideoPublishKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.UGCKitVideoPublish;
 import com.tencent.qcloud.xiaoshipin.R;
@@ -41,10 +40,10 @@ public class TCVideoPublisherActivity extends Activity {
         /**
          * 设置发布视频的监听器
          */
-        mUGCKitVideoPublish.setOnPublishListener(new TCVideoPublishKit.OnPublishListener() {
+        mUGCKitVideoPublish.setOnPublishListener(new UGCKitVideoPublish.OnPublishListener() {
 
             @Override
-            public void onPublishCompleted() {
+            public void onPublishComplete() {
                 /**
                  * 发布完成，返回主界面
                  */
@@ -52,7 +51,7 @@ public class TCVideoPublisherActivity extends Activity {
             }
 
             @Override
-            public void onPublishCanceled() {
+            public void onPublishCancel() {
                 /**
                  * 发布取消，退出发布页面
                  */
