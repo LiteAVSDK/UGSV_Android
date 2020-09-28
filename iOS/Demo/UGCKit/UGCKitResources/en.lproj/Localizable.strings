@@ -21,6 +21,8 @@
 "UGCKit.Media.VideoSynthesizing" = "Processing…";
 "UGCKit.Media.HintVideoSynthesizeFailed" = "Unable to create";
 "TC.Common.Clear" = "Clear";
+"TC.Common.Filter_baixi" = "White";
+"TC.Common.Filter_ziran" = "Nature";
 "TC.Common.Filter_original"  = "Original";
 "TC.Common.Filter_normal"  = "Standard";
 "TC.Common.Filter_yinghong"  = "Cheery";

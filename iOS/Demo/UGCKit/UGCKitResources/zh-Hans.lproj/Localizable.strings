@@ -21,7 +21,9 @@
 "UGCKit.Media.VideoSynthesizing" = "视频合成中";
 "UGCKit.Media.HintVideoSynthesizeFailed" = "视频合成失败";
 "TC.Common.Clear" = "清除";
+"TC.Common.Filter_baixi" = "白皙";
 "TC.Common.Filter_original" = "原图";
+"TC.Common.Filter_ziran" = "自然";
 "TC.Common.Filter_normal" = "标准";
 "TC.Common.Filter_yinghong" = "樱红";
 "TC.Common.Filter_yunshang" = "云裳";

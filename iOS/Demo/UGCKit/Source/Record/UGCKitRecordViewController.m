@@ -150,6 +150,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     
     // 是否正在合成视频参数（保证只合成一次）
     BOOL _isCompletingRecord;
+    // 是否从音乐选择面返回（保证不会刷新其他配置）
+    BOOL _isFromMusicSelectVC;
 }
 
 @property (strong, nonatomic) IBOutlet UIButton *btnNext;
@@ -661,7 +663,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         [nv.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:_theme.titleColor}];
         nv.navigationBar.barTintColor = _theme.backgroundColor;
         nv.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:nv animated:YES completion:nil];
+        [self presentViewController:nv animated:YES completion:^{
+            self->_isFromMusicSelectVC = YES;
+        }];
         [_bgmListVC loadBGMList];
     }
 }
@@ -1116,7 +1120,12 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 #endif
         //内存里面没有视频数据，重置美颜状态
         if ([TXUGCRecord shareInstance].partsManager.getVideoPathList.count == 0) {
-            [self resetBeautySettings];
+            if (self->_isFromMusicSelectVC) {
+                self->_isFromMusicSelectVC = NO;
+            } else {
+                [self resetBeautySettings];
+            }
+            
         }
         
         //加载本地视频 -> 内存
@@ -1471,7 +1480,10 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     [nv.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     //    nv.navigationBar.barTintColor = RGB(25, 29, 38);
     nv.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:nv animated:YES completion:nil];
+   
+    [self presentViewController:nv animated:YES completion:^{
+        self->_isFromMusicSelectVC = YES;
+    }];
     [_bgmListVC loadBGMList];
 }
 
