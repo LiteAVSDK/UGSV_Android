@@ -237,6 +237,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
                                              selector:@selector(onAudioSessionEvent:)
                                                  name:AVAudioSessionInterruptionNotification
                                                object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -244,10 +245,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     
     _navigationBarHidden = self.navigationController.navigationBar.hidden;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-
     if (_isCameraPreviewOn == NO) {
         [self startCameraPreview];
-    }else{
+    } else {
         //停止特效的声音
         [[[TXUGCRecord shareInstance] getBeautyManager] setMotionMute:NO];
     }
@@ -269,7 +269,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
+    if (self->_isFromMusicSelectVC) {
+        return;
+    }
     [self stopCameraPreview];
 }
 
@@ -1092,22 +1094,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         param.frontCamera = _isFrontCamera;
         param.enableAEC = _config.AECEnabled;
         [[TXUGCRecord shareInstance] startCameraCustom:param preview:_previewController.videoRecordView];
-
-        TXBeautyManager *beautyManager = [[TXUGCRecord shareInstance] getBeautyManager];
-        [beautyManager setBeautyStyle:(TXBeautyStyle)_beautyStyle];
-        [beautyManager setBeautyLevel:_beautyDepth];
-        [beautyManager setWhitenessLevel:_whitenDepth];
-        [beautyManager setRuddyLevel:_ruddinessDepth];
-
-        if (UGCKitRecordStyleRecord == _config.recordStyle) {
-            [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_ADJUST_RESOLUTION];
-        } else {
-            [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_FULL_FILL_SCREEN];
-        }
-
-        [beautyManager setEyeScaleLevel:_eye_level];
-        [beautyManager setFaceSlimLevel:_face_level];
-
+        
         if (_config.watermark) {
             UIImage *watermark = _config.watermark.image;
             CGRect watermarkFrame = _config.watermark.frame;
@@ -1115,17 +1102,36 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         } else {
             [[TXUGCRecord shareInstance] setWaterMark:nil normalizationFrame:CGRectZero];;
         }
+        
+        if (self->_isFromMusicSelectVC) {
+            self->_isFromMusicSelectVC = NO;
+            return;
+        }
+        
+        if (UGCKitRecordStyleRecord == _config.recordStyle) {
+            [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_ADJUST_RESOLUTION];
+        } else {
+            [[TXUGCRecord shareInstance] setVideoRenderMode:VIDEO_RENDER_MODE_FULL_FILL_SCREEN];
+        }
+        
+        if (!self->_isFromMusicSelectVC) {
+            TXBeautyManager *beautyManager = [[TXUGCRecord shareInstance] getBeautyManager];
+            [beautyManager setBeautyStyle:(TXBeautyStyle)_beautyStyle];
+            [beautyManager setBeautyLevel:_beautyDepth];
+            [beautyManager setWhitenessLevel:_whitenDepth];
+            [beautyManager setRuddyLevel:_ruddinessDepth];
+            [beautyManager setEyeScaleLevel:_eye_level];
+            [beautyManager setFaceSlimLevel:_face_level];
+        }
+        
 #if POD_PITU
         [self motionTmplSelected:_materialID];
 #endif
         //内存里面没有视频数据，重置美颜状态
         if ([TXUGCRecord shareInstance].partsManager.getVideoPathList.count == 0) {
-            if (self->_isFromMusicSelectVC) {
-                self->_isFromMusicSelectVC = NO;
-            } else {
+            if (!self->_isFromMusicSelectVC) {
                 [self resetBeautySettings];
             }
-            
         }
         
         //加载本地视频 -> 内存
@@ -1159,6 +1165,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
                 [_controlView.progressView pauseAtTime:time];
             }
             _preloadingVideos = NO;
+        }
+        if (self->_isFromMusicSelectVC) {
+            self->_isFromMusicSelectVC = NO;
         }
         _isCameraPreviewOn = YES;
     }
