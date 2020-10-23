@@ -132,7 +132,9 @@ public class VideoWorkProgressFragment extends DialogFragment {
         if (getFragmentManager() != null && isAdded()) {
             getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
         }
-        mProgressLoading.setProgress(0);
+        if (mProgressLoading != null) {
+            mProgressLoading.setProgress(0);
+        }
     }
 
     public void setCanCancel(boolean canCancel) {

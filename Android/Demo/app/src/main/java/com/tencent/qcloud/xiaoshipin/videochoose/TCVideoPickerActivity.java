@@ -77,7 +77,6 @@ public class TCVideoPickerActivity extends Activity {
         Intent intent = new Intent(this, TCVideoJoinerActivity.class);
         intent.putExtra(UGCKitConstants.INTENT_KEY_MULTI_CHOOSE, videoPathList);
         startActivity(intent);
-        finish();
     }
 
 }

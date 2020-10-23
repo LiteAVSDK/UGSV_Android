@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordButton;
+import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 
 /**
  * 多种拍摄模式的按钮
@@ -78,6 +80,26 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
 
         mViewPressModeOutter.setVisibility(GONE);
         mViewPressModeInner.setVisibility(GONE);
+
+        //兼容android5.0以下不能从drawable文件中读取主题颜色
+        int photoModeOuterColor = UIAttributeUtil.getColorRes(getContext(),
+                R.attr.recordButtonPhotoModeOutterBackground, R.color.ugckit_record_button_take_photo_background_color);
+        mViewPhotoModeOutter.setBackground(createCircleGradientDrawable(photoModeOuterColor));
+        int photoModeInnerColor = UIAttributeUtil.getColorRes(getContext(),
+                R.attr.recordButtonPhotoModeInnerBackground, R.color.color_text_white);
+        mViewPhotoModeInner.setBackground(createCircleGradientDrawable(photoModeInnerColor));
+        int tapModeOuterColor = UIAttributeUtil.getColorRes(getContext(),
+                R.attr.recordButtonTapModeOutterBackground, R.color.ugckit_record_button_click_shot_background_color);
+        mViewTapModeOutter.setBackground(createCircleGradientDrawable(tapModeOuterColor));
+        int tapModeInnerColor = UIAttributeUtil.getColorRes(getContext(),
+                R.attr.recordButtonTapModeInnerBackground, R.color.ugckit_record_button_click_shotInner_color);
+        mViewTapModeInner.setBackground(createCircleGradientDrawable(tapModeInnerColor));
+        int pressModeOuterColor = UIAttributeUtil.getColorRes(getContext(),
+                R.attr.recordButtonPressModeOutterBackground, R.color.ugckit_record_button_touch_shot_background_color);
+        mViewPressModeOutter.setBackground(createCircleGradientDrawable(pressModeOuterColor));
+        int pressModeInnerColor = UIAttributeUtil.getColorRes(getContext(),
+                R.attr.recordButtonPressModeInnerBackground, R.color.ugckit_record_button_touch_shot_inner_color);
+        mViewPressModeInner.setBackground(createCircleGradientDrawable(pressModeInnerColor));
     }
 
     @Override
@@ -406,6 +428,14 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         });
         animatorSet.start();
         mImageRecordPause.setVisibility(View.GONE);
+    }
+
+    private GradientDrawable createCircleGradientDrawable(int color) {
+        GradientDrawable normalDrawable = new GradientDrawable();
+        normalDrawable.setShape(GradientDrawable.OVAL);
+        normalDrawable.setColor(color);
+        normalDrawable.setUseLevel(false);
+        return normalDrawable;
     }
 
     @Override

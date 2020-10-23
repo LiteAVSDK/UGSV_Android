@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -100,6 +101,19 @@ public class ColorfulProgress extends View {
     public void endMark() {
         MarkInfo info = mMarkInfoList.get(mMarkInfoList.size() - 1);
         info.right = mCurPositioin;
+    }
+
+    public void startMark(int color, float position) {
+        MarkInfo info = new MarkInfo();
+        info.startTimeMs = mVideoProgressController.getCurrentTimeMs();
+        info.left = position;
+        info.color = color;
+        mMarkInfoList.add(info);
+    }
+
+    public void endMark(float position) {
+        MarkInfo info = mMarkInfoList.get(mMarkInfoList.size() - 1);
+        info.right = position;
     }
 
     @Nullable

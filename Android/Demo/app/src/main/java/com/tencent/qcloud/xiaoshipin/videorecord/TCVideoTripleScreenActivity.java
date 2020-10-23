@@ -87,7 +87,6 @@ public class TCVideoTripleScreenActivity extends FragmentActivity {
         // 更新一下VideoInfo的时间
         Intent intent = new Intent(this, TCVideoEditerActivity.class);
         startActivity(intent);
-        finish();
     }
 
     @Override

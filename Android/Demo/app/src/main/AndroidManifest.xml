@@ -161,6 +161,7 @@
             android:theme="@style/PickerActivityTheme" />
         <activity
             android:name="com.tencent.qcloud.xiaoshipin.videojoiner.TCPictureJoinActivity"
+            android:launchMode="singleTop"
             android:theme="@style/PictureTransitionActivityStyle"
             android:screenOrientation="portrait" />
         <activity

@@ -84,4 +84,11 @@ public interface IPickedLayout {
      * @param bitmapHeight
      */
     void setBitmapHeight(int bitmapHeight);
+
+    /**
+     * 设置最少选中的item数量 (少于此数量，下一步按钮将置灰)
+     *
+     * @param minSelectedItemCount
+     */
+    void setMinSelectedItemCount(int minSelectedItemCount);
 }

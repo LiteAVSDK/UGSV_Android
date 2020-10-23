@@ -74,6 +74,7 @@ public class TCVideoFollowRecordActivity extends FragmentActivity {
             @Override
             public void onMixRecordCompleted(UGCKitResult ugcKitResult) {
                 startEditActivity();
+                finish();
             }
 
             @Override
@@ -100,7 +101,6 @@ public class TCVideoFollowRecordActivity extends FragmentActivity {
         // 更新一下VideoInfo的时间
         Intent intent = new Intent(this, TCVideoEditerActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void initData() {

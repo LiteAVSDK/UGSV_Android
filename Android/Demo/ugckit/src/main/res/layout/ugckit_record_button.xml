@@ -10,7 +10,6 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/ugckit_record_btn_photo_outter"
         android:visibility="gone" />
 
     <View
@@ -18,29 +17,25 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/ugckit_record_btn_photo_inner"
         android:visibility="gone" />
 
     <View
         android:id="@+id/view_record_click_shot_bkg"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/ugckit_record_btn_tap_outter" />
+        android:layout_centerInParent="true"/>
 
     <View
         android:id="@+id/view_record_click_shot"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/ugckit_record_btn_tap_inner" />
+        android:layout_centerInParent="true" />
 
     <View
         android:id="@+id/view_record_touch_shot_bkg"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/ugckit_record_btn_press_outter"
         android:visibility="gone" />
 
     <View
@@ -48,7 +43,6 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/ugckit_record_btn_press_inner"
         android:visibility="gone" />
 
     <ImageView

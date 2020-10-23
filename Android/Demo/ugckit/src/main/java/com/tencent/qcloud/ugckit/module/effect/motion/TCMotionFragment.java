@@ -33,16 +33,17 @@ import java.util.Map;
 /**
  * 动态滤镜特效的设置Fragment
  */
-public class TCMotionFragment extends AbsMotionFragment implements View.OnClickListener, View.OnTouchListener {
+public class TCMotionFragment extends AbsMotionFragment implements View.OnClickListener, View.OnTouchListener, PlayerManagerKit.OnPreviewListener {
     private static final String TAG = "TCMotionFragment";
 
-    private boolean                   mIsOnTouch;       // 是否已经有按下的
+    private boolean                    mIsOnTouch;       // 是否已经有按下的
     private TXVideoEditer              mTXVideoEditer;
     private ColorfulProgress           mColorfulProgress;
     private ImageView                  mImageUndo;
     private VideoProgressController    mVideoProgressController;
     private boolean                    mStartMark;
     private Map<Integer, TCMotionItem> mMotionMap;
+    private int                        mEffectType = -1;      // 当前的动作特效类型
 
     @Nullable
     @Override
@@ -91,6 +92,8 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         mColorfulProgress.setWidthHeight(mVideoProgressController.getThumbnailPicListDisplayWidth(), getResources().getDimensionPixelOffset(R.dimen.ugckit_video_progress_height));
         mColorfulProgress.setMarkInfoList(TCMotionViewInfoManager.getInstance().getMarkInfoList());
         mVideoProgressController.addColorfulProgress(mColorfulProgress);
+
+        PlayerManagerKit.getInstance().addOnPreviewLitener(this);
     }
 
     private void setDefaultValue(Context context, View view) {
@@ -175,15 +178,16 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
 
         TCMotionItem item = mMotionMap.get(view.getId());
         if (item != null) {
+            mEffectType = item.effectID;
             RelativeLayout rlSelect = (RelativeLayout) getActivity().findViewById(item.rlSelectID);
             if (action == MotionEvent.ACTION_DOWN) {
                 rlSelect.setVisibility(View.VISIBLE);
-                pressMotion(item.effectID);
+                pressMotion(mEffectType);
                 mIsOnTouch = true;
             }
             if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 rlSelect.setVisibility(View.INVISIBLE);
-                upMotion(item.effectID);
+                upMotion(mEffectType);
                 mIsOnTouch = false;
             }
             return false;
@@ -260,6 +264,57 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         // 显示撤销的按钮
         if (mColorfulProgress.getMarkListSize() > 0) {
             mImageUndo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onPreviewProgress(int time) {
+
+    }
+
+    @Override
+    public void onPreviewFinish() {
+        if(mIsOnTouch && mEffectType >= 0){
+            mColorfulProgress.endMark(mVideoProgressController.getThumbnailPicListDisplayWidth());
+            mTXVideoEditer.stopEffect(mEffectType, mVideoProgressController.getTotalDurationMs());
+
+            mTXVideoEditer.startEffect(mEffectType, 0);
+            switch (mEffectType) {
+                case TXVideoEditConstants.TXEffectType_SOUL_OUT:
+                    // 进度条开始变颜色
+                    mColorfulProgress.startMark(soulOutColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_SPLIT_SCREEN:
+                    mColorfulProgress.startMark(splitScreenColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_ROCK_LIGHT:
+                    mColorfulProgress.startMark(rockLightColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_DARK_DRAEM:
+                    mColorfulProgress.startMark(darkDreamColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_WIN_SHADDOW:
+                    mColorfulProgress.startMark(winShadowColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_GHOST_SHADDOW:
+                    mColorfulProgress.startMark(ghostShadowColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_PHANTOM_SHADDOW:
+                    mColorfulProgress.startMark(phantomShadowColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_GHOST:
+                    mColorfulProgress.startMark(ghostColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_LIGHTNING:
+                    mColorfulProgress.startMark(lightningColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_MIRROR:
+                    mColorfulProgress.startMark(mirrorColor, 0);
+                    break;
+                case TXVideoEditConstants.TXEffectType_ILLUSION:
+                    mColorfulProgress.startMark(illusionColor, 0);
+                    break;
+            }
         }
     }
 }

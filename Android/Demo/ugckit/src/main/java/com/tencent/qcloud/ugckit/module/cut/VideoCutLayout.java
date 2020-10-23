@@ -88,8 +88,8 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
         String str = getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + duration + "s";
         mTextDuration.setText(str);
 
-        PlayerManagerKit.getInstance().startPlay();
         VideoEditerSDK.getInstance().setCutterStartTime(startTime, endTime);
+        PlayerManagerKit.getInstance().startPlay();
 
         TXLog.d(TAG, "startTime:" + startTime + ",endTime:" + endTime + ",duration:" + duration);
     }

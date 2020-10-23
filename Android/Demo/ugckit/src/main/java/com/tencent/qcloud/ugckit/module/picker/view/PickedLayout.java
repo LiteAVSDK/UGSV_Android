@@ -39,6 +39,7 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
     private OnNextStepListener         mOnNextStepListener;
     private String                     mDragText;
+    private int                        mMinSelectedItemCount = 1;
 
     public PickedLayout(Context context) {
         super(context);
@@ -83,7 +84,7 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
         if (!mMenuAdapter.contains(fileInfo)) {
             mMenuAdapter.addItem(fileInfo);
         }
-        if (mMenuAdapter.getItemCount() > 0) {
+        if (mMenuAdapter.getItemCount() >= mMinSelectedItemCount) {
             mButtonNext.setEnabled(true);
         }
     }
@@ -94,7 +95,7 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
             return;
         }
         mMenuAdapter.removeIndex(position);
-        if (mMenuAdapter.getItemCount() == 0) {
+        if (mMenuAdapter.getItemCount() < mMinSelectedItemCount) {
             mButtonNext.setEnabled(false);
         }
     }
@@ -183,6 +184,11 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
     @Override
     public void setBitmapHeight(int bitmapHeight) {
         mMenuAdapter.setBitmapHeight(bitmapHeight);
+    }
+
+    @Override
+    public void setMinSelectedItemCount(int minSelectedItemCount) {
+        mMinSelectedItemCount = minSelectedItemCount;
     }
 
 
