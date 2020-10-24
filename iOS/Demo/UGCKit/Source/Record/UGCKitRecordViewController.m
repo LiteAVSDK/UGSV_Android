@@ -551,7 +551,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 {
     __weak __typeof(self) wself = self;
     [self pauseRecord:^{
-        [wself _goBack];
+        __strong __typeof(wself) strongSelf = wself;
+        [strongSelf _goBack];
     }];
 }
 
@@ -903,6 +904,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 - (void)pauseRecord {
     [self pauseRecord:nil];
 }
+
 - (void)pauseRecord:(void(^)(void))completion {
     self.captureModeView.userInteractionEnabled = YES;
     _controlView.btnCountDown.enabled = YES;
@@ -910,28 +912,29 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     __weak __typeof(self) weakSelf = self;
     UGCKitRecordControlView *controlView = _controlView;
     controlView.btnStartRecord.enabled = NO;
+    [self pauseBGM];
+    if (_captureMode != CaptureModePress) {
+        [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
+    }
+    [self setSpeedBtnHidden:NO];
+    _recordState = RecordStatePaused;
+    [self.previewController stopPlayChorusVideos];
     [self _pauseAndAddMark:^{
         __strong __typeof(weakSelf) strongSelf = weakSelf;
-        controlView.controlButtonsHidden = NO;
-        [strongSelf saveVideoClipPathToPlist];
-        controlView.btnStartRecord.enabled = YES;
-        if (UGCKitRecordStyleRecord != strongSelf->_config.recordStyle) {
-            strongSelf->_controlView.btnMusic.hidden = YES;
-            strongSelf->_controlView.btnRatioGroup.hidden = YES;
-            strongSelf->_controlView.btnAudioEffect.hidden = YES;
+        if (strongSelf) {
+            controlView.controlButtonsHidden = NO;
+            [strongSelf saveVideoClipPathToPlist];
+            controlView.btnStartRecord.enabled = YES;
+            if (UGCKitRecordStyleRecord != strongSelf->_config.recordStyle) {
+                strongSelf->_controlView.btnMusic.hidden = YES;
+                strongSelf->_controlView.btnRatioGroup.hidden = YES;
+                strongSelf->_controlView.btnAudioEffect.hidden = YES;
+            }
         }
         if (completion) {
             completion();
         }
     }];
-    [self pauseBGM];
-    if (_captureMode != CaptureModePress) {
-        [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
-    }
-    
-    [self setSpeedBtnHidden:NO];
-    _recordState = RecordStatePaused;
-    [self.previewController stopPlayChorusVideos];
 }
 
 - (void)startRecord {
@@ -1728,6 +1731,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     _recordState = RecordStateStopped;
     //    [TCUtil removeCacheFile:_recordVideoPath];
     //    [TCUtil removeCacheFile:_joinVideoPath];
+    if (_BGMPath) {
+        _BGMPath = nil;
+        _bgmRecording = NO;
+        [[TXUGCRecord shareInstance] stopBGM];
+    }
 }
 
 - (void)dealloc
