@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		39E230FC9137F2C46EAA57C7 /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64A672747336017122243B0A /* TXLiteAVSDK_UGC.framework */; };
 		400B68D9245825370055D584 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		406436D024BDA86D0032FF93 /* UGCKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4011E1AB24BDA80F007F636A /* UGCKitResources.bundle */; };
 		406436D124BDA8750032FF93 /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4011E1B424BDA824007F636A /* TCBeautyPanelResources.bundle */; };
@@ -165,6 +164,7 @@
 		45D52F74238D6998006F71FA /* PhotoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F71238D6998006F71FA /* PhotoUtil.m */; };
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
+		D13AE3E626ABFF6E7E2A9A43 /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 100093391DA5C408F02ADD5C /* TXLiteAVSDK_UGC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +227,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		100093391DA5C408F02ADD5C /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 		4011E1A324BDA80F007F636A /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = ./UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
 		4011E1AC24BDA824007F636A /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = ./BeautySettingKit/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
 		40A37344246A3916004E3FC7 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = XiaoShiPin/Frameworks/Bugly.framework; sourceTree = "<group>"; };
@@ -531,7 +532,6 @@
 		45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitWrapper.m; sourceTree = "<group>"; };
 		45E829492384EB7800702418 /* TCNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCNavigationController.h; sourceTree = "<group>"; };
 		45E8294A2384EB7800702418 /* TCNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCNavigationController.m; sourceTree = "<group>"; };
-		64A672747336017122243B0A /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -550,7 +550,7 @@
 				40F4D6892473EC9800847F5B /* QCloudCore.framework in Frameworks */,
 				455AAEEB237ABBAA00AF4A3C /* libc++.tbd in Frameworks */,
 				40F4D6882473EC9800847F5B /* libmtasdk.a in Frameworks */,
-				39E230FC9137F2C46EAA57C7 /* TXLiteAVSDK_UGC.framework in Frameworks */,
+				D13AE3E626ABFF6E7E2A9A43 /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,7 +712,7 @@
 				455AAEEE237ABBB300AF4A3C /* OpenAL.framework */,
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
-				64A672747336017122243B0A /* TXLiteAVSDK_UGC.framework */,
+				100093391DA5C408F02ADD5C /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

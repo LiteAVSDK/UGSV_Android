@@ -1612,12 +1612,16 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 - (void)onVideoRangeRightChangeEnded:(UGCKitVideoRangeSlider *)sender
 {
     if (_effectSelectType == EffectSelectType_Paster) {
-        UGCKitVideoPasterInfo *info = _videoPasterInfoList[_effectSelectIndex];
-        info.endTime = sender.rightPos;
+        if (_effectSelectIndex < _videoPasterInfoList.count && _effectSelectIndex >= 0) {
+            UGCKitVideoPasterInfo *info = _videoPasterInfoList[_effectSelectIndex];
+            info.endTime = sender.rightPos;
+        }
     }
     else if (_effectSelectType == EffectSelectType_Text) {
-        UGCKitVideoTextInfo *info = _videoTextInfoList[_effectSelectIndex];
-        info.endTime = sender.rightPos;
+        if (_effectSelectIndex < _videoTextInfoList.count && _effectSelectIndex >= 0) {
+            UGCKitVideoTextInfo *info = _videoTextInfoList[_effectSelectIndex];
+            info.endTime = sender.rightPos;
+        }
     }
 }
 
