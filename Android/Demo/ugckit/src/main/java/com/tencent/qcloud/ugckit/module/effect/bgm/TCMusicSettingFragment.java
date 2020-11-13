@@ -91,15 +91,17 @@ public class TCMusicSettingFragment extends Fragment {
             e.printStackTrace();
         }
         editer.setBGMStartTime(0, mMusicInfo.duration);
-        editer.setBGMVolume(0.5f);
-        editer.setVideoVolume(0.5f);
+        float bgmVolume = mTCEditMusicPannel.getBGMVolumeSeekBarProgress() / 100f;
+        float micVolume = mTCEditMusicPannel.getMicVolumeSeekBarProgress() / 100f;
+        editer.setBGMVolume(bgmVolume);
+        editer.setVideoVolume(micVolume);
 
-        DraftEditer.getInstance().saveRecordMusicInfo(mMusicInfo);
 
-        mMusicInfo.videoVolume = 0.5f;
-        mMusicInfo.bgmVolume = 0.5f;
+        mMusicInfo.videoVolume = micVolume;
+        mMusicInfo.bgmVolume = bgmVolume;
         mMusicInfo.startTime = 0;
         mMusicInfo.endTime = mMusicInfo.duration;
+        DraftEditer.getInstance().saveRecordMusicInfo(mMusicInfo);
 
         mTCEditMusicPannel.setMusicInfo(mMusicInfo);
     }

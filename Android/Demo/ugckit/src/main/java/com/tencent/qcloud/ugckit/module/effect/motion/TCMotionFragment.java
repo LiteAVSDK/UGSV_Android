@@ -91,6 +91,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         mColorfulProgress = new ColorfulProgress(getContext());
         mColorfulProgress.setWidthHeight(mVideoProgressController.getThumbnailPicListDisplayWidth(), getResources().getDimensionPixelOffset(R.dimen.ugckit_video_progress_height));
         mColorfulProgress.setMarkInfoList(TCMotionViewInfoManager.getInstance().getMarkInfoList());
+        updateUndoImageView();
         mVideoProgressController.addColorfulProgress(mColorfulProgress);
 
         PlayerManagerKit.getInstance().addOnPreviewLitener(this);
@@ -162,11 +163,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         }
 
         mTXVideoEditer.deleteLastEffect();
-        if (mColorfulProgress.getMarkListSize() > 0) {
-            mImageUndo.setVisibility(View.VISIBLE);
-        } else {
-            mImageUndo.setVisibility(View.GONE);
-        }
+        updateUndoImageView();
     }
 
     @Override
@@ -262,8 +259,14 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         long currentTime = mVideoProgressController.getCurrentTimeMs();
         mTXVideoEditer.stopEffect(type, currentTime);
         // 显示撤销的按钮
+        updateUndoImageView();
+    }
+
+    private void updateUndoImageView() {
         if (mColorfulProgress.getMarkListSize() > 0) {
             mImageUndo.setVisibility(View.VISIBLE);
+        } else {
+            mImageUndo.setVisibility(View.GONE);
         }
     }
 

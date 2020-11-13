@@ -93,6 +93,16 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
     }
 
     @Override
+    public int getBGMVolumeSeekBarProgress() {
+        return mSeekBarBGMVolume.getProgress();
+    }
+
+    @Override
+    public int getMicVolumeSeekBarProgress() {
+        return mSeekBarMicVolume.getProgress();
+    }
+
+    @Override
     public void onProgressChanged(@NonNull SeekBar seekBar, int progress, boolean fromUser) {
         if (seekBar.getId() == R.id.seekbar_mic_volume) {
             mMicVolume = progress;

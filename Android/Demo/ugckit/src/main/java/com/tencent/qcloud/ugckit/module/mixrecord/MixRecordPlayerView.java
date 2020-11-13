@@ -94,6 +94,16 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
         return null;
     }
 
+    @Override
+    public float getContinuePosition() {
+        return mContinuePosition;
+    }
+
+    @Override
+    public void setContinuePosition(float position) {
+        mContinuePosition = position;
+    }
+
     public void setMute(boolean mute) {
         if (mVodPlayer != null) {
             mVodPlayer.setMute(mute);

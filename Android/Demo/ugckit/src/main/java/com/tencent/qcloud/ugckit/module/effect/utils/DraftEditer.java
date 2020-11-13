@@ -133,8 +133,8 @@ public class DraftEditer {
         setBgmName(musicInfo.name);
         setBgmDuration(musicInfo.duration);
         setBgmPos(musicInfo.position);
-        setBgmVolume(0.5f);
-        setVideoVolume(0.5f);
+        setBgmVolume(musicInfo.bgmVolume);
+        setVideoVolume(musicInfo.videoVolume);
         setBgmStartTime(0);
         setBgmEndTime(musicInfo.duration);
     }

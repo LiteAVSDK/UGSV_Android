@@ -23,6 +23,18 @@ public interface IEditMusicPannel {
     void setOnMusicChangeListener(MusicChangeListener listener);
 
     /**
+     *
+     * @return 背景音乐音量进度条的进度(0-100)
+     */
+    int getBGMVolumeSeekBarProgress();
+
+    /**
+     *
+     * @return 录音音量进度条的进度(0-100)
+     */
+    int getMicVolumeSeekBarProgress();
+
+    /**
      * 操作当前背景音乐
      */
     interface MusicChangeListener {

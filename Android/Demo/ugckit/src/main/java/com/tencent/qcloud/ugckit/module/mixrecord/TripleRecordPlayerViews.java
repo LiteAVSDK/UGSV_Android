@@ -16,6 +16,7 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
     private MixRecordPlayerView mTopView;
     private MixRecordPlayerView mMiddleView;
     private MixRecordPlayerView mBottomView;
+    private float mContinuePosition = -1;
 
     public TripleRecordPlayerViews(Context context) {
         super(context);
@@ -62,6 +63,10 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
     public void stopVideo() {
         mTopView.stopVideo();
         mBottomView.stopVideo();
+        //停止播放后，使用顶部视频播放保存的播放位置做为合唱视频记录的基准，保证下次播放顶部和底部的视频同步播放
+        mContinuePosition = mTopView.getContinuePosition();
+        mTopView.setContinuePosition(mContinuePosition);
+        mBottomView.setContinuePosition(mContinuePosition);
     }
 
     @Override
@@ -122,5 +127,15 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
         config.setVolume(0,0.0f);
         config.setVolume(1,0.0f);
         return rects;
+    }
+
+    @Override
+    public float getContinuePosition() {
+        return mContinuePosition;
+    }
+
+    @Override
+    public void setContinuePosition(float position) {
+        mContinuePosition = position;
     }
 }

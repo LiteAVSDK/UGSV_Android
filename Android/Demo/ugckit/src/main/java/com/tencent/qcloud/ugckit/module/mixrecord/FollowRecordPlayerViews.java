@@ -116,4 +116,14 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
         rects.add(rect2);
         return rects;
     }
+
+    @Override
+    public float getContinuePosition() {
+        return 0;
+    }
+
+    @Override
+    public void setContinuePosition(float position) {
+
+    }
 }
