@@ -9,12 +9,14 @@
 | iOS      | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 7.9 @ 2020.10.23
-- iOS：修复短视频编辑尾部音频缺失的问题；
-- iOS：解决短视频录制添加BGM重新录制BGM不重置的问题；
-- Android：修复短视频 SDK 若干Crash，增强稳定性；
-- Android：修复Android5.0以下版本使用拍摄功能崩溃的问题；
-- iOS&Android：直播播放器优化延迟控制算法，避免频繁加减速；
+### Version 8.0 @ 2020.11.16
+- iOS：修复添加多个贴纸后偶现应用卡死的问题；
+- iOS：修复气泡字幕编辑偶现闪退的问题；
+- Android：上传封面兼容9.0以上机型；
+- Android：修复三屏合拍切后台返回出现合拍视频不同步的问题；
+- Android：UGCKit修复视频压缩预览页面偶现黑屏的问题；
+- Android：UGCKit修复视频编辑音量设置不生效的问题；
+- Android：UGCKit修复动作界面撤销按钮偶现不显示的问题；
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
