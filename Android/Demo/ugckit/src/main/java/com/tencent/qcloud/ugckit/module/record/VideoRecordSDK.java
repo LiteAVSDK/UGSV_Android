@@ -514,6 +514,16 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
         return mRecordVideoPath;
     }
 
+    public void switchCamera(boolean isFront) {
+        TXUGCRecord record = getRecorder();
+        if (record != null) {
+            record.switchCamera(isFront);
+        }
+        if (mUGCKitRecordConfig != null) {
+            mUGCKitRecordConfig.mFrontCamera = isFront;
+        }
+    }
+
     public interface OnVideoRecordListener {
         void onRecordProgress(long milliSecond);
 

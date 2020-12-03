@@ -133,10 +133,7 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
             mImageTorch.setVisibility(View.VISIBLE);
             mImageTorch.setImageResource(mTorchOffImage);
         }
-        TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
-        if (record != null) {
-            record.switchCamera(mFrontCameraFlag);
-        }
+        VideoRecordSDK.getInstance().switchCamera(mFrontCameraFlag);
     }
 
     /**
