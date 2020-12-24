@@ -24,6 +24,7 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
 
     private TextView           mTextNumber;
     private ICountDownListener mListener;
+    private boolean            mAnimationStart;
 
     public CountDownTimerView(Context context) {
         super(context);
@@ -58,6 +59,7 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
      */
     public void countDownAnimation(final int num) {
         if (num <= 0) {
+            mAnimationStart = false;
             mTextNumber.setVisibility(GONE);
 
             if (mListener != null) {
@@ -65,6 +67,7 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
             }
             return;
         }
+        mAnimationStart = true;
         mTextNumber.setVisibility(View.VISIBLE);
         mTextNumber.setText(Integer.toString(num));
 
@@ -116,12 +119,13 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                countDownAnimation(num - 1);
+                if (mAnimationStart){
+                    countDownAnimation(num - 1);
+                }
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-
             }
 
             @Override
@@ -140,6 +144,12 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
     @Override
     public void setCountDownNumber(int number) {
         DEFAULT_COUNTDOWN_NUMBER = number;
+    }
+
+    @Override
+    public void cancelDownAnimation() {
+        DEFAULT_COUNTDOWN_NUMBER = 3;
+        mAnimationStart = false;
     }
 
 }

@@ -172,6 +172,10 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         if (VideoRecordSDK.getInstance().getRecordState() == VideoRecordSDK.STATE_STOP) {
             getPlayViews().releaseVideo();
 
+            if (getCountDownTimerView() !=null){
+                getCountDownTimerView().cancelDownAnimation();
+            }
+
             if (mOnMixRecordListener != null) {
                 mOnMixRecordListener.onMixRecordCanceled();
             }

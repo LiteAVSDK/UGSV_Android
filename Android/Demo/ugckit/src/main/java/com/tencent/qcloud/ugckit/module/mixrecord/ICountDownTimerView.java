@@ -37,4 +37,9 @@ public interface ICountDownTimerView {
      */
     void setCountDownNumber(int number);
 
+    /**
+     * 取消倒计时动画
+     */
+    void cancelDownAnimation();
+
 }

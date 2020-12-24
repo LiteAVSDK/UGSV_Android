@@ -10,11 +10,12 @@
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
 
-### Version 8.1 @ 2020.12.03
-- Android: 改善短视频的画质&清晰度；
-- Android: 修改美颜相关接口的参数类型从int到float；
-- Android: 修复短视频暂停录制后返回值异常的问题；
-- Android: 修复部分Crash问题及兼容性问题；
+### Version 8.2 @ 2020.12.24
+- Android: 修复切换摄像头绿幕失效的问题；
+- Android: 修复短视频偶现的稳定性问题；
+- iOS；修复播放器倒置旋转，偶现播放画面比例异常的问题；
+- iOS；修复短视频录制设置为横屏时，继续录制的合成失败问题；
+- iOS：修复超级播放器偶现的稳定性问题；
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
