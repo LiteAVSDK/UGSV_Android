@@ -204,6 +204,11 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 - (PHCachingImageManager *)imageManager
 {
     if (_imageManager == nil) {
+        PHAuthorizationStatus photoAuthorStatus = [PHPhotoLibrary authorizationStatus];
+        if (photoAuthorStatus == PHAuthorizationStatusDenied
+            || photoAuthorStatus == PHAuthorizationStatusNotDetermined) {
+            return nil;
+        }
         _imageManager = [PHCachingImageManager new];
     }
     

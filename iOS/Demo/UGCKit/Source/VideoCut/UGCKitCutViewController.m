@@ -316,6 +316,7 @@ typedef  NS_ENUM(NSInteger,VideoType)
             } else {
                 //使用快速剪切，速度快
                 _hasQuickGenerate = YES;
+                _hasNomalGenerate = NO;
                 [_ugcEdit quickGenerateVideo:VIDEO_COMPRESSED_720P videoOutputPath:_videoOutputPath];
             }
         }

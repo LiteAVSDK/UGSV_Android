@@ -1669,6 +1669,11 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 {
     _playTime = pos;
     _timeLabel.text = [NSString stringWithFormat:@"%02d:%02d",(int)_playTime / 60 , (int)_playTime % 60];
+    //关闭特效面板不响应 seek
+    if (_isHidingEffectView ||
+        (self->_effectView.frame.origin.y > (self.view.ugckit_height - 205 * kScaleY))) {
+        return;
+    }
     [_ugcEdit previewAtTime:_playTime];
     [self setPlayBtn:NO];
 }
