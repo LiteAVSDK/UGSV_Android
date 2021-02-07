@@ -1213,11 +1213,13 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
             [self stopCameraPreview];
             if (self.completion) {
                 NSAssert(self.previewController.recordVideoPath != nil, @"unexpected");
-                UGCKitResult *result = [[UGCKitResult alloc] init];;
-                result.media = [UGCKitMedia mediaWithVideoPath:self.previewController.recordVideoPath];
-                result.coverImage = [[UIImage alloc] initWithContentsOfFile:[_coverPath stringByAppendingString:@".png"]];
-                if (self.completion) {
+                if (self.previewController.recordVideoPath != nil) {
+                    UGCKitResult *result = [[UGCKitResult alloc] init];;
+                    result.media = [UGCKitMedia mediaWithVideoPath:self.previewController.recordVideoPath];
+                    result.coverImage = [[UIImage alloc] initWithContentsOfFile:[_coverPath stringByAppendingString:@".png"]];
                     self.completion(result);
+                } else {
+                    self.completion(nil);
                 }
             }
         } else {
@@ -1362,6 +1364,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 
 -(void) onRecordComplete:(TXUGCRecordResult*)result;
 {
+    // FIXME: 目前complete回调的触发，只有在调用 [[TXUGCRecord shareInstance] stopRecord] 时会触发。
+    // 当前页面的结束录制，用 [[TXUGCRecord shareInstance].partsManager 的 joinAllParts 来控制，这里的回调不会触发。
+    // 在当前页面Uinit的时候，会调用 stopRecord。
     [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
 
     if (_appForeground)
@@ -1373,8 +1378,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
             }else{
                 [self toastTip:[_theme localizedString:@"UGCKit.Record.ErrorREC"]];
             }
-        } else {
-            [self toastTip:[_theme localizedString:@"UGCKit.Record.ErrorTime"]];
         }
     }
 }
