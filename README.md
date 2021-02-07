@@ -9,12 +9,11 @@
 | iOS      | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 8.3 @ 2021.01.15
-- Android: 修复片段录制时，回删片段可能导致的合成失败问题；
-- Android: 修复短视频多例崩溃问题；
-- iOS: 修复点播时减速崩溃的问题；
-- iOS: 修复图片转场时特定步骤下显示黑屏的问题；
-- iOS: 修复部分兼容性问题导致崩溃问题；
+### Version 8.4 @ 2021.02.07
+- iOS&Android：短视频校验安全性问题fix；
+- Android：短视频支持多音轨视频预览；
+- iOS：优化预处理性能，提高稳定性；
+- iOS：美颜回调脸部坐标问题fix；
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
