@@ -9,11 +9,13 @@
 | iOS      | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 8.4 @ 2021.02.07
-- iOS&Android：短视频校验安全性问题fix；
-- Android：短视频支持多音轨视频预览；
-- iOS：优化预处理性能，提高稳定性；
-- iOS：美颜回调脸部坐标问题fix；
+### Version 8.5 @ 2021.03.18
+- iOS & Android：高级美颜效果优化，优化瘦脸、大眼、V脸等相关效果；
+- iOS & Android：高级美颜新增窄脸接口；
+- iOS & Android：高级美颜人脸特征提取优化；
+- iOS & Android：高级美颜新增窄脸接口；
+- iOS & Android：优化超级播放器播放部分网络串流seek慢的问题；
+- Android: 修复超级播放器通过fileid方式播放出现报错问题；
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
