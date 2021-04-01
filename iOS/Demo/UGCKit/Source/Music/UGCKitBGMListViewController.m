@@ -78,7 +78,7 @@
         lastUIFreshTick = [[NSDate date] timeIntervalSince1970]*1000;
         _bgmHelper = [UGCKitBGMHelper sharedInstance];
         [_bgmHelper setDelegate:self];
-        NSString* jsonUrl = @"http://bgm-1252463788.cosgz.myqcloud.com/bgm_list.json";
+        NSString* jsonUrl = @"https://liteav.sdk.qcloud.com/app/res/bgm/bgm_list.json";
         [_bgmHelper initBGMListWithJsonFile:jsonUrl];
     }
 }

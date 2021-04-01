@@ -6,8 +6,8 @@
 
 | 所属平台 | Zip下载                                                      | SDK集成指引                                                 |
 | -------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| iOS      | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
-| Android  | [下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
+| iOS      | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
+| Android  | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
 ### Version 8.5 @ 2021.03.18
 - iOS & Android：高级美颜效果优化，优化瘦脸、大眼、V脸等相关效果；

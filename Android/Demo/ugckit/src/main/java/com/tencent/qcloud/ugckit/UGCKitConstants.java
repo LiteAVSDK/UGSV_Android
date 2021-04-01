@@ -4,7 +4,7 @@ public class UGCKitConstants {
     // 业务Server的地址
     public static final String APP_SVR_URL = "http://demo.vod2.myqcloud.com/lite"; //如果您的服务器没有部署https证书，这里需要用http
     // BGM列表地址
-    public static final String SVR_BGM_GET_URL = "http://bgm-1252463788.cosgz.myqcloud.com/bgm_list.json";
+    public static final String SVR_BGM_GET_URL = "https://liteav.sdk.qcloud.com/app/res/bgm/bgm_list.json";
 
     // 小视频Bugly
     public static final String BUGLY_APPID = "9018b79ae2";

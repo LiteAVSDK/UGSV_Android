@@ -2,5 +2,5 @@
 
 ## 下载地址
 
-[下载](http://liteavsdk-1252463788.cosgz.myqcloud.com/TXLiteAVSDK_UGC_Android_latest.zip)
+[下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_Android_latest.zip)
 
