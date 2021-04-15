@@ -29,8 +29,8 @@
     <th style="text-align:center"><b>Android 版</b></th>
   </tr>
   <tr>
-    <td style="text-align:center"><img src="https://main.qcloudimg.com/raw/eac6fe7646ebfc7aa5a0d2e461cd5c37.png" /></td>
-    <td style="text-align:center"><img src="https://main.qcloudimg.com/raw/cd69c6227c8ce974f484f52435b76674.png" /></td>
+    <td style="width:300px;height:300px;text-align:center"><img src="https://liteav.sdk.qcloud.com/doc/res/ugc/picture/xiaoshipin_app_qr_code_ios.png" /></td>
+    <td style="width:300px;height:300px;text-align:center"><img src="https://liteav.sdk.qcloud.com/doc/res/ugc/picture/xiaoshipin_app_qr_code_android.png" /></td>
   </tr>
 </table>
 
