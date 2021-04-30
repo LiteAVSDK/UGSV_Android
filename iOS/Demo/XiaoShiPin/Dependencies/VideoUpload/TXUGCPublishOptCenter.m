@@ -109,10 +109,10 @@ static TXUGCPublishOptCenter *_shareInstance = nil;
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
-                NSLog(@"未知");
+                NSLog(@"%@",UGCLocalize(@"UGCVideoUploadDemo.TXUGCPublishOptCenter.unknow"));
                 break;
             case AFNetworkReachabilityStatusNotReachable:
-                NSLog(@"没有网络");
+                NSLog(@"%@",UGCLocalize(@"UGCVideoUploadDemo.TXUGCPublishOptCenter.notnetwork"));
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 NSLog(@"3G|4G");
@@ -289,20 +289,23 @@ static TXUGCPublishOptCenter *_shareInstance = nil;
 - (void)detectBsetCosIP:(NSString *)region domain:(NSString *)domain {
     __weak __typeof(self) weakSelf = self;
     
-    UInt64 beginTs = (UInt64)[[NSDate date] timeIntervalSince1970] * 1000;
+    UInt64 beginTs = (UInt64)([[NSDate date] timeIntervalSince1970] * 1000);
     [self detectDomain:domain completion:^(int result) {
         __strong __typeof(weakSelf) self = weakSelf;
         if (self == nil) {
             return;
         }
         
+        UInt64 endTs = (UInt64)([[NSDate date] timeIntervalSince1970] * 1000);
+        UInt64 cosTs = (endTs - beginTs);
+        NSLog(@"detectBsetCosIP domain = %@, result = %d, timeCos = %llu", domain, result, cosTs);
+        
         if (result == 0) {
-            UInt64 endTs = (UInt64)[[NSDate date] timeIntervalSince1970] * 1000;
-            UInt64 cosTs = (endTs - beginTs);
             if (self.minCosRespTime == 0 || cosTs < self.minCosRespTime) {
                 self.minCosRespTime = cosTs;
                 self.bestCosRegion = region;
                 self.bestCosDomain = domain;
+                NSLog(@"detectBsetCosIP bestCosDomain = %@, bestCosRegion = %@, timeCos = %llu", self.bestCosDomain, self.bestCosRegion, self.minCosRespTime);
             }
         }
     }];

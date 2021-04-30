@@ -25,6 +25,7 @@ typedef void(^DownLoadCallback)(float percent, NSString* url);
     NSURLSession *_urlSession;
     NSOperationQueue *_sessionDelegateQueue;
     TCBGMElement* _currentEle;
+    
     NSString* _bgmPath;
     NSMutableDictionary<NSURLSessionTask *, TCBGMDownloadTask*> *_taskDictionary;
 }
@@ -182,7 +183,7 @@ typedef void(^DownLoadCallback)(float percent, NSString* url);
     if(strong != nil){
         if([[_currentEle netUrl] isEqualToString:[current netUrl]]){
             if([_currentTask state] == NSURLSessionTaskStateRunning){
-                BGMLog(@"暂停：%@", [current name]);
+                BGMLog(@"%@",  @"暂停：%@", [current name]);
                 [_currentTask suspend];
                 return;
             }

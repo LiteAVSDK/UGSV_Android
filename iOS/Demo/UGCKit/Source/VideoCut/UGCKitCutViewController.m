@@ -519,6 +519,9 @@ typedef  NS_ENUM(NSInteger,VideoType)
 
 - (void)onVideoSeekChange:(UGCKitVideoRangeSlider *)sender seekToPos:(CGFloat)pos
 {
+    if (_generationView && _generationView.isHidden == NO) {
+        return;
+    }
     [_ugcEdit previewAtTime:pos];
     [_videoPreview setPlayBtn:NO];
 }

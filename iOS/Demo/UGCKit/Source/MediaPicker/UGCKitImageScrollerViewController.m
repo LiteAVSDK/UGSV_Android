@@ -36,6 +36,13 @@ static NSString * const reuseIdentifier = @"Cell";
     return self;
 }
 
+- (PHCachingImageManager *)imageManager {
+    if (!_imageManager) {
+        _imageManager = [[PHCachingImageManager alloc] init];
+    }
+    return _imageManager;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     _assets = [[NSMutableArray alloc] init];
@@ -83,15 +90,20 @@ static NSString * const reuseIdentifier = @"Cell";
         [cell.closeButton addTarget:self action:@selector(onRemoveItem:) forControlEvents:UIControlEventTouchUpInside];
     }
     cell.tag = indexPath.item;
+    PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
+    option.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+    option.networkAccessAllowed = YES;
     [self.imageManager requestImageForAsset:asset
                                  targetSize:cell.imageView.bounds.size
                                 contentMode:PHImageContentModeAspectFill
-                                    options:nil
+                                    options:option
                               resultHandler:^(UIImage *result, NSDictionary *info) {
-                                  if (cell.tag == indexPath.item) {
-                                      cell.imageView.image = result;
-                                  }
-                              }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (cell.tag == indexPath.item) {
+                cell.imageView.image = result;
+            }
+        });
+    }];
     return cell;
 }
 
