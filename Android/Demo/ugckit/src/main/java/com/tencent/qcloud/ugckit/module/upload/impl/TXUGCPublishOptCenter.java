@@ -199,16 +199,21 @@ public class TXUGCPublishOptCenter {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        long endTS = System.currentTimeMillis();
-                        long timeCost = endTS - beginTS;
-                        if (minCosRespTime == 0 || timeCost < minCosRespTime) {
-                            minCosRespTime = timeCost;
-                            bestCosInfo.region = region;
-                            bestCosInfo.domain = domain;
-                        }
-                    } else {
-                        Log.i(TAG, "detect cos domain " + domain + " failed , httpcode" + response.code());
+                    // 服务器有返回认为是检测成功，不需要判断isSuccessful，因为私有域会返回403，检测也是正常的
+                    long endTS = System.currentTimeMillis();
+                    long timeCost = endTS - beginTS;
+
+                    Log.i(TAG, "detectBsetCosIP domain = " + domain + ", region = " + region + ", timeCos = " + timeCost +
+                            ", response.code = " + response.code());
+
+                    if (minCosRespTime == 0 || timeCost < minCosRespTime) {
+                        minCosRespTime = timeCost;
+                        bestCosInfo.region = region;
+                        bestCosInfo.domain = domain;
+
+                        Log.i(TAG, "detectBsetCosIP bestCosDomain = " + bestCosInfo.domain
+                                        + ", bestCosRegion = " + bestCosInfo.region
+                                        + ", timeCos = "  + minCosRespTime);
                     }
                 }
             });
