@@ -9,11 +9,8 @@
 | iOS      | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 8.6 @ 2021.05.06
-- iOS：修复点播播放器偶现内存异常上涨问题；
-- iOS：优化Swift编译警告问题；
-- iOS&Android：修复UGC SDK若干稳定性问题；
-- iOS&Android：修复UGC SDK上传竞速导致上传失败的问题；
+### Version 8.7 @ 2021.05.24
+- iOS：修复iOS 14.5短视频录制模块出现电流杂音问题；
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
