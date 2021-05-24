@@ -7,7 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		400B68D9245825370055D584 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		4005887625FBA72E00C518CC /* YTHandDetector.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005886A25FBA72E00C518CC /* YTHandDetector.bundle */; };
+		4005887725FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin in Resources */ = {isa = PBXBuildFile; fileRef = 4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */; };
+		4005887825FBA72E00C518CC /* RPNSegmenter.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */; };
+		4005887925FBA72E00C518CC /* e1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005886D25FBA72E00C518CC /* e1 */; };
+		4005887A25FBA72E00C518CC /* u1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005886E25FBA72E00C518CC /* u1 */; };
+		4005887B25FBA72E00C518CC /* v1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005886F25FBA72E00C518CC /* v1 */; };
+		4005887C25FBA72E00C518CC /* detector.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887025FBA72E00C518CC /* detector.bundle */; };
+		4005887D25FBA72E00C518CC /* AECore.metallib in Resources */ = {isa = PBXBuildFile; fileRef = 4005887125FBA72E00C518CC /* AECore.metallib */; };
+		4005887E25FBA72E00C518CC /* o1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005887225FBA72E00C518CC /* o1 */; };
+		4005887F25FBA72E00C518CC /* poseest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887325FBA72E00C518CC /* poseest.bundle */; };
+		4005888025FBA72E00C518CC /* FilterEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887425FBA72E00C518CC /* FilterEngine.bundle */; };
+		4005888125FBA72E00C518CC /* ufa.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887525FBA72E00C518CC /* ufa.bundle */; };
+		400B68D9245825370055D584 /* TXLiteAVSDK_Enterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400B68D7245825370055D584 /* TXLiteAVSDK_Enterprise.framework */; };
 		406436D024BDA86D0032FF93 /* UGCKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4011E1AB24BDA80F007F636A /* UGCKitResources.bundle */; };
 		406436D124BDA8750032FF93 /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4011E1B424BDA824007F636A /* TCBeautyPanelResources.bundle */; };
 		406436D224BDA8A00032FF93 /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4011E1B224BDA824007F636A /* TCBeautyPanel.framework */; };
@@ -164,7 +176,6 @@
 		45D52F74238D6998006F71FA /* PhotoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F71238D6998006F71FA /* PhotoUtil.m */; };
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
-		7957F6988ACB5CF6EA80F97C /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6F45A2929B90E1B7DB2286 /* TXLiteAVSDK_UGC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +238,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4005886A25FBA72E00C518CC /* YTHandDetector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = YTHandDetector.bundle; sourceTree = "<group>"; };
+		4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSFMLandmarks46_relandmark_models.xbin; sourceTree = "<group>"; };
+		4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RPNSegmenter.bundle; sourceTree = "<group>"; };
+		4005886D25FBA72E00C518CC /* e1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = e1; sourceTree = "<group>"; };
+		4005886E25FBA72E00C518CC /* u1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = u1; sourceTree = "<group>"; };
+		4005886F25FBA72E00C518CC /* v1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = v1; sourceTree = "<group>"; };
+		4005887025FBA72E00C518CC /* detector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = detector.bundle; sourceTree = "<group>"; };
+		4005887125FBA72E00C518CC /* AECore.metallib */ = {isa = PBXFileReference; lastKnownFileType = "archive.metal-library"; path = AECore.metallib; sourceTree = "<group>"; };
+		4005887225FBA72E00C518CC /* o1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = o1; sourceTree = "<group>"; };
+		4005887325FBA72E00C518CC /* poseest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = poseest.bundle; sourceTree = "<group>"; };
+		4005887425FBA72E00C518CC /* FilterEngine.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterEngine.bundle; sourceTree = "<group>"; };
+		4005887525FBA72E00C518CC /* ufa.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ufa.bundle; sourceTree = "<group>"; };
+		400B68D7245825370055D584 /* TXLiteAVSDK_Enterprise.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_Enterprise.framework; path = ../../SDK/TXLiteAVSDK_Enterprise.framework; sourceTree = "<group>"; };
 		4011E1A324BDA80F007F636A /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = ./UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
 		4011E1AC24BDA824007F636A /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = ./BeautySettingKit/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
 		40A37344246A3916004E3FC7 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = XiaoShiPin/Frameworks/Bugly.framework; sourceTree = "<group>"; };
@@ -531,7 +555,6 @@
 		45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCKitWrapper.m; sourceTree = "<group>"; };
 		45E829492384EB7800702418 /* TCNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCNavigationController.h; sourceTree = "<group>"; };
 		45E8294A2384EB7800702418 /* TCNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCNavigationController.m; sourceTree = "<group>"; };
-		6F6F45A2929B90E1B7DB2286 /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,6 +564,7 @@
 			files = (
 				406436D324BDA8A30032FF93 /* UGCKit.framework in Frameworks */,
 				406436D224BDA8A00032FF93 /* TCBeautyPanel.framework in Frameworks */,
+				400B68D9245825370055D584 /* TXLiteAVSDK_Enterprise.framework in Frameworks */,
 				40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */,
 				40F4D6872473EC9800847F5B /* QCloudCOSXML.framework in Frameworks */,
 				455AB05E237BED1800AF4A3C /* AssetsLibrary.framework in Frameworks */,
@@ -550,7 +574,6 @@
 				40F4D6892473EC9800847F5B /* QCloudCore.framework in Frameworks */,
 				455AAEEB237ABBAA00AF4A3C /* libc++.tbd in Frameworks */,
 				40F4D6882473EC9800847F5B /* libmtasdk.a in Frameworks */,
-				7957F6988ACB5CF6EA80F97C /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -654,8 +677,28 @@
 			isa = PBXGroup;
 			children = (
 				453EA3CA23A236D3007C45F2 /* FilterResource.bundle */,
+				4500A74C2383DE2500147B05 /* pitu */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		4500A74C2383DE2500147B05 /* pitu */ = {
+			isa = PBXGroup;
+			children = (
+				4005887125FBA72E00C518CC /* AECore.metallib */,
+				4005887025FBA72E00C518CC /* detector.bundle */,
+				4005886D25FBA72E00C518CC /* e1 */,
+				4005887425FBA72E00C518CC /* FilterEngine.bundle */,
+				4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */,
+				4005887225FBA72E00C518CC /* o1 */,
+				4005887325FBA72E00C518CC /* poseest.bundle */,
+				4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */,
+				4005886E25FBA72E00C518CC /* u1 */,
+				4005887525FBA72E00C518CC /* ufa.bundle */,
+				4005886F25FBA72E00C518CC /* v1 */,
+				4005886A25FBA72E00C518CC /* YTHandDetector.bundle */,
+			);
+			path = pitu;
 			sourceTree = "<group>";
 		};
 		453DE2A72379458A0083E759 = {
@@ -707,12 +750,12 @@
 			isa = PBXGroup;
 			children = (
 				40A37344246A3916004E3FC7 /* Bugly.framework */,
+				400B68D7245825370055D584 /* TXLiteAVSDK_Enterprise.framework */,
 				455AB05D237BED1800AF4A3C /* AssetsLibrary.framework */,
 				455AAEF0237ABBB800AF4A3C /* libsqlite3.tbd */,
 				455AAEEE237ABBB300AF4A3C /* OpenAL.framework */,
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
-				6F6F45A2929B90E1B7DB2286 /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1252,13 +1295,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4005887625FBA72E00C518CC /* YTHandDetector.bundle in Resources */,
 				457BFBDB23901362004017FE /* InfoPlist.strings in Resources */,
 				453DE2C32379458C0083E759 /* LaunchScreen.storyboard in Resources */,
 				455AAF0A237AEF3C00AF4A3C /* Localizable.strings in Resources */,
+				4005887725FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin in Resources */,
 				453DE2C02379458C0083E759 /* Assets.xcassets in Resources */,
+				4005888125FBA72E00C518CC /* ufa.bundle in Resources */,
+				4005887D25FBA72E00C518CC /* AECore.metallib in Resources */,
+				4005887F25FBA72E00C518CC /* poseest.bundle in Resources */,
+				4005887825FBA72E00C518CC /* RPNSegmenter.bundle in Resources */,
+				4005887B25FBA72E00C518CC /* v1 in Resources */,
 				45C56C2A237A9993009BDB9F /* LICENSE in Resources */,
+				4005887925FBA72E00C518CC /* e1 in Resources */,
 				406436D024BDA86D0032FF93 /* UGCKitResources.bundle in Resources */,
+				4005887A25FBA72E00C518CC /* u1 in Resources */,
 				453DE2BE2379458A0083E759 /* Main.storyboard in Resources */,
+				4005887C25FBA72E00C518CC /* detector.bundle in Resources */,
+				4005888025FBA72E00C518CC /* FilterEngine.bundle in Resources */,
+				4005887E25FBA72E00C518CC /* o1 in Resources */,
 				406436D124BDA8750032FF93 /* TCBeautyPanelResources.bundle in Resources */,
 				45C56C6A237AA12E009BDB9F /* TCVideoEditPrevViewController.xib in Resources */,
 				45C56CA7237AA21F009BDB9F /* MJRefresh.bundle in Resources */,
@@ -1633,7 +1688,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoShiPin/Dependencies";
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1670,7 +1725,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoShiPin/Dependencies";
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1760,7 +1815,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/XiaoShiPin/Dependencies";
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

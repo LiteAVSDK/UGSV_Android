@@ -1506,6 +1506,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 {
     _BGMPath = nil;
     _bgmRecording = NO;
+    [_bgmListVC clearSelectStatus];
     [[TXUGCRecord shareInstance] stopBGM];
     if (!_musicView.hidden) {
         _musicView.hidden = !_musicView.hidden;

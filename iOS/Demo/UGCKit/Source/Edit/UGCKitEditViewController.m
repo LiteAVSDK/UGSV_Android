@@ -219,9 +219,19 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     if (_generationView && !_generationView.hidden) {
         [_ugcEdit resumeGenerate];
     }else{
-        [_ugcEdit resumePlay];
-        [self setPlayBtn:YES];
-        _isPlay = YES;
+        UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+        BOOL shouldResume = rootVC == self;
+        if ([rootVC isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nav = (UINavigationController *)rootVC;
+            if ([[nav viewControllers] lastObject] == self) {
+                shouldResume = YES;
+            }
+        }
+        if (shouldResume) {
+            [_ugcEdit resumePlay];
+            [self setPlayBtn:YES];
+            _isPlay = YES;
+        }
     }
 }
 
@@ -1694,6 +1704,9 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [self startPlayFromTime:0 toTime:_duration];
         return;
     }else{
+        if (_BGMPath) {
+            [self onBtnMusicStoped];
+        }
         _BGMPath = path;
     }
     __weak __typeof(self) ws = self;
