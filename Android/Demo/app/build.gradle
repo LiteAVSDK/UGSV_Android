@@ -58,6 +58,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.ctiao:dfm:0.4.4'
     compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.5.1'
+    compile 'com.tencent.bugly:nativecrashreport:3.8.0'
     compile project(':ugckit')
 }
 
