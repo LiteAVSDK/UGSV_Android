@@ -9,8 +9,12 @@
 | iOS      | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 8.7 @ 2021.05.24
-- iOS：修复iOS 14.5短视频录制模块出现电流杂音问题；
+### Version 8.8 @ 2021.06.18
+- iOS: 修复点播播放器启停多次触发的内存泄漏问题;
+- Android: 修复在Android 11上播放hls文件报错的问题;
+- Android: 修复特定情况下播放快直播流偶现闪退的问题;
+- iOS&Android: 修复VodPlayer播放特定视频seek慢的问题;
+- iOS&Android: 修复点播暂停播放后设置进度，画面显示慢的问题;
 
 ## 问题反馈
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
