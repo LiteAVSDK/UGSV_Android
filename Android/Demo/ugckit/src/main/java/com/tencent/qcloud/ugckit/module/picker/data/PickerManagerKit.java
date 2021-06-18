@@ -59,7 +59,7 @@ public class PickerManagerKit {
                     duration = 0;
                 fileItem.setDuration(duration);
 
-                if (fileItem.getFileName() != null && fileItem.getFileName().endsWith(".mp4")) {
+                if (fileItem.getFilePath() != null && fileItem.getFilePath().endsWith(".mp4")) {
                     videos.add(fileItem);
                 }
                 TXCLog.d(TAG, "fileItem = " + fileItem.toString());
