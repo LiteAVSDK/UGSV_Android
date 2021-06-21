@@ -702,6 +702,12 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         [_controlView.progressView comfirmDeletePart];
         [[TXUGCRecord shareInstance].partsManager deleteLastPart];
         _isBackDelete = YES;
+        if (0 == [TXUGCRecord shareInstance].partsManager.getVideoPathList.count) {
+            _bgmRecording = NO;
+            _BGMPath = nil;
+            [[TXUGCRecord shareInstance] stopBGM];
+            [_bgmListVC clearSelectStatus];
+        }
     }
     if (2 == ++ _deleteCount) {
         _deleteCount = 0;

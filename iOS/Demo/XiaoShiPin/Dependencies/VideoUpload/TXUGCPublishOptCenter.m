@@ -109,10 +109,10 @@ static TXUGCPublishOptCenter *_shareInstance = nil;
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
-                NSLog(@"%@",UGCLocalize(@"UGCVideoUploadDemo.TXUGCPublishOptCenter.unknow"));
+                NSLog(@"Unknown");
                 break;
             case AFNetworkReachabilityStatusNotReachable:
-                NSLog(@"%@",UGCLocalize(@"UGCVideoUploadDemo.TXUGCPublishOptCenter.notnetwork"));
+                NSLog(@"No network");
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 NSLog(@"3G|4G");
