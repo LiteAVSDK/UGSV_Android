@@ -264,11 +264,10 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     self.imagesController = [[UGCKitImageScrollerViewController alloc] initWithImageManage:self.imageManager];
     self.imagesController.closeIcon = _theme.closeIcon;
     __weak __typeof(self) wself = self;
-    self.imagesController.onRemoveHandler = ^(NSUInteger index) {
-        PHAsset *removedAsset = wself.imagePickerController.selectedAssets[index];
+    self.imagesController.onRemoveHandler = ^(PHAsset *removedAsset) {
         NSUInteger indexOfCollection = [wself.fetchResult indexOfObject:removedAsset];
         NSMutableOrderedSet *selectedAssets = wself.imagePickerController.selectedAssets;
-        [selectedAssets removeObjectAtIndex:index];
+        [selectedAssets removeObject:removedAsset];
         [wself updateSelectionInfo];
         [wself.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:indexOfCollection inSection:0] animated:YES];
 
@@ -702,7 +701,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     NSUInteger index = [selectedAssets indexOfObject:asset];
     [selectedAssets removeObject:asset];
     if (index != NSNotFound) {
-        [self.imagesController removeAssetAtIndex:index];
+        [self.imagesController removeAsset:asset];
     }
     self.lastSelectedItemIndexPath = nil;
     

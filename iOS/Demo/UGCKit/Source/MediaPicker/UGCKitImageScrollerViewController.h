@@ -7,10 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UGCKitImageScrollerViewController : UICollectionViewController
 @property (strong, nonatomic) UIImage *closeIcon;
-@property (nullable, copy, nonatomic) void(^onRemoveHandler)(NSUInteger index);
+@property (nullable, copy, nonatomic) void(^onRemoveHandler)(PHAsset *asset);
 - (instancetype)initWithImageManage:(PHCachingImageManager *)imageManager;
 - (void)addAsset:(PHAsset *)asset;
-- (void)removeAssetAtIndex:(NSUInteger)index;
+- (void)removeAsset:(PHAsset *)asset;
 
 - (NSArray<PHAsset *> *)currentAssets;
 @end

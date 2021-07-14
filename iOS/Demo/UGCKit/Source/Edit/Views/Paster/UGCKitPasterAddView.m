@@ -23,6 +23,7 @@
     UIButton *     _qipaoBtn;
     UIButton *     _closeBtn;
     UGCKitPasterType     _pasterType;
+    UGCKitPasterType     _lastPasterType;//上一次选择的贴纸类型，分为静态贴纸和动态贴纸
     UGCKitTheme *  _theme;
 }
 
@@ -31,6 +32,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _theme = theme;
+        _lastPasterType = UGCKitPasterType_Animate;//默认贴纸是动态
         CGFloat btnWidth = 100 * kScaleX;
         CGFloat btnHeight = 46 * kScaleY;
         _animateBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.ugckit_width / 2 -  btnWidth, 0 , btnWidth, btnHeight)];
@@ -76,9 +78,15 @@
     return self;
 }
 
-- (void)setUGCKitPasterType:(UGCKitPasterType)pasterType
+- (void) setUGCKitPasterType:(UGCKitPasterTtemType)pasterTtemType
 {
-    _pasterType = pasterType;
+    //外部和内部状态转化,外部数据源只有两种，内部有3种
+    if (pasterTtemType == UGCKitPasterTtemType_Qipao) {
+        _pasterType = UGCKitPasterType_Qipao;
+    }else if (pasterTtemType == UGCKitPasterTtemType_Paster) {//如果选择贴纸，要给他赋值为上次显示的是静态还是动态
+        _pasterType = _lastPasterType;
+    }
+    
     if (_pasterType == UGCKitPasterType_Animate || _pasterType == UGCKitPasterType_static) {
         _animateBtn.hidden = NO;
         _staticBtn.hidden = NO;
@@ -96,6 +104,7 @@
     [_animateBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [_staticBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _pasterType = UGCKitPasterType_Animate;
+    _lastPasterType = _pasterType;//保留上一次选择的贴纸类型，分为静态或者动态
     [self reloadSelectView];
 }
 
@@ -104,6 +113,7 @@
     [_animateBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_staticBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     _pasterType = UGCKitPasterType_static;
+    _lastPasterType = _pasterType;//保留上一次选择的贴纸类型，分为静态或者动态
     [self reloadSelectView];
 }
 

@@ -3,6 +3,12 @@
 #import <UIKit/UIKit.h>
 #import "UGCKitTheme.h"
 
+typedef NS_ENUM(NSInteger,UGCKitPasterTtemType)
+{
+    UGCKitPasterTtemType_Paster,
+    UGCKitPasterTtemType_Qipao,
+};
+
 typedef NS_ENUM(NSInteger,UGCKitPasterType)
 {
     UGCKitPasterType_Qipao,
@@ -53,5 +59,5 @@ typedef NS_ENUM(NSInteger,UGCKitPasterType)
 @interface UGCKitPasterAddView : UIView
 @property(nonatomic,weak) id <UGCKitPasterAddViewDelegate> delegate;
 - (instancetype) initWithFrame:(CGRect)frame theme:(UGCKitTheme *)theme;
-- (void) setUGCKitPasterType:(UGCKitPasterType)pasterType;
+- (void) setUGCKitPasterType:(UGCKitPasterTtemType)pasterTtemType;
 @end

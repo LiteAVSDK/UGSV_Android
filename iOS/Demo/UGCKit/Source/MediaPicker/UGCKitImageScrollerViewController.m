@@ -66,11 +66,11 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:_assets.count-1 inSection:0]]];
 }
 
-- (void)removeAssetAtIndex:(NSUInteger)index
+- (void)removeAsset:(PHAsset *)asset
 {
+    NSUInteger index = [_assets indexOfObject:asset];
     [_assets removeObjectAtIndex:index];
     [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-
 }
 #pragma mark <UICollectionViewDataSource>
 
@@ -135,9 +135,10 @@ static NSString * const reuseIdentifier = @"Cell";
 
     if (indexPath) {
         NSUInteger index = indexPath.item;
-        [self removeAssetAtIndex:index];
+        PHAsset *asset = _assets[index];
+        [self removeAsset:asset];
         if (self.onRemoveHandler) {
-            self.onRemoveHandler(index);
+            self.onRemoveHandler(asset);
         }
     }
 }

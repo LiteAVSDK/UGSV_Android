@@ -1305,7 +1305,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             [self removeAllPasterViewFromSuperView];
             if (_effectSelectIndex == _pasterEffectArray.count - 1) {
                 _pasterAddView.hidden = NO;
-                [_pasterAddView setUGCKitPasterType:UGCKitPasterType_Animate];
+                [_pasterAddView setUGCKitPasterType:UGCKitPasterTtemType_Paster];
             }else{
                 UGCKitVideoPasterInfo* pasterInfo = _videoPasterInfoList[_effectSelectIndex];
                 [_videoPreview addSubview:pasterInfo.pasterView];
@@ -1319,7 +1319,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             [self removeAllTextFieldFromSuperView];
             if (_effectSelectIndex == _textEffectArray.count - 1) {
                 _pasterAddView.hidden = NO;
-                [_pasterAddView setUGCKitPasterType:UGCKitPasterType_Qipao];
+                [_pasterAddView setUGCKitPasterType:UGCKitPasterTtemType_Qipao];
             }else{
                 UGCKitVideoTextInfo* textInfo = _videoTextInfoList[_effectSelectIndex];
                 [_videoPreview addSubview:textInfo.textField];
