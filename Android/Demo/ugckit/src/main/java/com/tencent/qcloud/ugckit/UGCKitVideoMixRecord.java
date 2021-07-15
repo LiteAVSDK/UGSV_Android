@@ -307,7 +307,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     }
 
     @Override
-    public void onRecordEvent() {
+    public void onRecordEvent(int event) {
         getFollowRecordBottomLayout().getRecordProgressView().clipComplete();
     }
 
@@ -407,6 +407,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             VideoEditerSDK.getInstance().initSDK();
             VideoEditerSDK.getInstance().getEditer().setVideoPath(videoPath);
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
+            VideoEditerSDK.getInstance().setVideoDuration(info.duration);
             VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
             // 开始视频预处理，产生录制的缩略图
             ProcessKit.getInstance().startProcess();

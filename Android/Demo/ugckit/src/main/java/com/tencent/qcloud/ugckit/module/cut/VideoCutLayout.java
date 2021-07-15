@@ -101,13 +101,15 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
         int durationS = (int) (videoInfo.duration / 1000);
         int thumbCount = durationS / 3;
 
-        if (durationS >= MAX_DURATION) {
-            durationS = MAX_DURATION;
+        int selectDuration = durationS;
+        if (selectDuration >= MAX_DURATION) {
+            selectDuration = MAX_DURATION;
         }
-        mTextDuration.setText(getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + durationS + "s");
+        mTextDuration.setText(getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + selectDuration + "s");
 
-        TXCLog.i(TAG, "[UGCKit][VideoCut]init cut time, start:" + 0 + ", end:" + durationS * 1000);
-        VideoEditerSDK.getInstance().setCutterStartTime(0, durationS * 1000);
+        TXCLog.i(TAG, "[UGCKit][VideoCut]init cut time, start:" + 0 + ", end:" + selectDuration * 1000);
+        VideoEditerSDK.getInstance().setCutterStartTime(0, selectDuration * 1000);
+        VideoEditerSDK.getInstance().setVideoDuration(durationS * 1000);
 
         mVideoCutView.setMediaFileInfo(videoInfo);
         mVideoCutView.setCount(thumbCount);

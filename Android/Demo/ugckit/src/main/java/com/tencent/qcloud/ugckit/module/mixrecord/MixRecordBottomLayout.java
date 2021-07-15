@@ -119,10 +119,7 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
             mImageTorch.setImageResource(R.drawable.ugckit_selector_torch_close);
             mImageTorch.setVisibility(View.VISIBLE);
         }
-        TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
-        if (record != null) {
-            record.switchCamera(mFrontCameraFlag);
-        }
+        VideoRecordSDK.getInstance().switchCamera(mFrontCameraFlag);
     }
 
     /**

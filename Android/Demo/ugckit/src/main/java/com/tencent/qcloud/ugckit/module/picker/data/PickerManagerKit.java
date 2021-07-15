@@ -59,8 +59,11 @@ public class PickerManagerKit {
                     duration = 0;
                 fileItem.setDuration(duration);
 
-                if (fileItem.getFilePath() != null && fileItem.getFilePath().endsWith(".mp4")) {
-                    videos.add(fileItem);
+                String filePath = fileItem.getFilePath();
+                if (filePath != null) {
+                    if(filePath.toLowerCase().endsWith("mp4") || filePath.toLowerCase().endsWith(".mov")){
+                        videos.add(fileItem);
+                    }
                 }
                 TXCLog.d(TAG, "fileItem = " + fileItem.toString());
             }

@@ -163,6 +163,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         }
 
         VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
+        VideoEditerSDK.getInstance().setVideoDuration(info.duration);
         VideoEditerSDK.getInstance().initThumbnailList(new TXVideoEditer.TXThumbnailListener() {
             @Override
             public void onThumbnail(final int index, long timeMs, final Bitmap bitmap) {

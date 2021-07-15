@@ -253,6 +253,9 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
      * 暂停录制操作执行的动画
      */
     public void pauseRecordAnim() {
+        if (!mIsRecording) {
+            return;
+        }
         if (mRecordMode == RecordModeView.RECORD_MODE_CLICK) {
             pauseRecordAnimByClick();
         } else {

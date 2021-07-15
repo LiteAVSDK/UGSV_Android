@@ -776,13 +776,13 @@ public class TVCClient {
                 JSONObject coverObj = dataRsp.getJSONObject("cover");
                 coverUrl = coverObj.getString("url");
                 if (enableHttps) {
-                    coverUrl = coverUrl.replace("http", "https");
+                    coverUrl = coverUrl.replace("http:", "https:");
                 }
             }
             JSONObject videoObj = dataRsp.getJSONObject("video");
             String playUrl = videoObj.getString("url");
             if (enableHttps) {
-                playUrl = playUrl.replace("http", "https");
+                playUrl = playUrl.replace("http:", "https:");
             }
             videoFileId = dataRsp.getString("fileId");
             notifyUploadSuccess(videoFileId, playUrl, coverUrl);

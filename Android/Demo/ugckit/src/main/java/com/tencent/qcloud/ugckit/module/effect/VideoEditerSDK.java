@@ -41,6 +41,7 @@ public class VideoEditerSDK {
     private long    mCutterDuration;                                   // 裁剪的总时长
     private long    mCutterStartTime;                                  // 裁剪开始的时间
     private long    mCutterEndTime;                                    // 裁剪结束的时间
+    private long    mVideoDuration;                                    // 视频原时长s
     private String  mVideoPath;
     private boolean mPublishFlag;
     private TXVideoEditConstants.TXVideoInfo mTXVideoInfo;
@@ -138,6 +139,10 @@ public class VideoEditerSDK {
         mCutterDuration = endTime - startTime;
     }
 
+    public void setVideoDuration(long duration) {
+        this.mVideoDuration = duration;
+    }
+
     public long getCutterStartTime() {
         return mCutterStartTime;
     }
@@ -227,6 +232,7 @@ public class VideoEditerSDK {
             TXVideoEditConstants.TXVideoInfo videoInfo = getTXVideoInfo();
             if (videoInfo != null) {
                 mCutterDuration = videoInfo.duration;
+                mVideoDuration = videoInfo.duration;
             }
         }
         if (mTXVideoEditer != null) {
@@ -249,14 +255,8 @@ public class VideoEditerSDK {
             Log.e(TAG, "interval error:0");
             return;
         }
-        int durationS = 0;
-
-        TXVideoEditConstants.TXVideoInfo videoInfo = getTXVideoInfo();
-        if (videoInfo != null) {
-            durationS = (int) (getTXVideoInfo().duration / interval);
-        }
         // 每一秒/一张缩略图
-        int thumbCount = durationS;
+        int thumbCount = (int) (mVideoDuration / interval);
         Log.d(TAG, "thumbCount:" + thumbCount);
 
         if (mTXVideoEditer != null) {

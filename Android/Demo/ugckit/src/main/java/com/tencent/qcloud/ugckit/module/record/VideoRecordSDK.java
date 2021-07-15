@@ -478,7 +478,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
         if (event == TXRecordCommon.EVT_ID_PAUSE) {
             saveLastPart();
             if (mOnVideoRecordListener != null) {
-                mOnVideoRecordListener.onRecordEvent();
+                mOnVideoRecordListener.onRecordEvent(event);
             }
         } else if (event == TXRecordCommon.EVT_CAMERA_CANNOT_USE) {
             ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_on_record_event_evt_camera_cannot_use));
@@ -527,7 +527,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
     public interface OnVideoRecordListener {
         void onRecordProgress(long milliSecond);
 
-        void onRecordEvent();
+        void onRecordEvent(int event);
 
         void onRecordComplete(TXRecordCommon.TXRecordResult result);
     }

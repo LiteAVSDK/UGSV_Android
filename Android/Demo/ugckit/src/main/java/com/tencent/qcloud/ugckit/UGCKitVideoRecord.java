@@ -276,7 +276,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         }
         // 录制已开始，点击返回键，暂停录制
         if (VideoRecordSDK.getInstance().getRecordState() == VideoRecordSDK.STATE_START) {
-            VideoRecordSDK.getInstance().pauseRecord();
+            //相当于点击了暂停按钮
+            getRecordBottomLayout().getRecordButton().pauseRecordAnim();
         }
 
         int size = VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size();
@@ -567,8 +568,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     }
 
     @Override
-    public void onRecordEvent() {
+    public void onRecordEvent(int event) {
         getRecordBottomLayout().getRecordProgressView().clipComplete();
+        if(event == TXRecordCommon.EVT_ID_PAUSE){
+            Log.d(TAG, "onRecordEvent: event=EVT_ID_PAUSE");
+            //相当于点击了暂停按钮
+            getRecordBottomLayout().getRecordButton().pauseRecordAnim();
+        }
     }
 
     @Override
@@ -624,6 +630,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
             VideoEditerSDK.getInstance().initSDK();
             VideoEditerSDK.getInstance().getEditer().setVideoPath(videoPath);
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
+            VideoEditerSDK.getInstance().setVideoDuration(info.duration);
             VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
 
             ProcessKit.getInstance().setOnUpdateUIListener(new OnUpdateUIListener() {

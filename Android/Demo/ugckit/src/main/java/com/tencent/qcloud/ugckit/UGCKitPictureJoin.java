@@ -119,6 +119,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
         // 设置视频基本信息
         TXVideoEditConstants.TXVideoInfo videoInfo = new TXVideoEditConstants.TXVideoInfo();
         VideoEditerSDK.getInstance().setCutterStartTime(0, duration);
+        VideoEditerSDK.getInstance().setVideoDuration(duration);
         VideoEditerSDK.getInstance().constructVideoInfo(videoInfo, duration);
 
         PlayerManagerKit.getInstance().startPlay();

@@ -11,11 +11,14 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
@@ -28,6 +31,7 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.component.circlebmp.TCGlideCircleTransform;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
@@ -43,6 +47,7 @@ import java.util.List;
  * 图片工具类
  */
 public class BitmapUtils {
+    private static final String TAG = "BitmapUtils";
     // 默认图片宽高
     public static final int DEFAULT_WIDTH = 720;
     public static final int DEFAULT_HEIGHT = 1280;
@@ -99,6 +104,17 @@ public class BitmapUtils {
         Bitmap bitmap = null;
         if (pdf != null) {
             bitmap = BitmapFactory.decodeFileDescriptor(pdf.getFileDescriptor(), null, options);
+
+            int orientation = getImageOrientation(Uri.parse(picPath));
+            TXCLog.d(TAG,"getImageOrientation from uri，orientation = "+orientation);
+            if(orientation == -1){
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    orientation = getImageOrientation(pdf.getFileDescriptor());
+                    TXCLog.d(TAG,"getImageOrientation from fileDescriptor，orientation = "+orientation);
+                }
+            }
+
+            bitmap = rotateBitmap(bitmap,orientation);
             try {
                 pdf.close();
             } catch (IOException e) {
@@ -106,8 +122,89 @@ public class BitmapUtils {
             }
         } else {
             bitmap = BitmapFactory.decodeFile(picPath, options);
+            int orientation = getImageOrientation(picPath);
+            bitmap = rotateBitmap(bitmap,orientation);
         }
         return bitmap;
+    }
+
+    private static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        if (bitmap == null) {
+            return null;
+        }
+
+        TXCLog.d(TAG,"getImageOrientation = "+orientation);
+        if (orientation == -1 || orientation == 0) {
+            return bitmap;
+        }
+        Matrix matrix = new Matrix();
+        matrix.postRotate(orientation);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
+        bitmap.recycle();
+        return rotatedBitmap;
+    }
+
+    /**
+     * getImageOrientation
+     * @param uri
+     * @return -1,0,90,180,270
+     */
+    private static int getImageOrientation(Uri uri) {
+        Cursor cursor = UGCKit.getAppContext().getContentResolver().query(uri,
+                new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null);
+
+        if (cursor == null) {
+            return -1;
+        }
+        if (cursor.getCount() != 1) {
+            cursor.close();
+            return -1;
+        }
+
+        cursor.moveToFirst();
+        //orientation here can be 90, 180, 270!
+        int orientation = cursor.getInt(0);
+        cursor.close();
+        return orientation;
+    }
+
+    private static int getImageOrientation(String filePath){
+        try {
+            ExifInterface exifInterface = new ExifInterface(filePath);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            return getDegree(orientation);
+        } catch (IOException e) {
+            e.printStackTrace();
+            TXCLog.e(TAG,"getImageOrientation-filePath,e="+e.toString());
+            return 0;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private static int getImageOrientation(FileDescriptor fileDescriptor) {
+        try {
+            ExifInterface exifInterface = new ExifInterface(fileDescriptor);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            return getDegree(orientation);
+        } catch (IOException e) {
+            e.printStackTrace();
+            TXCLog.e(TAG,"getImageOrientation-fileDescriptor,e="+e.toString());
+            return 0;
+        }
+    }
+
+    private static int getDegree(int orientation){
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return 90;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return 180;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return 270;
+            default:
+                return 0;
+        }
     }
 
     public static int calculateInSampleSize(@NonNull BitmapFactory.Options options, int reqWidth, int reqHeight) {
