@@ -22,9 +22,8 @@ import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
 
 public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgressController.VideoProgressSeekListener {
 
-    private FragmentActivity mActivity;
-    private int              mConfirmIcon;
-
+    private FragmentActivity      mActivity;
+    private int                   mConfirmIcon;
     private OnVideoEffectListener mOnVideoEffectListener;
 
     public UGCKitVideoEffect(Context context) {
@@ -171,6 +170,9 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
                 break;
             case UGCKitConstants.TYPE_EDITER_SUBTITLE:
                 showFragment(getBubbleFragment(), "bubble_fragment");
+                break;
+            case UGCKitConstants.TYPE_EDITER_TRANSITION:
+                showFragment(getTransitionFragment(), "transition_fragment");
                 break;
         }
     }

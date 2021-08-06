@@ -16,6 +16,7 @@ import com.tencent.qcloud.ugckit.component.swipemenu.touch.DefaultItemTouchHelpe
 import com.tencent.qcloud.ugckit.component.swipemenu.touch.OnItemMovementListener;
 import com.tencent.qcloud.ugckit.component.swipemenu.touch.OnItemMoveListener;
 import com.tencent.qcloud.ugckit.component.swipemenu.touch.OnItemStateChangedListener;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -25,27 +26,26 @@ public class SwipeMenuRecyclerView extends RecyclerView {
     /**
      * Left menu.
      */
-    public static final int LEFT_DIRECTION = 1;
+    public static final  int LEFT_DIRECTION   = 1;
     /**
      * Right menu.
      */
-    public static final int RIGHT_DIRECTION = -1;
+    public static final  int RIGHT_DIRECTION  = -1;
     /**
      * Invalid position.
      */
     private static final int INVALID_POSITION = -1;
 
-    private int     mDownX;
-    private int     mDownY;
-    protected int   mScaleTouchSlop;
-    protected int   mOldTouchedPosition = INVALID_POSITION;
-    private boolean allowSwipeDelete    = false;
-
+    private   int                          mDownX;
+    private   int                          mDownY;
+    protected int                          mScaleTouchSlop;
+    protected int                          mOldTouchedPosition = INVALID_POSITION;
+    private   boolean                      allowSwipeDelete    = false;
     @Nullable
-    protected SwipeMenuLayout            mOldSwipedLayout;
-    private SwipeMenuCreator             mSwipeMenuCreator;
-    private OnSwipeMenuItemClickListener mSwipeMenuItemClickListener;
-    private DefaultItemTouchHelper       mDefaultItemTouchHelper;
+    protected SwipeMenuLayout              mOldSwipedLayout;
+    private   SwipeMenuCreator             mSwipeMenuCreator;
+    private   OnSwipeMenuItemClickListener mSwipeMenuItemClickListener;
+    private   DefaultItemTouchHelper       mDefaultItemTouchHelper;
 
     @IntDef({LEFT_DIRECTION, RIGHT_DIRECTION})
     @Retention(RetentionPolicy.SOURCE)

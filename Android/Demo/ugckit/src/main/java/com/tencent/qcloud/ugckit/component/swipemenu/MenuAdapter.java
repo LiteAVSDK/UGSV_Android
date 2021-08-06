@@ -22,12 +22,12 @@ import java.util.ArrayList;
 
 public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder> {
 
-    private Context mContext;
+    private Context                    mContext;
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
-    private ItemView.OnDeleteListener mOnDeleteListener;
-    public int mBitmapWidth;
-    public int mBitmapHeight;
-    private int mRemoveIconId;
+    private ItemView.OnDeleteListener  mOnDeleteListener;
+    public  int                        mBitmapWidth;
+    public  int                        mBitmapHeight;
+    private int                        mRemoveIconId;
 
     public MenuAdapter(Context context, ArrayList<TCVideoFileInfo> fileInfos) {
         mContext = context;
@@ -101,9 +101,9 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
     }
 
     static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView ivThumb;
-        TextView tvDuration;
-        ImageView ivDelete;
+        ImageView                 ivThumb;
+        TextView                  tvDuration;
+        ImageView                 ivDelete;
         ItemView.OnDeleteListener mOnDeleteListener;
 
         public DefaultViewHolder(@NonNull View itemView) {

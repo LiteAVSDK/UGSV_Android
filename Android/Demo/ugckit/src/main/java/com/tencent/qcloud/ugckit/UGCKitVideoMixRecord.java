@@ -43,13 +43,13 @@ import java.util.List;
 public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements IMixRecordRightLayout.OnItemClickListener, RecordButton.OnRecordButtonListener,
         ScrollFilterView.OnRecordFilterListener, VideoRecordSDK.OnVideoRecordListener,
         IMixRecordJoinListener {
-    private static final String TAG = "UGCKitVideoTripleRecord";
-    private OnMixRecordListener  mOnMixRecordListener;
-    private ProgressDialogUtil   mProgressDialogUtil;
-    private ProgressFragmentUtil mProgressFragmentUtil;
-    private FragmentActivity     mActivity;
-    private MixRecordJoiner      mJoiner;
-    private MixRecordConfig      mConfig;
+    private static final String               TAG = "UGCKitVideoTripleRecord";
+    private              OnMixRecordListener  mOnMixRecordListener;
+    private              ProgressDialogUtil   mProgressDialogUtil;
+    private              ProgressFragmentUtil mProgressFragmentUtil;
+    private              FragmentActivity     mActivity;
+    private              MixRecordJoiner      mJoiner;
+    private              MixRecordConfig      mConfig;
 
     public UGCKitVideoMixRecord(Context context) {
         super(context);
@@ -138,11 +138,13 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         info.setInfo(buildInfo.getVideoPaths(), buildInfo.getRecordIndex(), buildInfo.getWidth(), buildInfo.getHeight(), buildInfo.getRecordRatio());
         mConfig = info;
         mConfig.mBeautyParams = new BeautyParams();
-        mConfig.mIsMute = true;
+        mConfig.mIsMute = buildInfo.isMute();
         // 设置默认美颜
         mConfig.mBeautyParams.mBeautyStyle = 0;
         mConfig.mBeautyParams.mBeautyLevel = 4;
         mConfig.mBeautyParams.mWhiteLevel = 1;
+
+        mConfig.mAECType = buildInfo.getAecType();
 
         List<String> paths = mConfig.getPaths();
         for (int i = 0; i < paths.size(); i++) {
@@ -172,7 +174,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         if (VideoRecordSDK.getInstance().getRecordState() == VideoRecordSDK.STATE_STOP) {
             getPlayViews().releaseVideo();
 
-            if (getCountDownTimerView() !=null){
+            if (getCountDownTimerView() != null) {
                 getCountDownTimerView().cancelDownAnimation();
             }
 
@@ -312,7 +314,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     }
 
     @Override
-    public void onRecordComplete(@NonNull TXRecordCommon.TXRecordResult result) {
+    public void onRecordComplete(@NonNull final TXRecordCommon.TXRecordResult result) {
         Log.d(TAG, "onRecordComplete result:" + result.retCode);
 
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_RECORD, result.retCode, result.descMsg);
@@ -337,6 +339,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
                     MixRecordJoiner joiner = new MixRecordJoiner(getContext());
                     params.mVolumes = mConfig.getVolumes();
                     joiner.setmListener(UGCKitVideoMixRecord.this);
+                    joiner.setRecordPath(result.videoPath);
                     joiner.joinVideo(params);
                 }
             }, "MixRecordT").start();

@@ -21,11 +21,10 @@ import okhttp3.Response;
 public class TVCDnsCache {
     private static final String TAG = "TVC-TVCDnsCache";
 
-    private OkHttpClient okHttpClient;
-
-    private static String HTTPDNS_SERVER = "http://119.29.29.29/d?dn=";      //httpdns服务器请求ip
-    private ConcurrentHashMap<String, List<String>> cacheMap;
-    private ConcurrentHashMap<String, List<String>> fixCacheMap;    //固定的dns缓存，从后台获取，认为这个是可信的
+    private        OkHttpClient                            okHttpClient;
+    private static String                                  HTTPDNS_SERVER = "http://119.29.29.29/d?dn=";      //httpdns服务器请求ip
+    private        ConcurrentHashMap<String, List<String>> cacheMap;
+    private        ConcurrentHashMap<String, List<String>> fixCacheMap;    //固定的dns缓存，从后台获取，认为这个是可信的
 
     public TVCDnsCache() {
         okHttpClient = new OkHttpClient().newBuilder()
@@ -38,9 +37,8 @@ public class TVCDnsCache {
     }
 
     // 对指定域名发起httpdns请求
-    public void freshDomain(final String domain, final Callback callback) {
-        if (useProxy())
-            return;
+    public boolean freshDomain(final String domain, final Callback callback) {
+        if (useProxy()) return false;
         String reqUrl = HTTPDNS_SERVER + domain;
         Log.i(TAG, "freshDNS->request url:" + reqUrl);
         Request request = new Request.Builder()
@@ -50,8 +48,9 @@ public class TVCDnsCache {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if (callback != null)
+                if (callback != null) {
                     callback.onFailure(call, e);
+                }
                 Log.w(TAG, "freshDNS failed :" + e.getMessage());
             }
 
@@ -67,19 +66,9 @@ public class TVCDnsCache {
                             String[] ipArray = ips.split(";");
                             for (int i = 0; i < ipArray.length; ++i) {
                                 ipLists.add(ipArray[i]);
-//                                if (domain.equalsIgnoreCase(TVCConstants.VOD_SERVER_HOST)) {
-//                                    ipLists.add("183.60.81.104");
-//                                } else {
-//                                    ipLists.add(ipArray[i]);
-//                                }
                             }
                         } else {
                             ipLists.add(ips);
-//                            if (domain.equalsIgnoreCase(TVCConstants.VOD_SERVER_HOST)) {
-//                                ipLists.add("183.60.81.104");
-//                            } else {
-//                                ipLists.add(ips);
-//                            }
                         }
                         cacheMap.put(domain, ipLists);
                         if (callback != null) {
@@ -89,10 +78,12 @@ public class TVCDnsCache {
                     }
                 }
 
-                if (callback != null)
+                if (callback != null) {
                     callback.onFailure(call, new IOException("freshDNS failed"));
+                }
             }
         });
+        return true;
     }
 
 
@@ -130,9 +121,9 @@ public class TVCDnsCache {
         return false;
     }
 
-    public static boolean useProxy(){
+    public static boolean useProxy() {
         String host = System.getProperty("http.proxyHost");
-        String port= System.getProperty("http.proxyPort");
+        String port = System.getProperty("http.proxyPort");
         if (host != null && port != null) {
             // 使用了本地代理模式
             Log.i(TAG, "use proxy " + host + ":" + port + ", will not use httpdns");

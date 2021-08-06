@@ -30,20 +30,19 @@ import com.tencent.qcloud.ugckit.R;
 public class ScrollFilterView extends RelativeLayout implements View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener {
     private static final String TAG = "ScrollFilterView";
 
-    private int     mCurFilterIndex = 0;     // 当前滤镜Index
-    private int     mLeftIndex = 0;          // 左右滤镜的Index
-    private int     mRightIndex = 1;
-    private int     mLastLeftIndex = -1;     // 之前左右滤镜的Index
-    private int     mLastRightIndex = -1;
-    private float   mLeftBitmapRatio;        // 左侧滤镜的比例
-    private float   mMoveRatio;              // 滑动的比例大小
-    private boolean mStartScroll;            // 已经开始滑动了标记
-    private boolean mMoveRight;              // 是否往右滑动
-    private boolean mIsNeedChange;           // 滤镜的是否需要发生改变
-    private boolean mIsDoingAnimator;        // 是否正在执行动画
-    private float   mLastScaleFactor;
-    private float  mScaleFactor;
-
+    private int                    mCurFilterIndex = 0;     // 当前滤镜Index
+    private int                    mLeftIndex      = 0;          // 左右滤镜的Index
+    private int                    mRightIndex     = 1;
+    private int                    mLastLeftIndex  = -1;     // 之前左右滤镜的Index
+    private int                    mLastRightIndex = -1;
+    private float                  mLeftBitmapRatio;        // 左侧滤镜的比例
+    private float                  mMoveRatio;              // 滑动的比例大小
+    private boolean                mStartScroll;            // 已经开始滑动了标记
+    private boolean                mMoveRight;              // 是否往右滑动
+    private boolean                mIsNeedChange;           // 滤镜的是否需要发生改变
+    private boolean                mIsDoingAnimator;        // 是否正在执行动画
+    private float                  mLastScaleFactor;
+    private float                  mScaleFactor;
     private ValueAnimator          mFilterAnimator;
     @Nullable
     private Bitmap                 mLeftBitmap;
@@ -54,7 +53,6 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
     private TextView               mTextFilter;
     private BeautyPanel            mBeautyPanel;
     private FrameLayout            mMaskLayout;
-
     private OnRecordFilterListener mOnRecordFilterListener;
 
     public ScrollFilterView(@NonNull Context context) {
@@ -181,6 +179,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
 
     /**
      * 设置当前滤镜的名字
+     *
      * @param index
      */
     public void doTextAnimator(int index) {

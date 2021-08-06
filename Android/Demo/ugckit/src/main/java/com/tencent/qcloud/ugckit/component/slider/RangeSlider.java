@@ -24,39 +24,39 @@ import com.tencent.qcloud.ugckit.R;
 public class RangeSlider extends ViewGroup {
     private static final String TAG = "RangeSlider";
 
-    private static final int DEFAULT_LINE_SIZE = 1;
-    private static final int DEFAULT_THUMB_WIDTH = 7;
-    private static final int DEFAULT_TICK_START = 0;
-    private static final int DEFAULT_TICK_END = 5;
-    private static final int DEFAULT_TICK_INTERVAL = 1;
-    public static final int  TYPE_LEFT = 1;
-    public static final int  TYPE_RIGHT = 2;
-    private static int       DEFAULT_MASK_BACKGROUND = 0xA0000000;
-    private static int       DEFAULT_LINE_COLOR = 0xFFFF584C;
+    private static final int DEFAULT_LINE_SIZE       = 1;
+    private static final int DEFAULT_THUMB_WIDTH     = 7;
+    private static final int DEFAULT_TICK_START      = 0;
+    private static final int DEFAULT_TICK_END        = 5;
+    private static final int DEFAULT_TICK_INTERVAL   = 1;
+    public static final  int TYPE_LEFT               = 1;
+    public static final  int TYPE_RIGHT              = 2;
+    private static       int DEFAULT_MASK_BACKGROUND = 0xA0000000;
+    private static       int DEFAULT_LINE_COLOR      = 0xFFFF584C;
 
     @NonNull
-    private final Paint     mLinePaint;
+    private final Paint                 mLinePaint;
     @NonNull
-    private final Paint     mBgPaint;
+    private final Paint                 mBgPaint;
     @NonNull
-    private final ThumbView mLeftThumb;
+    private final ThumbView             mLeftThumb;
     @NonNull
-    private final ThumbView mRightThumb;
+    private final ThumbView             mRightThumb;
     @Nullable
-    private Drawable        mRightIcon;
+    private       Drawable              mRightIcon;
     @Nullable
-    private Drawable        mLeftIcon;
-    private int             mTouchSlop;
-    private int             mOriginalX;
-    private int             mLastX;
-    private int             mThumbWidth;
-    private int             mTickStart      = DEFAULT_TICK_START;
-    private int             mTickEnd        = DEFAULT_TICK_END;
-    private int             mTickInterval   = DEFAULT_TICK_INTERVAL;
-    private int             mTickCount      = (mTickEnd - mTickStart) / mTickInterval;
-    private float           mLineSize;
-    private boolean         mIsDragging;
-    private OnRangeChangeListener mRangeChangeListener;
+    private       Drawable              mLeftIcon;
+    private       int                   mTouchSlop;
+    private       int                   mOriginalX;
+    private       int                   mLastX;
+    private       int                   mThumbWidth;
+    private       int                   mTickStart    = DEFAULT_TICK_START;
+    private       int                   mTickEnd      = DEFAULT_TICK_END;
+    private       int                   mTickInterval = DEFAULT_TICK_INTERVAL;
+    private       int                   mTickCount    = (mTickEnd - mTickStart) / mTickInterval;
+    private       float                 mLineSize;
+    private       boolean               mIsDragging;
+    private       OnRangeChangeListener mRangeChangeListener;
 
     public RangeSlider(@NonNull Context context) {
         this(context, null);
@@ -103,6 +103,7 @@ public class RangeSlider extends ViewGroup {
 
     /**
      * 设置左边拖动条Icon
+     *
      * @param drawable
      */
     public void setLeftThumbDrawable(Drawable drawable) {
@@ -111,6 +112,7 @@ public class RangeSlider extends ViewGroup {
 
     /**
      * 设置右边拖动条Icon
+     *
      * @param drawable
      */
     public void setRightThumbDrawable(Drawable drawable) {
@@ -123,6 +125,7 @@ public class RangeSlider extends ViewGroup {
 
     /**
      * 设置横线颜色
+     *
      * @param color
      */
     public void setLineColor(@ColorInt int color) {
@@ -131,6 +134,7 @@ public class RangeSlider extends ViewGroup {
 
     /**
      * 设置背景颜色
+     *
      * @param color
      */
     public void setMaskColor(int color) {

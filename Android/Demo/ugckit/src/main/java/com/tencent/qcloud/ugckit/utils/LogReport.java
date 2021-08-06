@@ -30,44 +30,44 @@ import okhttp3.Response;
  * 日志上报模块
  */
 public class LogReport {
-    private static final String TAG = "LogReport";
+    private static final String       TAG                            = "LogReport";
     // ELK统计上报HOST
-    public static final String DEFAULT_ELK_HOST = "https://qcloud.com";
+    public static final  String       DEFAULT_ELK_HOST               = "https://qcloud.com";
     /******************************
      * ELK统计上报事件
      ******************************/
     // 程序启动
-    public static final String ELK_ACTION_START_UP = "startup";
+    public static final  String       ELK_ACTION_START_UP            = "startup";
     // 程序使用时长（秒）
-    public static final String ELK_ACTION_STAY_TIME = "staytime";
+    public static final  String       ELK_ACTION_STAY_TIME           = "staytime";
     // 图片编辑
-    public static final String ELK_ACTION_PICTURE_EDIT = "pictureedit";
+    public static final  String       ELK_ACTION_PICTURE_EDIT        = "pictureedit";
     // 注册
-    public static final String ELK_ACTION_REGISTER = "register";
+    public static final  String       ELK_ACTION_REGISTER            = "register";
     // 安装
-    public static final String ELK_ACTION_INSTALL = "install";
+    public static final  String       ELK_ACTION_INSTALL             = "install";
     // 登录
-    public static final String ELK_ACTION_LOGIN = "login";
+    public static final  String       ELK_ACTION_LOGIN               = "login";
     // 视频编辑
-    public static final String ELK_ACTION_VIDEO_EDIT = "videoedit";
+    public static final  String       ELK_ACTION_VIDEO_EDIT          = "videoedit";
     // 视频合成
-    public static final String ELK_ACTION_VIDEO_JOINER = "videojoiner";
+    public static final  String       ELK_ACTION_VIDEO_JOINER        = "videojoiner";
     // 获取视频签名（发布视频前的准备工作）
-    public static final String ELK_ACTION_VIDEO_SIGN = "videosign";
+    public static final  String       ELK_ACTION_VIDEO_SIGN          = "videosign";
     // 发布视频到点播系统
-    public static final String ELK_ACTION_VIDEO_UPLOAD_VOD = "videouploadvod";
+    public static final  String       ELK_ACTION_VIDEO_UPLOAD_VOD    = "videouploadvod";
     // 发布视频到服务器
-    public static final String ELK_ACTION_VIDEO_UPLOAD_SERVER = "videouploadserver";
+    public static final  String       ELK_ACTION_VIDEO_UPLOAD_SERVER = "videouploadserver";
     // 开始录制
-    public static final String ELK_ACTION_START_RECORD = "startrecord";
+    public static final  String       ELK_ACTION_START_RECORD        = "startrecord";
     // 停止录制
-    public static final String ELK_ACTION_VIDEO_RECORD = "videorecord";
+    public static final  String       ELK_ACTION_VIDEO_RECORD        = "videorecord";
     // 点播视频
-    public static final String ELK_ACTION_VOD_PLAY = "vodplay";
+    public static final  String       ELK_ACTION_VOD_PLAY            = "vodplay";
     // 合唱
-    public static final String ELK_ACTION_VIDEO_CHORUS = "videochorus";
-    private OkHttpClient mHttpClient;
-    private String mUserId;
+    public static final  String       ELK_ACTION_VIDEO_CHORUS        = "videochorus";
+    private              OkHttpClient mHttpClient;
+    private              String       mUserId;
 
     private LogReport() {
         mHttpClient = new OkHttpClient().newBuilder()

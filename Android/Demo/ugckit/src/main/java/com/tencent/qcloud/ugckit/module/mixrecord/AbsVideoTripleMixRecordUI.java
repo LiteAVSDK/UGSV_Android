@@ -26,16 +26,16 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
     private CountDownTimerView    mCountDownTimerView;
 
     public AbsVideoTripleMixRecordUI(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public AbsVideoTripleMixRecordUI(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public AbsVideoTripleMixRecordUI(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initViews(attrs,defStyleAttr);
+        initViews(attrs, defStyleAttr);
     }
 
     private void initViews(AttributeSet attrs, int defStyleAttr) {
@@ -61,12 +61,11 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
             TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.UGCKitMixRecord, 0, 0);
             try {
                 player_layout_id = a.getResourceId(R.styleable.UGCKitMixRecord_layout_id, player_layout_id);
-            }
-            finally {
+            } finally {
                 a.recycle();
             }
         }
-        View playerViews = LayoutInflater.from(getContext()).inflate(player_layout_id, this,false);
+        View playerViews = LayoutInflater.from(getContext()).inflate(player_layout_id, this, false);
         playerViews.setId(R.id.ugckit_mixrecord_playerviews);
         playerViews.setLayoutParams(playerviewHolder.getLayoutParams());
         ViewGroup parent = ((ViewGroup) playerviewHolder.getParent());

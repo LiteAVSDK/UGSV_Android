@@ -65,8 +65,8 @@ dependencies {
     compile 'com.android.support:support-annotations:24.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.11.0'
     compile 'com.squareup.okio:okio:1.14.0'
-    compile('com.tencent.qcloud:cosxml:5.5.3') {
-        exclude group: 'com.tencent.qcloud', module: 'mtaUtils' //关闭 mta 上报功能}
+    compile('com.qcloud.cos:cos-android:5.6.+') {
+        exclude group: 'com.tencent.qcloud', module: 'beacon-android-release'
     }
     compile project(':beautysettingkit')
 }

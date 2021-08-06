@@ -22,22 +22,21 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
 
     public static final int DEFAULT_SCROLLER_DURATION = 200;
 
-    private int     mLeftViewId       = 0;
-    private int     mContentViewId    = 0;
-    private int     mRightViewId      = 0;
-    private int     mScrollerDuration = DEFAULT_SCROLLER_DURATION;
-    private int     mScaledTouchSlop;
-    private int     mLastX;
-    private int     mLastY;
-    private int     mDownX;
-    private int     mDownY;
-    private int     mScaledMinimumFlingVelocity;
-    private int     mScaledMaximumFlingVelocity;
-    private float   mOpenPercent       = 0.5f;
-    private boolean shouldResetSwipe;
-    private boolean mDragging;
-    private boolean swipeEnable        = true;
-
+    private int                  mLeftViewId       = 0;
+    private int                  mContentViewId    = 0;
+    private int                  mRightViewId      = 0;
+    private int                  mScrollerDuration = DEFAULT_SCROLLER_DURATION;
+    private int                  mScaledTouchSlop;
+    private int                  mLastX;
+    private int                  mLastY;
+    private int                  mDownX;
+    private int                  mDownY;
+    private int                  mScaledMinimumFlingVelocity;
+    private int                  mScaledMaximumFlingVelocity;
+    private float                mOpenPercent      = 0.5f;
+    private boolean              shouldResetSwipe;
+    private boolean              mDragging;
+    private boolean              swipeEnable       = true;
     private View                 mContentView;
     private SwipeLeftHorizontal  mSwipeLeftHorizontal;
     private SwipeRightHorizontal mSwipeRightHorizontal;

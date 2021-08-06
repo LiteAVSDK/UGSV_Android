@@ -25,12 +25,14 @@ public class BubbleViewHelper {
     private float            mTextDefaultSize = 36; // 字幕的默认代销
     private String           mText;
     private Paint            mPaint;
-    /**
-    * 字幕区域
-    * */
-    private int mTextAreaTop,     mTextAreaLeft, mTextAreaRight, mTextAreaBottom;
-    private int mTextAreaHeight,  mTextAreaWidth;
-    private int mTextAreaCenterX, mTextAreaCenterY;
+    private int              mTextAreaTop;
+    private int              mTextAreaLeft;
+    private int              mTextAreaRight;
+    private int              mTextAreaBottom;
+    private int              mTextAreaHeight;
+    private int              mTextAreaWidth;
+    private int              mTextAreaCenterX;
+    private int              mTextAreaCenterY;
 
     public BubbleViewHelper() {
 

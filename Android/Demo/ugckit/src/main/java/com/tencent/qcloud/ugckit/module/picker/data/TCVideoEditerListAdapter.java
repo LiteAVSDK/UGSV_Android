@@ -86,7 +86,7 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         @NonNull
         private final ImageView thumb;
         @NonNull
-        private final TextView duration;
+        private final TextView  duration;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);

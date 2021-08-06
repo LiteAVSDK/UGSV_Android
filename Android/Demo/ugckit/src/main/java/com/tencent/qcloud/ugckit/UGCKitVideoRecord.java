@@ -36,6 +36,7 @@ import com.tencent.qcloud.ugckit.module.record.VideoRecordSDK;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordButton;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordMusicPannel;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordRightLayout;
+import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.DialogUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
@@ -43,6 +44,9 @@ import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoInfoReader;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         IRecordRightLayout.OnItemClickListener,
@@ -52,12 +56,14 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         ScrollFilterView.OnRecordFilterListener,
         VideoRecordSDK.OnVideoRecordListener {
     private static final String TAG = "UGCKitVideoRecord";
-    
+
     private OnRecordListener      mOnRecordListener;
     private OnMusicChooseListener mOnMusicListener;
     private FragmentActivity      mActivity;
     private ProgressFragmentUtil  mProgressFragmentUtil;
     private ProgressDialogUtil    mProgressDialogUtil;
+    private boolean isInStopProcessing = false;
+    private ExecutorService videoProcessExecutor;
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -104,6 +110,14 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         getTitleBar().setOnRightClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //录制stop状态，由于stop的过程比较长，可长达一秒以上，做防重复点击的最小点击时间就需要设置的比较长。
+                //使用录制的currentState状态来判断是否是STOP状态，虽然可以完美解决防重复点击问题，但是如果用户按返回回到该界面，
+                //无法再次点击下一步，currentState状态仍然是stop。
+                //所以这里采用一个新的布尔值进行限制
+                if(isInStopProcessing) {
+                    return;
+                }
+                isInStopProcessing = true;
                 mProgressDialogUtil.showProgressDialog();
 
                 VideoRecordSDK.getInstance().stopRecord();
@@ -205,6 +219,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     @Override
     public void stop() {
         Log.d(TAG, "stop");
+        isInStopProcessing = false;
         TelephonyUtil.getInstance().uninitPhoneListener();
 
         getRecordBottomLayout().getRecordButton().pauseRecordAnim();
@@ -570,7 +585,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     @Override
     public void onRecordEvent(int event) {
         getRecordBottomLayout().getRecordProgressView().clipComplete();
-        if(event == TXRecordCommon.EVT_ID_PAUSE){
+        if (event == TXRecordCommon.EVT_ID_PAUSE) {
             Log.d(TAG, "onRecordEvent: event=EVT_ID_PAUSE");
             //相当于点击了暂停按钮
             getRecordBottomLayout().getRecordButton().pauseRecordAnim();
@@ -622,7 +637,25 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
      * @param videoPath
      */
     private void loadVideoInfo(final String videoPath) {
-        TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
+        if(null == videoProcessExecutor) {
+            videoProcessExecutor = Executors.newSingleThreadExecutor();
+        }
+        //使用单线程池，loadVideoInfo线程处理按照FIFO顺序执行，避免多并发产生的潜在问题
+        videoProcessExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        final TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
+                        BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                processVideo(info,videoPath);
+                            }
+                        });
+                    }
+                });
+    }
+
+    private void processVideo(TXVideoEditConstants.TXVideoInfo info,final String videoPath) {
         if (info == null) {
             DialogUtil.showDialog(getContext(), getResources().getString(R.string.ugckit_video_preprocess_activity_edit_failed), getResources().getString(R.string.ugckit_does_not_support_android_version_below_4_3), null);
         } else {

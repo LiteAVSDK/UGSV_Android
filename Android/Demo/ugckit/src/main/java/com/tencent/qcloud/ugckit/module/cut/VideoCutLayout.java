@@ -27,8 +27,7 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
     private ImageView        mImageRotate;
     private TextView         mTextDuration;
     private VideoCutView     mVideoCutView;
-
-    private int mRotation;
+    private int              mRotation;
 
     private OnRotateVideoListener mOnRotateVideoListener;
 

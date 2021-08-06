@@ -17,8 +17,8 @@ import java.util.List;
 
 public class StaticFilterAdapter extends BaseRecyclerAdapter<StaticFilterAdapter.FilterViewHolder> {
     private List<Integer> mFilterList;
-    private List<String> mFileterNameList;
-    private int mCurrentSelectedPos;
+    private List<String>  mFileterNameList;
+    private int           mCurrentSelectedPos;
 
     public StaticFilterAdapter(List<Integer> list, List<String> filerNameList) {
         mFilterList = list;
@@ -59,7 +59,7 @@ public class StaticFilterAdapter extends BaseRecyclerAdapter<StaticFilterAdapter
     public static class FilterViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
         ImageView ivImageTint;
-        TextView tvName;
+        TextView  tvName;
 
         public FilterViewHolder(@NonNull View itemView) {
             super(itemView);

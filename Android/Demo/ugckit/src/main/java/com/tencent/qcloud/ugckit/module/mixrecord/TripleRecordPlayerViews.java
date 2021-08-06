@@ -16,7 +16,7 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
     private MixRecordPlayerView mTopView;
     private MixRecordPlayerView mMiddleView;
     private MixRecordPlayerView mBottomView;
-    private float mContinuePosition = -1;
+    private float               mContinuePosition = -1;
 
     public TripleRecordPlayerViews(Context context) {
         super(context);
@@ -100,9 +100,9 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
 
     @Override
     public List<TXVideoEditConstants.TXAbsoluteRect> getCombineRects(MixRecordConfig config) {
-        List<TXVideoEditConstants.TXAbsoluteRect>  rects = new ArrayList<>();
+        List<TXVideoEditConstants.TXAbsoluteRect> rects = new ArrayList<>();
         TXVideoEditConstants.TXAbsoluteRect rect1 = new TXVideoEditConstants.TXAbsoluteRect();
-        int h = config.getHeight()/3;
+        int h = config.getHeight() / 3;
         rect1.x = 0;
         rect1.y = 0;
         rect1.width = config.getWidth();
@@ -111,21 +111,21 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
         TXVideoEditConstants.TXAbsoluteRect rect2 = new TXVideoEditConstants.TXAbsoluteRect();
         rect2.x = 0;
         rect2.y = h;
-        rect2.width =  config.getWidth();
+        rect2.width = config.getWidth();
         rect2.height = h;
 
         TXVideoEditConstants.TXAbsoluteRect rect3 = new TXVideoEditConstants.TXAbsoluteRect();
         rect3.x = 0;
-        rect3.y = h*2;
-        rect3.width =  config.getWidth();
+        rect3.y = h * 2;
+        rect3.width = config.getWidth();
         rect3.height = h;
 
         rects.add(rect1);
         rects.add(rect2);
         rects.add(rect3);
 
-        config.setVolume(0,0.0f);
-        config.setVolume(1,0.0f);
+        config.setVolume(0, 0.0f);
+        config.setVolume(1, 0.0f);
         return rects;
     }
 

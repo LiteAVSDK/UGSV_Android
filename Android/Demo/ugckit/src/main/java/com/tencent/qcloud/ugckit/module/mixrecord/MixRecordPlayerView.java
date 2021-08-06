@@ -32,11 +32,10 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
     private TXVodPlayer      mVodPlayer;
     private TXCloudVideoView mCloudView;
     private ImageView        mCoverimg;
-    private PlayerState      mPlayerState = PlayerState.STATE_UNINIT;
-
-    private String  mVideoPath;
-    private int     mIndex = -1;
-    private float   mContinuePosition = -1;
+    private PlayerState      mPlayerState      = PlayerState.STATE_UNINIT;
+    private String           mVideoPath;
+    private int              mIndex            = -1;
+    private float            mContinuePosition = -1;
 
     public MixRecordPlayerView(Context context) {
         this(context, null);

@@ -203,9 +203,9 @@ public class ActionSheetDialog {
     }
 
     public class SheetItem {
-        String name;
+        String                   name;
         OnSheetItemClickListener itemClickListener;
-        SheetItemColor color;
+        SheetItemColor           color;
 
         public SheetItem(String name, SheetItemColor color,
                          OnSheetItemClickListener itemClickListener) {

@@ -11,14 +11,11 @@ public class ThumbView extends View {
 
     private static final int EXTEND_TOUCH_SLOP = 15;
 
-    private final int mExtendTouchSlop;
-
-    private Drawable mThumbDrawable;
-
-    private boolean mPressed;
-
-    private int mThumbWidth;
-    private int mTickIndex;
+    private final int      mExtendTouchSlop;
+    private       Drawable mThumbDrawable;
+    private       boolean  mPressed;
+    private       int      mThumbWidth;
+    private       int      mTickIndex;
 
     public ThumbView(@NonNull Context context, int thumbWidth, Drawable drawable) {
         super(context);

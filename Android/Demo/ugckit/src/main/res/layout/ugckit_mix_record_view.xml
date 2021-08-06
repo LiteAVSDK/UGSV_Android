@@ -8,16 +8,17 @@
     android:orientation="vertical">
 
 
-<!--    <com.tencent.qcloud.ugckit.module.triplescreen.TripleRecordPlayerViews-->
-<!--        android:id="@+id/triple_views"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_centerInParent="true" />-->
+    <!--    <com.tencent.qcloud.ugckit.module.triplescreen.TripleRecordPlayerViews-->
+    <!--        android:id="@+id/triple_views"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_centerInParent="true" />-->
     <!-- 视频预览界面占位 -->
-    <View android:id="@+id/mixrecord_playerview_placeholder"
+    <View
+        android:id="@+id/mixrecord_playerview_placeholder"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.tencent.qcloud.ugckit.module.record.ScrollFilterView
         android:id="@+id/scrollFilterView"

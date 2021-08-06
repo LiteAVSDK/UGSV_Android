@@ -24,28 +24,20 @@ import java.util.List;
  * 完成一次视频编辑后，请务必调用{@link VideoEditerSDK#clear()}晴空相关的一些配置
  */
 public class VideoEditerSDK {
-    private static final String TAG = "VideoEditerKit";
-
-    private static VideoEditerSDK sInstance;
+    private static final String                              TAG = "VideoEditerKit";
+    private static       VideoEditerSDK                      sInstance;
     @Nullable
-    private TXVideoEditer mTXVideoEditer;
-
-    private List<ThumbnailBitmapInfo> mThumbnailList;               // 缩略图相关, 将已经加在好的Bitmap缓存起来
-
-    /**
-     * 预览相关
-     * <p>
-     * 由于SDK没有提供多个Listener的预览进度的回调，所以在上层包装一下
-     */
-    private boolean mIsReverse;
-    private long    mCutterDuration;                                   // 裁剪的总时长
-    private long    mCutterStartTime;                                  // 裁剪开始的时间
-    private long    mCutterEndTime;                                    // 裁剪结束的时间
-    private long    mVideoDuration;                                    // 视频原时长s
-    private String  mVideoPath;
-    private boolean mPublishFlag;
-    private TXVideoEditConstants.TXVideoInfo mTXVideoInfo;
-    private final List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
+    private              TXVideoEditer                       mTXVideoEditer;
+    private              List<ThumbnailBitmapInfo>           mThumbnailList;               // 缩略图相关, 将已经加在好的Bitmap缓存起来
+    private              boolean                             mIsReverse;
+    private              long                                mCutterDuration;                                   // 裁剪的总时长
+    private              long                                mCutterStartTime;                                  // 裁剪开始的时间
+    private              long                                mCutterEndTime;                                    // 裁剪结束的时间
+    private              long                                mVideoDuration;                                    // 视频原时长s
+    private              String                              mVideoPath;
+    private              boolean                             mPublishFlag;
+    private              TXVideoEditConstants.TXVideoInfo    mTXVideoInfo;
+    private final        List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
 
 
     public static VideoEditerSDK getInstance() {
@@ -78,6 +70,7 @@ public class VideoEditerSDK {
     /**
      * 获取视频的信息
      * FIXBUG：不能判断是否为空，如果更换频路径，
+     *
      * @return
      */
     public TXVideoEditConstants.TXVideoInfo getTXVideoInfo() {
@@ -340,7 +333,7 @@ public class VideoEditerSDK {
     }
 
     private class ThumbnailBitmapInfo {
-        public long ptsMs;
+        public long   ptsMs;
         public Bitmap bitmap;
 
         public ThumbnailBitmapInfo(long ptsMs, Bitmap bitmap) {

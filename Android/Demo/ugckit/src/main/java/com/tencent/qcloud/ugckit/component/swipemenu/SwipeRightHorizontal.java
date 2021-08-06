@@ -19,7 +19,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.OverScroller;
 
-public class SwipeRightHorizontal extends  SwipeHorizontal {
+public class SwipeRightHorizontal extends SwipeHorizontal {
 
     public SwipeRightHorizontal(View menuView) {
         super(SwipeMenuRecyclerView.RIGHT_DIRECTION, menuView);

@@ -20,24 +20,23 @@ import com.tencent.ugc.TXRecordCommon;
  * 屏比，目前有三种（1:1；3:4；4:3; 9:16; 16:9）
  */
 public class AspectView extends RelativeLayout implements View.OnClickListener {
-    private static final String TAG = "AspectView";
-    private Activity       mActivity;
-    private TextView       mTextAspect;
-    private ImageView      mImageAspectCurr;
-    private ImageView      mImageAspectFirst;
-    private ImageView      mImageAspectSecond;
-    private ImageView      mImageAspectThird;
-    private ImageView      mImageAspectFourth;
-    private ImageView      mImageAspecteMask;
-    private RelativeLayout mLayoutAspectSelect;
-
-    private boolean mToggleAspect;
-    private int     mFirstAspect; // UI上三个位置的屏比分别对应哪个Icon
-    private int     mSecondAspect;
-    private int     mThirdAspect;
-    private int     mFourthAspect;
-    private int     mCurrentAspect;
-    private OnAspectListener mOnAspectListener;
+    private static final String           TAG = "AspectView";
+    private              Activity         mActivity;
+    private              TextView         mTextAspect;
+    private              ImageView        mImageAspectCurr;
+    private              ImageView        mImageAspectFirst;
+    private              ImageView        mImageAspectSecond;
+    private              ImageView        mImageAspectThird;
+    private              ImageView        mImageAspectFourth;
+    private              ImageView        mImageAspecteMask;
+    private              RelativeLayout   mLayoutAspectSelect;
+    private              boolean          mToggleAspect;
+    private              int              mFirstAspect; // UI上三个位置的屏比分别对应哪个Icon
+    private              int              mSecondAspect;
+    private              int              mThirdAspect;
+    private              int              mFourthAspect;
+    private              int              mCurrentAspect;
+    private              OnAspectListener mOnAspectListener;
 
     public AspectView(Context context) {
         super(context);

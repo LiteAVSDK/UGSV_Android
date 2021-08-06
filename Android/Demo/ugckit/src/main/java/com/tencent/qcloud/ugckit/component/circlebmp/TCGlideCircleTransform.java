@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
  * Glide图像裁剪
  */
 public class TCGlideCircleTransform extends BitmapTransformation {
-    public TCGlideCircleTransform(Context context){
+    public TCGlideCircleTransform(Context context) {
         super(context);
     }
 

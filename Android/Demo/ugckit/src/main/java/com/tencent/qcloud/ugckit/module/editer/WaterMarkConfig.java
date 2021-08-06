@@ -5,6 +5,6 @@ import android.graphics.Bitmap;
 import com.tencent.ugc.TXVideoEditConstants;
 
 public class WaterMarkConfig {
-    public Bitmap watermark;
+    public Bitmap                      watermark;
     public TXVideoEditConstants.TXRect rect;
 }

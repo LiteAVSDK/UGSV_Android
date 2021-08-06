@@ -17,14 +17,11 @@ public class FloatLayerViewGroup extends FrameLayout implements View.OnClickList
     private final String TAG = "FloatLayerViewGroup";
 
     private List<FloatLayerView> mFloatLayerViewList;
-
-    private int mLastSelectedPos = -1;
-
-    private boolean mEnableChildSingleClick = true;
-    private boolean mEnableChildDoubleClick = false;
-
+    private int                  mLastSelectedPos        = -1;
+    private boolean              mEnableChildSingleClick = true;
+    private boolean              mEnableChildDoubleClick = false;
     long mLastTime = 0;
-    long mCurTime = 0;
+    long mCurTime  = 0;
 
     public FloatLayerViewGroup(@NonNull Context context) {
         super(context);

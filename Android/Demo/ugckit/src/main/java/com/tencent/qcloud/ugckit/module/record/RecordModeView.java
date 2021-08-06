@@ -21,19 +21,18 @@ public class RecordModeView extends RelativeLayout implements View.OnClickListen
 
     /**
      * 拍摄方式选择，目前支持三种（单击拍照，单击录制，长按录制）
-     * */
+     */
     public static final int RECORD_MODE_TAKE_PHOTO = 1;
-    public static final int RECORD_MODE_CLICK = 2;
+    public static final int RECORD_MODE_CLICK      = 2;
     public static final int RECORD_MODE_LONG_TOUCH = 3;
 
-    private Activity     mActivity;
-    private TextView     mTextPhoto;
-    private TextView     mTextClick;
-    private TextView     mTextTouch;
-    private LinearLayout mLayoutRecordMode;
-    private boolean      mDisableTakePhoto;
-    private boolean      mDisableLongPressRecord;
-
+    private Activity             mActivity;
+    private TextView             mTextPhoto;
+    private TextView             mTextClick;
+    private TextView             mTextTouch;
+    private LinearLayout         mLayoutRecordMode;
+    private boolean              mDisableTakePhoto;
+    private boolean              mDisableLongPressRecord;
     private OnRecordModeListener mOnRecordModeListener;
 
     public RecordModeView(Context context) {

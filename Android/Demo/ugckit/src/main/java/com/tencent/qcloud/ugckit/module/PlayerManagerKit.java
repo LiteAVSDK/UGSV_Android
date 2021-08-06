@@ -13,17 +13,15 @@ import java.util.List;
 
 public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
 
-    private static final String TAG = "PlayerKit";
+    private static final String           TAG       = "PlayerKit";
     @NonNull
-    private static PlayerManagerKit sInstance = new PlayerManagerKit();
+    private static       PlayerManagerKit sInstance = new PlayerManagerKit();
 
-    private int    mCurrentState;
-    private long   mPreviewAtTime;
-    public boolean isPreviewFinish;
-
-    private Object mProgressObject = new Object();
-    private Object mStateObject    = new Object();
-
+    private int                       mCurrentState;
+    private long                      mPreviewAtTime;
+    public  boolean                   isPreviewFinish;
+    private Object                    mProgressObject = new Object();
+    private Object                    mStateObject    = new Object();
     private List<OnPreviewListener>   mProgressListenerList;
     private List<OnPlayStateListener> mStateListenerList;
 

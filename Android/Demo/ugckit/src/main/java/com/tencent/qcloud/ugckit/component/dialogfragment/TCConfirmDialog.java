@@ -20,10 +20,10 @@ import com.tencent.qcloud.ugckit.R;
 
 
 public class TCConfirmDialog extends DialogFragment {
-    private static final String KEY_TITLE = "key_title";
-    private static final String KEY_MSG = "key_msg";
-    private static final String KEY_CANCEL = "key_cancel";
-    private static final String KEY_SURE_TXT = "key_sure_txt";
+    private static final String KEY_TITLE      = "key_title";
+    private static final String KEY_MSG        = "key_msg";
+    private static final String KEY_CANCEL     = "key_cancel";
+    private static final String KEY_SURE_TXT   = "key_sure_txt";
     private static final String KEY_CANCEL_TXT = "key_cancel_txt";
 
     private TextView mTextTitle;

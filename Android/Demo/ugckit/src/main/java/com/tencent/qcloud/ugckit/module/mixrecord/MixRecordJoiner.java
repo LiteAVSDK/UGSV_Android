@@ -53,12 +53,16 @@ public class MixRecordJoiner implements TXVideoJoiner.TXVideoJoinerListener {
         mVideoJoiner.splitJoinVideo(TXVideoEditConstants.VIDEO_COMPRESSED_540P, params.mVideoOutputPath);
     }
 
+    public void setRecordPath(String recordPath) {
+        mVideoJoiner.setRecordPath(recordPath);
+    }
+
     public static class JoinerParams {
         public List<TXVideoEditConstants.TXAbsoluteRect> mRects;
-        public int mCavasWith;
-        public int mCavasHeight;
-        public String mVideoOutputPath;
-        public List<String> videoSourceList;
-        public ArrayList<Float> mVolumes;
+        public int                                       mCavasWith;
+        public int                                       mCavasHeight;
+        public String                                    mVideoOutputPath;
+        public List<String>                              videoSourceList;
+        public ArrayList<Float>                          mVolumes;
     }
 }

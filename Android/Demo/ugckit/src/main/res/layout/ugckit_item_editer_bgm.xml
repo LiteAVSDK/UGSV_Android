@@ -29,7 +29,7 @@
             app:sampleProgressButtonBackgroundColor="#6C7B8B"
             app:sampleProgressButtonForegroundColor="#FF6347"
             app:sampleProgressButtonText="@string/ugckit_use"
-            app:sampleProgressButtonTextSize="12dp"/>
+            app:sampleProgressButtonTextSize="12dp" />
 
     </FrameLayout>
 

@@ -48,6 +48,7 @@
     <string name="ugckit_filter">滤镜</string>
     <string name="ugckit_paster">贴纸</string>
     <string name="ugckit_subtitle">字幕</string>
+    <string name="ugckit_transition">转场</string>
 
     <string name="ugckit_cancel_record">取消拍摄</string>
     <string name="ugckit_confirm_cancel_edit_content">确认放弃当前编辑的内容？</string>
@@ -390,4 +391,40 @@
     <string name="ugckit_start_record_not_finish">还有录制的任务没有结束</string>
     <string name="ugckit_start_record_path_empty">传入的视频路径为空</string>
     <string name="ugckit_start_record_version_below">版本太低</string>
+
+    <!-- transition fragment -->
+    <string name="trans_none">无</string>
+    <string name="trans_wipeLeft">左划</string>
+    <string name="trans_wipeRight">右划</string>
+    <string name="trans_wipeUp">上划</string>
+    <string name="trans_wipeDown">下划</string>
+    <string name="trans_fadecolor">颜色渐变</string>
+    <string name="trans_SimpleZoom">放大</string>
+    <string name="trans_LinearBlur">线性模糊</string>
+    <string name="trans_WaterDrop">水滴</string>
+    <string name="trans_InvertedPageCurl">翻页</string>
+    <string name="trans_GlitchMemories">震动</string>
+    <string name="trans_StereoViewer">分裂</string>
+    <string name="trans_directionalwarp">卷曲</string>
+    <string name="trans_Bounce">跳跃</string>
+    <string name="trans_CircleCrop">圆形变换</string>
+    <string name="trans_Swirl">漩涡</string>
+    <string name="trans_CrossZoom">推进</string>
+    <string name="trans_GridFlip">方格翻转</string>
+    <string name="trans_Mosaic">马赛克</string>
+    <string name="trans_kaleidoscope">万花筒</string>
+    <string name="trans_hexagonalize">蜂巢马赛克</string>
+    <string name="trans_GlitchDisplace">幻影</string>
+    <string name="trans_DreamyZoom">闪白</string>
+    <string name="trans_burn">燃烧</string>
+    <string name="trans_circle">椭圆变换</string>
+    <string name="trans_crosswarp">交叉卷曲</string>
+    <string name="trans_cube">立方体</string>
+    <string name="trans_doorway">开门</string>
+    <string name="trans_fadegrayscale">灰度</string>
+    <string name="trans_flyeye">砖块</string>
+    <string name="trans_pixelize">像素化</string>
+    <string name="trans_squeeze">挤压</string>
+    <string name="trans_swap">立体</string>
+    <string name="trans_invalid_timestamp">转场时间点无效，请重新设置</string>
 </resources>

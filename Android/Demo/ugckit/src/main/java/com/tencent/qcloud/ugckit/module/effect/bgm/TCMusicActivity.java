@@ -30,11 +30,10 @@ import java.util.List;
 public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final String TAG = "TCMusicActivity";
 
-    private LinearLayout       mLayoutBack;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView       mRecyclerView;
-    private View               mEmptyView;
-
+    private LinearLayout                     mLayoutBack;
+    private SwipeRefreshLayout               mSwipeRefreshLayout;
+    private RecyclerView                     mRecyclerView;
+    private View                             mEmptyView;
     private TCMusicAdapter                   mTCMusicAdapter;
     private TCMusicManager.LoadMusicListener mLoadMusicListener;
     private List<TCMusicInfo>                mTCMusicInfoList;

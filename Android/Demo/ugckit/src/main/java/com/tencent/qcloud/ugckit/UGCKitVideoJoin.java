@@ -39,14 +39,13 @@ import java.util.List;
 public class UGCKitVideoJoin implements IVideoJoinKit, TXVideoJoiner.TXVideoJoinerListener {
     private static final String TAG = "UGCKitVideoJoin";
 
-    private final FragmentActivity mContext;
-    private TXVideoJoiner          mTXVideoJoiner;
-    private boolean                mGenerateSuccess;
-    private String                 mOutputPath;
-    
-    private IVideoJoinKit.OnVideoJoinListener mOnVideoJoinListener;
-    private ProgressFragmentUtil              mProgressFragmentUtil;
-    private ArrayList<TCVideoFileInfo>        mTCVideoFileInfoList;
+    private final FragmentActivity                  mContext;
+    private       TXVideoJoiner                     mTXVideoJoiner;
+    private       boolean                           mGenerateSuccess;
+    private       String                            mOutputPath;
+    private       IVideoJoinKit.OnVideoJoinListener mOnVideoJoinListener;
+    private       ProgressFragmentUtil              mProgressFragmentUtil;
+    private       ArrayList<TCVideoFileInfo>        mTCVideoFileInfoList;
 
     public UGCKitVideoJoin(FragmentActivity context) {
         mContext = context;

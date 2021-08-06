@@ -33,9 +33,8 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
     private VideoProgressController mVideoProgressController;
     private SliderViewContainer     mSpeedSlider;
     private SliderViewContainer     mRepeatSlider;
-
-    private int startProgressIcon = R.drawable.ugckit_ic_repeate_range;
-    private OnTimeChangeListener mListener;
+    private int                     startProgressIcon = R.drawable.ugckit_ic_repeate_range;
+    private OnTimeChangeListener    mListener;
 
     public TimeLineView(Context context) {
         super(context);

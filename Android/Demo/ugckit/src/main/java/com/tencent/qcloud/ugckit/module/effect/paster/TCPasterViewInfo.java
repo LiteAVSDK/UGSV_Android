@@ -3,18 +3,20 @@ package com.tencent.qcloud.ugckit.module.effect.paster;
 
 /**
  * 用于保存 贴纸控件相关参数的类
- *
+ * <p>
  * 主要是用于恢复编辑贴纸的场景
  */
 public class TCPasterViewInfo {
     private int    viewType;
-    private float  viewCenterX, viewCenterY;// 控件的x y
+    private float  viewCenterX;
+    private float  viewCenterY;// 控件的x y
     private float  imageRotation;
     private float  imageScale;
     private String pasterPath;
     private String iconPath;
     private String name;
-    private long   startTime,endTime;
+    private long   startTime;
+    private long   endTime;
 
     public String getIconPath() {
         return iconPath;

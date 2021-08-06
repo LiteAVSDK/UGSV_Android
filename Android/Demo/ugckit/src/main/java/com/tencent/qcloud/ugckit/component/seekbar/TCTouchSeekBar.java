@@ -20,27 +20,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TCTouchSeekBar extends View {
-    private int downX = 0;
-    private int downY = 0;
-    private int upX = 0;
-    private int upY = 0;
-    private int moveX = 0;
-    private int moveY = 0;
-    // 控件宽高
-    private int mViewWidth, mViewHeight;
-    //刻度
-    private Bitmap mDotDefaultBitmap, mDotCheckedBitmap;
-    private OnTouchCallback mCallback;
-    //焦点位置
-    private int mCurrentPos = 2;
-    //刻度文字
+    private int               downX       = 0;
+    private int               downY       = 0;
+    private int               upX         = 0;
+    private int               upY         = 0;
+    private int               moveX       = 0;
+    private int               moveY       = 0;
+    private int               mViewWidth;
+    private int               mViewHeight;
+    private Bitmap            mDotDefaultBitmap;
+    private Bitmap            mDotCheckedBitmap;
+    private OnTouchCallback   mCallback;
+    private int               mCurrentPos = 2;
     private ArrayList<String> mSelectionList;
-    //刻度单位长度，按钮单位长度
-    private int mUnitWidth;
-    //画笔
-    private Paint mPaint;
-    //文字大小
-    private int mTextSize = 40;
+    private int               mUnitWidth;
+    private Paint             mPaint;
+    private int               mTextSize   = 40;
 
     public TCTouchSeekBar(Context context) {
         super(context);

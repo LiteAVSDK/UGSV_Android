@@ -32,7 +32,7 @@ import java.util.zip.ZipInputStream;
 
 public class BeautyUtils {
 
-    private static final String TAG = "BeautyUtils";
+    private static final String TAG                 = "BeautyUtils";
     private static final String DEFAULT_BEAUTY_DATA = "default_beauty_data.json";
 
     @SuppressLint("StaticFieldLeak")

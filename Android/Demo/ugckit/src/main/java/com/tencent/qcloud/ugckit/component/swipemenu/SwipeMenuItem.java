@@ -10,18 +10,18 @@ import android.support.annotation.Nullable;
 
 public class SwipeMenuItem {
 
-    private Context mContext;
+    private Context        mContext;
     @Nullable
-    private Drawable background;
-    private Drawable icon;
-    private String title;
+    private Drawable       background;
+    private Drawable       icon;
+    private String         title;
     private ColorStateList titleColor;
-    private int titleSize;
-    private Typeface textTypeface;
-    private int textAppearance;
-    private int width = -2;
-    private int height = -2;
-    private int weight = 0;
+    private int            titleSize;
+    private Typeface       textTypeface;
+    private int            textAppearance;
+    private int            width  = -2;
+    private int            height = -2;
+    private int            weight = 0;
 
     public SwipeMenuItem(Context context) {
         mContext = context;

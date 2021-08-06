@@ -33,6 +33,7 @@ public interface IVideoEffectKit {
      *                   {@link UGCKitConstants#TYPE_EDITER_FILTER} 添加静态滤镜<br>
      *                   {@link UGCKitConstants#TYPE_EDITER_PASTER} 添加贴纸<br>
      *                   {@link UGCKitConstants#TYPE_EDITER_SUBTITLE} 添加字幕<br>
+     *                   {@link UGCKitConstants#TYPE_EDITER_TRANSITION} 添加转场特效<br>
      */
     void setEffectType(int effectType);
 

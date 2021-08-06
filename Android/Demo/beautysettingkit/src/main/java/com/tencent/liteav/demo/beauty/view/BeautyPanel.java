@@ -27,7 +27,7 @@ import com.tencent.liteav.demo.beauty.utils.ResourceUtils;
 
 /**
  * 美颜面板控件 View
- *
+ * <p>
  * -引用，在 xml 中引用该布局，设置其大小
  * -外部可通过 getDefaultBeautyInfo 获取默认美颜面板的属性
  * -外部可通过 setBeautyInfo 设置美颜面板内部属性
@@ -37,25 +37,22 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
 
     private static final String TAG = "BeautyPanel";
 
-    private Context                 mContext;
-
-    private TCHorizontalScrollView  mScrollTabView;
-    private TCHorizontalScrollView  mScrollItemView;
-    private RelativeLayout          mRelativeSeekBarLayout;
-    private SeekBar                 mSeekBarLevel;
-    private TextView                mTextLevelHint;
-    private TextView                mTextLevelValue;
-    private TextView                mTextTitle;
-    private TextView                mTextClose;
-
-    private BeautyInfo              mBeautyInfo;
-    private OnBeautyListener        mOnBeautyListener;
-    private Beauty                  mBeauty;
-
-    private TabInfo                 mCurrentTabInfo;
-    private ItemInfo[]              mCurrentItemInfo;
-    private int                     mCurrentTabPosition = 0;
-    private int[]                   mCurrentItemPosition;
+    private Context                mContext;
+    private TCHorizontalScrollView mScrollTabView;
+    private TCHorizontalScrollView mScrollItemView;
+    private RelativeLayout         mRelativeSeekBarLayout;
+    private SeekBar                mSeekBarLevel;
+    private TextView               mTextLevelHint;
+    private TextView               mTextLevelValue;
+    private TextView               mTextTitle;
+    private TextView               mTextClose;
+    private BeautyInfo             mBeautyInfo;
+    private OnBeautyListener       mOnBeautyListener;
+    private Beauty                 mBeauty;
+    private TabInfo                mCurrentTabInfo;
+    private ItemInfo[]             mCurrentItemInfo;
+    private int                    mCurrentTabPosition = 0;
+    private int[]                  mCurrentItemPosition;
 
     public abstract static class OnBeautyListener {
         public void onTabChange(TabInfo tabInfo, int position) {
@@ -122,7 +119,7 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if(visibility == View.VISIBLE) {
+        if (visibility == View.VISIBLE) {
             bringToFront();
         }
     }

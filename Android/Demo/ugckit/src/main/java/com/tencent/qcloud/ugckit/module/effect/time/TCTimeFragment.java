@@ -31,30 +31,25 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 时间特效的Fragment
  */
 public class TCTimeFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "TCTimeFragment";
+    private static final String TAG                = "TCTimeFragment";
+    public static final  long   DEAULT_DURATION_MS = 1000; //默认重复时间段1s
 
-    public static final long DEAULT_DURATION_MS = 1000; //默认重复时间段1s
-
-    private ImageView       mImageCancel;
-    private ImageView       mImageSpeed;
-    private ImageView       mImageRepeat;
-    private ImageView       mImageReverse;
-    private CircleImageView mCircleImageCancelSelect;
-    private CircleImageView mCircleSpeedSelect;
-    private CircleImageView mCircleImageRepeatSelect;
-    private CircleImageView mCircleImageReverseSelect;
-    private TXVideoEditer   mTXVideoEditer;
-
-    private long mCurrentEffectStartMs;
-    private int  mCurrentEffect = TimeEffect.NONE_EFFECT;
-    /**
-     * 定制化Gif
-     * */
-    private int noTimeMotionGif = R.drawable.ugckit_motion_time_normal;
-    private int slowMotionGif = R.drawable.ugckit_motion_time_slow;
-    private int repeatGif = R.drawable.ugckit_motion_time_repeat;
-    private int reverseGif = R.drawable.ugckit_motion_time_reverse;
-    private int coverIcon = R.drawable.ugckit_ic_effect5;
+    private ImageView                       mImageCancel;
+    private ImageView                       mImageSpeed;
+    private ImageView                       mImageRepeat;
+    private ImageView                       mImageReverse;
+    private CircleImageView                 mCircleImageCancelSelect;
+    private CircleImageView                 mCircleSpeedSelect;
+    private CircleImageView                 mCircleImageRepeatSelect;
+    private CircleImageView                 mCircleImageReverseSelect;
+    private TXVideoEditer                   mTXVideoEditer;
+    private long                            mCurrentEffectStartMs;
+    private int                             mCurrentEffect  = TimeEffect.NONE_EFFECT;
+    private int                             noTimeMotionGif = R.drawable.ugckit_motion_time_normal;
+    private int                             slowMotionGif   = R.drawable.ugckit_motion_time_slow;
+    private int                             repeatGif       = R.drawable.ugckit_motion_time_repeat;
+    private int                             reverseGif      = R.drawable.ugckit_motion_time_reverse;
+    private int                             coverIcon       = R.drawable.ugckit_ic_effect5;
     private TimeLineView.OnTimeLineListener mListener;
 
     @Nullable

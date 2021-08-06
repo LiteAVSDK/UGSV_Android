@@ -29,10 +29,10 @@ import java.util.ArrayList;
  * 1、加载本地了本地相册所有图片<br>
  */
 public class UGCKitPicturePicker extends AbsPickerUI implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private static final int MIN_SELECTED_PIC_COUNT = 3;
-    private Activity mActivity;
+    private static final int      MIN_SELECTED_PIC_COUNT = 3;
+    private              Activity mActivity;
     @NonNull
-    private Handler mHandlder = new Handler();
+    private              Handler  mHandlder              = new Handler();
 
     public UGCKitPicturePicker(Context context) {
         super(context);

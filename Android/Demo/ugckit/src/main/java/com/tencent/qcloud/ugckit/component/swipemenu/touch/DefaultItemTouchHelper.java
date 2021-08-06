@@ -33,7 +33,7 @@ public class DefaultItemTouchHelper extends CompatItemTouchHelper {
      *
      * @return {@link OnItemMoveListener}.
      */
-    public  OnItemMoveListener getOnItemMoveListener() {
+    public OnItemMoveListener getOnItemMoveListener() {
         return mDefaultItemTouchHelperCallback.getOnItemMoveListener();
     }
 

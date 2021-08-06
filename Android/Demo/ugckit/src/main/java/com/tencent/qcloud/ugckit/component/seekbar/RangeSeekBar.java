@@ -20,22 +20,24 @@ import com.tencent.qcloud.ugckit.R;
 
 public class RangeSeekBar extends View {
     private static final String TAG = "RangeSeekBar";
-    private int   mViewWidth;
-    private int   mViewHeight;
+    private              int    mViewWidth;
+    private              int    mViewHeight;
 
-    private int   mSeekBarWidth;
-    private int   mSeekBarHeight;
-    private float mSbLeft, mSbTop, mSbRight, mSbBottom;
-    private float mSbRound;
-    private float mLPLeft;      //left-pointer  left
-    private float mLPRight;     //right-pointer right
-    private float mLPOffset;
-    private float mLPLastX;
-    private float mRPLeft;      //right-pointer left
-    private float mRPRight;     //right-pointer right
-    private float mRPOffset;
-    private float mRPLastX;
-
+    private int      mSeekBarWidth;
+    private int      mSeekBarHeight;
+    private float    mSbLeft;
+    private float    mSbTop;
+    private float    mSbRight;
+    private float    mSbBottom;
+    private float    mSbRound;
+    private float    mLPLeft;      //left-pointer  left
+    private float    mLPRight;     //right-pointer right
+    private float    mLPOffset;
+    private float    mLPLastX;
+    private float    mRPLeft;      //right-pointer left
+    private float    mRPRight;     //right-pointer right
+    private float    mRPOffset;
+    private float    mRPLastX;
     @Nullable
     private Drawable mPointerDrawable;
     private Paint    mNormalPaint;

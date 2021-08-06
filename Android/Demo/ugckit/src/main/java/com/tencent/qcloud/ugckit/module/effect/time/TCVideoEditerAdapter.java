@@ -14,9 +14,9 @@ import com.tencent.qcloud.ugckit.R;
 import java.util.ArrayList;
 
 public class TCVideoEditerAdapter extends RecyclerView.Adapter<TCVideoEditerAdapter.ViewHolder> {
-    private final Context mContext;
+    private final Context           mContext;
     @NonNull
-    private ArrayList<Bitmap> data = new ArrayList<Bitmap>();
+    private       ArrayList<Bitmap> data = new ArrayList<Bitmap>();
 
     public TCVideoEditerAdapter(Context context) {
         mContext = context;

@@ -24,35 +24,28 @@ import com.tencent.qcloud.ugckit.R;
  * 选择颜色的View
  */
 public class TCColorView extends View {
-    private Context mContext;
+    private Context               mContext;
     @Nullable
-    private LinearGradient linearGradient = null;
+    private LinearGradient        linearGradient = null;
     @Nullable
-    private Paint mHuePaint = null;
+    private Paint                 mHuePaint      = null;
     @Nullable
-    private Paint mValuePaint = null;
+    private Paint                 mValuePaint    = null;
     @Nullable
-    private RectF mHueRectF = null;
+    private RectF                 mHueRectF      = null;
     @Nullable
-    private RectF mValueRectF = null;
-    private int mWidth;
-
-    private Paint mSwipePaint;
-    private Bitmap mSwipeBitmap;
-
+    private RectF                 mValueRectF    = null;
+    private int                   mWidth;
+    private Paint                 mSwipePaint;
+    private Bitmap                mSwipeBitmap;
     private OnSelectColorListener mOnSelectColorListener;
-
-    private int mColorHeight;
-    private float mSwipeRadius;
-    private int marginTopAndBottom;
-
+    private int                   mColorHeight;
+    private float                 mSwipeRadius;
+    private int                   marginTopAndBottom;
     @NonNull
-    private float[] colorHSV = new float[]{0f, 1f, 0f};
-    /**
-     * 滑块的圆心x
-     */
-    private float mSwipeHueCx = 0;
-    private float mSwipeValueCx = 0;
+    private float[]               colorHSV       = new float[]{0f, 1f, 0f};
+    private float                 mSwipeHueCx    = 0;
+    private float                 mSwipeValueCx  = 0;
 
     public TCColorView(Context context) {
         super(context);
@@ -197,7 +190,7 @@ public class TCColorView extends View {
         return result;
     }
 
-    private int clickPanel = -1;
+    private int   clickPanel = -1;
     private float lastValueX;
 
     @Override

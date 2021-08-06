@@ -43,6 +43,8 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
     private TextView mTvPaster;
     // 字幕
     private TextView mTvSubtitle;
+    // 转场
+    private TextView mTextTransition;
     private IVideoEditKit.OnEditListener mOnVideoEditListener = new IVideoEditKit.OnEditListener() {
         @Override
         public void onEditCompleted(UGCKitResult ugcKitResult) {
@@ -84,6 +86,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         mTvFilter = (TextView) findViewById(R.id.tv_filter);
         mTvPaster = (TextView) findViewById(R.id.tv_paster);
         mTvSubtitle = (TextView) findViewById(R.id.tv_subtitle);
+        mTextTransition = (TextView) findViewById(R.id.tv_transition);
 
         mTvBgm.setOnClickListener(this);
         mTvMotion.setOnClickListener(this);
@@ -91,6 +94,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         mTvFilter.setOnClickListener(this);
         mTvPaster.setOnClickListener(this);
         mTvSubtitle.setOnClickListener(this);
+        mTextTransition.setOnClickListener(this);
     }
 
     private void initWindowParam() {
@@ -169,6 +173,8 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
             startEffectActivity(UGCKitConstants.TYPE_EDITER_PASTER);
         } else if (id == R.id.tv_subtitle) {
             startEffectActivity(UGCKitConstants.TYPE_EDITER_SUBTITLE);
+        } else if (id == R.id.tv_transition) {
+            startEffectActivity(UGCKitConstants.TYPE_EDITER_TRANSITION);
         }
     }
 
@@ -181,6 +187,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
      *                   {@link UGCKitConstants#TYPE_EDITER_FILTER} 添加静态滤镜</p>
      *                   {@link UGCKitConstants#TYPE_EDITER_PASTER} 添加贴纸</p>
      *                   {@link UGCKitConstants#TYPE_EDITER_SUBTITLE} 添加字幕</p>
+     *                   {@link UGCKitConstants#TYPE_EDITER_TRANSITION} 添加转场特效</p>
      */
     private void startEffectActivity(int effectType) {
         Intent intent = new Intent(this, TCVideoEffectActivity.class);

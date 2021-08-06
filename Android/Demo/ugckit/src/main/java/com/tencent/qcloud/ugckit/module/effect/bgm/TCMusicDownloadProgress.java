@@ -22,16 +22,15 @@ import java.util.concurrent.TimeUnit;
 
 public class TCMusicDownloadProgress {
 
-    public static final String BGM_FOLDER = "bgm";
-    private static final int   CORE_POOL_SIZE = 8;
+    public static final  String BGM_FOLDER     = "bgm";
+    private static final int    CORE_POOL_SIZE = 8;
 
-    private int     mBgmPosition;
-    private boolean mProcessing;
-    private String  mUrl;
-    private String  mBgmName;
-
+    private int                mBgmPosition;
+    private boolean            mProcessing;
+    private String             mUrl;
+    private String             mBgmName;
     @Nullable
-    private Downloadlistener mListener;
+    private Downloadlistener   mListener;
     private DownloadThreadPool sDownloadThreadPool;
 
     public TCMusicDownloadProgress(String bgmName, int position, String url) {

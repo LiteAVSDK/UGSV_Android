@@ -10,12 +10,12 @@
     <com.tencent.rtmp.ui.TXCloudVideoView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mix_player_view"
-        />
-    <ImageView android:id="@+id/cover"
+        android:id="@+id/mix_player_view" />
+
+    <ImageView
+        android:id="@+id/cover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:scaleType="centerCrop"
-        />
+        android:scaleType="centerCrop" />
 </merge>

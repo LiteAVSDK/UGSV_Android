@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerView;
 
 public class PasterView extends FloatLayerView {
-    public static int TYPE_CHILD_VIEW_PASTER = 1;
+    public static int TYPE_CHILD_VIEW_PASTER          = 1;
     public static int TYPE_CHILD_VIEW_ANIMATED_PASTER = 2;
 
     private int    mChildType;

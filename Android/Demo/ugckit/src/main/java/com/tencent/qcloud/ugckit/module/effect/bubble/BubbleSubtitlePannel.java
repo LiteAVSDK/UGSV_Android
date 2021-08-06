@@ -32,19 +32,19 @@ import java.util.List;
  * 配置气泡字幕样式、以及字体颜色的控件
  */
 public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitlePannel, BubbleAdapter.OnItemClickListener, View.OnClickListener, TCColorView.OnSelectColorListener {
-    private View                mContentView;
-    private RecyclerView        mRecycleBubbles;
-    private BubbleAdapter       mBubbleAdapter;
-    private List<TCBubbleInfo>  mBubbles;
-    private ImageView           mImageClose;
-    private TextView            mTextBubbleStyle;   //气泡样式
-    private TextView            mTextColor;         //文字颜色
-    private TCColorView         mColorView;
-    private TCCircleView        mCvColor;
-    private LinearLayout        mLlColor;
+    private View               mContentView;
+    private RecyclerView       mRecycleBubbles;
+    private BubbleAdapter      mBubbleAdapter;
+    private List<TCBubbleInfo> mBubbles;
+    private ImageView          mImageClose;
+    private TextView           mTextBubbleStyle;   //气泡样式
+    private TextView           mTextColor;         //文字颜色
+    private TCColorView        mColorView;
+    private TCCircleView       mCvColor;
+    private LinearLayout       mLlColor;
 
     @Nullable
-    private TCSubtitleInfo mSubtitleInfo;
+    private TCSubtitleInfo           mSubtitleInfo;
     private OnBubbleSubtitleCallback mCallback;
 
     public BubbleSubtitlePannel(@NonNull Context context) {
@@ -70,7 +70,7 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     }
 
     private void initViews(@NonNull View contentView) {
-        mImageClose = (ImageView)contentView.findViewById(R.id.iv_close);
+        mImageClose = (ImageView) contentView.findViewById(R.id.iv_close);
         mImageClose.setOnClickListener(this);
         mRecycleBubbles = (RecyclerView) contentView.findViewById(R.id.bubble_rv_style);
         mTextBubbleStyle = (TextView) contentView.findViewById(R.id.bubble_iv_bubble);

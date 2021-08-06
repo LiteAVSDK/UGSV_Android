@@ -13,7 +13,7 @@ public interface IVideoCutLayout {
     /**
      * 默认缩略图宽
      */
-    int DEFAULT_THUMBNAIL_WIDTH = 100;
+    int DEFAULT_THUMBNAIL_WIDTH  = 100;
     /**
      * 默认缩略图高
      */
@@ -21,7 +21,7 @@ public interface IVideoCutLayout {
     /**
      * 最大时长，默认16秒
      */
-    int MAX_DURATION = 16;
+    int MAX_DURATION             = 16;
 
     /**
      * 设置视频信息

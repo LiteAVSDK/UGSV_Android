@@ -18,22 +18,19 @@ import java.util.Locale;
 public class RangeSliderViewContainer extends LinearLayout {
     private final String TAG = "RangeSliderView";
 
-    private Context mContext;
-    private View mRootView;
-    private View mStartView;        // 左边拖动控件
-    private View mEndView;          // 右边拖动控件
-    private View mMiddleView;       // 中间裁剪区域
-    private long mStartTimeMs;        // 起始时间us
-    private long mDurationMs;         // 最终的时长us
-    private long mEndTimeMs;          // 结束时间us
-    private long mMaxDuration;      // 允许设置的最大时长
-    private int mDistance;          // 中间裁剪区域距离
-
-    private ViewTouchProcess mStartViewTouchProcess;
-    private ViewTouchProcess mEndViewTouchProcess;
-
-    private VideoProgressController mVideoProgressController;
-
+    private Context                  mContext;
+    private View                     mRootView;
+    private View                     mStartView;        // 左边拖动控件
+    private View                     mEndView;          // 右边拖动控件
+    private View                     mMiddleView;       // 中间裁剪区域
+    private long                     mStartTimeMs;        // 起始时间us
+    private long                     mDurationMs;         // 最终的时长us
+    private long                     mEndTimeMs;          // 结束时间us
+    private long                     mMaxDuration;      // 允许设置的最大时长
+    private int                      mDistance;          // 中间裁剪区域距离
+    private ViewTouchProcess         mStartViewTouchProcess;
+    private ViewTouchProcess         mEndViewTouchProcess;
+    private VideoProgressController  mVideoProgressController;
     private OnDurationChangeListener mOnDurationChangeListener;
 
     public interface OnDurationChangeListener {

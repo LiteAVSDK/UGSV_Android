@@ -26,52 +26,48 @@ import com.tencent.ugc.TXVideoEditConstants;
 public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeChangeListener {
 
     @NonNull
-    private String TAG = "VideoCutView";
-
-    private Context mContext;
-
-    private RecyclerView mRecyclerView;
-    private RangeSlider mRangeSlider;
-    private float mCurrentScroll;
+    private String                   TAG        = "VideoCutView";
+    private Context                  mContext;
+    private RecyclerView             mRecyclerView;
+    private RangeSlider              mRangeSlider;
+    private float                    mCurrentScroll;
     /**
      * 单个缩略图的宽度
      */
-    private int mSingleWidth;
+    private int                      mSingleWidth;
     /**
      * 所有缩略图的宽度
      */
-    private int mAllWidth;
+    private int                      mAllWidth;
     /**
      * 整个视频的时长
      */
-    private long mVideoDuration;
+    private long                     mVideoDuration;
     /**
      * 控件最大时长16s
      */
-    private long mViewMaxDuration;
+    private long                     mViewMaxDuration;
     /**
      * 如果视频时长超过了控件的最大时长，底部在滑动时最左边的起始位置时间
      */
-    private long mStartTime = 0;
+    private long                     mStartTime = 0;
     /**
      * 裁剪的起始时间，最左边是0
      */
-    private int mViewLeftTime;
+    private int                      mViewLeftTime;
     /**
      * 裁剪的结束时间，最右边最大是16000ms
      */
-    private int mViewRightTime;
+    private int                      mViewRightTime;
     /**
      * 最终视频的起始时间
      */
-    private long mVideoStartPos;
+    private long                     mVideoStartPos;
     /**
      * 最终视频的结束时间
      */
-    private long mVideoEndPos;
-
-    private TCVideoEditerAdapter mAdapter;
-
+    private long                     mVideoEndPos;
+    private TCVideoEditerAdapter     mAdapter;
     private Edit.OnCutChangeListener mRangeChangeListener;
 
     public VideoCutView(Context context) {

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class UGCKitVideoPicker extends AbsPickerUI implements ActivityCompat.OnRequestPermissionsResultCallback {
     private Activity mActivity;
     @NonNull
-    private Handler mHandlder = new Handler();
+    private Handler  mHandlder = new Handler();
 
     public UGCKitVideoPicker(Context context) {
         super(context);

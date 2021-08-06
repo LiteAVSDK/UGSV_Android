@@ -21,20 +21,18 @@ import com.tencent.qcloud.ugckit.component.slider.RangeSlider;
 
 
 public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPannel, SeekBar.OnSeekBarChangeListener, RangeSlider.OnRangeChangeListener, View.OnClickListener {
-    private Context     mContext;
-    private SeekBar     mSeekBarVolume;
-    private RangeSlider mRangeSlider;
-    private Button      mButtonConfirm;
-    private TextView    mTextStartTime;
-    private TextView    mTextMusicName;
-    private ImageView   mImageLogo;
-    private ImageView   mImageVoiceWave;
-    private ImageView   mImageReplace;
-    private ImageView   mImageDelete;
-
-    private int  mMusicVolume = 100;
-    private long mMusicDuration;
-
+    private Context                                mContext;
+    private SeekBar                                mSeekBarVolume;
+    private RangeSlider                            mRangeSlider;
+    private Button                                 mButtonConfirm;
+    private TextView                               mTextStartTime;
+    private TextView                               mTextMusicName;
+    private ImageView                              mImageLogo;
+    private ImageView                              mImageVoiceWave;
+    private ImageView                              mImageReplace;
+    private ImageView                              mImageDelete;
+    private int                                    mMusicVolume = 100;
+    private long                                   mMusicDuration;
     private IRecordMusicPannel.MusicChangeListener mMusicChangeListener;
 
     public RecordMusicPannel(Context context) {

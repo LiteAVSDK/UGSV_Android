@@ -5,15 +5,16 @@ import com.tencent.qcloud.ugckit.component.bubbleview.BubbleViewParams;
 
 /**
  * 用于保存 气泡字幕控件相关参数的类
- *
+ * <p>
  * 主要是用于恢复编辑字幕的场景
  */
 public class TCBubbleViewInfo {
-    private float viewCenterX, viewCenterY;// 控件的x y
-    private float imageRotation;
-    private long  startTime,endTime;
-    private float scale;
-
+    private float            viewCenterX;
+    private float            viewCenterY;// 控件的x y
+    private float            imageRotation;
+    private long             startTime;
+    private long             endTime;
+    private float            scale;
     private BubbleViewParams viewParams; //气泡字幕配置参数
 
     public float getScale() {

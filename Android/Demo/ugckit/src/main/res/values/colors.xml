@@ -212,4 +212,6 @@
     <color name="ugckit_record_button_click_shotInner_color">#FF3030</color>
     <color name="ugckit_record_button_touch_shot_background_color">#a1FF3030</color>
     <color name="ugckit_record_button_touch_shot_inner_color">#FF3030</color>
+    <!-- 转场 -->
+    <color name="ugckit_transition_mark_color">#9000ff00</color>
 </resources>

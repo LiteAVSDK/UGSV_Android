@@ -68,9 +68,9 @@ public class NumberProgressBar extends View {
     private String mPrefix = "";
 
 
-    private final int default_text_color = Color.rgb(66, 145, 241);
-    private final int default_reached_color = Color.rgb(66, 145, 241);
-    private final int default_unreached_color = Color.rgb(204, 204, 204);
+    private final int   default_text_color      = Color.rgb(66, 145, 241);
+    private final int   default_reached_color   = Color.rgb(66, 145, 241);
+    private final int   default_unreached_color = Color.rgb(204, 204, 204);
     private final float default_progress_text_offset;
     private final float default_text_size;
     private final float default_reached_bar_height;
@@ -79,18 +79,18 @@ public class NumberProgressBar extends View {
     /**
      * For save and restore instance of progressbar.
      */
-    private static final String INSTANCE_STATE = "saved_instance";
-    private static final String INSTANCE_TEXT_COLOR = "text_color";
-    private static final String INSTANCE_TEXT_SIZE = "text_size";
-    private static final String INSTANCE_REACHED_BAR_HEIGHT = "reached_bar_height";
-    private static final String INSTANCE_REACHED_BAR_COLOR = "reached_bar_color";
+    private static final String INSTANCE_STATE                = "saved_instance";
+    private static final String INSTANCE_TEXT_COLOR           = "text_color";
+    private static final String INSTANCE_TEXT_SIZE            = "text_size";
+    private static final String INSTANCE_REACHED_BAR_HEIGHT   = "reached_bar_height";
+    private static final String INSTANCE_REACHED_BAR_COLOR    = "reached_bar_color";
     private static final String INSTANCE_UNREACHED_BAR_HEIGHT = "unreached_bar_height";
-    private static final String INSTANCE_UNREACHED_BAR_COLOR = "unreached_bar_color";
-    private static final String INSTANCE_MAX = "max";
-    private static final String INSTANCE_PROGRESS = "progress";
-    private static final String INSTANCE_SUFFIX = "suffix";
-    private static final String INSTANCE_PREFIX = "prefix";
-    private static final String INSTANCE_TEXT_VISIBILITY = "text_visibility";
+    private static final String INSTANCE_UNREACHED_BAR_COLOR  = "unreached_bar_color";
+    private static final String INSTANCE_MAX                  = "max";
+    private static final String INSTANCE_PROGRESS             = "progress";
+    private static final String INSTANCE_SUFFIX               = "suffix";
+    private static final String INSTANCE_PREFIX               = "prefix";
+    private static final String INSTANCE_TEXT_VISIBILITY      = "text_visibility";
 
     private static final int PROGRESS_TEXT_VISIBLE = 0;
 
@@ -138,7 +138,7 @@ public class NumberProgressBar extends View {
      * Reached bar area rect.
      */
     @NonNull
-    private RectF mReachedRectF = new RectF(0, 0, 0, 0);
+    private RectF mReachedRectF   = new RectF(0, 0, 0, 0);
 
     /**
      * The progress text offset.

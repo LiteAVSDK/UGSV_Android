@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.OverScroller;
 
-public class SwipeLeftHorizontal extends  SwipeHorizontal {
+public class SwipeLeftHorizontal extends SwipeHorizontal {
 
     public SwipeLeftHorizontal(View menuView) {
         super(SwipeMenuRecyclerView.LEFT_DIRECTION, menuView);

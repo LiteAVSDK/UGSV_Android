@@ -7,9 +7,13 @@ package com.tencent.qcloud.ugckit.module.effect.bubble;
 public class TCBubbleInfo {
     private String bubblePath;
     private String iconPath;
-    private int width, height;
-    private int defaultSize;
-    private float top, left, right, bottom;
+    private int    width;
+    private int    height;
+    private int    defaultSize;
+    private float  top;
+    private float  left;
+    private float  right;
+    private float  bottom;
 
     public TCBubbleInfo() {
     }

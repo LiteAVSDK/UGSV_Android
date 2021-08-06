@@ -38,22 +38,22 @@ public class FloatLayerView extends View implements IFloatLayerView {
     /**
      * 控制缩放，旋转图标所在四个点得位置
      */
-    private static final int LEFT_TOP = 0;
-    private static final int RIGHT_TOP = 1;
+    private static final int LEFT_TOP     = 0;
+    private static final int RIGHT_TOP    = 1;
     private static final int RIGHT_BOTTOM = 2;
-    private static final int LEFT_BOTTOM = 3;
+    private static final int LEFT_BOTTOM  = 3;
 
     /**
      * 一些默认的常量
      */
-    private static final int     DEFAULT_FRAME_PADDING = 0;
-    private static final int     DEFAULT_FRAME_WIDTH = 2;
-    private static final int     DEFAULT_FRAME_COLOR = Color.WHITE;
-    private static final float   DEFAULT_SCALE = 1.0f;
-    private static final float   DEFAULT_DEGREE = 0;
-    private static final int     DEFAULT_CONTROL_LOCATION = RIGHT_TOP;
-    private static final boolean DEFAULT_EDITABLE = true;
-    private static final int     DEFAULT_OTHER_DRAWABLE_WIDTH = 50;
+    private static final int     DEFAULT_FRAME_PADDING         = 0;
+    private static final int     DEFAULT_FRAME_WIDTH           = 2;
+    private static final int     DEFAULT_FRAME_COLOR           = Color.WHITE;
+    private static final float   DEFAULT_SCALE                 = 1.0f;
+    private static final float   DEFAULT_DEGREE                = 0;
+    private static final int     DEFAULT_CONTROL_LOCATION      = RIGHT_TOP;
+    private static final boolean DEFAULT_EDITABLE              = true;
+    private static final int     DEFAULT_OTHER_DRAWABLE_WIDTH  = 50;
     private static final int     DEFAULT_OTHER_DRAWABLE_HEIGHT = 50;
 
     private boolean isMeasured;
@@ -172,11 +172,11 @@ public class FloatLayerView extends View implements IFloatLayerView {
     /**
      * 点击编辑状态
      */
-    private static final int STATUS_EDIT = 3;
+    private static final int STATUS_EDIT        = 3;
     /**
      * 点击删除状态
      */
-    private static final int STATUS_DELETE = 4;
+    private static final int STATUS_DELETE      = 4;
 
     /**
      * 当前所处的状态
@@ -235,7 +235,7 @@ public class FloatLayerView extends View implements IFloatLayerView {
     private long mStartTime, mEndTime;
 
     private boolean mShowDelete = true;
-    private boolean mShowEdit = true;
+    private boolean mShowEdit   = true;
 
     @Override
     public void showDelete(boolean showDelete) {

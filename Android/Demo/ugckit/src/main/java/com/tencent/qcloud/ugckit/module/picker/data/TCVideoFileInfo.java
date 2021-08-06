@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 
 public class TCVideoFileInfo implements Parcelable {
-    public static final int FILE_TYPE_VIDEO = 0;
+    public static final int FILE_TYPE_VIDEO   = 0;
     public static final int FILE_TYPE_PICTURE = 1;
 
     private int     fileId;

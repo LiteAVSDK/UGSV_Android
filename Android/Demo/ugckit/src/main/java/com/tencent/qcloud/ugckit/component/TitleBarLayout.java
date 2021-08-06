@@ -16,12 +16,12 @@ import com.tencent.qcloud.ugckit.R;
 
 public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
 
-    private LinearLayout    mLeftGroup;
-    private TextView        mLeftTitle;
-    private TextView        mCenterTitle;
-    private ImageView       mLeftIcon;
-    private Button          mRightButton;
-    private RelativeLayout  mTitleLayout;
+    private LinearLayout   mLeftGroup;
+    private TextView       mLeftTitle;
+    private TextView       mCenterTitle;
+    private ImageView      mLeftIcon;
+    private Button         mRightButton;
+    private RelativeLayout mTitleLayout;
 
     public TitleBarLayout(Context context) {
         super(context);

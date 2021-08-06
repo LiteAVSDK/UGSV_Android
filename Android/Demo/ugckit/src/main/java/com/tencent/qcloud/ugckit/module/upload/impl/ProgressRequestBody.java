@@ -23,7 +23,7 @@ public class ProgressRequestBody extends RequestBody {
     }
 
     public class ProgressModel {
-        private long currentBytes = 0;
+        private long currentBytes  = 0;
         private long contentLength = 0;
 
         public ProgressModel(long currentBytes, long contentLength) {
@@ -40,11 +40,11 @@ public class ProgressRequestBody extends RequestBody {
         }
     }
 
-    public static final int UPDATE = 0x01;
-    private RequestBody requestBody;
-    private ProgressListener mListener;
-    private MyHandler myHandler;
-    private BufferedSink bufferedSink;
+    public static final int              UPDATE = 0x01;
+    private             RequestBody      requestBody;
+    private             ProgressListener mListener;
+    private             MyHandler        myHandler;
+    private             BufferedSink     bufferedSink;
 
     public ProgressRequestBody(RequestBody body, ProgressListener listener) {
         requestBody = body;

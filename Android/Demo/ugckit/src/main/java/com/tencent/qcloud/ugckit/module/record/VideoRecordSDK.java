@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.liteav.demo.beauty.BeautyParams;
+import com.tencent.liteav.audio.TXCAudioUGCRecorder;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftInfo;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftManager;
@@ -31,26 +32,23 @@ import java.util.List;
 public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
     private static final String TAG = "VideoRecordSDK";
 
-    public static int STATE_START       = 1;
-    public static int STATE_STOP        = 2;
-    public static int STATE_RESUME      = 3;
-    public static int STATE_PAUSE       = 4;
-    public static int START_RECORD_SUCC = 0;
-    public static int START_RECORD_FAIL = -1;
-
+    public static  int                    STATE_START       = 1;
+    public static  int                    STATE_STOP        = 2;
+    public static  int                    STATE_RESUME      = 3;
+    public static  int                    STATE_PAUSE       = 4;
+    public static  int                    START_RECORD_SUCC = 0;
+    public static  int                    START_RECORD_FAIL = -1;
     @NonNull
-    private static VideoRecordSDK  sInstance = new VideoRecordSDK();
-
+    private static VideoRecordSDK         sInstance         = new VideoRecordSDK();
     @Nullable
-    private TXUGCRecord            mRecordSDK;
-    private UGCKitRecordConfig     mUGCKitRecordConfig;
-    private RecordDraftManager     mRecordDraftManager;
-    private OnVideoRecordListener  mOnVideoRecordListener;
-    private OnRestoreDraftListener mOnRestoreDraftListener;
-
-    private int     mCurrentState  = STATE_STOP;
-    private boolean mPreviewFlag;
-    private String  mRecordVideoPath;
+    private        TXUGCRecord            mRecordSDK;
+    private        UGCKitRecordConfig     mUGCKitRecordConfig;
+    private        RecordDraftManager     mRecordDraftManager;
+    private        OnVideoRecordListener  mOnVideoRecordListener;
+    private        OnRestoreDraftListener mOnRestoreDraftListener;
+    private        int                    mCurrentState     = STATE_STOP;
+    private        boolean                mPreviewFlag;
+    private        String                 mRecordVideoPath;
 
     private VideoRecordSDK() {
 
@@ -96,7 +94,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
 
         if (mUGCKitRecordConfig.mQuality >= 0) {
             // 推荐配置
-            TXRecordCommon.TXUGCSimpleConfig simpleConfig = new  TXRecordCommon.TXUGCSimpleConfig();
+            TXRecordCommon.TXUGCSimpleConfig simpleConfig = new TXRecordCommon.TXUGCSimpleConfig();
             simpleConfig.videoQuality = mUGCKitRecordConfig.mQuality;
             simpleConfig.minDuration = mUGCKitRecordConfig.mMinDuration;
             simpleConfig.maxDuration = mUGCKitRecordConfig.mMaxDuration;
@@ -109,6 +107,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
                 mRecordSDK.setMute(mUGCKitRecordConfig.mIsMute);
             }
             mRecordSDK.startCameraSimplePreview(simpleConfig, videoView);
+            TXCAudioUGCRecorder.getInstance().setAECType(mUGCKitRecordConfig.mAECType, UGCKit.getAppContext());
         } else {
             // 自定义配置
             TXRecordCommon.TXUGCCustomConfig customConfig = new TXRecordCommon.TXUGCCustomConfig();

@@ -25,19 +25,17 @@ import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
  * 视频生成管理
  */
 public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerateListener {
-    private static final String TAG = "VideoGenerateKit";
-    private static final int DURATION_TAILWATERMARK = 3;
-
+    private static final String           TAG                    = "VideoGenerateKit";
+    private static final int              DURATION_TAILWATERMARK = 3;
     @NonNull
-    private static VideoGenerateKit instance = new VideoGenerateKit();
+    private static       VideoGenerateKit instance               = new VideoGenerateKit();
 
-    private int     mCurrentState;
-    private int     mVideoResolution = TXVideoEditConstants.VIDEO_COMPRESSED_720P;
-    private boolean mSaveToDCIM;
-    private boolean mCoverGenerate;
-    private String  mVideoOutputPath;
-    private String  mCoverPath;
-
+    private int                 mCurrentState;
+    private int                 mVideoResolution = TXVideoEditConstants.VIDEO_COMPRESSED_720P;
+    private boolean             mSaveToDCIM;
+    private boolean             mCoverGenerate;
+    private String              mVideoOutputPath;
+    private String              mCoverPath;
     private WaterMarkConfig     mWaterMark;
     private TailWaterMarkConfig mTailWaterMarkConfig;
 

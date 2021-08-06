@@ -27,30 +27,30 @@ import okhttp3.Response;
 public class UGCReport {
 
     public static class ReportInfo {
-        public int reqType = 0;
-        public int errCode = 0;
-        public int vodErrCode = 0;
-        public String cosErrCode = "";
-        public String errMsg = "";
-        public long reqTime = 0;
-        public long reqTimeCost = 0;
-        public long fileSize = 0;
-        public String fileType = "";
-        public String fileName = "";
-        public String fileId = "";
-        public int appId = 0;
-        public String reqServerIp = "";
-        public int useHttpDNS = 0;
-        public String reportId = "";
-        public String reqKey = "";
-        public String vodSessionKey = "";
-        public String cosRegion = "";
-        public int useCosAcc = 0;
-        public long tcpConnTimeCost = 0;
-        public long recvRespTimeCost = 0;
-        public int retryCount = 0;
-        public boolean reporting = false;   // 正在上报
-        public String requestId = "";
+        public int     reqType          = 0;
+        public int     errCode          = 0;
+        public int     vodErrCode       = 0;
+        public String  cosErrCode       = "";
+        public String  errMsg           = "";
+        public long    reqTime          = 0;
+        public long    reqTimeCost      = 0;
+        public long    fileSize         = 0;
+        public String  fileType         = "";
+        public String  fileName         = "";
+        public String  fileId           = "";
+        public int     appId            = 0;
+        public String  reqServerIp      = "";
+        public int     useHttpDNS       = 0;
+        public String  reportId         = "";
+        public String  reqKey           = "";
+        public String  vodSessionKey    = "";
+        public String  cosRegion        = "";
+        public int     useCosAcc        = 0;
+        public long    tcpConnTimeCost  = 0;
+        public long    recvRespTimeCost = 0;
+        public int     retryCount       = 0;
+        public boolean reporting        = false;   // 正在上报
+        public String  requestId        = "";
 
         public ReportInfo() {
         }
@@ -111,19 +111,21 @@ public class UGCReport {
                     ", recvRespTimeCost=" + recvRespTimeCost +
                     '}';
         }
-    };
+    }
 
-    private static final String TAG = "TVC-UGCReport";
-    private static final int MAX_CACHES = 100;//最多缓存的上报记录条数
+    ;
+
+    private static final String TAG        = "TVC-UGCReport";
+    private static final int    MAX_CACHES = 100;//最多缓存的上报记录条数
 
     private static UGCReport ourInstance;
 
-    private Context context;
-    private OkHttpClient okHttpClient;
+    private Context          context;
+    private OkHttpClient     okHttpClient;
     private List<ReportInfo> reportCaches = new ArrayList<ReportInfo>();
 
     private TimerTask reportTask = null;
-    private Timer mTimer;
+    private Timer     mTimer;
 
 
     public static UGCReport getInstance(Context context) {

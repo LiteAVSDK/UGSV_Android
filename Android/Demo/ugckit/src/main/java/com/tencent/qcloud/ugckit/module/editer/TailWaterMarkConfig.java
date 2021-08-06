@@ -6,7 +6,7 @@ import com.tencent.ugc.TXVideoEditConstants;
 
 public class TailWaterMarkConfig {
 
-    public Bitmap tailwatermark;
+    public Bitmap                      tailwatermark;
     public TXVideoEditConstants.TXRect rect;
-    public int duration;
+    public int                         duration;
 }

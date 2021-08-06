@@ -17,26 +17,24 @@ import com.tencent.ugc.TXUGCRecord;
 import java.util.Locale;
 
 public class RecordBottomLayout extends RelativeLayout implements View.OnClickListener {
-    private Activity            mActivity;
-    private ImageView           mImageCameraSwitch;         // 切换摄像头
-    private TextView            mTextProgressTime;
-    private ImageView           mImageDeleteLastPart;       // 删除上一段
-    private ImageView           mImageTorch;                // 闪光灯
-    private RecordProgressView  mRecordProgressView;        // 录制进度条
-    private RecordSpeedLayout   mRecordSpeedLayout;         // 速度面板
-    private RecordButton        mButtonRecord;              // 录制按钮
-    private RecordModeView      mRecordModeView;            // 录制模式[单击/长按]
-    private View                mRecordModeDot;
-
-    private int     mTorchOnImage;
-    private int     mTorchOffImage;
-    private int     mTorchDisableImage;
-    private boolean mFrontCameraFlag = true;                //是否前置摄像头UI判断
-    private boolean mIsTorchOpenFlag;                       // 是否打开闪光灯UI判断
-    private boolean isSelectDeleteLastPartFlag;             // 是否点击一次过"删除最有一段分段视频"按钮
-    private boolean mDisableTakePhoto;
-    private boolean mDisableLongPressRecord;
-
+    private Activity                 mActivity;
+    private ImageView                mImageCameraSwitch;         // 切换摄像头
+    private TextView                 mTextProgressTime;
+    private ImageView                mImageDeleteLastPart;       // 删除上一段
+    private ImageView                mImageTorch;                // 闪光灯
+    private RecordProgressView       mRecordProgressView;        // 录制进度条
+    private RecordSpeedLayout        mRecordSpeedLayout;         // 速度面板
+    private RecordButton             mButtonRecord;              // 录制按钮
+    private RecordModeView           mRecordModeView;            // 录制模式[单击/长按]
+    private View                     mRecordModeDot;
+    private int                      mTorchOnImage;
+    private int                      mTorchOffImage;
+    private int                      mTorchDisableImage;
+    private boolean                  mFrontCameraFlag = true;                //是否前置摄像头UI判断
+    private boolean                  mIsTorchOpenFlag;                       // 是否打开闪光灯UI判断
+    private boolean                  isSelectDeleteLastPartFlag;             // 是否点击一次过"删除最有一段分段视频"按钮
+    private boolean                  mDisableTakePhoto;
+    private boolean                  mDisableLongPressRecord;
     private OnDeleteLastPartListener mOnDeleteLastPartListener;
 
     public RecordBottomLayout(Context context) {

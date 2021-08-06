@@ -40,7 +40,7 @@ public class ImageSnapShotView extends RelativeLayout {
 
     private void initViews() {
         inflate(getContext(), R.layout.ugckit_image_snap_shot_view, this);
-        mIvSnapshotView = (ImageView)findViewById(R.id.iv_snapshot_photo);
+        mIvSnapshotView = (ImageView) findViewById(R.id.iv_snapshot_photo);
     }
 
     public void showSnapshotAnim(Bitmap bitmap) {

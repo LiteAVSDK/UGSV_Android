@@ -66,7 +66,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
             mVideoProgressController = timeLineView.getVideoProgressController();
         }
         initViews(getView());
-        setDefaultValue(getActivity(),getView());
+        setDefaultValue(getActivity(), getView());
     }
 
     @Override
@@ -277,7 +277,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
 
     @Override
     public void onPreviewFinish() {
-        if(mIsOnTouch && mEffectType >= 0){
+        if (mIsOnTouch && mEffectType >= 0) {
             mColorfulProgress.endMark(mVideoProgressController.getThumbnailPicListDisplayWidth());
             mTXVideoEditer.stopEffect(mEffectType, mVideoProgressController.getTotalDurationMs());
 

@@ -32,12 +32,12 @@ import okhttp3.Response;
  */
 public class TCUserMgr {
 
-    public static final String TAG = TCUserMgr.class.getSimpleName();
-    public static final int SUCCESS_CODE = 200;
-    private String mAppId = "";
-    private String mSubAppId = "";
-    private String mSecretId = "";
-    private boolean userid;
+    public static final String  TAG          = TCUserMgr.class.getSimpleName();
+    public static final int     SUCCESS_CODE = 200;
+    private             String  mAppId       = "";
+    private             String  mSubAppId    = "";
+    private             String  mSecretId    = "";
+    private             boolean userid;
 
     private TCUserMgr() {
         mHttpClient = new OkHttpClient().newBuilder()
@@ -58,30 +58,30 @@ public class TCUserMgr {
     }
 
     private OkHttpClient mHttpClient;
-    private Context mContext;
+    private Context      mContext;
     @Nullable
-    private String mUserId = "";
+    private String       mUserId       = "";
     @Nullable
-    private String mUserPwd = "";
-    private String mToken = "";
-    private String mRefreshToken = "";
-    private int mTokenExpires = 0;
-    private long mSdkAppID = 0;
-    private String mUserSig = "";
-    private String mAccountType;
-    private String mNickName = "";
-    private String mUserAvatar = "";
-    private int mSex = -1;//0:male,1:female,-1:unknown
-    private String mCoverPic;
-    private String mLocation;
+    private String       mUserPwd      = "";
+    private String       mToken        = "";
+    private String       mRefreshToken = "";
+    private int          mTokenExpires = 0;
+    private long         mSdkAppID     = 0;
+    private String       mUserSig      = "";
+    private String       mAccountType;
+    private String       mNickName     = "";
+    private String       mUserAvatar   = "";
+    private int          mSex          = -1;//0:male,1:female,-1:unknown
+    private String       mCoverPic;
+    private String       mLocation;
 
 
     //cos 配置
     public static class CosInfo {
-        public String bucket = "";
-        public String appID = "";
+        public String bucket   = "";
+        public String appID    = "";
         public String secretID = "";
-        public String region = "";
+        public String region   = "";
     }
 
     @NonNull
@@ -111,7 +111,7 @@ public class TCUserMgr {
 
     public static class HttpCallback implements okhttp3.Callback {
         private Callback callback;
-        private String module;
+        private String   module;
 
         public HttpCallback(String module, Callback callback) {
             this.callback = callback;
@@ -472,12 +472,12 @@ public class TCUserMgr {
                     uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, SUCCESS_CODE, "登录成功", new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            TXCLog.d(TAG,"login uploadLogs onFailure");
+                            TXCLog.d(TAG, "login uploadLogs onFailure");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            TXCLog.d(TAG,"login uploadLogs onResponse");
+                            TXCLog.d(TAG, "login uploadLogs onResponse");
                         }
                     });
                     if (callback != null) {
@@ -492,12 +492,12 @@ public class TCUserMgr {
                     uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, code, msg, new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            TXCLog.d(TAG,"login uploadLogs onFailure");
+                            TXCLog.d(TAG, "login uploadLogs onFailure");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            TXCLog.d(TAG,"login uploadLogs onResponse");
+                            TXCLog.d(TAG, "login uploadLogs onResponse");
                         }
                     });
                     if (callback != null) {

@@ -11,10 +11,10 @@ import android.support.annotation.Nullable;
 
 public class NetworkUtil {
     @Nullable
-    private NetchangeReceiver  mNetchangeReceiver = null;
-    private Context            mContext;
-    private static NetworkUtil sInstance;
-    private NetchangeListener  mListener;
+    private        NetchangeReceiver mNetchangeReceiver = null;
+    private        Context           mContext;
+    private static NetworkUtil       sInstance;
+    private        NetchangeListener mListener;
 
     private NetworkUtil(Context context) {
         mContext = context.getApplicationContext();

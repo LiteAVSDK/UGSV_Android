@@ -13,6 +13,7 @@ import com.tencent.qcloud.ugckit.module.upload.impl.TVCClient;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCConstants;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadInfo;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadListener;
+import com.tencent.qcloud.ugckit.module.upload.impl.TXUGCPublishOptCenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,16 +23,15 @@ import java.io.FileOutputStream;
  * 短视频发布接口类
  */
 public class TXUGCPublish {
-    private static final String TAG = "TXVideoPublish";
-    private static final long COVER_TIME = 500 * 1000;
-    private Context mContext;
-    private Handler mHandler;
-    private TXUGCPublishTypeDef.ITXVideoPublishListener mListener;
-    private TXUGCPublishTypeDef.ITXMediaPublishListener mMediaListener;
-
-    private boolean mPublishing;
-    private TVCClient mTVCClient = null;
-    private String mCustomKey = "";
+    private static final String                                      TAG        = "TXVideoPublish";
+    private static final long                                        COVER_TIME = 500 * 1000;
+    private              Context                                     mContext;
+    private              Handler                                     mHandler;
+    private              TXUGCPublishTypeDef.ITXVideoPublishListener mListener;
+    private              TXUGCPublishTypeDef.ITXMediaPublishListener mMediaListener;
+    private              boolean                                     mPublishing;
+    private              TVCClient                                   mTVCClient = null;
+    private              String                                      mCustomKey = "";
 
     public TXUGCPublish(Context context, String customKey) {
         mCustomKey = customKey;
@@ -53,28 +53,7 @@ public class TXUGCPublish {
         mMediaListener = listener;
     }
 
-
-    /**
-     * 上传视频文件 （视频文件 + 封面图）
-     *
-     * @param param
-     * @return
-     */
-    public int publishVideo(TXUGCPublishTypeDef.TXPublishParam param) {
-        if (mPublishing) {
-            Log.e(TAG, "there is existing publish task");
-            return TVCConstants.ERR_UGC_PUBLISHING;
-        }
-
-        if (param == null) {
-            Log.e(TAG, "publishVideo invalid param");
-            return TVCConstants.ERR_UGC_INVALID_PARAM;
-        }
-        if (TextUtils.isEmpty(param.signature)) {
-            Log.e(TAG, "publishVideo invalid UGCSignature");
-            return TVCConstants.ERR_UGC_INVALID_SIGNATURE;
-        }
-
+    private int publishVideoImpl(TXUGCPublishTypeDef.TXPublishParam param) {
         if (TextUtils.isEmpty(param.videoPath)) {
             Log.e(TAG, "publishVideo invalid videoPath");
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
@@ -88,7 +67,7 @@ public class TXUGCPublish {
             e.printStackTrace();
         }
 
-        if (bVideoFileExist == false) {
+        if (!bVideoFileExist) {
             //TXCLog.e(TAG, "publishVideo invalid video file");
             return TVCConstants.ERR_UGC_INVALID_VIDEO_FILE;
         }
@@ -97,8 +76,7 @@ public class TXUGCPublish {
         if (!TextUtils.isEmpty(param.coverPath)) {
             coverPath = param.coverPath;
             File file = new File(coverPath);
-            if (!file.exists())
-                return TVCConstants.ERR_UGC_INVALID_COVER_PATH;
+            if (!file.exists()) return TVCConstants.ERR_UGC_INVALID_COVER_PATH;
         }
 
         if (mTVCClient == null) {
@@ -107,10 +85,12 @@ public class TXUGCPublish {
             mTVCClient.updateSignature(param.signature);
         }
 
-        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath, getFileType(coverPath), coverPath, param.fileName);
+        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath, getFileType(coverPath),
+                coverPath, param.fileName);
+
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
-            public void onSucess(final String fileId, final String playUrl, final String coverUrl) {
+            public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
                 if (mHandler != null) {
                     mHandler.post(new Runnable() {
                         @Override
@@ -165,22 +145,16 @@ public class TXUGCPublish {
                 mPublishing = false;
             }
         });
-
-        if (ret == TVCConstants.NO_ERROR)
-            mPublishing = true;
-        else
-            mPublishing = false;
         return ret;
     }
 
-
     /**
-     * 上传媒体文件
+     * 上传视频文件 （视频文件 + 封面图）
      *
      * @param param
      * @return
      */
-    public int publishMedia(TXUGCPublishTypeDef.TXMediaPublishParam param) {
+    public int publishVideo(final TXUGCPublishTypeDef.TXPublishParam param) {
         if (mPublishing) {
             Log.e(TAG, "there is existing publish task");
             return TVCConstants.ERR_UGC_PUBLISHING;
@@ -194,7 +168,28 @@ public class TXUGCPublish {
             Log.e(TAG, "publishVideo invalid UGCSignature");
             return TVCConstants.ERR_UGC_INVALID_SIGNATURE;
         }
+        // 正在发布，包含预上传
+        mPublishing = true;
+        if (param.enablePreparePublish) {
+            // 启动预发布初始化，预发布后再开始上传
+            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
+                    new TXUGCPublishOptCenter.IPrepareUploadCallback() {
+                        @Override
+                        public void onFinish() {
+                            int ret = publishVideoImpl(param);
+                            mPublishing = (ret == TVCConstants.NO_ERROR);
+                        }
+                    });
+            return TVCConstants.NO_ERROR;
+        } else {
+            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature, null);
+            int ret = publishVideoImpl(param);
+            mPublishing = (ret == TVCConstants.NO_ERROR);
+            return ret;
+        }
+    }
 
+    private int publishMediaImpl(TXUGCPublishTypeDef.TXMediaPublishParam param) {
         if (TextUtils.isEmpty(param.mediaPath)) {
             Log.e(TAG, "publishVideo invalid videoPath");
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
@@ -222,7 +217,7 @@ public class TXUGCPublish {
         TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null, param.fileName);
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
-            public void onSucess(final String fileId, final String playUrl, final String coverUrl) {
+            public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
                 if (mHandler != null) {
                     mHandler.post(new Runnable() {
                         @Override
@@ -276,12 +271,45 @@ public class TXUGCPublish {
                 mPublishing = false;
             }
         });
-
-        if (ret == TVCConstants.NO_ERROR)
-            mPublishing = true;
-        else
-            mPublishing = false;
         return ret;
+    }
+
+    /**
+     * 上传媒体文件
+     *
+     * @param param
+     * @return
+     */
+    public int publishMedia(final TXUGCPublishTypeDef.TXMediaPublishParam param) {
+        if (mPublishing) {
+            Log.e(TAG, "there is existing publish task");
+            return TVCConstants.ERR_UGC_PUBLISHING;
+        }
+        if (param == null) {
+            Log.e(TAG, "publishVideo invalid param");
+            return TVCConstants.ERR_UGC_INVALID_PARAM;
+        }
+        if (TextUtils.isEmpty(param.signature)) {
+            Log.e(TAG, "publishVideo invalid UGCSignature");
+            return TVCConstants.ERR_UGC_INVALID_SIGNATURE;
+        }
+        mPublishing = true;
+        if (param.enablePreparePublish) {
+            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
+                    new TXUGCPublishOptCenter.IPrepareUploadCallback() {
+                        @Override
+                        public void onFinish() {
+                            int ret = publishMediaImpl(param);
+                            mPublishing = (ret == TVCConstants.NO_ERROR);
+                        }
+                    });
+            return TVCConstants.NO_ERROR;
+        } else {
+            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature, null);
+            int ret = publishMediaImpl(param);
+            mPublishing = (ret == TVCConstants.NO_ERROR);
+            return ret;
+        }
     }
 
     /**
@@ -297,7 +325,6 @@ public class TXUGCPublish {
     /**
      * 取消上传 （取消媒体/取消短视频发布）
      * 注意：取消的是未开始的分片。如果上传源文件太小，取消的时候已经没有分片还未触发上传，最终文件还是会上传完成
-     *
      */
     public void canclePublish() {
         if (mTVCClient != null) {
@@ -308,6 +335,7 @@ public class TXUGCPublish {
 
     /**
      * 获取上报信息
+     *
      * @return
      */
     public Bundle getStatusInfo() {

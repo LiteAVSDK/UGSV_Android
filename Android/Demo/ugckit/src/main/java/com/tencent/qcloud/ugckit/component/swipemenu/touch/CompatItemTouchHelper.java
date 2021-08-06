@@ -5,6 +5,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 public class CompatItemTouchHelper extends ItemTouchHelper {
 
     private Callback mTouchCallback;
+
     public CompatItemTouchHelper(Callback callback) {
         super(callback);
         mTouchCallback = callback;

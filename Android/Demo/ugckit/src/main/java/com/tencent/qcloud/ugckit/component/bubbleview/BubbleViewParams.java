@@ -16,6 +16,7 @@ public class BubbleViewParams {
     public Bitmap         bubbleBitmap;
     public TCSubtitleInfo wordParamsInfo;
     public String         text;
+
     @NonNull
     public static BubbleViewParams createDefaultParams(String text) {
         BubbleViewParams params = new BubbleViewParams();

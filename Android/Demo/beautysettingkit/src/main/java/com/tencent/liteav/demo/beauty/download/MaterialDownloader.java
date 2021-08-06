@@ -21,19 +21,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class MaterialDownloader {
 
-    public static final String DOWNLOAD_FILE_POSTFIX    = ".zip";
-    public static final String ONLINE_MATERIAL_FOLDER   = "cameraVideoAnimal";
+    public static final  String DOWNLOAD_FILE_POSTFIX  = ".zip";
+    public static final  String ONLINE_MATERIAL_FOLDER = "cameraVideoAnimal";
+    private static final int    CPU_COUNT              = Runtime.getRuntime().availableProcessors();
+    private static final int    CORE_POOL_SIZE         = CPU_COUNT + 1;
 
-    private static final int CPU_COUNT                  = Runtime.getRuntime().availableProcessors();
-    private static final int CORE_POOL_SIZE             = CPU_COUNT + 1;
-
-    private Context mContext;
-    private boolean mProcessing;
-
-    private String              mURL;
-    private String              mMaterialId;
-    private DownloadListener    mListener;
-    private DownloadThreadPool  mDownloadThreadPool;
+    private Context            mContext;
+    private boolean            mProcessing;
+    private String             mURL;
+    private String             mMaterialId;
+    private DownloadListener   mListener;
+    private DownloadThreadPool mDownloadThreadPool;
 
     public MaterialDownloader(Context context, String materialId, String url) {
         mContext = context;

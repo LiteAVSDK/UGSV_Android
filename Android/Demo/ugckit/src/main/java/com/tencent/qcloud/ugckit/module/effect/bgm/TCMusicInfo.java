@@ -10,8 +10,8 @@ public class TCMusicInfo {
     @Nullable
     public String localPath;
 
-    public static final int STATE_UNDOWNLOAD = 1;
+    public static final int STATE_UNDOWNLOAD  = 1;
     public static final int STATE_DOWNLOADING = 2;
-    public static final int STATE_DOWNLOADED = 3;
-    public static final int STATE_USED = 4;
+    public static final int STATE_DOWNLOADED  = 3;
+    public static final int STATE_USED        = 4;
 }

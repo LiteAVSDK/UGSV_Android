@@ -1,23 +1,20 @@
 {
-  "pasterList" : [
+  "pasterList": [
     {
-	  "icon" : "daddy/icon.png",
-	  "name" : "daddy"
+      "icon": "daddy/icon.png",
+      "name": "daddy"
     },
-    
     {
-	  "icon" : "face/icon.png",
-	  "name" : "face"
+      "icon": "face/icon.png",
+      "name": "face"
     },
-    
     {
-	  "icon" : "girl/icon.png",
-	  "name" : "girl"
+      "icon": "girl/icon.png",
+      "name": "girl"
     },
-    
     {
-	  "icon" : "glass/icon.png",
-	  "name" : "glass"
+      "icon": "glass/icon.png",
+      "name": "glass"
     }
   ]
 }

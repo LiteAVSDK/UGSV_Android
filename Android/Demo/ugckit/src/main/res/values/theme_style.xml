@@ -52,12 +52,14 @@
         <item name="recordButtonTapModeOutterBackground">
             @color/ugckit_record_button_click_shot_background_color
         </item>
-        <item name="recordButtonTapModeInnerBackground">@color/ugckit_record_button_click_shotInner_color
+        <item name="recordButtonTapModeInnerBackground">
+            @color/ugckit_record_button_click_shotInner_color
         </item>
         <item name="recordButtonPressModeOutterBackground">
             @color/ugckit_record_button_touch_shot_background_color
         </item>
-        <item name="recordButtonPressModeInnerBackground">@color/ugckit_record_button_touch_shot_inner_color
+        <item name="recordButtonPressModeInnerBackground">
+            @color/ugckit_record_button_touch_shot_inner_color
         </item>
         <!-- 多段录制进度条-->
         <item name="recordTimelineColor">@color/ugckit_record_progress</item>
@@ -98,7 +100,8 @@
         <item name="audioEffectVoicechangeHeavymechanical">
             @drawable/ugckit_ic_voicechange_heavymechanical
         </item>
-        <item name="audioEffectVoicechangeForeigner">@drawable/ugckit_ic_voicechange_foreigner</item>
+        <item name="audioEffectVoicechangeForeigner">@drawable/ugckit_ic_voicechange_foreigner
+        </item>
         <item name="audioEffectVoicechangeBeast">@drawable/ugckit_ic_voicechange_beast</item>
         <item name="audioEffectVoicechangeFatty">@drawable/ugckit_ic_voicechange_deadfathouse
         </item>
@@ -131,6 +134,7 @@
         <item name="editerMenuFilterIcon">@drawable/ugckit_ic_filter_selector</item>
         <item name="editerMenuPasterIcon">@drawable/ugckit_ic_paster_selector</item>
         <item name="editerMenuSubtitleIcon">@drawable/ugckit_ic_word_selector</item>
+        <item name="editerMenuTransitionIcon">@drawable/ugckit_ic_transition_selector</item>
         <!--动态特效-->
         <item name="editerMotionUndoIcon">@drawable/ugckit_editor_undo_selector</item>
         <item name="editerMotionSoulOutIcon">@drawable/ugckit_motion_soul_out</item>
@@ -142,7 +146,8 @@
         <item name="editerMotionGhostIcon">@drawable/ugckit_motion_ghost</item>
         <item name="editerMotionGhostCoverColor">@color/ugckit_ghost_color_press</item>
         <item name="editerMotionGhostShadowIcon">@drawable/ugckit_motion_ghost_shaddow</item>
-        <item name="editerMotionGhostShadowCoverColor">@color/ugckit_ghost_shaddow_color_press</item>
+        <item name="editerMotionGhostShadowCoverColor">@color/ugckit_ghost_shaddow_color_press
+        </item>
         <item name="editerMotionIllusionIcon">@drawable/ugckit_motion_illusion</item>
         <item name="editerMotionIllusionCoverColor">@color/ugckit_illusion_color_press</item>
         <item name="editerMotionLightningIcon">@drawable/ugckit_motion_lightning</item>
@@ -150,7 +155,8 @@
         <item name="editerMotionMirrorIcon">@drawable/ugckit_motion_mirror</item>
         <item name="editerMotionMirrorCoverColor">@color/ugckit_mirror_color_press</item>
         <item name="editerMotionPhantomShadowIcon">@drawable/ugckit_motion_phantom_shaddow</item>
-        <item name="editerMotionPhantomShadowCoverColor">@color/ugckit_phantom_shaddow_color_press</item>
+        <item name="editerMotionPhantomShadowCoverColor">@color/ugckit_phantom_shaddow_color_press
+        </item>
         <item name="editerMotionRockLightIcon">@drawable/ugckit_motion_rock_light</item>
         <item name="editerMotionRockLightCoverColor">@color/ugckit_rock_light_press</item>
         <item name="editerMotionWinShadowIcon">@drawable/ugckit_motion_win_shaddow</item>

@@ -13,8 +13,8 @@ public class TVCDirectCredentialProvider extends BasicLifecycleCredentialProvide
     private String secretId;
     private String secretKey;
     private String token;
-    private long expiredTime;
-    private long startTime;
+    private long   expiredTime;
+    private long   startTime;
 
 
     public TVCDirectCredentialProvider(String secretId, String secretKey, String token, long startTime, long expiredTime) {

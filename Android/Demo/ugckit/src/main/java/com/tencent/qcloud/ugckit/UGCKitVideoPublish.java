@@ -38,27 +38,25 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
     @NonNull
     private String TAG = "UGCKitVideoPublish";
 
-    private Context      mContext;
-    private ImageView    mImageBack;      // 返回
-    private ImageView    mImageViewBg;
-    private ProgressBar  mProgressBar;     // 发布视频进度条
-    private TextView     mTextProgress;     // 发布视频进度文字
+    private Context           mContext;
+    private ImageView         mImageBack;      // 返回
+    private ImageView         mImageViewBg;
+    private ProgressBar       mProgressBar;     // 发布视频进度条
+    private TextView          mTextProgress;     // 发布视频进度文字
     @Nullable
-    private TXUGCPublish mVideoPublish = null;
-
-    private boolean mIsFetchCosSig = false;
+    private TXUGCPublish      mVideoPublish  = null;
+    private boolean           mIsFetchCosSig = false;
     @Nullable
-    private String  mCosSignature = null;
+    private String            mCosSignature  = null;
     @NonNull
-    private Handler mHandler = new Handler();
-    private boolean mAllDone = false;
-    private boolean mDisableCache;
-    private String  mLocalVideoPath;
+    private Handler           mHandler       = new Handler();
+    private boolean           mAllDone       = false;
+    private boolean           mDisableCache;
+    private String            mLocalVideoPath;
     @Nullable
-    private String  mVideoPath = null;  // 视频路径
+    private String            mVideoPath     = null;  // 视频路径
     @Nullable
-    private String  mCoverPath = null;  // 视频封面路径
-
+    private String            mCoverPath     = null;  // 视频封面路径
     private OnPublishListener mOnPublishListener;
 
     public UGCKitVideoPublish(Context context) {
@@ -200,8 +198,8 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
      * 开启本地缓存，若关闭本地缓存，则发布完成后删除"已发布"的视频和封面
      *
      * @param disableCache {@code true} 开启本地缓存，设置的视频文件和封面文件不会被删除。<br>
-     *               {@code false} 关闭本地缓存，则发布完成后删除"已发布"的视频和封面；<br>
-     *               默认为true
+     *                     {@code false} 关闭本地缓存，则发布完成后删除"已发布"的视频和封面；<br>
+     *                     默认为true
      */
     public void setCacheEnable(boolean disableCache) {
         mDisableCache = disableCache;

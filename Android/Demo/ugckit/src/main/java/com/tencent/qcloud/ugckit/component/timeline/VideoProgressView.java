@@ -20,12 +20,12 @@ import java.util.List;
 
 public class VideoProgressView extends FrameLayout {
 
-    private Context mContext;
-    private View mRootView;
-    private RecyclerView mRecyclerView;
-    private int mViewWidth;
+    private Context          mContext;
+    private View             mRootView;
+    private RecyclerView     mRecyclerView;
+    private int              mViewWidth;
     private ThumbnailAdapter mThumbnailAdapter;
-    private List<Bitmap> mThumbnailList;
+    private List<Bitmap>     mThumbnailList;
 
     public VideoProgressView(@NonNull Context context) {
         super(context);

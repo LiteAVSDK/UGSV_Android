@@ -57,55 +57,42 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         IPasterPannel.OnTabChangedListener,
         IPasterPannel.OnAddClickListener,
         View.OnClickListener, PlayerManagerKit.OnPlayStateListener {
-    private final String TAG = "TCPasterFragment";
-
-    private final int MSG_COPY_PASTER_FILES = 1;
-
-    private final String PASTER_FOLDER_NAME = "paster";
+    private final String TAG                         = "TCPasterFragment";
+    private final int    MSG_COPY_PASTER_FILES       = 1;
+    private final String PASTER_FOLDER_NAME          = "paster";
     private final String ANIMATED_PASTER_FOLDER_NAME = "AnimatedPaster";
-    private final String PASTER_LIST_JSON_FILE_NAME = "pasterList.json";
+    private final String PASTER_LIST_JSON_FILE_NAME  = "pasterList.json";
+
     @Nullable
-    private String mPasterSDcardFolder;
+    private String                                            mPasterSDcardFolder;
     @Nullable
-    private String mAnimatedPasterSDcardFolder;
-
-    private TXVideoEditer mTXVideoEditer;
-
-    private RecyclerView mRvPaster;
-    private ImageView mIvDel;
-    private View mFootView;
-    private AddPasterAdapter mAddPasterAdapter;
-    private List<TCPasterInfo> mAddPasterInfoList;
-
-    private PasterPannel mPasterPannel; // 选择贴纸控件
-    private FloatLayerViewGroup mFloatLayerViewGroup; // 图层父布局，承载贴纸
-    private int mCurrentSelectedPos = -1;// 当前被选中的贴纸控件
-
+    private String                                            mAnimatedPasterSDcardFolder;
+    private TXVideoEditer                                     mTXVideoEditer;
+    private RecyclerView                                      mRvPaster;
+    private ImageView                                         mIvDel;
+    private View                                              mFootView;
+    private AddPasterAdapter                                  mAddPasterAdapter;
+    private List<TCPasterInfo>                                mAddPasterInfoList;
+    private PasterPannel                                      mPasterPannel; // 选择贴纸控件
+    private FloatLayerViewGroup                               mFloatLayerViewGroup; // 图层父布局，承载贴纸
+    private int                                               mCurrentSelectedPos = -1;// 当前被选中的贴纸控件
     @Nullable
     private RangeSliderViewContainer.OnDurationChangeListener mOnDurationChangeListener;
-
-    // 子线程
-    private HandlerThread mWorkHandlerThread;
+    private HandlerThread                                     mWorkHandlerThread;
     @Nullable
-    private Handler mWorkHandler;
-
-    private List<TCPasterInfo> mPasterInfoList;
-    private List<TCPasterInfo> mAnimatedPasterInfoList;
-
-    private boolean mIsUpdatePng = false;
-
-    //================================== 时间 ==============================
-    private long mDuration;
-    private long mDefaultWordStartTime;
-    private long mDefaultWordEndTime;
-    private VideoProgressController mVideoProgressController;
-
-    // 定制UI
-    private int addIcon = R.drawable.ugckit_ic_edit_add_selector;
-    private int deleteIcon = R.drawable.ugckit_ic_word_del_normal;
-    private int mCoverIcon;
-    private int pasterTextSize;
-    private int pasterTextColor;
+    private Handler                                           mWorkHandler;
+    private List<TCPasterInfo>                                mPasterInfoList;
+    private List<TCPasterInfo>                                mAnimatedPasterInfoList;
+    private boolean                                           mIsUpdatePng        = false;
+    private long                                              mDuration;
+    private long                                              mDefaultWordStartTime;
+    private long                                              mDefaultWordEndTime;
+    private VideoProgressController                           mVideoProgressController;
+    private int                                               addIcon             = R.drawable.ugckit_ic_edit_add_selector;
+    private int                                               deleteIcon          = R.drawable.ugckit_ic_word_del_normal;
+    private int                                               mCoverIcon;
+    private int                                               pasterTextSize;
+    private int                                               pasterTextColor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

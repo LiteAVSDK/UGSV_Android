@@ -9,10 +9,10 @@ import com.tencent.qcloud.core.http.HttpTaskMetrics;
  * 用于统计 UploadService 第一个请求耗时
  */
 public class TXOnGetHttpTaskMetrics implements COSXMLUploadTask.OnGetHttpTaskMetrics {
-    private static final String TAG = "TXOnGetHttpTaskMetrics";
-    private boolean isGet;
-    private double tcpConnectionTimeCost;
-    private double recvRspTimeCost;
+    private static final String  TAG = "TXOnGetHttpTaskMetrics";
+    private              boolean isGet;
+    private              double  tcpConnectionTimeCost;
+    private              double  recvRspTimeCost;
 
     public long getTCPConnectionTimeCost() {
         return (long) (tcpConnectionTimeCost * 1000);

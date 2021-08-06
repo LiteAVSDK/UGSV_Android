@@ -10,8 +10,8 @@ public class ConfigureLoader {
 
     @NonNull
     private static ConfigureLoader sInstance = new ConfigureLoader();
-    private DraftEditer            mDraftEditer;
-    private EffectEditer           mEffectEditer;
+    private        DraftEditer     mDraftEditer;
+    private        EffectEditer    mEffectEditer;
 
     private ConfigureLoader() {
     }

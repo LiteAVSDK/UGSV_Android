@@ -17,24 +17,23 @@ public class VideoProgressController {
     private final String TAG = "VideoProgressController";
 
     private VideoProgressView mVideoProgressView;
-    private RecyclerView mRecyclerView;
+    private RecyclerView      mRecyclerView;
     @Nullable
-    private ColorfulProgress mColorfulProgress;
+    private ColorfulProgress  mColorfulProgress;
 
-    private boolean mIsTouching;
-    private boolean mIsRangeSliderChanged;
-    private int mThumbnailNum;
-    private int mScrollState;
-    private long mCurrentTimeMs;
-    private long mTotalDurationMs; // us
-    private float mCurrentScroll;
-    private float mThumbnailPicListDisplayWidth; // 视频缩略图列表的宽度
-    private float mVideoProgressDisplayWidth; // 视频进度条可显示宽度
-    private VideoProgressSeekListener mVideoProgressSeekListener;
-
-    private HashMap<Integer, List> mRangeSliderViewContainerHashmap; // 分类的范围块view
+    private boolean                        mIsTouching;
+    private boolean                        mIsRangeSliderChanged;
+    private int                            mThumbnailNum;
+    private int                            mScrollState;
+    private long                           mCurrentTimeMs;
+    private long                           mTotalDurationMs; // us
+    private float                          mCurrentScroll;
+    private float                          mThumbnailPicListDisplayWidth; // 视频缩略图列表的宽度
+    private float                          mVideoProgressDisplayWidth; // 视频进度条可显示宽度
+    private VideoProgressSeekListener      mVideoProgressSeekListener;
+    private HashMap<Integer, List>         mRangeSliderViewContainerHashmap; // 分类的范围块view
     private List<RangeSliderViewContainer> mRangeSliderViewContainerList; // 所有的范围块view
-    private List<SliderViewContainer> mSliderViewContainerList;
+    private List<SliderViewContainer>      mSliderViewContainerList;
 
     public VideoProgressController(long durationMs) {
         mTotalDurationMs = durationMs;

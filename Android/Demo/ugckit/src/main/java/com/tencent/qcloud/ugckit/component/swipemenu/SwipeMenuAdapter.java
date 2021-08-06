@@ -31,7 +31,7 @@ public abstract class SwipeMenuAdapter<VH extends RecyclerView.ViewHolder> exten
      *
      * @param swipeMenuItemClickListener listener.
      */
-    void setSwipeMenuItemClickListener( OnSwipeMenuItemClickListener swipeMenuItemClickListener) {
+    void setSwipeMenuItemClickListener(OnSwipeMenuItemClickListener swipeMenuItemClickListener) {
         this.mSwipeMenuItemClickListener = swipeMenuItemClickListener;
     }
 

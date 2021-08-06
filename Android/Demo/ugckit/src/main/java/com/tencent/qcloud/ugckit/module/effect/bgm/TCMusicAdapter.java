@@ -19,10 +19,10 @@ import com.tencent.rtmp.TXLog;
 import java.util.List;
 
 public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMusicViewHolder> implements View.OnClickListener {
-    private static final String TAG = "TCMusicAdapter";
-    private Context                mContext;
-    private List<TCMusicInfo>      mBGMList;
-    private OnClickSubItemListener mOnClickSubItemListener;
+    private static final String                 TAG = "TCMusicAdapter";
+    private              Context                mContext;
+    private              List<TCMusicInfo>      mBGMList;
+    private              OnClickSubItemListener mOnClickSubItemListener;
 
     @NonNull
     private SparseArray<LinearMusicViewHolder> mProgressButtonIndexMap = new SparseArray<LinearMusicViewHolder>();
@@ -109,9 +109,9 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
 
     public static class LinearMusicViewHolder extends RecyclerView.ViewHolder {
         private SampleProgressButton btnUse;
-        private TextView tvName;
-        private OnItemClickListener onItemClickListener;
-        private int position;
+        private TextView             tvName;
+        private OnItemClickListener  onItemClickListener;
+        private int                  position;
 
         public LinearMusicViewHolder(@NonNull View itemView) {
             super(itemView);

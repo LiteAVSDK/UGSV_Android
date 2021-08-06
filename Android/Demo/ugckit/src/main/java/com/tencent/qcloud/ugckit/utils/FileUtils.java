@@ -30,8 +30,8 @@ import java.util.List;
  * 文件工具类
  */
 public class FileUtils {
-    private final static int MD5_FILE_BUFFER_LENGHT = 1 * 1024 * 1024; // 1MB
-    private final static byte[] gSyncCode = new byte[0];
+    private final static int    MD5_FILE_BUFFER_LENGHT = 1 * 1024 * 1024; // 1MB
+    private final static byte[] gSyncCode              = new byte[0];
 
     @Nullable
     public static InputStream getInputStream(@NonNull File oFile) {
@@ -64,22 +64,22 @@ public class FileUtils {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
-        	if(fis != null){
-        		try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-        	}
-        	if(bos != null){
-        		try {
-        			bos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-        	}  
-        }        
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return buffer;
     }
 
@@ -116,12 +116,12 @@ public class FileUtils {
         }
     }
 
-    private final static String TAG = "FileUtils";
-    public final static String FILE_EXTENSION_SEPARATOR = ".";
+    private final static String TAG                      = "FileUtils";
+    public final static  String FILE_EXTENSION_SEPARATOR = ".";
 
     /**
      * read file
-     * 
+     *
      * @param filePath
      * @param charsetName The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
@@ -162,10 +162,10 @@ public class FileUtils {
 
     /**
      * write file
-     * 
+     *
      * @param filePath
      * @param content
-     * @param append is append, if true, write to the end of file, else clear content of file and write into it
+     * @param append   is append, if true, write to the end of file, else clear content of file and write into it
      * @return return false if content is empty, true otherwise
      * @throws RuntimeException if an error occurs while operator FileWriter
      */
@@ -196,10 +196,10 @@ public class FileUtils {
 
     /**
      * write file
-     * 
+     *
      * @param filePath
      * @param contentList
-     * @param append is append, if true, write to the end of file, else clear content of file and write into it
+     * @param append      is append, if true, write to the end of file, else clear content of file and write into it
      * @return return false if contentList is empty, true otherwise
      * @throws RuntimeException if an error occurs while operator FileWriter
      */
@@ -233,7 +233,7 @@ public class FileUtils {
 
     /**
      * write file, the string will be written to the begin of the file
-     * 
+     *
      * @param filePath
      * @param content
      * @return
@@ -244,7 +244,7 @@ public class FileUtils {
 
     /**
      * write file, the string list will be written to the begin of the file
-     * 
+     *
      * @param filePath
      * @param contentList
      * @return
@@ -255,7 +255,7 @@ public class FileUtils {
 
     /**
      * write file, the bytes will be written to the begin of the file
-     * 
+     *
      * @param filePath
      * @param stream
      * @return
@@ -267,10 +267,10 @@ public class FileUtils {
 
     /**
      * write file
-     * 
+     *
      * @param filePath the file to be opened for writing.
-     * @param stream the input stream
-     * @param append if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
+     * @param stream   the input stream
+     * @param append   if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
      * @return return true
      * @throws RuntimeException if an error occurs while operator FileOutputStream
      */
@@ -280,7 +280,7 @@ public class FileUtils {
 
     /**
      * write file, the bytes will be written to the begin of the file
-     * 
+     *
      * @param file
      * @param stream
      * @return
@@ -292,18 +292,18 @@ public class FileUtils {
 
     /**
      * write file
-     * 
-     * @param file the file to be opened for writing.
+     *
+     * @param file   the file to be opened for writing.
      * @param stream the input stream
      * @param append if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
      * @return return true
      * @throws RuntimeException if an error occurs while operator FileOutputStream
      */
     public static boolean writeFile(@Nullable File file, @Nullable InputStream stream, boolean append) {
-    	if(file == null || stream == null){
-    		return false;
-    	}
-    	
+        if (file == null || stream == null) {
+            return false;
+        }
+
         OutputStream o = null;
         try {
             makeDirs(file.getAbsolutePath());
@@ -333,7 +333,7 @@ public class FileUtils {
 
     /**
      * copy file
-     * 
+     *
      * @param sourceFilePath
      * @param destFilePath
      * @return
@@ -351,7 +351,7 @@ public class FileUtils {
 
     /**
      * read file to string list, a element of list is a line
-     * 
+     *
      * @param filePath
      * @param charsetName The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
      * @return if file not exist, return null, else return content of file
@@ -389,7 +389,7 @@ public class FileUtils {
 
     /**
      * get file name from path, not include suffix
-     * 
+     *
      * <pre>
      *      getFileNameWithoutExtension(null)               =   null
      *      getFileNameWithoutExtension("")                 =   ""
@@ -404,7 +404,7 @@ public class FileUtils {
      *      getFileNameWithoutExtension("/home/admin")      =   "admin"
      *      getFileNameWithoutExtension("/home/admin/a.txt/b.mp3")  =   "b"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return file name from path, not include suffix
      * @see
@@ -428,7 +428,7 @@ public class FileUtils {
 
     /**
      * get file name from path, include suffix
-     * 
+     *
      * <pre>
      *      getFileName(null)               =   null
      *      getFileName("")                 =   ""
@@ -443,7 +443,7 @@ public class FileUtils {
      *      getFileName("/home/admin")      =   "admin"
      *      getFileName("/home/admin/a.txt/b.mp3")  =   "b.mp3"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return file name from path, include suffix
      */
@@ -459,7 +459,7 @@ public class FileUtils {
 
     /**
      * get folder name from path
-     * 
+     *
      * <pre>
      *      getFolderName(null)               =   null
      *      getFolderName("")                 =   ""
@@ -475,7 +475,7 @@ public class FileUtils {
      *      getFolderName("/home/admin")      =   "/home"
      *      getFolderName("/home/admin/a.txt/b.mp3")  =   "/home/admin/a.txt"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -492,7 +492,7 @@ public class FileUtils {
 
     /**
      * get suffix of file from path
-     * 
+     *
      * <pre>
      *      getFileExtension(null)               =   ""
      *      getFileExtension("")                 =   ""
@@ -508,7 +508,7 @@ public class FileUtils {
      *      getFileExtension("/home/admin/a.txt/b")  =   ""
      *      getFileExtension("/home/admin/a.txt/b.mp3")  =   "mp3"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -535,7 +535,7 @@ public class FileUtils {
      * <li>makeDirs("C:\\Users\\Trinea") can only create users folder</li>
      * <li>makeFolder("C:\\Users\\Trinea\\") can create Trinea folder</li>
      * </ul>
-     * 
+     *
      * @param filePath
      * @return true if the necessary directories have been created or the target directory already exists, false one of
      * the directories can not be created.
@@ -566,7 +566,7 @@ public class FileUtils {
 
     /**
      * Indicates if this file represents a file on the underlying file system.
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -590,7 +590,7 @@ public class FileUtils {
 
     /**
      * Indicates if this file represents a file on the underlying file system.
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -605,7 +605,7 @@ public class FileUtils {
 
     /**
      * Indicates if this file represents a file on the underlying file system.
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -614,11 +614,11 @@ public class FileUtils {
         if (TextUtils.isEmpty(filePath)) {
             return false;
         }
-        if(TextUtils.isEmpty(checkSum)){
-        	return false;
+        if (TextUtils.isEmpty(checkSum)) {
+            return false;
         }
         File file = new File(filePath);
-        if(!file.exists() || !file.isFile()){
+        if (!file.exists() || !file.isFile()) {
             return false;
         }
         String fileSum = "";
@@ -633,7 +633,7 @@ public class FileUtils {
 
     /**
      * Indicates if this file represents a directory on the underlying file system.
-     * 
+     *
      * @param directoryPath
      * @return
      */
@@ -653,7 +653,7 @@ public class FileUtils {
      * <li>if path not exist, return true</li>
      * <li>if path exist, delete recursion. return true</li>
      * <ul>
-     * 
+     *
      * @param path
      * @return
      */
@@ -675,7 +675,7 @@ public class FileUtils {
                 return false;
             }
             File[] filesList = file.listFiles();
-            
+
             if (filesList != null) {
                 for (File f : filesList) {
                     if (f.isFile()) {
@@ -692,12 +692,12 @@ public class FileUtils {
     }
 
     /**
+     * @param fromName 需要重命名的文件，为文件绝对路径
+     * @param toName   要改成的名字，为文件绝对路径
+     * @return boolean 成功或失败
      * @Method: fileRename
      * @Description: 将文件从fromName命名为toName，由于使用的是File自带的renameTo()接口，需要注意： <li>读写存储器权限</li> <li>
      * fromName和toName这两个路径在相同的挂载点。如果不在同一挂载点，重命名失败。</li>
-     * @param fromName 需要重命名的文件，为文件绝对路径
-     * @param toName 要改成的名字，为文件绝对路径
-     * @return boolean 成功或失败
      */
     public static boolean fileRename(@NonNull String fromName, @NonNull String toName) {
         synchronized (gSyncCode) {
@@ -721,7 +721,7 @@ public class FileUtils {
      * <li>if path is null or empty, return -1</li>
      * <li>if path exist and it is a file, return file size, else return -1</li>
      * <ul>
-     * 
+     *
      * @param path
      * @return returns the length of this file in bytes. returns -1 if the file does not exist.
      */
@@ -736,9 +736,9 @@ public class FileUtils {
 
     @Nullable
     public static String getMD5FromFile(@Nullable String filePath) throws IOException {
-    	if(filePath == null ){
-    		return null;
-    	}
+        if (filePath == null) {
+            return null;
+        }
         String digestString = null;
 
         File file = new File(filePath);
@@ -758,11 +758,11 @@ public class FileUtils {
         long fileSize = file.length();
 
         if (fileSize > (3 * MD5_FILE_BUFFER_LENGHT)) {
-        	RandomAccessFile raf = null;
+            RandomAccessFile raf = null;
             Log.d(TAG, "fileSize is greater than 3MB");
             // 大于3MB时，分段，分头、中、尾，各1MB
-            try{
-            	raf = new RandomAccessFile(file, "r");
+            try {
+                raf = new RandomAccessFile(file, "r");
                 raf.seek(0);
                 int bytesRead = 0;
                 int totalRead = 0;
@@ -795,16 +795,16 @@ public class FileUtils {
                     }
                     digest.update(data);
                 }
-            }catch(Exception e){
-            	e.printStackTrace();
-            }finally{
-            	if(raf != null){
-            		try{
-            			raf.close();
-            		}catch(Exception e2){
-            			e2.printStackTrace();
-            		}
-            	}
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (raf != null) {
+                    try {
+                        raf.close();
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    }
+                }
             }
         } else {
             Log.d(TAG, "fileSize is smaller than 3MB");
@@ -819,13 +819,13 @@ public class FileUtils {
                     }
                 }
             } catch (Exception e) {
-            	e.printStackTrace();
+                e.printStackTrace();
             } finally {
                 if (inputStream != null) {
                     try {
                         inputStream.close();
                     } catch (Exception e2) {
-                    	e2.printStackTrace();
+                        e2.printStackTrace();
                     }
                 }
             }
@@ -852,10 +852,10 @@ public class FileUtils {
     }
 
     /**
-     * @Method: convertSize
-     * @Description: 将字节换算为B、KB、MB、GB显示
      * @param lenght
      * @return 返回类型：String
+     * @Method: convertSize
+     * @Description: 将字节换算为B、KB、MB、GB显示
      */
     @NonNull
     public static String convertSize(long lenght) {
@@ -874,11 +874,11 @@ public class FileUtils {
     }
 
     /**
-     * @Method: getConfigFromAsserts
-     * @Description: 从Asset配置文件中读取配置，丢弃#符号注释行，保留=符号所在行
      * @param context
      * @param filePath
      * @return 返回类型：String
+     * @Method: getConfigFromAsserts
+     * @Description: 从Asset配置文件中读取配置，丢弃#符号注释行，保留=符号所在行
      */
     public static String getConfigFromFile(Context context, @NonNull String filePath) {
         InputStreamReader inputStreamReader = null;
@@ -941,11 +941,11 @@ public class FileUtils {
     }
 
     /**
-     * @Method: getConfigFromAsserts
-     * @Description: 从Asset配置文件中读取配置，丢弃#符号注释行，保留=符号所在行
      * @param context
      * @param assetFile
      * @return 返回类型：String
+     * @Method: getConfigFromAsserts
+     * @Description: 从Asset配置文件中读取配置，丢弃#符号注释行，保留=符号所在行
      */
     public static String getConfigFromAsserts(@NonNull Context context, String assetFile) {
         AssetManager assetManager = context.getAssets();
@@ -1009,21 +1009,21 @@ public class FileUtils {
     }
 
     /**
-     * @Method: copyFromAssetToSdcard
-     * @Description: 执行拷贝任务
      * @param context
      * @param assetFilename 需要拷贝的assets文件路径
      * @param dstPath
      * @return
      * @throws IOException
+     * @Method: copyFromAssetToSdcard
+     * @Description: 执行拷贝任务
      * @返回类型：boolean
      */
     public static boolean copyFromAssetToSdcard(@NonNull Context context, @NonNull String assetFilename, String dstPath)
             throws IOException {
         InputStream source = null;
         OutputStream destination = null;
-        try{
-        	source = context.getAssets().open(new File(assetFilename).getPath());
+        try {
+            source = context.getAssets().open(new File(assetFilename).getPath());
             File destinationFile = new File(dstPath, assetFilename);
 
             destinationFile.getParentFile().mkdirs();
@@ -1041,30 +1041,31 @@ public class FileUtils {
                 }
                 destination.write(buffer, 0, nread);
             }
-        }finally{
-        	if(source != null){
-        		try {
-        			source.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-        	}
-        	if(destination != null){
-        		try {
-        			destination.close();
-        		} catch (Exception e) {
-					e.printStackTrace();
-				}
-        	}
+        } finally {
+            if (source != null) {
+                try {
+                    source.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (destination != null) {
+                try {
+                    destination.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-         return true;
+        return true;
     }
 
     /**
      * 拷贝assets目录下的 指定文件夹 下的所有文件夹及文件到指定文件夹
+     *
      * @param context
      * @param assetsPath assets下指定文件夹
-     * @param savePath 目标指定文件夹
+     * @param savePath   目标指定文件夹
      */
     public static void copyFilesFromAssets(@NonNull Context context, String assetsPath, @NonNull String savePath) {
         try {
@@ -1094,30 +1095,30 @@ public class FileUtils {
             e.printStackTrace();
         }
     }
-    
+
     /**
-      * @Method: deleteLocalFile
-      * @Description: 删除当前的文件
-      * @param path
-      * @return	
-      * 返回类型：boolean 
-      */
-    public static boolean deleteLocalFile(@NonNull String path){
-        
+     * @param path
+     * @return 返回类型：boolean
+     * @Method: deleteLocalFile
+     * @Description: 删除当前的文件
+     */
+    public static boolean deleteLocalFile(@NonNull String path) {
+
         File file = new File(path);
-        if(file.exists()){
+        if (file.exists()) {
             file.delete();
         }
-        
+
         return true;
     }
 
     /**
      * 根据文件路径获取json配置string
+     *
      * @param filePath 配置文件的绝对路径
      * @return
      */
-    public static String getJsonFromFile(@NonNull String filePath){
+    public static String getJsonFromFile(@NonNull String filePath) {
         //获取json数据
         StringBuilder configJsonStr = new StringBuilder();
         String tempString;
@@ -1129,11 +1130,10 @@ public class FileUtils {
                 configJsonStr.append(tempString);
             }
             bufferedReader.close();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            if(bufferedReader != null){
+        } finally {
+            if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
@@ -1143,5 +1143,5 @@ public class FileUtils {
         }
         return configJsonStr.toString();
     }
-    
+
 }

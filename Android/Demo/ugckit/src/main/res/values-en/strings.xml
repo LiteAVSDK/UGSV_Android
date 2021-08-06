@@ -49,6 +49,7 @@
     <string name="ugckit_filter">Filter</string>
     <string name="ugckit_paster">Sticker</string>
     <string name="ugckit_subtitle">Subtitle</string>
+    <string name="ugckit_transition">Transition</string>
 
     <string name="ugckit_cancel_record">Cancel Shooting</string>
     <string name="ugckit_confirm_cancel_edit_content">Discard the current editing?</string>
@@ -330,7 +331,8 @@
     <string name="ugckit_video_publisher_activity_is_uploading">Uploading</string>
     <string name="ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed">Unable to upload video due to network disconnection</string>
 
-    //分割线 2018/7/24  --------------------------------------------------------------------------------------------------
+    //分割线 2018/7/24
+    --------------------------------------------------------------------------------------------------
     <string name="ugckit_video_choose">Select Video</string>
 
     <string name="ugckit_activity_video_record_take_photo">Camera</string>
@@ -395,4 +397,40 @@
     <string name="ugckit_start_record_not_finish">recorded mission is not finish</string>
     <string name="ugckit_start_record_path_empty">Incoming video path is empty</string>
     <string name="ugckit_start_record_version_below">Version is too low</string>
+
+    <!-- transition fragment -->
+    <string name="trans_none">None</string>
+    <string name="trans_wipeLeft">Wipe Left</string>
+    <string name="trans_wipeRight">Wipe Right</string>
+    <string name="trans_wipeUp">Wipe Up</string>
+    <string name="trans_wipeDown">Wipe Down</string>
+    <string name="trans_fadecolor">Fade Color</string>
+    <string name="trans_SimpleZoom">Simple Zoom</string>
+    <string name="trans_LinearBlur">Linear Blur</string>
+    <string name="trans_WaterDrop">Water Drop</string>
+    <string name="trans_InvertedPageCurl">Inverted Page Curl</string>
+    <string name="trans_GlitchMemories">Glitch Memories</string>
+    <string name="trans_StereoViewer">Stereo Viewer</string>
+    <string name="trans_directionalwarp">Directional Warp</string>
+    <string name="trans_Bounce">Bounce</string>
+    <string name="trans_CircleCrop">Circle Crop</string>
+    <string name="trans_Swirl">Swirl</string>
+    <string name="trans_CrossZoom">Cross Zoom</string>
+    <string name="trans_GridFlip">Grid Flip</string>
+    <string name="trans_Mosaic">Mosaic</string>
+    <string name="trans_kaleidoscope">Kaleido Scope</string>
+    <string name="trans_hexagonalize">Hexagonalize</string>
+    <string name="trans_GlitchDisplace">Glitch Displace</string>
+    <string name="trans_DreamyZoom">Dreamy Zoom</string>
+    <string name="trans_burn">Burn</string>
+    <string name="trans_circle">Circle</string>
+    <string name="trans_crosswarp">Cross Warp</string>
+    <string name="trans_cube">Cube</string>
+    <string name="trans_doorway">Doorway</string>
+    <string name="trans_fadegrayscale">Fade Gray Scale</string>
+    <string name="trans_flyeye">Fly Eye</string>
+    <string name="trans_pixelize">Pixelize</string>
+    <string name="trans_squeeze">Squeeze</string>
+    <string name="trans_swap">Swap</string>
+    <string name="trans_invalid_timestamp">invalid transition timestamp,please set again</string>
 </resources>

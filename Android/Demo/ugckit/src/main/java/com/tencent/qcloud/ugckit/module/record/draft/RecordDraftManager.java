@@ -14,67 +14,65 @@ import com.tencent.qcloud.ugckit.UGCKitConstants;
 import java.util.List;
 
 /**
- *
  * 录制草稿箱管理类
  * 必须保证草稿箱中的分段以及将要录制的分段参数一致！
- *
+ * <p>
  * 一、最近一次的草稿箱
  * SharedPreferencesHelper中的 SP_KEY_RECORD_LAST_DRAFT 里保存最近录制的数据json格式如下，对应草稿箱实体类：RecordDraftInfo：
  * {
- *  "aspectRatio": 0,
- *  "partList":
- *      [
- *          {
- *          "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172350252.mp4"
- *          },
- *          {
- *          "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172353808.mp4"
- *          },
- *          {
- *          "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172413134.mp4"
- *          }
- *     ]
+ * "aspectRatio": 0,
+ * "partList":
+ * [
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172350252.mp4"
+ * },
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172353808.mp4"
+ * },
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172413134.mp4"
  * }
- *
- *
+ * ]
+ * }
+ * <p>
+ * <p>
  * 二、历史草稿箱
  * SharedPreferencesHelper中的 SP_KEY_RECORD_HISTORY_DRAFT 里可以保存多次历史录制任务数据json格式如下，对应草稿箱实体类：HistoryRecordDraftInfo：
  * {
- *  "historyDraftInfo":
- *    [
- *        {
- *         "aspectRatio": 0,
- *         "partList":
- *            [
- *                {
- *                "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172350252.mp4"
- *                },
- *                {
- *                "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172353808.mp4"
- *                }
- *            ]
- *        },
- *        {
- *        "aspectRatio": 0,
- *        "partList":
- *            [
- *                {
- *                "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172350252.mp4"
- *                },
- *                {
- *                "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172353808.mp4"
- *                }
- *            ]
- *        }
- *    ]
- *  }
- *
+ * "historyDraftInfo":
+ * [
+ * {
+ * "aspectRatio": 0,
+ * "partList":
+ * [
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172350252.mp4"
+ * },
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172353808.mp4"
+ * }
+ * ]
+ * },
+ * {
+ * "aspectRatio": 0,
+ * "partList":
+ * [
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172350252.mp4"
+ * },
+ * {
+ * "path": "/storage/emulated/0/TXUGC/TXUGCParts/temp_TXUGC_20180923_172353808.mp4"
+ * }
+ * ]
+ * }
+ * ]
+ * }
  */
 public class RecordDraftManager {
     private final String TAG = "RecordDraftManager";
-    
-    public static RecordDraftManager sInstance;
-    private SharedPreferenceUtils    mSharedPreferenceUtils;
+
+    public static RecordDraftManager    sInstance;
+    private       SharedPreferenceUtils mSharedPreferenceUtils;
 
     public RecordDraftManager(@NonNull Context context) {
         mSharedPreferenceUtils = new SharedPreferenceUtils(context, UGCKitConstants.SP_NAME_RECORD);

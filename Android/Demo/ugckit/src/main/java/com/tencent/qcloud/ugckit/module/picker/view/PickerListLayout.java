@@ -18,11 +18,11 @@ import com.tencent.qcloud.ugckit.R;
 import java.util.ArrayList;
 
 public class PickerListLayout extends RelativeLayout implements IPickerListLayout, ItemView.OnAddListener {
-    private static final int VIDEO_SPAN_COUNT = 4;
-    private Activity                 mActivity;
-    private RecyclerView             mRecyclerView;
-    private TCVideoEditerListAdapter mAdapter;
-    private ItemView.OnAddListener   mOnAddListener;
+    private static final int                      VIDEO_SPAN_COUNT = 4;
+    private              Activity                 mActivity;
+    private              RecyclerView             mRecyclerView;
+    private              TCVideoEditerListAdapter mAdapter;
+    private              ItemView.OnAddListener   mOnAddListener;
 
     public PickerListLayout(Context context) {
         super(context);

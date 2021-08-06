@@ -1,11 +1,16 @@
 package com.tencent.qcloud.ugckit.module.mixrecord;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.LinearLayout;
 
+import com.tencent.liteav.audio.TXCAudioUGCRecorder;
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
 import com.tencent.qcloud.ugckit.utils.ScreenUtils;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXVideoEditConstants;
@@ -14,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView {
+    private final static String TAG = "FollowRecordPlayerViews";
     private MixRecordPlayerView mLeftView;
     private MixRecordPlayerView mRightView;
 
@@ -54,6 +60,8 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
         } else {
             mRightView.init(1, videoPath);
             mRightView.setMute(false);
+
+            setPlayoutVolumeIfNeed();
         }
         return true;
     }
@@ -125,5 +133,37 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
     @Override
     public void setContinuePosition(float position) {
 
+    }
+	
+	  /**
+     * 视频合唱，在开启器外放场景下，设置一个系统60%的外放音量，保证合唱时消除效果
+     */
+    private void setPlayoutVolumeIfNeed() {
+        if (TXCAudioUGCRecorder.getInstance().getIsMute()) {
+            TXCLog.d(TAG, "TXCAudioUGCRecorder mIsMute is true");
+            return;
+        }
+
+        Context appContext = getContext().getApplicationContext();
+        AudioManager audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager.isWiredHeadsetOn() || audioManager.isBluetoothA2dpOn()) {
+            TXCLog.d(TAG, "headset in on");
+            return;
+        }
+
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int targetVolume = (int) (maxVolume * UGCKitRecordConfig.getInstance().mPlayoutVolumePercentForUGC);
+        targetVolume = Math.min(maxVolume, targetVolume);
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (currentVolume <= targetVolume) {
+            return;
+        }
+
+        try {
+            Log.d(TAG, "setStreamVolume, targetVolume=" + targetVolume + ", maxVolume=" + maxVolume);
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, AudioManager.FLAG_PLAY_SOUND);
+        } catch (Exception e) {
+            Log.w(TAG, "setStreamVolume eorror=" + Log.getStackTraceString(e));
+        }
     }
 }

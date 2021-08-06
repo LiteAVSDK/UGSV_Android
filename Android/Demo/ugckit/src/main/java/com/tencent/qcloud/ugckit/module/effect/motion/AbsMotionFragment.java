@@ -7,11 +7,11 @@ import com.tencent.qcloud.ugckit.R;
 public class AbsMotionFragment extends Fragment {
     /**
      * 定制UI
-     * */
-    protected int undoIcon = R.drawable.ugckit_ic_undo_normal;
+     */
+    protected int undoIcon         = R.drawable.ugckit_ic_undo_normal;
     /**
      * 定制Gif
-     * */
+     */
     protected int soulOutGif       = R.drawable.ugckit_motion_soul_out;
     protected int splitScreenGif   = R.drawable.ugckit_motion_split_screen;
     protected int rockLightGif     = R.drawable.ugckit_motion_rock_light;
@@ -26,7 +26,7 @@ public class AbsMotionFragment extends Fragment {
 
     /**
      * 定制pressed Color
-     * */
+     */
     protected int soulOutColor       = R.color.ugckit_soul_out_color_press;
     protected int splitScreenColor   = R.color.ugckit_screen_split_press;
     protected int rockLightColor     = R.color.ugckit_rock_light_press;

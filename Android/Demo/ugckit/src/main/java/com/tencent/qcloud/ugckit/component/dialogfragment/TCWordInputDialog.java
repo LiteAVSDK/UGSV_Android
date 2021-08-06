@@ -30,12 +30,12 @@ import java.lang.ref.WeakReference;
  * 字幕输入框
  */
 public class TCWordInputDialog extends DialogFragment implements View.OnClickListener {
-    private static final String TAG = "TCWordInputDialog";
-    private TextView mTextSure;
-    private TextView mTextCancel;
-    private EditText mEditContent;
+    private static final String   TAG = "TCWordInputDialog";
+    private              TextView mTextSure;
+    private              TextView mTextCancel;
+    private              EditText mEditContent;
     @Nullable
-    private String   mDefaultText;
+    private              String   mDefaultText;
 
     @Nullable
     @Override

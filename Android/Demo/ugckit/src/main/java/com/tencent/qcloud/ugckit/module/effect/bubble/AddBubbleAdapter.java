@@ -24,14 +24,12 @@ public class AddBubbleAdapter extends BaseRecyclerAdapter<AddBubbleAdapter.AddPa
     public static final int TYPE_FOOTER = 0;  // 带有Footer的
     public static final int TYPE_NORMAL = 1;  // 真实数据
 
-    private Context mContext;
-
-    private View mFooterView;
-    private int  mCurrentSelectedPos = -1;
-    private int  mPasterTextSize;
-    private int  mPasterTextColor;
-    private int  mCoverIcon;
-
+    private Context                mContext;
+    private View                   mFooterView;
+    private int                    mCurrentSelectedPos = -1;
+    private int                    mPasterTextSize;
+    private int                    mPasterTextColor;
+    private int                    mCoverIcon;
     private List<BubbleViewParams> mBubbleInfoList;
 
     public AddBubbleAdapter(List<BubbleViewParams> bubbleInfoList, Context context) {
@@ -137,7 +135,7 @@ public class AddBubbleAdapter extends BaseRecyclerAdapter<AddBubbleAdapter.AddPa
     public class AddPasterViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAddPaster;
         ImageView ivAddPasterTint;
-        TextView tvAddPasterText;
+        TextView  tvAddPasterText;
 
         public AddPasterViewHolder(@NonNull View itemView) {
             super(itemView);

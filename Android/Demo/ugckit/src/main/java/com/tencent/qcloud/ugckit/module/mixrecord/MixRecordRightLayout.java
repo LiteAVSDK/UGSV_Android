@@ -13,15 +13,13 @@ import com.tencent.qcloud.ugckit.R;
 
 
 public class MixRecordRightLayout extends RelativeLayout implements View.OnClickListener, IMixRecordRightLayout {
-    private Activity mActivity;
-
-    private ImageView       mImageBeauty;       // 美颜
-    private TextView        mTextBeauty;
-    private RelativeLayout  mLayoutBeauty;
-    private ImageView       mImageCountDown;    // 倒计时
-    private TextView        mTextCountDown;
-    private RelativeLayout  mLayoutCountdown;
-
+    private Activity            mActivity;
+    private ImageView           mImageBeauty;       // 美颜
+    private TextView            mTextBeauty;
+    private RelativeLayout      mLayoutBeauty;
+    private ImageView           mImageCountDown;    // 倒计时
+    private TextView            mTextCountDown;
+    private RelativeLayout      mLayoutCountdown;
     private OnItemClickListener mOnItemClickListener;
 
     public MixRecordRightLayout(Context context) {

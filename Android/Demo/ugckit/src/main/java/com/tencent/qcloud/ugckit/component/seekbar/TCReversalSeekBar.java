@@ -19,39 +19,29 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import com.tencent.qcloud.ugckit.R;
 
 public class TCReversalSeekBar extends View {
-    private static final String TAG = "ReversalSeekBar";
-    private int mWidth;
-    private int mHeight;
-
-    private int mSeekBarLeft;
-    private int mSeekBarRight;
-
-    private int mBgTop;
-    private int mBgBottom;
-    private int mRoundSize;
-
-    //View的末尾位置
-    private int mViewEnd;
-
-    private Paint mNormalPaint;
-    private Paint mPointerPaint;
-    private Paint mProgressPaint;
-
-
-    private float mPointerLeft;
-    private float mPointerRight;
-    private float mPointerTop;
-    private float mPointerBottom;
-
-    //是否处于点击状态
-    private boolean mIsOnDrag;
-    private float mCurrentLeftOffset = 0;
-
-    private float mLastX;
+    private static final String  TAG                = "ReversalSeekBar";
+    private              int     mWidth;
+    private              int     mHeight;
+    private              int     mSeekBarLeft;
+    private              int     mSeekBarRight;
+    private              int     mBgTop;
+    private              int     mBgBottom;
+    private              int     mRoundSize;
+    private              int     mViewEnd;
+    private              Paint   mNormalPaint;
+    private              Paint   mPointerPaint;
+    private              Paint   mProgressPaint;
+    private              float   mPointerLeft;
+    private              float   mPointerRight;
+    private              float   mPointerTop;
+    private              float   mPointerBottom;
+    private              boolean mIsOnDrag;
+    private              float   mCurrentLeftOffset = 0;
+    private              float   mLastX;
 
     @Nullable
     private Drawable mPointerDrawable;
-    private int mHalfDrawableWidth;
+    private int      mHalfDrawableWidth;
 
     private float mCurrentProgress;
 

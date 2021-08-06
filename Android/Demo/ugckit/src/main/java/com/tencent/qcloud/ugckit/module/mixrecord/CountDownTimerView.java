@@ -119,7 +119,7 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (mAnimationStart){
+                if (mAnimationStart) {
                     countDownAnimation(num - 1);
                 }
             }

@@ -9,8 +9,8 @@ public class JumpActivityMgr {
 
     @NonNull
     private static JumpActivityMgr sInstance     = new JumpActivityMgr();
-    private boolean                mCutVideoFlag = true;
-    private boolean                mQuickImport  = false;
+    private        boolean         mCutVideoFlag = true;
+    private        boolean         mQuickImport  = false;
 
     private JumpActivityMgr() {
         mCutVideoFlag = true;

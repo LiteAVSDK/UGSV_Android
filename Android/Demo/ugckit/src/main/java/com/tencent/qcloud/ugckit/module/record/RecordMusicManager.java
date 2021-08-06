@@ -15,7 +15,7 @@ public class RecordMusicManager {
 
     @NonNull
     private static RecordMusicManager sInstance = new RecordMusicManager();
-    private MusicInfo mMusicInfo;
+    private        MusicInfo          mMusicInfo;
 
     private RecordMusicManager() {
         mMusicInfo = new MusicInfo();
@@ -96,7 +96,7 @@ public class RecordMusicManager {
                 if (mMusicInfo.playingPath == null || !mMusicInfo.path.equals(mMusicInfo.playingPath)) {
                     mMusicInfo.playingPath = mMusicInfo.path;
                     mMusicInfo.duration = record.setBGM(mMusicInfo.path);
-                    record.playBGMFromTime((int)mMusicInfo.startTime, (int) mMusicInfo.duration);
+                    record.playBGMFromTime((int) mMusicInfo.startTime, (int) mMusicInfo.duration);
                 } else {
                     record.resumeBGM();
                 }

@@ -18,16 +18,14 @@ import java.util.List;
 
 public class ColorfulProgress extends View {
 
-    private Paint mPaint;
-    private Paint mColorPaint;
-
-    private RectF mViewRectf;
-    private RectF mColorRectf;
-    private float mWidth;
-    private float mHeight;
-
+    private Paint          mPaint;
+    private Paint          mColorPaint;
+    private RectF          mViewRectf;
+    private RectF          mColorRectf;
+    private float          mWidth;
+    private float          mHeight;
     private List<MarkInfo> mMarkInfoList;
-    private float mCurPositioin;
+    private float          mCurPositioin;
 
     private VideoProgressController mVideoProgressController;
 
@@ -103,6 +101,15 @@ public class ColorfulProgress extends View {
         info.right = mCurPositioin;
     }
 
+    public void addMark(int color, long durationMs) {
+        MarkInfo info = new MarkInfo();
+        info.startTimeMs = mVideoProgressController.getCurrentTimeMs();
+        info.left = mCurPositioin;
+        info.right = mCurPositioin + mVideoProgressController.duration2Distance(durationMs);
+        info.color = color;
+        mMarkInfoList.add(info);
+    }
+
     public void startMark(int color, float position) {
         MarkInfo info = new MarkInfo();
         info.startTimeMs = mVideoProgressController.getCurrentTimeMs();
@@ -170,9 +177,9 @@ public class ColorfulProgress extends View {
     }
 
     public class MarkInfo {
-        public int color;
-        public long startTimeMs;
-        public float left = -1;
+        public  int   color;
+        public  long  startTimeMs;
+        public  float left  = -1;
         private float right = -1;
     }
 

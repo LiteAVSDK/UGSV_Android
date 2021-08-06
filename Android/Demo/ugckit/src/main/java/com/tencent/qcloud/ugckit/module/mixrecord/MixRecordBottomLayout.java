@@ -20,22 +20,19 @@ import com.tencent.ugc.TXUGCRecord;
 import java.util.Locale;
 
 public class MixRecordBottomLayout extends RelativeLayout implements View.OnClickListener {
-    private Activity mActivity;
-
-    private ImageView          mImageCameraSwitch;
-    private TextView           mTextProgressTime;
-    private ImageView          mImageDeleteLastPart;
-    private ImageView          mImageTorch;
-    private RecordProgressView mRecordProgressView;
-    private RecordButton       mRecordButton;
-    private RecordModeView     mRecordModeView;
-    private View               mRecordModeDot;
-
+    private Activity                            mActivity;
+    private ImageView                           mImageCameraSwitch;
+    private TextView                            mTextProgressTime;
+    private ImageView                           mImageDeleteLastPart;
+    private ImageView                           mImageTorch;
+    private RecordProgressView                  mRecordProgressView;
+    private RecordButton                        mRecordButton;
+    private RecordModeView                      mRecordModeView;
+    private View                                mRecordModeDot;
     private RecordButton.OnRecordButtonListener mOnRecordButtonListener;
-
-    private boolean mFrontCameraFlag = true;        // 是否前置摄像头UI判断
-    private boolean mIsTorchOpenFlag;               // 是否打开闪光灯UI判断
-    private boolean mIsSelectDeleteLastPartFlag;    // 是否点击一次过"删除最有一段分段视频"按钮
+    private boolean                             mFrontCameraFlag = true;        // 是否前置摄像头UI判断
+    private boolean                             mIsTorchOpenFlag;               // 是否打开闪光灯UI判断
+    private boolean                             mIsSelectDeleteLastPartFlag;    // 是否点击一次过"删除最有一段分段视频"按钮
 
     public MixRecordBottomLayout(Context context) {
         super(context);

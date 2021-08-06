@@ -30,15 +30,14 @@ import java.util.List;
  * 贴纸面板
  */
 public class PasterPannel extends LinearLayout implements IPasterPannel, View.OnClickListener {
-    private Context        mContext;
-    private int           mSelectColor;
-    private int           mCurrentTab;
-    private TextView      mTextPaster;
-    private TextView      mTextAnimatedPaster;
-    private RecyclerView  mRecyclerView;
-    private PasterAdapter mPasterAdapter;
-    private ImageView     mImageSure;
-
+    private Context                            mContext;
+    private int                                mSelectColor;
+    private int                                mCurrentTab;
+    private TextView                           mTextPaster;
+    private TextView                           mTextAnimatedPaster;
+    private RecyclerView                       mRecyclerView;
+    private PasterAdapter                      mPasterAdapter;
+    private ImageView                          mImageSure;
     private IPasterPannel.OnTabChangedListener mOnTabChangedListener;
     private IPasterPannel.OnAddClickListener   mOnAddClickListener;
     private IPasterPannel.OnItemClickListener  mOnItemClickListener;

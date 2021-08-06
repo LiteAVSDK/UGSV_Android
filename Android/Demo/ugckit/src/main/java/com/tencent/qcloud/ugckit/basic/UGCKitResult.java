@@ -4,7 +4,7 @@ public class UGCKitResult {
     /**
      * 错误码
      */
-    public int errorCode;
+    public int    errorCode;
     /**
      * 详细描述
      */

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/ugckit_white"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ugckit_white"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_title"
@@ -12,12 +12,12 @@
         android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/ugckit_black"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/ugckit_color_accent"/>
+        android:background="@color/ugckit_color_accent" />
 
     <TextView
         android:id="@+id/tv_msg"
@@ -26,7 +26,7 @@
         android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/ugckit_black"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_ok"
@@ -36,6 +36,5 @@
         android:padding="10dp"
         android:text="@string/ugckit_dialog_ugc_tip_already_known"
         android:textColor="@color/ugckit_white"
-        android:textSize="14sp"
-        />
+        android:textSize="14sp" />
 </LinearLayout>

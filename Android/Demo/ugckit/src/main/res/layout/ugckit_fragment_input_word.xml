@@ -36,7 +36,7 @@
                 android:text="@string/ugckit_fragment_input_word_cancel"
                 android:textColor="@color/ugckit_color_gray4"
                 android:textSize="14sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/word_tv_done"

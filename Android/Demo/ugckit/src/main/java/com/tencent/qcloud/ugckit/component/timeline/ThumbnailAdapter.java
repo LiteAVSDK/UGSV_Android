@@ -18,12 +18,12 @@ import java.util.List;
 
 public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.ThumbnailViewHolder> {
 
-    private static final int TYPE_HEADER = 1;
-    private static final int TYPE_FOOTER = 2;
+    private static final int TYPE_HEADER    = 1;
+    private static final int TYPE_FOOTER    = 2;
     private static final int TYPE_THUMBNAIL = 3;
 
-    private int mViewWidth;
-    private int mCount;
+    private int          mViewWidth;
+    private int          mCount;
     @Nullable
     private List<Bitmap> mThumbnailList;
 

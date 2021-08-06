@@ -8,6 +8,6 @@
         android:id="@+id/iv_slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ugckit_ic_repeate_range"/>
-    
+        android:background="@drawable/ugckit_ic_repeate_range" />
+
 </LinearLayout>

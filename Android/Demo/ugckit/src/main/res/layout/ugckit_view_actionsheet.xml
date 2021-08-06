@@ -30,7 +30,7 @@
             android:id="@+id/lLayout_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
     </ScrollView>
 
     <TextView

@@ -34,9 +34,9 @@ import java.io.IOException;
 public class TCMusicSettingFragment extends Fragment {
     private static final String TAG = "TCMusicSettingFragment";
 
-    private DraftEditer        mEditerDraft;
-    private TCEditMusicPannel  mTCEditMusicPannel;
-    private MusicInfo          mMusicInfo;
+    private DraftEditer       mEditerDraft;
+    private TCEditMusicPannel mTCEditMusicPannel;
+    private MusicInfo         mMusicInfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

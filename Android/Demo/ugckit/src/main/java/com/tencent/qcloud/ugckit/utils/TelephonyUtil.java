@@ -14,7 +14,7 @@ import java.lang.ref.WeakReference;
  */
 public class TelephonyUtil {
     private TXPhoneStateListener mPhoneListener;
-    private OnTelephoneListener mOnStopListener;
+    private OnTelephoneListener  mOnStopListener;
 
     @NonNull
     private static TelephonyUtil instance = new TelephonyUtil();

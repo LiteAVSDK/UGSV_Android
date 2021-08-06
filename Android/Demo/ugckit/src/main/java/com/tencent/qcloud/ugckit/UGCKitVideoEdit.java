@@ -109,7 +109,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        TXCLog.i(TAG,"[UGCKit][VideoEdit]backPressed call stopPlay");
+                        TXCLog.i(TAG, "[UGCKit][VideoEdit]backPressed call stopPlay");
                         PlayerManagerKit.getInstance().stopPlay();
                         // 取消设置的特效
                         VideoEditerSDK.getInstance().releaseSDK();
@@ -234,7 +234,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
 
     @Override
     public void stop() {
-        TXCLog.i(TAG,"[UGCKit][VideoEdit]onStop call stopPlay");
+        TXCLog.i(TAG, "[UGCKit][VideoEdit]onStop call stopPlay");
         PlayerManagerKit.getInstance().stopPlay();
 
         stopGenerate();

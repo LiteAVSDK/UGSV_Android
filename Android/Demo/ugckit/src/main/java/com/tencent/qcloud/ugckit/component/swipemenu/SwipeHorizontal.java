@@ -6,8 +6,8 @@ import android.widget.OverScroller;
 
 public abstract class SwipeHorizontal {
 
-    private int       direction;
-    private View      menuView;
+    private   int     direction;
+    private   View    menuView;
     protected Checker mChecker;
 
     public SwipeHorizontal(int direction, View menuView) {
@@ -53,8 +53,8 @@ public abstract class SwipeHorizontal {
     }
 
     public static final class Checker {
-        public int x;
-        public int y;
+        public int     x;
+        public int     y;
         public boolean shouldResetSwipe;
     }
 

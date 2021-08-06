@@ -47,10 +47,10 @@ import java.util.List;
  * 图片工具类
  */
 public class BitmapUtils {
-    private static final String TAG = "BitmapUtils";
+    private static final String TAG            = "BitmapUtils";
     // 默认图片宽高
-    public static final int DEFAULT_WIDTH = 720;
-    public static final int DEFAULT_HEIGHT = 1280;
+    public static final  int    DEFAULT_WIDTH  = 720;
+    public static final  int    DEFAULT_HEIGHT = 1280;
 
     @NonNull
     public static ArrayList<Bitmap> decodeFileToBitmap(@NonNull List<String> picPathList) {
@@ -106,15 +106,15 @@ public class BitmapUtils {
             bitmap = BitmapFactory.decodeFileDescriptor(pdf.getFileDescriptor(), null, options);
 
             int orientation = getImageOrientation(Uri.parse(picPath));
-            TXCLog.d(TAG,"getImageOrientation from uri，orientation = "+orientation);
-            if(orientation == -1){
+            TXCLog.d(TAG, "getImageOrientation from uri，orientation = " + orientation);
+            if (orientation == -1) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     orientation = getImageOrientation(pdf.getFileDescriptor());
-                    TXCLog.d(TAG,"getImageOrientation from fileDescriptor，orientation = "+orientation);
+                    TXCLog.d(TAG, "getImageOrientation from fileDescriptor，orientation = " + orientation);
                 }
             }
 
-            bitmap = rotateBitmap(bitmap,orientation);
+            bitmap = rotateBitmap(bitmap, orientation);
             try {
                 pdf.close();
             } catch (IOException e) {
@@ -123,7 +123,7 @@ public class BitmapUtils {
         } else {
             bitmap = BitmapFactory.decodeFile(picPath, options);
             int orientation = getImageOrientation(picPath);
-            bitmap = rotateBitmap(bitmap,orientation);
+            bitmap = rotateBitmap(bitmap, orientation);
         }
         return bitmap;
     }
@@ -133,7 +133,7 @@ public class BitmapUtils {
             return null;
         }
 
-        TXCLog.d(TAG,"getImageOrientation = "+orientation);
+        TXCLog.d(TAG, "getImageOrientation = " + orientation);
         if (orientation == -1 || orientation == 0) {
             return bitmap;
         }
@@ -147,6 +147,7 @@ public class BitmapUtils {
 
     /**
      * getImageOrientation
+     *
      * @param uri
      * @return -1,0,90,180,270
      */
@@ -169,14 +170,14 @@ public class BitmapUtils {
         return orientation;
     }
 
-    private static int getImageOrientation(String filePath){
+    private static int getImageOrientation(String filePath) {
         try {
             ExifInterface exifInterface = new ExifInterface(filePath);
             int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
             return getDegree(orientation);
         } catch (IOException e) {
             e.printStackTrace();
-            TXCLog.e(TAG,"getImageOrientation-filePath,e="+e.toString());
+            TXCLog.e(TAG, "getImageOrientation-filePath,e=" + e.toString());
             return 0;
         }
     }
@@ -189,12 +190,12 @@ public class BitmapUtils {
             return getDegree(orientation);
         } catch (IOException e) {
             e.printStackTrace();
-            TXCLog.e(TAG,"getImageOrientation-fileDescriptor,e="+e.toString());
+            TXCLog.e(TAG, "getImageOrientation-fileDescriptor,e=" + e.toString());
             return 0;
         }
     }
 
-    private static int getDegree(int orientation){
+    private static int getDegree(int orientation) {
         switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
                 return 90;

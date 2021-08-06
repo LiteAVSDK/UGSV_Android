@@ -50,29 +50,27 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
 
     private final String TAG = "TCBubbleSubtitleFragment";
 
-    private TXVideoEditer           mTXVideoEditer;
-    private ImageView               mImageDel;
-    private RecyclerView            mRecycleBubble;
-    private View                    mFootView;
-    private FloatLayerViewGroup     mTCBubbleViewGroup;     // 图层父布局，承载字幕
+    private TXVideoEditer                                     mTXVideoEditer;
+    private ImageView                                         mImageDel;
+    private RecyclerView                                      mRecycleBubble;
+    private View                                              mFootView;
+    private FloatLayerViewGroup                               mTCBubbleViewGroup;     // 图层父布局，承载字幕
     @Nullable
-    private TCWordInputDialog       mWordInputDialog;
-    private BubbleSubtitlePannel    mBubbleSubtitlePannel;  // 气泡字幕的 背景、颜色的配置板
-    private AddBubbleAdapter        mAddBubbleAdapter;
-    private List<BubbleViewParams>  mAddBubbleInfoList;
-
-    private int     mCurrentSelectedPos = -1;                               // 当前被选中的气泡字幕控件
-    private boolean mIsEditWordAgain    = false;                            // 用于判定当前是否修改字幕内容
-    private long    mDuration;                                              // 默认的时间
-    private long    mDefaultWordStartTime;
-    private long    mDefaultWordEndTime;
-    private int     mPasterTextSize;
-    private int     mPasterTextColor;
-    private int     mCoverIcon;
-    private int     mAddIcon    = R.drawable.ugckit_ic_edit_add_selector;   //定制UI
-    private int     mDeleteIcon = R.drawable.ugckit_ic_word_del_normal;
-
-    private VideoProgressController mVideoProgressController;
+    private TCWordInputDialog                                 mWordInputDialog;
+    private BubbleSubtitlePannel                              mBubbleSubtitlePannel;  // 气泡字幕的 背景、颜色的配置板
+    private AddBubbleAdapter                                  mAddBubbleAdapter;
+    private List<BubbleViewParams>                            mAddBubbleInfoList;
+    private int                                               mCurrentSelectedPos = -1;                               // 当前被选中的气泡字幕控件
+    private boolean                                           mIsEditWordAgain    = false;                            // 用于判定当前是否修改字幕内容
+    private long                                              mDuration;                                              // 默认的时间
+    private long                                              mDefaultWordStartTime;
+    private long                                              mDefaultWordEndTime;
+    private int                                               mPasterTextSize;
+    private int                                               mPasterTextColor;
+    private int                                               mCoverIcon;
+    private int                                               mAddIcon            = R.drawable.ugckit_ic_edit_add_selector;   //定制UI
+    private int                                               mDeleteIcon         = R.drawable.ugckit_ic_word_del_normal;
+    private VideoProgressController                           mVideoProgressController;
     @Nullable
     private RangeSliderViewContainer.OnDurationChangeListener mOnDurationChangeListener;
 
@@ -299,7 +297,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
                 params.bubbleBitmap = TCBubbleManager.getInstance(getActivity()).getBitmapFromAssets(params.wordParamsInfo.getBubbleInfo().getBubblePath());
                 view.setBubbleParams(params);
             }
-            if (index > 0  && index < mAddBubbleInfoList.size()) {
+            if (index > 0 && index < mAddBubbleInfoList.size()) {
                 BubbleViewParams bubbleViewParams = mAddBubbleInfoList.get(index);
                 bubbleViewParams.wordParamsInfo = info;
             }

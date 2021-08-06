@@ -15,7 +15,7 @@ import java.util.List;
 
 public class BubbleAdapter extends RecyclerView.Adapter<BubbleAdapter.BubbleViewHolder> implements View.OnClickListener {
 
-    private List<TCBubbleInfo> mBubbles;
+    private List<TCBubbleInfo>          mBubbles;
     private WeakReference<RecyclerView> mRecyclerView;
 
     public BubbleAdapter(List<TCBubbleInfo> bubbles) {

@@ -16,9 +16,9 @@ public class PickerManagerKit {
     private static final String TAG = "PickerManagerKit";
 
     private static PickerManagerKit sInstance;
-    private final Context           mContext;
-    private final ContentResolver   mContentResolver;
-    private final Uri mUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+    private final  Context          mContext;
+    private final  ContentResolver  mContentResolver;
+    private final  Uri              mUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
     public static PickerManagerKit getInstance(@NonNull Context context) {
         if (sInstance == null)
@@ -61,7 +61,7 @@ public class PickerManagerKit {
 
                 String filePath = fileItem.getFilePath();
                 if (filePath != null) {
-                    if(filePath.toLowerCase().endsWith("mp4") || filePath.toLowerCase().endsWith(".mov")){
+                    if (filePath.toLowerCase().endsWith("mp4") || filePath.toLowerCase().endsWith(".mov")) {
                         videos.add(fileItem);
                     }
                 }

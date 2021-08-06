@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class PictureTransitionKit {
     @NonNull
-    private static PictureTransitionKit sInstance = new PictureTransitionKit();
-    private static final int DEFAULT_FPS = 20;  // 默认图片帧率
-    public static final int  DEFAULT_TRANSITION = TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;  //  默认转场动画类型
+    private static       PictureTransitionKit sInstance          = new PictureTransitionKit();
+    private static final int                  DEFAULT_FPS        = 20;  // 默认图片帧率
+    public static final  int                  DEFAULT_TRANSITION = TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;  //  默认转场动画类型
 
     private PictureTransitionKit() {
 

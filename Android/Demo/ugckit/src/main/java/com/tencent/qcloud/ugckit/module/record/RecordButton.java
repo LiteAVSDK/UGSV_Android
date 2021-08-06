@@ -24,18 +24,17 @@ import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
  * 多种拍摄模式的按钮
  */
 public class RecordButton extends RelativeLayout implements IRecordButton, View.OnTouchListener {
-    private Activity  mActivity;
-    private ViewGroup mRootLayout;
-    private View      mViewPhotoModeOutter;
-    private View      mViewPhotoModeInner;
-    private View      mViewTapModeOutter;
-    private View      mViewTapModeInner;
-    private View      mViewPressModeOutter;
-    private View      mViewPressModeInner;
-    private ImageView mImageRecordPause;
-    private int       mRecordMode;
-    private boolean   mIsRecording;
-
+    private Activity               mActivity;
+    private ViewGroup              mRootLayout;
+    private View                   mViewPhotoModeOutter;
+    private View                   mViewPhotoModeInner;
+    private View                   mViewTapModeOutter;
+    private View                   mViewTapModeInner;
+    private View                   mViewPressModeOutter;
+    private View                   mViewPressModeInner;
+    private ImageView              mImageRecordPause;
+    private int                    mRecordMode;
+    private boolean                mIsRecording;
     private OnRecordButtonListener mOnRecordButtonListener;
 
     public RecordButton(Context context) {

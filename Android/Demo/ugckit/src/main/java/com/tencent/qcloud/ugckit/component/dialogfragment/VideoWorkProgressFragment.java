@@ -19,14 +19,14 @@ import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.progressbar.NumberProgressBar;
 
 public class VideoWorkProgressFragment extends DialogFragment {
-    private static final String KEY_TITLE = "key_title";
-    private View                 mViewContent;
-    private ImageView            mImageStop;
-    private TextView             mTextTips;
-    private NumberProgressBar    mProgressLoading;
-    private View.OnClickListener mListener;
-    private int                  mProgress;
-    private boolean              mCanCancel = true;
+    private static final String               KEY_TITLE  = "key_title";
+    private              View                 mViewContent;
+    private              ImageView            mImageStop;
+    private              TextView             mTextTips;
+    private              NumberProgressBar    mProgressLoading;
+    private              View.OnClickListener mListener;
+    private              int                  mProgress;
+    private              boolean              mCanCancel = true;
 
     @NonNull
     public static VideoWorkProgressFragment newInstance(String title) {

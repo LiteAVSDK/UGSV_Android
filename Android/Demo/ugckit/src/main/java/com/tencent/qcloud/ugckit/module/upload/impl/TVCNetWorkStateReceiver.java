@@ -67,7 +67,8 @@ public class TVCNetWorkStateReceiver extends BroadcastReceiver {
             }
         }
 
-        if (networkChange)
-            TXUGCPublishOptCenter.getInstance().reFresh();
+        if (networkChange) {
+            TXUGCPublishOptCenter.getInstance().reFresh(context.getApplicationContext(), null);
+        }
     }
 }

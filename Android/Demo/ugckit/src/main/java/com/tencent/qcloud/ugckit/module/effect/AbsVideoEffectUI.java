@@ -18,6 +18,7 @@ import com.tencent.qcloud.ugckit.module.effect.motion.TCMotionFragment;
 import com.tencent.qcloud.ugckit.module.effect.paster.TCPasterFragment;
 import com.tencent.qcloud.ugckit.module.effect.paster.view.PasterPannel;
 import com.tencent.qcloud.ugckit.module.effect.time.TCTimeFragment;
+import com.tencent.qcloud.ugckit.module.effect.transition.TCTransitionFragment;
 
 public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoEffectKit {
     private TitleBarLayout           mTitleBar;
@@ -34,6 +35,7 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
     private TCMotionFragment         mMotionFragment;
     private TCPasterFragment         mPasterFragment;
     private TCBubbleSubtitleFragment mBubbleFragment;
+    private TCTransitionFragment     mTransitionFragment;
     private TCMusicSettingFragment   mMusicFragment;
 
     private TimeLineView.OnTimeLineListener mOnTimeLineListener = new TimeLineView.OnTimeLineListener() {
@@ -111,6 +113,7 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
         mMotionFragment = new TCMotionFragment();
         mPasterFragment = new TCPasterFragment();
         mBubbleFragment = new TCBubbleSubtitleFragment();
+        mTransitionFragment = new TCTransitionFragment();
         mMusicFragment = new TCMusicSettingFragment();
     }
 
@@ -148,6 +151,10 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
 
     public TCBubbleSubtitleFragment getBubbleFragment() {
         return mBubbleFragment;
+    }
+
+    public TCTransitionFragment getTransitionFragment() {
+        return mTransitionFragment;
     }
 
     public TCMusicSettingFragment getMusicFragment() {

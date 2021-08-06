@@ -48,6 +48,7 @@
     <string name="ugckit_filter">濾鏡</string>
     <string name="ugckit_paster">貼紙</string>
     <string name="ugckit_subtitle">字幕</string>
+    <string name="ugckit_transition">轉場</string>
 
     <string name="ugckit_cancel_record">取消拍攝</string>
     <string name="ugckit_confirm_cancel_edit_content">確認放棄當前編輯的內容？</string>
@@ -328,7 +329,8 @@
     <string name="ugckit_video_publisher_activity_is_uploading">正在上傳</string>
     <string name="ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed">網絡連接斷開，視頻上傳失敗</string>
 
-    //分割线 2018/7/24  --------------------------------------------------------------------------------------------------
+    //分割线 2018/7/24
+    --------------------------------------------------------------------------------------------------
     <string name="ugckit_video_choose">選擇視頻</string>
 
     <string name="ugckit_activity_video_record_take_photo">拍照</string>
@@ -390,4 +392,40 @@
     <string name="ugckit_start_record_not_finish">還有錄製的任務沒有結束</string>
     <string name="ugckit_start_record_path_empty">傳入的視頻路徑為空</string>
     <string name="ugckit_start_record_version_below">版本太低</string>
+
+    <!-- transition fragment -->
+    <string name="trans_none">無</string>
+    <string name="trans_wipeLeft">左劃</string>
+    <string name="trans_wipeRight">右劃</string>
+    <string name="trans_wipeUp">上劃</string>
+    <string name="trans_wipeDown">下劃</string>
+    <string name="trans_fadecolor">顏色漸變</string>
+    <string name="trans_SimpleZoom">放大</string>
+    <string name="trans_LinearBlur">線性模糊</string>
+    <string name="trans_WaterDrop">水滴</string>
+    <string name="trans_InvertedPageCurl">翻頁</string>
+    <string name="trans_GlitchMemories">震動</string>
+    <string name="trans_StereoViewer">分裂</string>
+    <string name="trans_directionalwarp">捲曲</string>
+    <string name="trans_Bounce">跳躍</string>
+    <string name="trans_CircleCrop">圓形變換</string>
+    <string name="trans_Swirl">漩渦</string>
+    <string name="trans_CrossZoom">推進</string>
+    <string name="trans_GridFlip">方格翻轉</string>
+    <string name="trans_Mosaic">馬賽克</string>
+    <string name="trans_kaleidoscope">萬花筒</string>
+    <string name="trans_hexagonalize">蜂巢馬賽克</string>
+    <string name="trans_GlitchDisplace">幻影</string>
+    <string name="trans_DreamyZoom">閃白</string>
+    <string name="trans_burn">燃燒</string>
+    <string name="trans_circle">橢圓變換</string>
+    <string name="trans_crosswarp">交叉捲曲</string>
+    <string name="trans_cube">立方體</string>
+    <string name="trans_doorway">開門</string>
+    <string name="trans_fadegrayscale">灰度</string>
+    <string name="trans_flyeye">磚塊</string>
+    <string name="trans_pixelize">像素化</string>
+    <string name="trans_squeeze">擠壓</string>
+    <string name="trans_swap">立體</string>
+    <string name="trans_invalid_timestamp">轉場時間點無效，請重新設置</string>
 </resources>

@@ -20,23 +20,21 @@ import com.tencent.ugc.TXRecordCommon;
  * 录制视频的播放速度，目前支持五种（极慢，慢速，标准，快速，极快）
  */
 public class RecordSpeedLayout extends RelativeLayout implements RadioGroup.OnCheckedChangeListener, IRecordSpeedLayout {
-    private static final String TAG = "RecordSpeedLayout";
-    private Activity    mActivity;
-    private RadioGroup  mRadioGroup;
-    private RadioButton mRadioSloweset;
-    private RadioButton mRadioSlow;
-    private RadioButton mRadioNormal;
-    private RadioButton mRadioFast;
-    private RadioButton mRadioFastest;
-
-    private int mSlowestBg   = R.drawable.ugckit_record_left_bg;
-    private int mSlowBg      = R.drawable.ugckit_record_mid_bg;
-    private int mNormalBg    = R.drawable.ugckit_record_mid_bg;
-    private int mFastBg      = R.drawable.ugckit_record_mid_bg;
-    private int mFastestBg   = R.drawable.ugckit_record_right_bg;
-    private int mRecordSpeed = TXRecordCommon.RECORD_SPEED_NORMAL;  // 录制速度
-    
-    private OnRecordSpeedListener mOnRecordSpeedListener;
+    private static final String                TAG          = "RecordSpeedLayout";
+    private              Activity              mActivity;
+    private              RadioGroup            mRadioGroup;
+    private              RadioButton           mRadioSloweset;
+    private              RadioButton           mRadioSlow;
+    private              RadioButton           mRadioNormal;
+    private              RadioButton           mRadioFast;
+    private              RadioButton           mRadioFastest;
+    private              int                   mSlowestBg   = R.drawable.ugckit_record_left_bg;
+    private              int                   mSlowBg      = R.drawable.ugckit_record_mid_bg;
+    private              int                   mNormalBg    = R.drawable.ugckit_record_mid_bg;
+    private              int                   mFastBg      = R.drawable.ugckit_record_mid_bg;
+    private              int                   mFastestBg   = R.drawable.ugckit_record_right_bg;
+    private              int                   mRecordSpeed = TXRecordCommon.RECORD_SPEED_NORMAL;  // 录制速度
+    private              OnRecordSpeedListener mOnRecordSpeedListener;
 
     public RecordSpeedLayout(Context context) {
         super(context);

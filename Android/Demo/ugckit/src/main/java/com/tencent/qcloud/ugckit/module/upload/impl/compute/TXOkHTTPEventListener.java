@@ -13,9 +13,7 @@ import okhttp3.Protocol;
  */
 public class TXOkHTTPEventListener extends EventListener {
     private long startTime;
-
     private long connectFinishTime;
-
     private long startRecvRspHeaderTime;
 
 
@@ -40,7 +38,7 @@ public class TXOkHTTPEventListener extends EventListener {
     }
 
     @Override
-    public void connectFailed(Call call, InetSocketAddress inetSocketAddress, Proxy proxy, Protocol protocol,IOException ioe) {
+    public void connectFailed(Call call, InetSocketAddress inetSocketAddress, Proxy proxy, Protocol protocol, IOException ioe) {
         super.connectFailed(call, inetSocketAddress, proxy, protocol, ioe);
         connectFinishTime = System.currentTimeMillis();
     }

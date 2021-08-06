@@ -17,20 +17,19 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
         View.OnClickListener, AspectView.OnAspectListener {
     private static final String TAG = "RecordRightLayout";
 
-    private Activity        mActivity;
-    private ImageView       mImageMusic;        // 音乐
-    private TextView        mTextMusic;
-    private ImageView       mImageMusicMask;
-    private RelativeLayout  mLayoutMusic;
-    private AspectView      mAspectView;        // 屏比，目前有三种（1:1；3:4；9:16）
-    private ImageView       mImageBeauty;       // 美颜
-    private TextView        mTextBeauty;
-    private RelativeLayout  mLayoutBeauty;
-    private ImageView       mImageSoundEffect;  // 音效
-    private TextView        mTextSoundEffect;
-    private ImageView       mImageSoundEffectMask;
-    private RelativeLayout  mLayoutSoundEffect;
-
+    private Activity            mActivity;
+    private ImageView           mImageMusic;        // 音乐
+    private TextView            mTextMusic;
+    private ImageView           mImageMusicMask;
+    private RelativeLayout      mLayoutMusic;
+    private AspectView          mAspectView;        // 屏比，目前有三种（1:1；3:4；9:16）
+    private ImageView           mImageBeauty;       // 美颜
+    private TextView            mTextBeauty;
+    private RelativeLayout      mLayoutBeauty;
+    private ImageView           mImageSoundEffect;  // 音效
+    private TextView            mTextSoundEffect;
+    private ImageView           mImageSoundEffectMask;
+    private RelativeLayout      mLayoutSoundEffect;
     private OnItemClickListener mOnItemClickListener;
 
     public RecordRightLayout(Context context) {

@@ -18,9 +18,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class DownloadUtil {
-    private Context mContext;
+    private        Context      mContext;
     private static DownloadUtil instance;
-    private OkHttpClient okHttpClient;
+    private        OkHttpClient okHttpClient;
 
     public static DownloadUtil get(Context context) {
         if (instance == null) {

@@ -44,24 +44,24 @@ public class TCStaticFilterFragment extends Fragment implements BaseRecyclerAdap
     private int                 mCurrentPosition = 0;
     /**
      * 定制化Icon
-     * */
-    private int originIcon    = R.drawable.ugckit_orginal;
-    private int normalIcon    = R.drawable.ugckit_biaozhun;
-    private int yinghongIcon  = R.drawable.ugckit_yinghong;
-    private int yunchangIcon  = R.drawable.ugckit_yunshang;
-    private int chunzhenIcon  = R.drawable.ugckit_chunzhen;
-    private int bailanIcon    = R.drawable.ugckit_bailan;
-    private int yuanqiIcon    = R.drawable.ugckit_yuanqi;
-    private int chaotuoIcon   = R.drawable.ugckit_chaotuo;
-    private int xiangfengIcon = R.drawable.ugckit_xiangfen;
-    private int langmanIcon   = R.drawable.ugckit_langman;
-    private int qingxinIcon   = R.drawable.ugckit_qingxin;
-    private int weimeiIcon    = R.drawable.ugckit_weimei;
-    private int fennenIcon    = R.drawable.ugckit_fennen;
-    private int huaijiuIcon   = R.drawable.ugckit_huaijiu;
-    private int landiaoIcon   = R.drawable.ugckit_landiao;
-    private int qingliangIcon = R.drawable.ugckit_qingliang;
-    private int rixiIcon      = R.drawable.ugckit_rixi;
+     */
+    private int                 originIcon       = R.drawable.ugckit_orginal;
+    private int                 normalIcon       = R.drawable.ugckit_biaozhun;
+    private int                 yinghongIcon     = R.drawable.ugckit_yinghong;
+    private int                 yunchangIcon     = R.drawable.ugckit_yunshang;
+    private int                 chunzhenIcon     = R.drawable.ugckit_chunzhen;
+    private int                 bailanIcon       = R.drawable.ugckit_bailan;
+    private int                 yuanqiIcon       = R.drawable.ugckit_yuanqi;
+    private int                 chaotuoIcon      = R.drawable.ugckit_chaotuo;
+    private int                 xiangfengIcon    = R.drawable.ugckit_xiangfen;
+    private int                 langmanIcon      = R.drawable.ugckit_langman;
+    private int                 qingxinIcon      = R.drawable.ugckit_qingxin;
+    private int                 weimeiIcon       = R.drawable.ugckit_weimei;
+    private int                 fennenIcon       = R.drawable.ugckit_fennen;
+    private int                 huaijiuIcon      = R.drawable.ugckit_huaijiu;
+    private int                 landiaoIcon      = R.drawable.ugckit_landiao;
+    private int                 qingliangIcon    = R.drawable.ugckit_qingliang;
+    private int                 rixiIcon         = R.drawable.ugckit_rixi;
 
     @Nullable
     @Override

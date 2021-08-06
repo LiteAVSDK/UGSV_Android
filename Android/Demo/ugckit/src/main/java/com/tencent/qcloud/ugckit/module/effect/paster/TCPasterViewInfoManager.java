@@ -5,13 +5,12 @@ import java.util.List;
 
 public class TCPasterViewInfoManager {
     private static TCPasterViewInfoManager mInstance;
+    private        List<TCPasterViewInfo>  mPasterViewInfoList;
 
-    private List<TCPasterViewInfo> mPasterViewInfoList;
-
-    public static TCPasterViewInfoManager getInstance(){
-        if(mInstance == null){
-            synchronized (TCPasterViewInfoManager.class){
-                if(mInstance == null){
+    public static TCPasterViewInfoManager getInstance() {
+        if (mInstance == null) {
+            synchronized (TCPasterViewInfoManager.class) {
+                if (mInstance == null) {
                     mInstance = new TCPasterViewInfoManager();
                 }
             }
@@ -19,27 +18,27 @@ public class TCPasterViewInfoManager {
         return mInstance;
     }
 
-    private TCPasterViewInfoManager(){
+    private TCPasterViewInfoManager() {
         mPasterViewInfoList = new ArrayList<>();
     }
 
-    public void add(TCPasterViewInfo tcPasterViewInfo){
+    public void add(TCPasterViewInfo tcPasterViewInfo) {
         mPasterViewInfoList.add(tcPasterViewInfo);
     }
 
-    public void remove(int index){
+    public void remove(int index) {
         mPasterViewInfoList.remove(index);
     }
 
-    public void clear(){
+    public void clear() {
         mPasterViewInfoList.clear();
     }
 
-    public TCPasterViewInfo get(int index){
+    public TCPasterViewInfo get(int index) {
         return mPasterViewInfoList.get(index);
     }
 
-    public int getSize(){
+    public int getSize() {
         return mPasterViewInfoList.size();
     }
 

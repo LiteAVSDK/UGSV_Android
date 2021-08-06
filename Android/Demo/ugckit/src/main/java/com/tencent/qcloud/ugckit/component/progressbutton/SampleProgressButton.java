@@ -22,7 +22,7 @@ import com.tencent.qcloud.ugckit.R;
  */
 public class SampleProgressButton extends View {
 
-    public static final int STATE_NORMAL = 1;
+    public static final int STATE_NORMAL   = 1;
     public static final int STATE_PROGRESS = 2;
 
     private FontMetrics    mFontMetrics;
@@ -31,17 +31,16 @@ public class SampleProgressButton extends View {
     private Paint          mBackgroundPaintProgress;
     private RectF          mBackgroundBounds;
     private LinearGradient mProgressBgGradient;
-
-    private int     mForegroundColor;
-    private int     mBackgroundColor;
-    private int     mNormalColor;
-    private int     mProgress    = 0;
-    private int     mTextColor   = Color.WHITE;
-    private float   mTextSize    = 10;
-    private int     mMaxProgress = 100;
-    private int     mState       = STATE_NORMAL;
+    private int            mForegroundColor;
+    private int            mBackgroundColor;
+    private int            mNormalColor;
+    private int            mProgress    = 0;
+    private int            mTextColor   = Color.WHITE;
+    private float          mTextSize    = 10;
+    private int            mMaxProgress = 100;
+    private int            mState       = STATE_NORMAL;
     @Nullable
-    private String  mText        = "";
+    private String         mText        = "";
 
     public SampleProgressButton(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);

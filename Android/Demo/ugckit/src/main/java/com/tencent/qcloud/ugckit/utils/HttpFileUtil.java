@@ -23,13 +23,12 @@ import java.net.URL;
  * *****************************************************************************
  */
 public class HttpFileUtil extends HttpCommon {
-    private String  mUrl;
-    private String  mFolder;
-    private String  mFilename;
-    private long    mContentLength;
-    private long    mDownloadingSize;
-    private boolean mNeedProgress;
-
+    private String           mUrl;
+    private String           mFolder;
+    private String           mFilename;
+    private long             mContentLength;
+    private long             mDownloadingSize;
+    private boolean          mNeedProgress;
     private HttpFileListener mListener;
 
     public HttpFileUtil(String url, String folder, String filename, HttpFileListener listener, boolean needProgress) {

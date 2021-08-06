@@ -14,16 +14,13 @@ import com.tencent.ugc.TXVideoEditConstants;
 
 public class PictureTransitionLayout extends RelativeLayout implements View.OnClickListener, IPictureTransitionLayout {
 
-    private FragmentActivity mActivity;
-    /**
-     * 转场类型
-     * */
-    private ImageButton mIbTransition1; //左右
-    private ImageButton mIbTransition2; //上下
-    private ImageButton mIbTransition3; //放大
-    private ImageButton mIbTransition4; //缩小
-    private ImageButton mIbTransition5; //旋转
-    private ImageButton mIbTransition6; //淡入淡出
+    private FragmentActivity     mActivity;
+    private ImageButton          mIbTransition1; //左右
+    private ImageButton          mIbTransition2; //上下
+    private ImageButton          mIbTransition3; //放大
+    private ImageButton          mIbTransition4; //缩小
+    private ImageButton          mIbTransition5; //旋转
+    private ImageButton          mIbTransition6; //淡入淡出
     private OnTransitionListener mOnTransitionListener;
 
     public PictureTransitionLayout(Context context) {

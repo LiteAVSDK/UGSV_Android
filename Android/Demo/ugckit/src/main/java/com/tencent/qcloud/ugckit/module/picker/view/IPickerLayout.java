@@ -32,6 +32,7 @@ public interface IPickerLayout extends ITitleBar {
     interface OnPickerListener {
         /**
          * 返回已选中的列表
+         *
          * @param list
          */
         void onPickedList(ArrayList<TCVideoFileInfo> list);

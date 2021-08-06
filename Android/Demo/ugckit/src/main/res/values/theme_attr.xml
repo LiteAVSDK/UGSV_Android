@@ -120,6 +120,7 @@
         <attr name="editerMenuFilterIcon" format="reference" />
         <attr name="editerMenuPasterIcon" format="reference" />
         <attr name="editerMenuSubtitleIcon" format="reference" />
+        <attr name="editerMenuTransitionIcon" format="reference" />
         <!--动态特效-->
         <attr name="editerMotionUndoIcon" format="reference" />
         <attr name="editerMotionSoulOutIcon" format="reference" />

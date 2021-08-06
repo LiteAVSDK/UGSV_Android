@@ -7,6 +7,7 @@ import com.tencent.qcloud.ugckit.module.effect.filter.TCStaticFilterViewInfoMana
 import com.tencent.qcloud.ugckit.module.effect.motion.TCMotionViewInfoManager;
 import com.tencent.qcloud.ugckit.module.effect.paster.TCPasterViewInfoManager;
 import com.tencent.qcloud.ugckit.module.effect.time.TCTimeViewInfoManager;
+import com.tencent.qcloud.ugckit.module.effect.transition.TCTransitionViewInfoManager;
 import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
 import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
 
@@ -32,6 +33,8 @@ public class Config {
         TCPasterViewInfoManager.getInstance().clear();
         // 清空滤镜动效的状态
         TCMotionViewInfoManager.getInstance().clearMarkInfoList();
+        // 清空转场动效的状态
+        TCTransitionViewInfoManager.getInstance().clearMarkInfoList();
         // 清空时间特效的状态
         TCTimeViewInfoManager.getInstance().clearEffect();
         // 清空色调（滤镜）的状态

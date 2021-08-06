@@ -15,10 +15,9 @@ import java.lang.ref.WeakReference;
  */
 public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<V> implements View.OnClickListener, View.OnLongClickListener {
 
-    private WeakReference<RecyclerView> mRecyclerView;
-
-    protected OnItemClickListener       mOnItemClickListener;
-    protected OnItemLongClickListener   mOnItemLongClickListener;
+    private   WeakReference<RecyclerView> mRecyclerView;
+    protected OnItemClickListener         mOnItemClickListener;
+    protected OnItemLongClickListener     mOnItemLongClickListener;
 
     @Override
     public void onBindViewHolder(@Nullable V holder, int position) {

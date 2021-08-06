@@ -11,18 +11,15 @@ import android.widget.LinearLayout;
 import com.tencent.qcloud.ugckit.R;
 
 public class SliderViewContainer extends LinearLayout {
-    private static final String TAG = "RepeatSliderView";
-    private Context mContext;
-    private View mRootView;
-    private ImageView mSliderView;
-
-    private long mStartTimeMs;
-
-    private VideoProgressController mVideoProgressController;
-    private ViewTouchProcess mViewTouchProcess;
-
-    private OnStartTimeChangedListener mOnStartTimeChangedListener;
-    private int sliderIcon = R.drawable.ugckit_ic_repeate_range;
+    private static final String                     TAG        = "RepeatSliderView";
+    private              Context                    mContext;
+    private              View                       mRootView;
+    private              ImageView                  mSliderView;
+    private              long                       mStartTimeMs;
+    private              VideoProgressController    mVideoProgressController;
+    private              ViewTouchProcess           mViewTouchProcess;
+    private              OnStartTimeChangedListener mOnStartTimeChangedListener;
+    private              int                        sliderIcon = R.drawable.ugckit_ic_repeate_range;
 
     public void setSliderIcon(int icon) {
         sliderIcon = icon;

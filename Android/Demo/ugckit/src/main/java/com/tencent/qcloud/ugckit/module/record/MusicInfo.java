@@ -23,25 +23,25 @@ public class MusicInfo {
     /**
      * 音乐列表中的位置
      */
-    public int position;
+    public int    position;
     /**
      * 音乐截取的开始时间
      */
-    public long startTime;
+    public long   startTime;
     /**
      * 音乐截取的结束时间
      */
-    public long endTime;
+    public long   endTime;
     /**
      * 音乐时长
      */
-    public long duration;
+    public long   duration;
     /**
      * 人声的音量大小
      */
-    public float videoVolume;
+    public float  videoVolume;
     /**
      * 音乐的音量大小
      */
-    public float bgmVolume;
+    public float  bgmVolume;
 }

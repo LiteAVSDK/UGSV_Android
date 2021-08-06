@@ -27,10 +27,9 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
     private TextView    mTextMusicName;
     private ImageView   mImageReplace;
     private ImageView   mImageDelete;
-
-    private int  mMicVolume = 100;
-    private int  mBGMVolume = 100;
-    private long mBgmDuration;
+    private int         mMicVolume = 100;
+    private int         mBGMVolume = 100;
+    private long        mBgmDuration;
 
     private MusicChangeListener mMusicChangeListener;
 

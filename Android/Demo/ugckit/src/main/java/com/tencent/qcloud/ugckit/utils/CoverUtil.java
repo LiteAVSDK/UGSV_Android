@@ -24,7 +24,7 @@ public class CoverUtil {
 
     @NonNull
     private static CoverUtil sInstance = new CoverUtil();
-    private String           mVideoPath;
+    private        String    mVideoPath;
 
     private CoverUtil() {
     }

@@ -77,4 +77,16 @@
         android:gravity="center"
         android:text="@string/ugckit_subtitle"
         android:textColor="@color/ugckit_white" />
+
+    <TextView
+        android:id="@+id/tv_transition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="?attr/editerMenuTransitionIcon"
+        android:gravity="center"
+        android:text="@string/ugckit_transition"
+        android:textColor="@color/ugckit_white" />
 </LinearLayout>

@@ -29,18 +29,16 @@ public class RecordProgressView extends View implements IRecordProgressView {
     private Handler             mHandler;
     private ArrayList<ClipInfo> mClipInfoList;
     private ClipInfo            mCurClipInfo;
-
-    private int     mMaxDuration;
-    private int     mMinDuration;
-    private int     mLastTotalDuration;
-    public int      mNormalColor;           // 已经录制的视频进度条颜色
-    public int      mDeleteColor;           // 删除上一段选中的进度条颜色
-    public int      mBackgroundColor;       // 进度条背景颜色
-    public int      mSpaceColor;            // 多段录制间隔颜色
-
-    private boolean isPending;
-    private boolean isCursorShow = false;
-    private boolean isInProgress = false;
+    private int                 mMaxDuration;
+    private int                 mMinDuration;
+    private int                 mLastTotalDuration;
+    public  int                 mNormalColor;           // 已经录制的视频进度条颜色
+    public  int                 mDeleteColor;           // 删除上一段选中的进度条颜色
+    public  int                 mBackgroundColor;       // 进度条背景颜色
+    public  int                 mSpaceColor;            // 多段录制间隔颜色
+    private boolean             isPending;
+    private boolean             isCursorShow = false;
+    private boolean             isInProgress = false;
 
     public RecordProgressView(Context context) {
         super(context);
@@ -140,8 +138,8 @@ public class RecordProgressView extends View implements IRecordProgressView {
 
     private class ClipInfo {
         public static final int CLIP_TYPE_PROGRESS = 1;
-        public static final int CLIP_TYPE_PENDING = 2;
-        public static final int CLIP_TYPE_SPACE = 3;
+        public static final int CLIP_TYPE_PENDING  = 2;
+        public static final int CLIP_TYPE_SPACE    = 3;
 
         public int progress;
         public int clipType;

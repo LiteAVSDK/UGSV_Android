@@ -83,6 +83,7 @@ public interface IPictureJoinKit {
     interface OnPictureJoinListener {
         /**
          * 图片合成完成
+         *
          * @param ugcKitResult 生成视频输出路径
          */
         void onPictureJoinCompleted(UGCKitResult ugcKitResult);

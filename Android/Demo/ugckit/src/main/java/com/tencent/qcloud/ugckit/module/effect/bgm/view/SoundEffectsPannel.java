@@ -30,12 +30,12 @@ public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsP
     private LinearLayout         mLayoutVolume;
     private HorizontalScrollView mLayoutVoiceChange;
     private HorizontalScrollView mLayoutReverb;
-
-    private int mMicVolume = 100;
-    private int mLastReverbIndex;
-    private int mLastVoiceChangerIndex;
+    private int                  mMicVolume = 100;
+    private int                  mLastReverbIndex;
+    private int                  mLastVoiceChangerIndex;
 
     private SoundEffectsSettingPannelListener mSoundEffectsSettingPannelListener;
+
     public SoundEffectsPannel(Context context) {
         super(context);
         init(context);

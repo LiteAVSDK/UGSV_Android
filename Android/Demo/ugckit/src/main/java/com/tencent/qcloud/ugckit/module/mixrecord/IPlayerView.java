@@ -20,18 +20,20 @@ public interface IPlayerView {
 
     TXCloudVideoView getVideoView();
 
-    void updateFile(int index,String videoPath);
+    void updateFile(int index, String videoPath);
 
     List<TXVideoEditConstants.TXAbsoluteRect> getCombineRects(MixRecordConfig config);
 
     /**
      * 获取上次记录的视频的播放位置
+     *
      * @return
      */
     float getContinuePosition();
 
     /**
      * 设置下次播放视频的位置
+     *
      * @param position 保存的视频播放位置
      */
     void setContinuePosition(float position);
