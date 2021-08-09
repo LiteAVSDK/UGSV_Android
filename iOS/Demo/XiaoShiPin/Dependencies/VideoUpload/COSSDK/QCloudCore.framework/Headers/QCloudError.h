@@ -7,4 +7,4 @@
 //
 
 #import <Foundation/Foundation.h>
-FOUNDATION_EXTERN NSString* const QCloudErrorDomain;
+FOUNDATION_EXTERN NSString *const QCloudErrorDomain;

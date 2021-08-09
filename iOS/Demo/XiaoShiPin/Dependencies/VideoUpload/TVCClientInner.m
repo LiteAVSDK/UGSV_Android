@@ -65,6 +65,7 @@
         _isShouldRetry = NO;
         _resumeData = nil;
         _vodCmdRequestCount = 0;
+        _mainVodServerErrMsg = @"";
     }
     return self;
 }

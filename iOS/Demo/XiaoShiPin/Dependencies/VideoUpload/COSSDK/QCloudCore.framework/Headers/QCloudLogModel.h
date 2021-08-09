@@ -14,7 +14,7 @@ typedef NS_ENUM(uint8_t, QCloudLogLevel) {
     /**
      Log level that disables all logging.
      */
-    QCloudLogLevelNone =  1,
+    QCloudLogLevelNone = 1,
     /**
      Log level that if set is going to output error messages to the log.
      */
@@ -48,25 +48,23 @@ typedef NS_ENUM(uint8_t, QCloudLogLevel) {
      - Informational messages
      - Debug messages
      */
-    
+
     QCloudLogLevelDebug = 6,
-    
 
 };
 
-
 @interface QCloudLogModel : NSObject
 @property (nonatomic, assign) QCloudLogLevel level;
-@property (nonatomic, strong) NSString* message;
-@property (nonatomic, strong) NSDate* date;
-@property (nonatomic, strong) NSString* file;
+@property (nonatomic, strong) NSString *message;
+@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSString *file;
 @property (nonatomic, assign) int line;
-@property (nonatomic, strong) NSString* funciton;
+@property (nonatomic, strong) NSString *funciton;
 
 /**
  生成用于写文件的Log信息
 
  @return 写入文件的Log信息
  */
-- (NSString*) fileDescription;
+- (NSString *)fileDescription;
 @end

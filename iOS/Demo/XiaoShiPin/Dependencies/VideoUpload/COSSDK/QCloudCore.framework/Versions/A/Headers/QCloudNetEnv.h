@@ -23,18 +23,15 @@ typedef NS_ENUM(NSInteger, QCloudNetworkStatus) {
  - QCloudNetworkSituationWeakNetwork: 当前是弱网络，延迟和丢包率较高
  - QCloudNetworkSituationGreatNetork: 当前网络较好，可以适当增加并发数
  */
-typedef NS_ENUM(NSInteger, QCloudNetworkSituation) {
-    QCloudNetworkSituationWeakNetwork = 0,
-    QCloudNetworkSituationGreatNetork = 1
-};
+typedef NS_ENUM(NSInteger, QCloudNetworkSituation) { QCloudNetworkSituationWeakNetwork = 0, QCloudNetworkSituationGreatNetork = 1 };
 
-
-extern NSString* const kQCloudNetEnvChangedNotification;
-
+extern NSString *const kQCloudNetEnvChangedNotification;
+NSString *QCloudNetworkSituationToString(QCloudNetworkStatus situation);
 @interface QCloudNetEnv : NSObject
-+ (instancetype) shareEnv;
++ (instancetype)shareEnv;
 @property (nonatomic, assign, readonly) QCloudNetworkStatus currentNetStatus;
-- (BOOL) isReachableViaWifi;
-- (BOOL) isReachableVia2g3g4g;
-- (BOOL) isReachable;
+- (BOOL)isReachableViaWifi;
+- (BOOL)isReachableVia2g3g4g;
+- (BOOL)isReachable;
+
 @end

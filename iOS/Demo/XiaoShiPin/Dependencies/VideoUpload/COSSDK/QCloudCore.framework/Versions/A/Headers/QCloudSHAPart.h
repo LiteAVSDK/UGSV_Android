@@ -12,7 +12,7 @@
 /**
  sha值
  */
-@property (nonatomic, strong) NSString* datasha;
+@property (nonatomic, strong) NSString *datasha;
 
 /**
  offset

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface QCloudHosts : NSObject
-- (void) putDomain:(NSString*)domain ip:(NSString*)ip;
-- (NSArray*) queryIPForDomain:(NSString*)domain;
-- (BOOL) checkContainsIP:(NSString*)ip;
-- (void) clean;
+- (void)putDomain:(NSString *)domain ip:(NSString *)ip;
+- (NSArray *)queryIPForDomain:(NSString *)domain;
+- (BOOL)checkContainsIP:(NSString *)ip;
+- (void)clean;
 @end

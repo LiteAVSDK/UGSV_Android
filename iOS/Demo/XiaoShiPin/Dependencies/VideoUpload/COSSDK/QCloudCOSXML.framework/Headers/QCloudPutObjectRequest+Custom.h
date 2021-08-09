@@ -8,5 +8,5 @@
 #import <Foundation/Foundation.h>
 #import "QCloudPutObjectRequest.h"
 @interface QCloudPutObjectRequest (Custom)
--(void)setCOSServerSideEncyptionWithKMSCustomKey:(NSString *)customerKey jsonStr:(NSString *)jsonStr;
+- (void)setCOSServerSideEncyptionWithKMSCustomKey:(NSString *)customerKey jsonStr:(NSString *)jsonStr;
 @end

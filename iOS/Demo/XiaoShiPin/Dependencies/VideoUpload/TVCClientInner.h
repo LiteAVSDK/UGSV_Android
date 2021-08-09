@@ -113,6 +113,8 @@
 
 @property(atomic,assign) uint64_t videoLastModTime; // 文件最后修改时间
 
+@property(atomic,assign) uint64_t coverLastModTime; // 封面最后修改时间
+
 @property(atomic,assign) uint64_t reqTime;          // 请求开始时间，用于统计各请求耗时
 
 @property(atomic,assign) uint64_t initReqTime;      // 请求上传时间，用于和视频最后修改时间组成reqKey，串联发布流程
@@ -120,6 +122,8 @@
 @property(nonatomic,assign) BOOL isShouldRetry;     // 由于临时签名过期导致的上传失败，重试
 
 @property(nonatomic,assign) int vodCmdRequestCount;   // vod信令请求次数
+
+@property(nonatomic,copy) NSString* mainVodServerErrMsg;   // //主域名请求失败的msg，用于备份域名都请求失败后，带回上报。
 
 @property(nonatomic,strong) NSData * resumeData;    // cos分片上传resumeData
 

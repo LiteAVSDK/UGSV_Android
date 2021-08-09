@@ -5,14 +5,13 @@
 //  Copyright © 2015 Fabio Caccamo. All rights reserved.
 //
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
 #import "QCloudFCUUID.h"
 
 @interface UIDevice (QCloudFCUUID)
 
--(NSString *)qcloud_uuid;
+- (NSString *)qcloud_uuid;
 
 @end
 #endif
-

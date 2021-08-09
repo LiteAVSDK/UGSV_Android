@@ -11,9 +11,9 @@
 @interface QCloudFileOffsetStream : NSInputStream
 @property (nonatomic, assign) NSUInteger offset;
 @property (nonatomic, assign) NSUInteger sliceLength;
-- (instancetype) initWithFileAtPath:(NSString *)path NS_UNAVAILABLE;
-- (instancetype) initWithData:(NSData *)data NS_UNAVAILABLE;
-- (instancetype) initWithURL:(NSURL *)url NS_UNAVAILABLE;
+- (instancetype)initWithFileAtPath:(NSString *)path NS_UNAVAILABLE;
+- (instancetype)initWithData:(NSData *)data NS_UNAVAILABLE;
+- (instancetype)initWithURL:(NSURL *)url NS_UNAVAILABLE;
 
-- (instancetype) initWithFileAtPath:(NSString *)path offset:(NSUInteger)offset slice:(NSUInteger)sliceLength;
+- (instancetype)initWithFileAtPath:(NSString *)path offset:(NSUInteger)offset slice:(NSUInteger)sliceLength;
 @end

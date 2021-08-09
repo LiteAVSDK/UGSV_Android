@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface QCloudDomain : NSObject
-@property (nonatomic, strong, readonly) NSString* domain;
-+ (instancetype) new UNAVAILABLE_ATTRIBUTE;
-- (instancetype) init UNAVAILABLE_ATTRIBUTE;
-- (instancetype) initWithDomain:(NSString*)domain;
+@property (nonatomic, strong, readonly) NSString *domain;
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)initWithDomain:(NSString *)domain;
 @end

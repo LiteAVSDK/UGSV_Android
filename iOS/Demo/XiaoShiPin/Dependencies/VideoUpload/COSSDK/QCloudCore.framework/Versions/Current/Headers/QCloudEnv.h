@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 typedef NS_ENUM(NSUInteger, QCloudEnviroment) {
     QCloudNormalEnviroment = 0,
     QCloudDebugEnviroment = 1,

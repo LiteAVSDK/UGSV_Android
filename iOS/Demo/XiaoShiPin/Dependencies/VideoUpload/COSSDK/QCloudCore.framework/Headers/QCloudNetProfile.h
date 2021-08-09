@@ -9,17 +9,15 @@
 #import <Foundation/Foundation.h>
 #define kQCloudNetProfileUploadSpeedUpdate @"kQCloudNetProfileUploadSpeedUpdate"
 @interface QCloudNetProfile : NSObject
-+ (QCloudNetProfile*) shareProfile;
++ (QCloudNetProfile *)shareProfile;
 - (void)checkSpeed;
-- (void) pointDownload:(int64_t)bytes;
-- (void) pointUpload:(int64_t)bytes;
+- (void)pointDownload:(int64_t)bytes;
+- (void)pointUpload:(int64_t)bytes;
 @end
 
-
-@interface QCloudNetProfileLevel : NSObject
-{
-    NSMutableArray* _downloadPoints;
-    NSMutableArray* _uploadPoints;
+@interface QCloudNetProfileLevel : NSObject {
+    NSMutableArray *_downloadPoints;
+    NSMutableArray *_uploadPoints;
 }
 @property (atomic, assign, readonly) int64_t downloadSpeed;
 @property (atomic, assign, readonly) int64_t uploadSpped;

@@ -6,7 +6,26 @@
 //
 
 #import <QCloudCore/QCloudCore.h>
+
 @class QCloudCOSTransferMangerService;
+
+/**
+ ### 示例
+
+  @code
+
+    QCloudCOSXMLDownloadObjectRequest * request = [QCloudCOSXMLDownloadObjectRequest new];
+    request.bucket = @"bucket";
+    request.object = @"object";
+    request.enableQuic = YES;
+    request.localCacheDownloadOffset = 本地已下载的文件大小
+    [request setFinishBlock:^(id  _Nullable outputObject, NSError * _Nullable error) {
+
+
+    }];
+    [[QCloudCOSTransferMangerService costransfermangerServiceForKey:ServiceKey]
+                                                    DownloadObject:request];
+ */
 @interface QCloudCOSXMLDownloadObjectRequest : QCloudAbstractRequest
 
 /**
@@ -63,27 +82,41 @@
  */
 @property (strong, nonatomic) NSString *bucket;
 
-@property (strong,nonatomic)NSString *regionName;
+/**
+ 桶所在地域
+*/
+@property (strong, nonatomic) NSString *regionName;
 
-@property (assign,nonatomic)BOOL enableMD5Verification;
-
+/**
+该选项设置为YES后，在下载完成后会比对COS上储存的文件MD5和下载到本地的文件MD5，如果MD5有差异的话会返回-340013错误码。
+目前默认关闭。
+*/
+@property (assign, nonatomic) BOOL enableMD5Verification;
 
 /**
  如果存在改参数，则数据会下载到改路径指名的地址下面，而不会写入内存中。
  */
-@property (nonatomic, strong) NSURL* downloadingURL;
+@property (nonatomic, strong) NSURL *downloadingURL;
 
 /**
  本地已经下载的数据偏移量，如果使用则会从改位置开始下载，如果不使用，则从头开始下载，如果您使用了Range参数，则需要注意改参数。
  */
 @property (nonatomic, assign) int64_t localCacheDownloadOffset;
-@property (nonatomic, weak) QCloudCOSTransferMangerService* transferManager;
+@property (nonatomic, weak) QCloudCOSTransferMangerService *transferManager;
 /*
  在进行HTTP请求的时候，可以通过设置该参数来设置自定义的一些头部信息。
  通常情况下，携带特定的额外HTTP头部可以使用某项功能，如果是这类需求，可以通过设置该属性来实现。
  */
-@property (strong, nonatomic) NSMutableDictionary* customHeaders;
--(void)setCOSServerSideEncyption;
--(void)setCOSServerSideEncyptionWithCustomerKey:(NSString *)customerKey;
--(void)setCOSServerSideEncyptionWithKMSCustomKey:(NSString *)customerKey jsonStr:(NSString *)jsonStr;
+@property (strong, nonatomic) NSMutableDictionary *customHeaders;
+/**
+ 指定是否使用分块及续传下载，默认为 FALSE。
+ */
+@property (assign, nonatomic)BOOL resumableDownload;
+/**
+ 使用分块及续传下载时，指定任务记录文件的路径
+ */
+@property (strong, nonatomic) NSString *resumableTaskFile;
+- (void)setCOSServerSideEncyption;
+- (void)setCOSServerSideEncyptionWithCustomerKey:(NSString *)customerKey;
+
 @end

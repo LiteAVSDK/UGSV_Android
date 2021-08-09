@@ -9,6 +9,6 @@
 #import "QCLOUDRestNet.h"
 @class QCloudURLSessionTaskData;
 @interface QCloudHTTPSessionManager ()
-@property (nonatomic, strong, readonly) NSURLSession* session;
-- (void) cacheTask:(NSURLSessionTask*)task data:(QCloudURLSessionTaskData*)data forSEQ:(int)seq;
+@property (nonatomic, strong, readonly) NSURLSession *session;
+- (void)cacheTask:(NSURLSessionTask *)task data:(QCloudURLSessionTaskData *)data forSEQ:(int)seq;
 @end

@@ -8,5 +8,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (RegularExpressionCategory)
-- (BOOL) matchesRegularExpression:(NSString *)regularExpression;
+- (BOOL)matchesRegularExpression:(NSString *)regularExpression;
 @end

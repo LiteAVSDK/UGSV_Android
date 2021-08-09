@@ -13,5 +13,5 @@
 /**
  伪装一个请求开发
  */
-- (void) fakeStart;
+- (void)fakeStart;
 @end

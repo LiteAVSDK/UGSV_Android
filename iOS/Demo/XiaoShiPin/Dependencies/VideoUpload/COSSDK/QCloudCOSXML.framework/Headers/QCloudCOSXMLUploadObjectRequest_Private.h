@@ -10,5 +10,5 @@
 
 @class QCloudCOSTransferMangerService;
 @interface QCloudCOSXMLUploadObjectRequest ()
-@property (nonatomic, weak) QCloudCOSTransferMangerService* transferManager;
+@property (nonatomic, weak) QCloudCOSTransferMangerService *transferManager;
 @end

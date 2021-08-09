@@ -13,10 +13,9 @@
 @property (nonatomic, assign) NSStringEncoding stringEncoding;
 @property (nonatomic, assign, readonly) BOOL hasData;
 @property (nonatomic, assign, readonly) unsigned long long contentLength;
-@property (nonatomic, strong) NSString* boundary;
-- (instancetype) initWithStringEncoding:(NSStringEncoding)encoding;
+@property (nonatomic, strong) NSString *boundary;
+- (instancetype)initWithStringEncoding:(NSStringEncoding)encoding;
 - (void)setInitialAndFinalBoundaries;
-- (void) appendBodyPart:(QCloudHTTPBodyPart*)bodyPart;
-- (void) insertBodyPart:(QCloudHTTPBodyPart*)bodyPart;
+- (void)appendBodyPart:(QCloudHTTPBodyPart *)bodyPart;
+- (void)insertBodyPart:(QCloudHTTPBodyPart *)bodyPart;
 @end
-  

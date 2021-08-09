@@ -6,7 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+/**
+ 获取预签名请求结果
+ */
 @interface QCloudGetPresignedURLResult : NSObject
-@property (nonatomic, strong) NSString* presienedURL;
+/**
+ 预签名 URL
+ */
+@property (nonatomic, strong) NSString *presienedURL;
 @end

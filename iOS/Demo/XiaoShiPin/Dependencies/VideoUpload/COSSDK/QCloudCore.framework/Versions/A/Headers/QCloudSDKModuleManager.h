@@ -8,16 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface QCloudSDKModule : NSObject
-@property (nonatomic, strong) NSString* version;
-@property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NSString* crashID;
+@property (nonatomic, strong) NSString *version;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *crashID;
 @end
 
 @interface QCloudSDKModuleManager : NSObject
-@property (nonatomic, strong, readonly) NSArray* allModules;
-+ (QCloudSDKModuleManager*) shareInstance;
-- (void) registerModule:(QCloudSDKModule*)module;
-- (void) registerModuleByJSON:(NSDictionary*)json;
+@property (nonatomic, strong, readonly) NSArray *allModules;
++ (QCloudSDKModuleManager *)shareInstance;
+- (void)registerModule:(QCloudSDKModule *)module;
+- (void)registerModuleByJSON:(NSDictionary *)json;
 @end

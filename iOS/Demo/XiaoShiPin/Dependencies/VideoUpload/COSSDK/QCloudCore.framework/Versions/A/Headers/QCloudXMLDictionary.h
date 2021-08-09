@@ -33,33 +33,26 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
 
-
 NS_ASSUME_NONNULL_BEGIN
 
-
-typedef NS_ENUM(NSInteger, QCloudXMLDictionaryAttributesMode)
-{
-    QCloudXMLDictionaryAttributesModePrefixed = 0, //default
+typedef NS_ENUM(NSInteger, QCloudXMLDictionaryAttributesMode) {
+    QCloudXMLDictionaryAttributesModePrefixed = 0, // default
     QCloudXMLDictionaryAttributesModeDictionary,
     QCloudXMLDictionaryAttributesModeUnprefixed,
     QCloudXMLDictionaryAttributesModeDiscard
 };
 
-
-typedef NS_ENUM(NSInteger, QCloudXMLDictionaryNodeNameMode)
-{
-    QCloudXMLDictionaryNodeNameModeRootOnly = 0, //default
+typedef NS_ENUM(NSInteger, QCloudXMLDictionaryNodeNameMode) {
+    QCloudXMLDictionaryNodeNameModeRootOnly = 0, // default
     QCloudXMLDictionaryNodeNameModeAlways,
     QCloudXMLDictionaryNodeNameModeNever
 };
 
-
-static NSString *const QCloudXMLDictionaryAttributesKey   = @"__attributes";
-static NSString *const QCloudXMLDictionaryCommentsKey     = @"__comments";
-static NSString *const QCloudXMLDictionaryTextKey         = @"__text";
-static NSString *const QCloudXMLDictionaryNodeNameKey     = @"__name";
+static NSString *const QCloudXMLDictionaryAttributesKey = @"__attributes";
+static NSString *const QCloudXMLDictionaryCommentsKey = @"__comments";
+static NSString *const QCloudXMLDictionaryTextKey = @"__text";
+static NSString *const QCloudXMLDictionaryNodeNameKey = @"__name";
 static NSString *const QCloudXMLDictionaryAttributePrefix = @"_";
-
 
 @interface QCloudXMLDictionaryParser : NSObject <NSCopying>
 
@@ -82,7 +75,6 @@ static NSString *const QCloudXMLDictionaryAttributePrefix = @"_";
 
 @end
 
-
 @interface NSDictionary (QCloudXMLDictionary)
 
 + (nullable NSDictionary<NSString *, id> *)qcxml_dictionaryWithXMLParser:(NSXMLParser *)parser;
@@ -104,15 +96,12 @@ static NSString *const QCloudXMLDictionaryAttributePrefix = @"_";
 
 @end
 
-
 @interface NSString (QCloudXMLDictionary)
 
 @property (nonatomic, readonly, copy) NSString *QCXMLEncodedString;
 
 @end
 
-
 NS_ASSUME_NONNULL_END
-
 
 #pragma GCC diagnostic pop

@@ -23,7 +23,6 @@
 #import "QCloudService.h"
 #import "QCloudNetResponse.h"
 #import "QCloudServiceConfiguration.h"
-#import "NSObject+HTTPHeadersContainer.h"
 #import "QCloudURLTools.h"
 
 #endif /* RestNet_h */

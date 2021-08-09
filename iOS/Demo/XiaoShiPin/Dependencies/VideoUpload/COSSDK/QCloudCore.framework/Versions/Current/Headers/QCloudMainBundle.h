@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wstrict-prototypes"
-FOUNDATION_EXTERN NSBundle* QCloudMainBundle();
+FOUNDATION_EXTERN NSBundle *QCloudMainBundle();
 #pragma clang diagnostic pop

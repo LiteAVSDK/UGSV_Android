@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QCloudUniversalPathFactory : NSObject
 
-+ (QCloudUniversalPath *) universalPathWithURL:(NSURL *)url;
++ (QCloudUniversalPath *)universalPathWithURL:(NSURL *)url;
 
 @end
 

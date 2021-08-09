@@ -11,23 +11,22 @@
 typedef void (^QCloudHTTPRetryFunction)(void);
 @protocol QCloudHttpRetryHandlerProtocol <NSObject>
 
--(BOOL)shouldRetry:(QCloudURLSessionTaskData *)task error:(NSError *)error;
+- (BOOL)shouldRetry:(QCloudURLSessionTaskData *)task error:(NSError *)error;
 
 @end
 
-@interface QCloudHTTPRetryHanlder : NSObject
-{
-    @protected
+@interface QCloudHTTPRetryHanlder : NSObject {
+@protected
     NSSet *_errorCode;
 }
-+ (QCloudHTTPRetryHanlder*) defaultRetryHandler;
++ (QCloudHTTPRetryHanlder *)defaultRetryHandler;
 @property (nonatomic, assign) NSInteger maxCount;
-@property (nonatomic,weak)id <QCloudHttpRetryHandlerProtocol> delegate;
+@property (nonatomic, weak) id<QCloudHttpRetryHandlerProtocol> delegate;
 /**
    sleeptime = sleepStep * 1^2 ，
  */
 @property (nonatomic, assign) NSTimeInterval sleepStep;
-- (instancetype) initWithMaxCount:(NSInteger)maxCount sleepTime:(NSTimeInterval)sleepStep;
+- (instancetype)initWithMaxCount:(NSInteger)maxCount sleepTime:(NSTimeInterval)sleepStep;
 
 /**
    try to exe fuction if it can be retry
@@ -35,7 +34,7 @@ typedef void (^QCloudHTTPRetryFunction)(void);
    @param error    the error occur , it contains the args that will be used to judge retrying
       @return if it can be retry then return YES, otherwise return NO;
  */
-- (BOOL) retryFunction:(QCloudHTTPRetryFunction)function whenError:(NSError*)error;
+- (BOOL)retryFunction:(QCloudHTTPRetryFunction)function whenError:(NSError *)error;
 
-- (void) reset;
+- (void)reset;
 @end

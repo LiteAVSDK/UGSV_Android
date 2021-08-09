@@ -7,19 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-typedef id (^QCloudResponseSerializerBlock)(NSHTTPURLResponse* response,  id inputData, NSError* __autoreleasing* error);
-
-
-
+typedef id (^QCloudResponseSerializerBlock)(NSHTTPURLResponse *response, id inputData, NSError *__autoreleasing *error);
 
 @interface QCloudResponseSerializer : NSObject
 @property (nonatomic, assign) BOOL waitForBodyData;
-@property (nonatomic, strong) NSArray<QCloudResponseSerializerBlock>* serializerBlocks;
-- (id) decodeWithWithResponse:(NSHTTPURLResponse*)response data:(NSData*)data error:(NSError*__autoreleasing*)error;
+@property (nonatomic, strong) NSArray<QCloudResponseSerializerBlock> *serializerBlocks;
+- (id)decodeWithWithResponse:(NSHTTPURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error;
 @end
 
-
-FOUNDATION_EXTERN QCloudResponseSerializerBlock QCloudAcceptRespnseCodeBlock(NSSet* acceptCode , Class errorModel);
+FOUNDATION_EXTERN QCloudResponseSerializerBlock QCloudAcceptRespnseCodeBlock(NSSet *acceptCode, Class errorModel);
 FOUNDATION_EXTERN QCloudResponseSerializerBlock QCloudResponseXMLSerializerBlock;
 FOUNDATION_EXTERN QCloudResponseSerializerBlock QCloudResponseJSONSerilizerBlock;
 FOUNDATION_EXTERN QCloudResponseSerializerBlock QCloudResponseAppendHeadersSerializerBlock;
+FOUNDATION_EXTERN QCloudResponseSerializerBlock QCloudResponseDataAppendHeadersSerializerBlock;

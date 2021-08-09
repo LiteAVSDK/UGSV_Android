@@ -10,7 +10,7 @@
 #import "QCloudEndPoint.h"
 
 @interface QCloudServiceConfiguration ()
-@property (nonatomic, strong, readonly) NSString* userAgent;
-@property (nonatomic, strong) NSString* userAgentProductKey;
-@property (nonatomic, strong) NSString* productVersion;
+@property (nonatomic, strong, readonly) NSString *userAgent;
+@property (nonatomic, strong) NSString *userAgentProductKey;
+@property (nonatomic, strong) NSString *productVersion;
 @end

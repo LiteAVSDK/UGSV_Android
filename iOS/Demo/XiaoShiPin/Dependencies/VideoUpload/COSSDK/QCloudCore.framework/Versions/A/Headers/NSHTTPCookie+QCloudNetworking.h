@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXTERN NSArray* QCloudFuseAndUpdateCookiesArray(NSArray* source, NSArray* aim);
+FOUNDATION_EXTERN NSArray *QCloudFuseAndUpdateCookiesArray(NSArray *source, NSArray *aim);
 @interface NSHTTPCookie (QCloudNetworking)
-- (BOOL) isEqualToQCloudCookie:(NSHTTPCookie*)c;
+- (BOOL)isEqualToQCloudCookie:(NSHTTPCookie *)c;
 @end

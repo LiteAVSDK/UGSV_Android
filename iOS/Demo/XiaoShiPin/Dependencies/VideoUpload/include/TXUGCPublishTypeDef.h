@@ -48,7 +48,9 @@ typedef NS_ENUM(NSInteger, TXPublishResultCode)
 ///开启HTTPS，默认关闭
 @property (nonatomic, assign) BOOL                  enableHTTPS;          
 ///开启断点续传，默认开启
-@property (nonatomic, assign) BOOL                  enableResume;         
+@property (nonatomic, assign) BOOL                  enableResume;  
+///是否开启预上传机制，默认开启，备注：预上传机制可以大幅提升文件的上传质量
+@property (nonatomic, assign) BOOL                  enablePreparePublish;      
 @end
 
 /**
@@ -105,6 +107,9 @@ typedef NS_ENUM(NSInteger, TXMediaPublishResultCode)
 @property (nonatomic, assign) BOOL                  enableHTTPS;
 ///开启断点续传，默认开启
 @property (nonatomic, assign) BOOL                  enableResume;
+///是否开启预上传机制，默认开启，备注：预上传机制可以大幅提升文件的上传质量
+@property (nonatomic, assign) BOOL                  enablePreparePublish;
+
 @end
 
 

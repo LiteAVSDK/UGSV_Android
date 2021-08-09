@@ -5,12 +5,12 @@
 
 #ifndef QCloudCoreModuleVersion_h
 #define QCloudCoreModuleVersion_h
-#define QCloudCoreModuleVersionNumber 506000
+#define QCloudCoreModuleVersionNumber 509002
 
-//dependency
+// dependency
 
 //
-FOUNDATION_EXTERN NSString * const QCloudCoreModuleVersion;
-FOUNDATION_EXTERN NSString * const QCloudCoreModuleName;
+FOUNDATION_EXTERN NSString *const QCloudCoreModuleVersion;
+FOUNDATION_EXTERN NSString *const QCloudCoreModuleName;
 
 #endif

@@ -9,12 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "QCloudNetEnv.h"
 
-typedef NS_ENUM(NSInteger, QCloudSupervisoryRecordType) {
-    QCloudSupervisoryRecordTypeNetwork
-};
+typedef NS_ENUM(NSInteger, QCloudSupervisoryRecordType) { QCloudSupervisoryRecordTypeNetwork };
 
 @interface QCloudSupervisoryRecord : NSObject
-@property (nonatomic, strong) NSDate* logDate;
+@property (nonatomic, strong) NSDate *logDate;
 @property (nonatomic, assign) QCloudSupervisoryRecordType type;
 @end
 
@@ -29,13 +27,10 @@ typedef NS_ENUM(NSInteger, QCloudSupervisoryRecordType) {
 @property (nonatomic, assign) NSTimeInterval readResponseHeaderTookTime;
 @property (nonatomic, assign) NSTimeInterval readResponseBodyTookTime;
 
-
-@property (nonatomic, strong) NSString* service;
-@property (nonatomic, strong) NSString* method;
+@property (nonatomic, strong) NSString *service;
+@property (nonatomic, strong) NSString *method;
 @property (nonatomic, assign) int errorCode;
-@property (nonatomic, strong) NSString* errorMessage;
+@property (nonatomic, strong) NSString *errorMessage;
 @property (nonatomic, assign) QCloudNetworkStatus networkStatus;
-@property (nonatomic, strong) NSString* userAgent;
-@property (nonatomic,assign) NSTimeInterval caculateMD5;
-@property (nonatomic,assign) NSTimeInterval sign;
+@property (nonatomic, strong) NSString *userAgent;
 @end

@@ -6,7 +6,6 @@
 //
 //
 
-
 #import "QCloudModel.h"
 
 /**
@@ -22,15 +21,15 @@
 /**
  用于追踪本次请求的id
  */
-@property (nonatomic, strong) NSString* request_id;
+@property (nonatomic, strong) NSString *request_id;
 
 /**
  请求的数据内容
  */
-@property (nonatomic, strong) NSDictionary* data;
+@property (nonatomic, strong) NSDictionary *data;
 
 /**
  描述了改次请求结果的信息
  */
-@property (nonatomic, strong) NSString* message;
+@property (nonatomic, strong) NSString *message;
 @end

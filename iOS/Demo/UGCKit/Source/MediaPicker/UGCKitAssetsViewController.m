@@ -269,6 +269,7 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         NSMutableOrderedSet *selectedAssets = wself.imagePickerController.selectedAssets;
         [selectedAssets removeObject:removedAsset];
         [wself updateSelectionInfo];
+        [wself updateDoneButtonState];
         [wself.collectionView deselectItemAtIndexPath:[NSIndexPath indexPathForItem:indexOfCollection inSection:0] animated:YES];
 
     };

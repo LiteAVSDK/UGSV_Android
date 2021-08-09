@@ -9,13 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "QCloudHTTPRequestDelegate.h"
 
-
-extern NSString* const kQCloudRestNetURLUsageNotification;
+extern NSString *const kQCloudRestNetURLUsageNotification;
 
 @interface NSDictionary (QCloudRestNetUsage)
-- (NSURL*) bdwt_RestNetCoreUsagedURL;
+- (NSURL *)bdwt_RestNetCoreUsagedURL;
 @end
-
 
 @class QCloudHTTPRequest;
 @class QCloudRequestOperation;
@@ -24,11 +22,11 @@ extern NSString* const kQCloudRestNetURLUsageNotification;
    最大并发的网络线程数量
  */
 @property (atomic, assign) int32_t maxConcurrencyTask;
-+ (NSObject<QCloudNetworkingAPI>*) shareClient;
-- (int) performRequest:(QCloudHTTPRequest*)httpRequst;
-- (int) performRequest:(QCloudHTTPRequest *)httpRequst withFinishBlock:(QCloudRequestFinishBlock)block;
-- (void) cancelRequestWithID:(int)requestID;
-- (void) cancelAllRequest;
-- (void) cancelRequestsWithID:(NSArray<NSNumber*>*)requestIDs;
-- (void) executeRestHTTPReqeust:(QCloudHTTPRequest*)httpRequest;
++ (NSObject<QCloudNetworkingAPI> *)shareClient;
+- (int)performRequest:(QCloudHTTPRequest *)httpRequst;
+- (int)performRequest:(QCloudHTTPRequest *)httpRequst withFinishBlock:(QCloudRequestFinishBlock)block;
+- (void)cancelRequestWithID:(int)requestID;
+- (void)cancelAllRequest;
+- (void)cancelRequestsWithID:(NSArray<NSNumber *> *)requestIDs;
+- (void)executeRestHTTPReqeust:(QCloudHTTPRequest *)httpRequest;
 @end

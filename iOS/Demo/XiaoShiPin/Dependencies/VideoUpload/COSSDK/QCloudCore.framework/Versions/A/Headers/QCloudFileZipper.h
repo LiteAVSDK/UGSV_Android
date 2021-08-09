@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface QCloudFileZipper : NSObject
-- (instancetype) initWithInputFilePath:(NSString*)path;
-- (BOOL) outputToPath:(NSString*)path;
+- (instancetype)initWithInputFilePath:(NSString *)path;
+- (BOOL)outputToPath:(NSString *)path;
 @end

@@ -8,19 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^TXUGCPrepareUploadCompletion)();
+
+@interface TXUGCCosRegionInfo : NSObject
+@property(nonatomic, copy) NSString *region;
+@property(nonatomic, copy) NSString *domain;
+@end
+
 @interface TXUGCPublishOptCenter : NSObject
-
 + (instancetype)shareInstance;
-@property (atomic, assign)  BOOL isStarted;
-@property (strong, nonatomic) NSString * signature;
-@property (strong, nonatomic) NSMutableDictionary *cacheMap;
-@property (strong, nonatomic) NSMutableDictionary *fixCacheMap;
-@property (strong, nonatomic) NSMutableDictionary *publishingList;
-@property (strong, nonatomic) NSString *bestCosRegion;
-@property (strong, nonatomic) NSString *bestCosDomain;
-@property (nonatomic, assign) UInt64 minCosRespTime;
+@property(atomic, assign) BOOL isStarted;
+@property(strong, nonatomic) NSString *signature;
+@property(strong, nonatomic) NSMutableDictionary *cacheMap;
+@property(strong, nonatomic) NSMutableDictionary *fixCacheMap;
+@property(strong, nonatomic) NSMutableDictionary *publishingList;
+@property(strong, nonatomic) TXUGCCosRegionInfo *cosRegionInfo;
+@property(nonatomic, assign) UInt64 minCosRespTime;
 
-- (void)prepareUpload:(NSString *)signature;
+- (void)prepareUpload:(NSString *)signature
+    prepareUploadComplete:(TXUGCPrepareUploadCompletion)prepareUploadComplete;
+- (void)updateSignature:(NSString *)signature;
 - (NSArray *)query:(NSString *)hostname;
 - (NSString *)getCosRegion;
 - (BOOL)useProxy;

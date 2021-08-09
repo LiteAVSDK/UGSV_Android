@@ -31,7 +31,9 @@ typedef NS_ENUM(NSInteger, TXPublishEventCode)
     TVC_UPLOAD_EVENT_ID_COS     = 20001,    //UGC发布调用COS上传
     TVC_UPLOAD_EVENT_ID_FINISH  = 10002,    //UGC发布结束上传
     TVC_UPLOAD_EVENT_DAU        = 40001,    //短视频上传DAU上报
-
+    TVC_UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT            =   11001,          //vod http dns请求结果
+    TVC_UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT     =   11002,          //PrepareUploadUGC请求结果
+    TVC_UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT              =   11003,          //检测最优园区结果(包含cos iplist)
 };
 
 @interface TVCConfig : NSObject

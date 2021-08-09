@@ -7,7 +7,6 @@
 //
 //
 
-@interface QCloudCOSXMLService()
+@interface QCloudCOSXMLService ()
 
 @end
-        

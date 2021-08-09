@@ -5,25 +5,29 @@
 //  Created by tencent
 //  Copyright (c) 2015年 tencent. All rights reserved.
 //
-//   ██████╗  ██████╗██╗      ██████╗ ██╗   ██╗██████╗     ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗         ██╗      █████╗ ██████╗
-//  ██╔═══██╗██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗    ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║         ██║     ██╔══██╗██╔══██╗
-//  ██║   ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║         ██║     ███████║██████╔╝
-//  ██║▄▄ ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║         ██║     ██╔══██║██╔══██╗
-//  ╚██████╔╝╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝       ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗    ███████╗██║  ██║██████╔╝
-//   ╚══▀▀═╝  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚═════╝
+//   ██████╗  ██████╗██╗      ██████╗ ██╗   ██╗██████╗     ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗         ██╗      █████╗
+//   ██████╗
+//  ██╔═══██╗██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗    ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║         ██║ ██╔══██╗██╔══██╗
+//  ██║   ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║         ██║ ███████║██████╔╝
+//  ██║▄▄ ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║         ██║ ██╔══██║██╔══██╗
+//  ╚██████╔╝╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝       ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗    ███████╗██║
+//  ██║██████╔╝
+//   ╚══▀▀═╝  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝ ╚═╝╚═════╝
 //
 //
 //                                                                              _             __                 _                _
 //                                                                             (_)           / _|               | |              | |
-//                                                          ___  ___ _ ____   ___  ___ ___  | |_ ___  _ __    __| | _____   _____| | ___  _ __   ___ _ __ ___
-//                                                         / __|/ _ \ '__\ \ / / |/ __/ _ \ |  _/ _ \| '__|  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \ / _ \ '__/ __|
-//                                                         \__ \  __/ |   \ V /| | (_|  __/ | || (_) | |    | (_| |  __/\ V /  __/ | (_) | |_) |  __/ |  \__
-//                                                         |___/\___|_|    \_/ |_|\___\___| |_| \___/|_|     \__,_|\___| \_/ \___|_|\___/| .__/ \___|_|  |___/
+//                                                          ___  ___ _ ____   ___  ___ ___  | |_ ___  _ __    __| | _____   _____| | ___  _ __   ___ _
+//                                                          __ ___
+//                                                         / __|/ _ \ '__\ \ / / |/ __/ _ \ |  _/ _ \| '__|  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \ / _ \
+//                                                         '__/ __|
+//                                                         \__ \  __/ |   \ V /| | (_|  __/ | || (_) | |    | (_| |  __/\ V /  __/ | (_) | |_) |  __/
+//                                                         |  \__
+//                                                         |___/\___|_|    \_/ |_|\___\___| |_| \___/|_|     \__,_|\___| \_/ \___|_|\___/| .__/
+//                                                         \___|_|  |___/
 //    ______ ______ ______ ______ ______ ______ ______ ______                                                                            | |
 //   |______|______|______|______|______|______|______|______|                                                                           |_|
 //
-
-
 
 #import <Foundation/Foundation.h>
 #import <QCloudCore/QCloudCore.h>
@@ -32,25 +36,29 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 获取跨区域复制配置信息的方法.
 
+### 功能说明
+
 跨区域复制是支持不同区域 Bucket 自动复制对象, 请查阅putBucketReplication(PutBucketReplicationRequest).
 
-cos iOS SDK 中获取跨区域复制配置信息的方法具体步骤如下：
+关于获取跨区域复制配置信息的方法接口的具体描述，请查看https://cloud.tencent.com/document/product/436/19222.
 
-1. 实例化 QCloudGetBucketReplicationRequest，填入需要的参数。
+### 示例
 
-2. 调用 QCloudCOSXMLService 对象中的 GetBucketReplication 方法发出请求。
+  @code
 
-3. 从回调的 finishBlock 中的 QCloudBucketReplicationConfiguation 获取具体内容。
+    QCloudGetBucketReplicationRequest* request = [[QCloudGetBucketReplicationRequest alloc] init];
 
-示例：
-@code
-QCloudGetBucketReplicationRequest* request = [[QCloudGetBucketReplicationRequest alloc] init];
-request.bucket = bucketBame; // //存储桶名称(cos v5 的 bucket格式为：xxx-appid, 如 test-1253960454)
-[request setFinishBlock:^(QCloudBucketReplicationConfiguation* result, NSError* error) {
-//设置完成回调
-}];
-[[QCloudCOSXMLService defaultCOSXML] GetBucketReplication:request];
-@endcode
+    // 存储桶名称，格式为 BucketName-APPID
+    request.bucket = @"examplebucket-1250000000";
+
+    [request setFinishBlock:^(QCloudBucketReplicationConfiguation* result,
+                              NSError* error) {
+
+        // 具体配置信息，最多支持 1000 个，所有策略只能指向一个目标存储桶
+        NSArray *rules = result.rule;
+    }];
+    [[QCloudCOSXMLService defaultCOSXML] GetBucketReplication:request];
+
 */
 @interface QCloudGetBucketReplicationRequest : QCloudBizHTTPRequest
 /**
@@ -58,7 +66,6 @@ request.bucket = bucketBame; // //存储桶名称(cos v5 的 bucket格式为：x
 */
 @property (strong, nonatomic) NSString *bucket;
 
-
-- (void) setFinishBlock:(void (^)(QCloudBucketReplicationConfiguation* result, NSError * error))QCloudRequestFinishBlock;
+- (void)setFinishBlock:(void (^_Nullable)(QCloudBucketReplicationConfiguation *_Nullable result, NSError *_Nullable error))QCloudRequestFinishBlock;
 @end
 NS_ASSUME_NONNULL_END

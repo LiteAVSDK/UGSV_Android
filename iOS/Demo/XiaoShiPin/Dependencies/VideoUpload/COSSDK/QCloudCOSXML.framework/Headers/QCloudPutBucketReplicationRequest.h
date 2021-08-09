@@ -5,67 +5,91 @@
 //  Created by tencent
 //  Copyright (c) 2015年 tencent. All rights reserved.
 //
-//   ██████╗  ██████╗██╗      ██████╗ ██╗   ██╗██████╗     ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗         ██╗      █████╗ ██████╗
-//  ██╔═══██╗██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗    ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║         ██║     ██╔══██╗██╔══██╗
-//  ██║   ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║         ██║     ███████║██████╔╝
-//  ██║▄▄ ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║         ██║     ██╔══██║██╔══██╗
-//  ╚██████╔╝╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝       ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗    ███████╗██║  ██║██████╔╝
-//   ╚══▀▀═╝  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚═════╝
+//   ██████╗  ██████╗██╗      ██████╗ ██╗   ██╗██████╗     ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗         ██╗      █████╗
+//   ██████╗
+//  ██╔═══██╗██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗    ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║         ██║ ██╔══██╗██╔══██╗
+//  ██║   ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║         ██║ ███████║██████╔╝
+//  ██║▄▄ ██║██║     ██║     ██║   ██║██║   ██║██║  ██║       ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║         ██║ ██╔══██║██╔══██╗
+//  ╚██████╔╝╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝       ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗    ███████╗██║
+//  ██║██████╔╝
+//   ╚══▀▀═╝  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝ ╚═╝╚═════╝
 //
 //
 //                                                                              _             __                 _                _
 //                                                                             (_)           / _|               | |              | |
-//                                                          ___  ___ _ ____   ___  ___ ___  | |_ ___  _ __    __| | _____   _____| | ___  _ __   ___ _ __ ___
-//                                                         / __|/ _ \ '__\ \ / / |/ __/ _ \ |  _/ _ \| '__|  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \ / _ \ '__/ __|
-//                                                         \__ \  __/ |   \ V /| | (_|  __/ | || (_) | |    | (_| |  __/\ V /  __/ | (_) | |_) |  __/ |  \__
-//                                                         |___/\___|_|    \_/ |_|\___\___| |_| \___/|_|     \__,_|\___| \_/ \___|_|\___/| .__/ \___|_|  |___/
+//                                                          ___  ___ _ ____   ___  ___ ___  | |_ ___  _ __    __| | _____   _____| | ___  _ __   ___ _
+//                                                          __ ___
+//                                                         / __|/ _ \ '__\ \ / / |/ __/ _ \ |  _/ _ \| '__|  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \ / _ \
+//                                                         '__/ __|
+//                                                         \__ \  __/ |   \ V /| | (_|  __/ | || (_) | |    | (_| |  __/\ V /  __/ | (_) | |_) |  __/
+//                                                         |  \__
+//                                                         |___/\___|_|    \_/ |_|\___\___| |_| \___/|_|     \__,_|\___| \_/ \___|_|\___/| .__/
+//                                                         \___|_|  |___/
 //    ______ ______ ______ ______ ______ ______ ______ ______                                                                            | |
 //   |______|______|______|______|______|______|______|______|                                                                           |_|
 //
-
-
 
 #import <Foundation/Foundation.h>
 #import <QCloudCore/QCloudCore.h>
 @class QCloudBucketReplicationConfiguation;
 NS_ASSUME_NONNULL_BEGIN
 /**
-配置跨区域复制的方法.
+ 配置跨区域复制的方法.
 
-跨区域复制是支持不同区域 Bucket 自动异步复制对象.注意，不能是同区域的 Bucket, 且源 Bucket 和目 标 Bucket 必须已启用版本控制putBucketVersioning(PutBucketVersioningRequest).
+### 功能描述
 
-cos iOS SDK 中配置跨区域复制的方法具体步骤如下：
+ 跨区域复制是支持不同区域 Bucket 自动异步复制对象.注意，不能是同区域的 Bucket,
+ 且源 Bucket 和目 标 Bucket 必须已启用版本控制putBucketVersioning(PutBucketVersioningRequest).
 
-1. 实例化 QCloudPutBucketReplicationRequest，填入需要的参数。
+ 关于 配置跨区域复制的方法接口的具体描述，请查看 https://cloud.tencent.com/document/product/436/19223.
 
-2. 调用 QCloudCOSXMLService 对象中的 PutBucketRelication 方法发出请求。
+### 示例
 
-3. 从回调的 finishBlock 中的 outputObject 获取具体内容。
+  @code
 
-示例：
+    QCloudPutBucketReplicationRequest* request = [[QCloudPutBucketReplicationRequest alloc] init];
 
-@code
-QCloudPutBucketReplicationRequest* request = [[QCloudPutBucketReplicationRequest alloc] init];
-request.bucket = bucketName; //存储桶名称(cos v5 的 bucket格式为：xxx-appid, 如 test-1253960454)
-QCloudBucketReplicationConfiguation* configuration = [[QCloudBucketReplicationConfiguation alloc] init];
-configuration.role = [NSString identifierStringWithID:@"uin" :@"uin"];
-QCloudBucketReplicationRule* rule = [[QCloudBucketReplicationRule alloc] init];
+    // 存储桶名称，格式为 BucketName-APPID
+    request.bucket = @"examplebucket-1250000000";
 
-rule.identifier = @"identifier";
-rule.status = QCloudQCloudCOSXMLStatusEnabled;
+    // 说明所有跨地域配置信息
+    QCloudBucketReplicationConfiguation* replConfiguration =
+                                [[QCloudBucketReplicationConfiguation alloc] init];
 
-QCloudBucketReplicationDestination* destination = [[QCloudBucketReplicationDestination alloc] init];
-NSString* destinationBucket = @"destinationBucket";
-NSString* region = @"destinationRegion"
-destination.bucket = [NSString stringWithFormat:@"qcs:id/0:cos:%@:appid/%@:%@",@"region",@"appid",@"destinationBucket"];
-rule.destination = destination;
-configuration.rule = @[rule];
-request.configuation = configuration;
-[request setFinishBlock:^(id outputObject, NSError* error) {
-//设置完成回调
-}];
-[[QCloudCOSXMLService defaultCOSXML] PutBucketRelication:request];
-@endcode
+    // 发起者身份标示
+    replConfiguration.role = @"qcs::cam::uin/100000000001:uin/100000000001";
+
+    // 具体配置信息
+    QCloudBucketReplicationRule* rule = [[QCloudBucketReplicationRule alloc] init];
+
+    // 用来标注具体 Rule 的名称
+    rule.identifier = @"identifier";
+    rule.status = QCloudCOSXMLStatusEnabled;
+
+    // 资源标识符
+    QCloudBucketReplicationDestination* destination = [[QCloudBucketReplicationDestination alloc] init];
+    NSString* destinationBucket = @"destinationbucket-1250000000";
+
+    // 目标存储桶所在地域
+    NSString* region = @"ap-beijing";
+    destination.bucket = [NSString stringWithFormat:@"qcs::cos:%@::%@",region,destinationBucket];
+
+    // 目标存储桶信息
+    rule.destination = destination;
+
+    // 前缀匹配策略，不可重叠，重叠返回错误。前缀匹配根目录为空
+    rule.prefix = @"prefix1";
+    replConfiguration.rule = @[rule];
+    request.configuation = replConfiguration;
+
+    [request setFinishBlock:^(id outputObject, NSError* error) {
+
+        // outputObject 包含所有的响应 http 头部
+        NSDictionary* info = (NSDictionary *) outputObject;
+
+    }];
+    [[QCloudCOSXMLService defaultCOSXML] PutBucketRelication:request];
+
 */
 @interface QCloudPutBucketReplicationRequest : QCloudBizHTTPRequest
 /**
@@ -76,7 +100,6 @@ request.configuation = configuration;
 存储桶名称
 */
 @property (strong, nonatomic) NSString *bucket;
-
 
 @end
 NS_ASSUME_NONNULL_END
