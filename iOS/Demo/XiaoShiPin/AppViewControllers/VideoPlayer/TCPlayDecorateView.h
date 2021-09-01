@@ -15,7 +15,7 @@
 -(void)clickPlayVod;
 -(void)onSeek:(UISlider *)slider;
 -(void)onSeekBegin:(UISlider *)slider;
--(void)onDrag:(UISlider *)slider;
+-(void)onSeekEnd:(UISlider *)slider;
 -(void)clickLog:(UIButton *)button;
 -(void)clickChorus:(UIButton *)button;
 @optional
@@ -26,7 +26,7 @@
 /**
  *  播放模块逻辑view，里面展示了消息列表，弹幕动画，观众列表等UI，其中与SDK的逻辑交互需要交给主控制器处理
  */
-@interface TCPlayDecorateView : UIView<UITextFieldDelegate, UIAlertViewDelegate>
+@interface TCPlayDecorateView : UIView<UITextFieldDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 
 @property(nonatomic,weak) id<TCPlayDecorateDelegate>delegate;
 @property(nonatomic,retain)  UILabel            *playDuration;

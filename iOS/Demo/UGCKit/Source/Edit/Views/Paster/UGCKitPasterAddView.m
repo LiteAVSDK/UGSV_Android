@@ -190,7 +190,9 @@
             info.textRight = [dic[@"textRight"] floatValue];
             info.textBottom = [dic[@"textBottom"] floatValue];
             info.iconImage = btn.imageView.image;
-            [self.delegate onPasterQipaoSelect:info];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(onPasterQipaoSelect:)]) {
+                [self.delegate onPasterQipaoSelect:info];
+            }
         }
             break;
             
@@ -215,7 +217,9 @@
             info.height = [dic[@"height"] floatValue];
             info.duration = [dic[@"period"] floatValue] / 1000.0;
             info.iconImage = btn.imageView.image;
-            [self.delegate onPasterAnimateSelect:info];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(onPasterAnimateSelect:)]) {
+                [self.delegate onPasterAnimateSelect:info];
+            }
         }
             break;
             
@@ -230,7 +234,9 @@
             info.width = [dic[@"width"] floatValue];
             info.height = [dic[@"height"] floatValue];
             info.iconImage = btn.imageView.image;
-            [self.delegate onPasterStaticSelect:info];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(onPasterStaticSelect:)]) {
+                [self.delegate onPasterStaticSelect:info];
+            }
         }
             break;
             

@@ -8,11 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TCBeautyPanelActionPerformer <NSObject>
 /**
-* 设置指定素材滤镜特效
-*
-* @param filterImage 指定素材，即颜色查找表图片。**必须使用 png 格式**
-*/
-- (void)setFilter:(nullable UIImage*)filterImage;
+ * 设置指定素材滤镜特效
+ *
+ * @param filterImage 指定素材，即颜色查找表图片。**必须使用 png 格式**
+ */
+- (void)setFilter:(nullable UIImage *)filterImage;
 
 /**
  * 设置滤镜强度（v7.2后的版本请使用 setFilterStrength）

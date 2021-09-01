@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "TCBeautyPanelActionPerformer.h"
 #import "TCBeautyPanelView.h"
 

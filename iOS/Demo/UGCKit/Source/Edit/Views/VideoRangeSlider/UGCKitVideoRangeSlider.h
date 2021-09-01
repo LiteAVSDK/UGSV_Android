@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger,UGCKitRangeColorType){
 - (void)setAppearanceConfig:(UGCKitRangeContentConfig *)appearanceConfig;
 - (void)setImageList:(NSArray *)images;
 - (void)updateImage:(UIImage *)image atIndex:(NSUInteger)index;
+- (void)setSelectColorInfo:(NSInteger)selectedIndex;
 
 - (void)setLeftPanHidden:(BOOL)isHidden;
 - (void)setCenterPanHidden:(BOOL)isHidden;

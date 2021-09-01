@@ -177,6 +177,11 @@
     [_videoRangeSlider removeColoration:UGCKitRangeColorType index:index];
 }
 
+- (void)setSelectColorInfo:(NSInteger)selectedIndex
+{
+    [_videoRangeSlider setSelectColorInfo:selectedIndex];
+}
+
 #pragma mark - VideoRangeDelegate
 - (void)onVideoRangeTap:(CGFloat)tapTime
 {

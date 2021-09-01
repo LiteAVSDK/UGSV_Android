@@ -110,7 +110,9 @@
         // 在回弹区域会触发button事件被cancel,导致收不到 TouchEnd 事件
         return;
     }
-    [self.delegate onEffectBtnBeginSelect:button];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onEffectBtnBeginSelect:)]) {
+        [self.delegate onEffectBtnBeginSelect:button];
+    }
     for (UIImageView *view in _selectViewList) {
         if (view.tag == button.tag) {
             view.hidden = NO;
@@ -129,11 +131,15 @@
     } else {
         _selectedIndex = button.tag;
     }
-    [self.delegate onEffectBtnEndSelect:button];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onEffectBtnEndSelect:)]) {
+        [self.delegate onEffectBtnEndSelect:button];
+    }
 }
 
 //按压
 -(void) onTouchUpInside:(UIButton *) button {
-    [self.delegate onEffectBtnSelected:button];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onEffectBtnSelected:)]) {
+        [self.delegate onEffectBtnSelected:button];
+    }
 }
 @end

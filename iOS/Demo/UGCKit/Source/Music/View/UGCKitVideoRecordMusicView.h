@@ -15,6 +15,8 @@
 @interface UGCKitVideoRecordMusicView : UIView
 @property(nonatomic,weak) id<UGCKitVideoRecordMusicViewDelegate> delegate;
 -(instancetype)initWithFrame:(CGRect)frame needEffect:(BOOL)needEffect theme:(UGCKitTheme *)theme;
--(void) resetVolume;
--(void) resetCutView;
+-(void)resetVolume;
+-(void)resetCutView;
+-(void)resetSiderView;
+-(void)freshCutView:(CGFloat)duration;
 @end

@@ -152,6 +152,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     BOOL _isCompletingRecord;
     // 是否从音乐选择面返回（保证不会刷新其他配置）
     BOOL _isFromMusicSelectVC;
+    // 是否结束录制
+    BOOL _isStopRecord;
+    BOOL _isScrollToStart;
 }
 
 @property (strong, nonatomic) IBOutlet UIButton *btnNext;
@@ -493,7 +496,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (_musicView) {
         return _musicView;
     }
-    _musicView = [[UGCKitVideoRecordMusicView alloc] initWithFrame:CGRectMake(0, self.view.ugckit_bottom - 330 * kScaleY, self.view.ugckit_width, 330 * kScaleY) needEffect:YES theme:_theme];
+    _musicView = [[UGCKitVideoRecordMusicView alloc] initWithFrame:CGRectMake(0, self.view.ugckit_bottom - 268 * kScaleY, self.view.ugckit_width, 268 * kScaleY) needEffect:YES theme:_theme];
     _musicView.delegate = self;
     _musicView.hidden = YES;
     [self.view addSubview:_musicView];
@@ -869,7 +872,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         if(-5 == result) [self alert:[_theme localizedString:@"UGCKit.Record.HintLaunchRecordFailed"] msg:[_theme localizedString:@"UGCKit.Record.ErrorLicense"]];
     }else{
         //如果设置了BGM，播放BGM
-        [self playBGM:_bgmBeginTime];
+        [self playBGM:_bgmBeginTime toTime:MAXFLOAT];
 
         //初始化录制状态
         _recordState = RecordStateRecording;
@@ -963,7 +966,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (_bgmRecording) {
         [self resumeBGM];
     }else{
-        [self playBGM:_bgmBeginTime];
+        [self playBGM:_bgmBeginTime toTime:MAXFLOAT];
         _bgmRecording = YES;
     }
     
@@ -994,30 +997,41 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     [self.previewController stopPlayChorusVideos];
     //调用partsManager快速合成视频，不破坏录制状态，下次返回后可以接着录制（注意需要先暂停视频录制）
     __weak __typeof(self) weakSelf = self;
-    if (_recordState == RecordStateRecording) {
-        [self _pauseAndAddMark:^{
-            __strong __typeof(weakSelf) self = weakSelf; if (self == nil) { return; }
-            self->_recordState = RecordStatePaused;
-            [self saveVideoClipPathToPlist];
+    if (_isStopRecord) {
+        [[TXUGCRecord shareInstance].partsManager joinAllParts:self.previewController.recordVideoPath
+                                                      complete:^(int result) {
+            if (completion){
+                completion(result);
+            }
+            [weakSelf onFinishJoinAllParts:result];
+            self->_isCompletingRecord = NO;
+        }];
+    } else {
+        if (_recordState == RecordStateRecording) {
+            [self _pauseAndAddMark:^{
+                __strong __typeof(weakSelf) self = weakSelf; if (self == nil) { return; }
+                self->_recordState = RecordStatePaused;
+                [self saveVideoClipPathToPlist];
 
+                [[TXUGCRecord shareInstance].partsManager joinAllParts:self.previewController.recordVideoPath
+                                                              complete:^(int result) {
+                    if (completion){
+                        completion(result);
+                    }
+                    [weakSelf onFinishRecord:result];
+                    self->_isCompletingRecord = NO;
+                }];
+            }];
+        } else {
             [[TXUGCRecord shareInstance].partsManager joinAllParts:self.previewController.recordVideoPath
                                                           complete:^(int result) {
                 if (completion){
                     completion(result);
                 }
                 [weakSelf onFinishRecord:result];
-                _isCompletingRecord = NO;
+                self->_isCompletingRecord = NO;
             }];
-        }];
-    } else {
-        [[TXUGCRecord shareInstance].partsManager joinAllParts:self.previewController.recordVideoPath
-                                                      complete:^(int result) {
-            if (completion){
-                completion(result);
-            }
-            [weakSelf onFinishRecord:result];
-            _isCompletingRecord = NO;
-        }];
+        }
     }
 }
 
@@ -1211,36 +1225,45 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(void)onFinishRecord:(int)result
+-(void)onFinishJoinAllParts:(int)result
 {
     _btnNext.hidden = NO;
-    if(0 == result){
-        if (UGCKitRecordStyleRecord == _config.recordStyle) {
-            [self stopCameraPreview];
-            if (self.completion) {
-                NSAssert(self.previewController.recordVideoPath != nil, @"unexpected");
-                if (self.previewController.recordVideoPath != nil) {
-                    UGCKitResult *result = [[UGCKitResult alloc] init];;
-                    result.media = [UGCKitMedia mediaWithVideoPath:self.previewController.recordVideoPath];
-                    result.coverImage = [[UIImage alloc] initWithContentsOfFile:[_coverPath stringByAppendingString:@".png"]];
-                    self.completion(result);
-                } else {
-                    self.completion(nil);
-                }
-            }
-        } else {
-            _btnNext.hidden = YES;
-            [self joinVideos];
-        }
-        [UGCKitReporter report:UGCKitReportItem_videorecord userName:nil code:0 msg:@"视频录制成功"];
-    }else{
+    if(0 != result){
         NSString * message = [NSString stringWithFormat:@"%@(%d)",
                               [_theme localizedString:@"UGCKit.Record.TryAgain"],
                               result];
         [self alert:[_theme localizedString:@"UGCKit.Media.HintVideoSynthesizeFailed"]
                 msg:message];
         [UGCKitReporter report:UGCKitReportItem_videorecord userName:nil code:-1 msg:@"视频录制失败"];
+    } else {
+        int stopRet = [TXUGCRecord shareInstance].stopRecord;
+        if (stopRet == 0) {
+            _isStopRecord = YES;
+        }
     }
+}
+
+-(void)onFinishRecord:(int)result
+{
+    _isStopRecord = NO;
+    if (UGCKitRecordStyleRecord == _config.recordStyle) {
+        [self stopCameraPreview];
+        if (self.completion) {
+            NSAssert(self.previewController.recordVideoPath != nil, @"unexpected");
+            if (self.previewController.recordVideoPath != nil) {
+                UGCKitResult *result = [[UGCKitResult alloc] init];;
+                result.media = [UGCKitMedia mediaWithVideoPath:self.previewController.recordVideoPath];
+                result.coverImage = [[UIImage alloc] initWithContentsOfFile:[_coverPath stringByAppendingString:@".png"]];
+                self.completion(result);
+            } else {
+                self.completion(nil);
+            }
+        }
+    } else {
+        _btnNext.hidden = YES;
+        [self joinVideos];
+    }
+    [UGCKitReporter report:UGCKitReportItem_videorecord userName:nil code:0 msg:@"视频录制成功"];
 }
 
 - (void)joinVideos
@@ -1300,10 +1323,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 #pragma mark Control Panel Switching
-- (void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if (_vBeautyShow)
     {
+        _isCameraPreviewOn = YES;
         UITouch *touch = [[event allTouches] anyObject];
         CGPoint _touchPoint = [touch locationInView:self.view];
         if (NO == CGRectContainsPoint(_vBeauty.frame, _touchPoint))
@@ -1314,8 +1338,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (_musicView && !_musicView.hidden) {
         CGPoint _touchPoint = [[[event allTouches] anyObject] locationInView:self.view];
         if (NO == CGRectContainsPoint(_musicView.frame, _touchPoint)){
-            _musicView.hidden = !_musicView.hidden;
-            [self hideBottomView:!_musicView.hidden];
+            _musicView.hidden = YES;
+            [self hideBottomView:NO];
         }
     }
     if (_soundMixView && !_soundMixView.hidden) {
@@ -1335,7 +1359,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 #pragma mark - TXUGCRecordListener
--(void) onRecordProgress:(NSInteger)milliSecond;
+-(void)onRecordProgress:(NSInteger)milliSecond;
 {
     _recordTime =  milliSecond / 1000.0;
     BOOL shouldPause = _recordTime >= _config.maxDuration;
@@ -1359,6 +1383,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         _isBackDelete = NO;
     }
     if (shouldPause) {
+        _isStopRecord = YES;
         // FIXME: 这里调用了SDK的Pause之后，Progress进度会爆发式的调用很多次（在录制过程中有拍照行为，没有拍照行为不会复现，需要检查下SDK层面的调用）
         [self pauseRecord:^{
             if (self->_config.autoComplete) {
@@ -1368,7 +1393,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     }
 }
 
--(void) onRecordComplete:(TXUGCRecordResult*)result;
+-(void)onRecordComplete:(TXUGCRecordResult*)result;
 {
     // FIXME: 目前complete回调的触发，只有在调用 [[TXUGCRecord shareInstance] stopRecord] 时会触发。
     // 当前页面的结束录制，用 [[TXUGCRecord shareInstance].partsManager 的 joinAllParts 来控制，这里的回调不会触发。
@@ -1379,7 +1404,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     {
         if (_currentRecordTime >= _config.minDuration)
         {
-            if (result.retCode != UGC_RECORD_RESULT_FAILED) {
+            if (result.retCode != UGC_RECORD_RESULT_FAILED && _isStopRecord) {
                 [self onFinishRecord:(int)result.retCode];
             }else{
                 [self toastTip:[_theme localizedString:@"UGCKit.Record.ErrorREC"]];
@@ -1397,11 +1422,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 #pragma mark TXVideoJoinerListener
--(void) onJoinProgress:(float)progress
+-(void)onJoinProgress:(float)progress
 {
     _hud.label.text = [NSString stringWithFormat:@"%@%d%%",[_theme localizedString:@"UGCKit.Media.VideoSynthesizing"], (int)(progress * 100)];
 }
--(void) onJoinComplete:(TXJoinerResult *)result
+-(void)onJoinComplete:(TXJoinerResult *)result
 {
     _btnNext.hidden = NO;
     [_hud hideAnimated:YES];
@@ -1465,19 +1490,20 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 #pragma mark TCBGMControllerListener
--(void) onBGMControllerPlay:(NSObject*) path{
+-(void)onBGMControllerPlay:(NSObject*) path{
     [self dismissViewControllerAnimated:YES completion:nil];
-    if(path == nil) return;
+    if(path == nil) {
+        _isScrollToStart = NO;
+        return;
+    }
     [self onSetBGM:path];
-    //试听音乐这里要把RecordSpeed 设置为VIDEO_RECORD_SPEED_NOMAL，否则音乐可能会出现加速或则慢速播现象
-    [[TXUGCRecord shareInstance] setRecordSpeed:VIDEO_RECORD_SPEED_NOMAL];
-    [self playBGM:0];
+    _isScrollToStart = YES;
+    [self playBGM:0 toTime:MAXFLOAT];
     dispatch_async(dispatch_get_main_queue(), ^(){
-        UGCKitVideoRecordMusicView *musicView = self->_musicView;
-        [musicView resetCutView];
-        if(musicView.hidden){
-            musicView.hidden = !musicView.hidden;
-            [self hideBottomView:!musicView.hidden];
+        self->_musicView.hidden = NO;
+        [self hideBottomView:YES];
+        if (self->_isScrollToStart) {
+            [self->_musicView resetSiderView];
         }
     });
 }
@@ -1514,10 +1540,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     _bgmRecording = NO;
     [_bgmListVC clearSelectStatus];
     [[TXUGCRecord shareInstance] stopBGM];
-    if (!_musicView.hidden) {
-        _musicView.hidden = !_musicView.hidden;
-        [self hideBottomView:!_musicView.hidden];
-    }
+    _musicView.hidden = YES;
+    [self hideBottomView:NO];
 }
 
 -(void)onBGMValueChange:(CGFloat)value
@@ -1534,9 +1558,12 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 {
     //切换bgm 范围的时候，bgm录制状态置NO
     _bgmRecording = NO;
-    //试听音乐这里要把RecordSpeed 设置为VIDEO_RECORD_SPEED_NOMAL，否则音乐可能会出现加速或则慢速播现象
-    [[TXUGCRecord shareInstance] setRecordSpeed:VIDEO_RECORD_SPEED_NOMAL];
     [self playBGM:_BGMDuration * startPercent toTime:_BGMDuration * endPercent];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        self->_musicView.hidden = NO;
+        [self hideBottomView:YES];
+    });
+    
 }
 #pragma mark - BGM Operations
 -(void)onSetBGM:(NSObject *)path
@@ -1548,28 +1575,26 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         _BGMDuration =  [[TXUGCRecord shareInstance] setBGMAsset:(AVAsset *)_BGMPath];
     }
     
+    [_musicView freshCutView:_BGMDuration];
     _bgmRecording = NO;
     dispatch_async(dispatch_get_main_queue(), ^{
         [UGCKitProgressHUD hideHUDForView:self.view animated:YES];
     });
 }
 
--(void)playBGM:(CGFloat)beginTime{
-    if (_BGMPath != nil) {
-        [[TXUGCRecord shareInstance] playBGMFromTime:beginTime toTime:_BGMDuration withBeginNotify:^(NSInteger errCode) {
-            
-        } withProgressNotify:^(NSInteger progressMS, NSInteger durationMS) {
-            
-        } andCompleteNotify:^(NSInteger errCode) {
-            
-        }];
-        _bgmBeginTime = beginTime;
-    }
-}
-
 -(void)playBGM:(CGFloat)beginTime toTime:(CGFloat)endTime
 {
     if (_BGMPath != nil) {
+        
+        if (endTime == MAXFLOAT) {
+            endTime = _BGMDuration;
+        }
+        
+        [[TXUGCRecord shareInstance] stopBGM];
+        
+        //试听音乐这里要把RecordSpeed 设置为VIDEO_RECORD_SPEED_NOMAL，否则音乐可能会出现加速或则慢速播现象
+        [[TXUGCRecord shareInstance] setRecordSpeed:VIDEO_RECORD_SPEED_NOMAL];
+        
         [[TXUGCRecord shareInstance] playBGMFromTime:beginTime toTime:endTime withBeginNotify:^(NSInteger errCode) {
             
         } withProgressNotify:^(NSInteger progressMS, NSInteger durationMS) {
@@ -1595,7 +1620,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 #pragma mark - Misc Methods
-- (void) toastTip:(NSString*)toastInfo
+- (void)toastTip:(NSString*)toastInfo
 {
     UGCKitProgressHUD *hud = [UGCKitProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = UGCKitProgressHUDModeText;
@@ -1735,6 +1760,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 - (void)uinit{
+    _isStopRecord = YES;
     [[TXUGCRecord shareInstance] stopRecord];
     [[TXUGCRecord shareInstance] stopCameraPreview];
     [[TXUGCRecord shareInstance].partsManager deleteAllParts];

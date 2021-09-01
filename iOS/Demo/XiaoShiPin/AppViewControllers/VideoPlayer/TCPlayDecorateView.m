@@ -19,6 +19,7 @@
 #import "UIView+Additions.h"
 
 #define BOTTOM_BTN_ICON_WIDTH  35
+#define StatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 
 @implementation TCPlayDecorateView
 {
@@ -38,6 +39,7 @@
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLogout:) name:logoutNotification object:nil];
         UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickScreen:)];
+        tap.delegate = self;
         [self addGestureRecognizer:tap];
         [self initUI: NO];
     }
@@ -67,7 +69,7 @@
     [self addSubview:_closeBtn];
     
     //topview,展示主播头像，在线人数及点赞
-    _topView = [[TCShowLiveTopView alloc] initWithFrame:CGRectMake(5, 25, 35, 35)
+    _topView = [[TCShowLiveTopView alloc] initWithFrame:CGRectMake(5, StatusBarHeight + 5, 35, 35)
                                            hostNickName:_liveInfo.userinfo.nickname == nil ? _liveInfo.userid : _liveInfo.userinfo.nickname
                                            hostFaceUrl:_liveInfo.userinfo.headpic];
     _topView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -181,7 +183,7 @@
     _playProgress.continuous = NO;
     [_playProgress addTarget:self action:@selector(onSeek:) forControlEvents:(UIControlEventValueChanged)];
     [_playProgress addTarget:self action:@selector(onSeekBegin:) forControlEvents:(UIControlEventTouchDown)];
-    [_playProgress addTarget:self action:@selector(onDrag:) forControlEvents:UIControlEventTouchDragInside];
+    [_playProgress addTarget:self action:@selector(onSeekEnd:) forControlEvents:UIControlEventTouchUpInside];
     _playProgress.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     [self addSubview:_playProgress];
     
@@ -340,9 +342,9 @@
     }
 }
 
--(void)onDrag:(UISlider *)slider {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(onDrag:)]) {
-        [self.delegate onDrag:slider];
+-(void)onSeekEnd:(UISlider *)slider{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onSeekEnd:)]) {
+        [self.delegate onSeekEnd:slider];
     }
 }
 
@@ -400,6 +402,16 @@
     }
     if (view == _cover)
         _cover.alpha = 0.5;
+}
+
+#pragma mark UIGestureRecognizerDelegate
+// 解决小范围滑动slider的时候造成的手势冲突，使得无法触发slider的手势抬起事件
+-(BOOL)gestureRecognizer:(UIGestureRecognizer*)gestureRecognizer shouldReceiveTouch:(UITouch*)touch {
+    if ([touch.view isKindOfClass:[UISlider class]]) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 @end

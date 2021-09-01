@@ -7,22 +7,23 @@
 //
 
 #import "TCBeautyPanelTheme.h"
+
 #import <objc/runtime.h>
 
 @interface TCBeautyPanelTheme () {
-    @public
+   @public
     NSMutableDictionary<NSString *, UIImage *> *_imageDict;
     NSMutableDictionary<NSString *, UIImage *> *_filterIconDictionary;
 }
-@property (strong, nonatomic) NSBundle *resourceBundle;
+@property(strong, nonatomic) NSBundle *resourceBundle;
 - (UIImage *)imageForKey:(NSString *)key;
 - (void)setImage:(UIImage *)image forKey:(NSString *)key;
 @end
 
 static UIImage *getImageByName(TCBeautyPanelTheme *self, SEL selector) {
     NSString *selName = NSStringFromSelector(selector);
-    NSString *key = [[[selName substringToIndex:1] lowercaseString] stringByAppendingString:[selName substringFromIndex:1]];
-    UIImage *image = [self imageForKey:key];
+    NSString *key     = [[[selName substringToIndex:1] lowercaseString] stringByAppendingString:[selName substringFromIndex:1]];
+    UIImage * image   = [self imageForKey:key];
     if (nil == image) {
         image = [UIImage imageNamed:NSStringFromSelector(selector) inBundle:self.resourceBundle compatibleWithTraitCollection:nil];
     }
@@ -33,54 +34,51 @@ static UIImage *getImageByName(TCBeautyPanelTheme *self, SEL selector) {
 }
 
 static void setImageForKey(id self, SEL selector, UIImage *image) {
-    NSString *selName = NSStringFromSelector(selector);
-    NSString *attrName = [[selName substringFromIndex:3] stringByTrimmingCharactersInSet:
-                          [NSCharacterSet characterSetWithCharactersInString:@":"]];
-    NSString *key = [[[attrName substringToIndex:1] lowercaseString] stringByAppendingString:[attrName substringFromIndex:1]];
+    NSString *selName  = NSStringFromSelector(selector);
+    NSString *attrName = [[selName substringFromIndex:3] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@":"]];
+    NSString *key      = [[[attrName substringToIndex:1] lowercaseString] stringByAppendingString:[attrName substringFromIndex:1]];
     [self setImage:image forKey:key];
 }
 
-
 @implementation TCBeautyPanelTheme
-@synthesize backgroundColor=_backgroundColor;
-@synthesize beautyPanelTitleColor=_beautyPanelTitleColor;
-@synthesize beautyPanelSelectionColor=_beautyPanelSelectionColor;
-@synthesize speedControlSelectedTitleColor=_speedControlSelectedTitleColor;
-@synthesize sliderMinColor=_sliderMinColor;
-@synthesize sliderMaxColor=_sliderMaxColor;
-@synthesize sliderValueColor=_sliderValueColor;
-@dynamic beautyPanelSmoothBeautyStyleIcon;
-@dynamic beautyPanelEyeScaleIcon;
-@dynamic beautyPanelPTuBeautyStyleIcon;
-@dynamic beautyPanelNatureBeautyStyleIcon;
-@dynamic beautyPanelRuddyIcon;
-@dynamic beautyPanelBgRemovalIcon;
-@dynamic beautyPanelWhitnessIcon;
-@dynamic beautyPanelFaceSlimIcon;
-@dynamic beautyPanelGoodLuckIcon;
-@dynamic beautyPanelChinIcon;
-@dynamic beautyPanelFaceVIcon;
-@dynamic beautyPanelFaceScaleIcon;
-@dynamic beautyPanelNoseSlimIcon;
-@dynamic beautyPanelToothWhitenIcon;
-@dynamic beautyPanelEyeDistanceIcon;
-@dynamic beautyPanelForeheadIcon;
-@dynamic beautyPanelFaceBeautyIcon;
-@dynamic beautyPanelEyeAngleIcon;
-@dynamic beautyPanelNoseWingIcon;
-@dynamic beautyPanelLipsThicknessIcon;
-@dynamic beautyPanelWrinkleRemoveIcon;
-@dynamic beautyPanelMouthShapeIcon;
-@dynamic beautyPanelPounchRemoveIcon;
-@dynamic beautyPanelSmileLinesRemoveIcon;
-@dynamic beautyPanelEyeLightenIcon;
-@dynamic beautyPanelNosePositionIcon;
-@dynamic menuDisableIcon;
-@dynamic beautyPanelMenuSelectionBackgroundImage;
-@dynamic sliderThumbImage;
+@synthesize     backgroundColor                = _backgroundColor;
+@synthesize     beautyPanelTitleColor          = _beautyPanelTitleColor;
+@synthesize     beautyPanelSelectionColor      = _beautyPanelSelectionColor;
+@synthesize     speedControlSelectedTitleColor = _speedControlSelectedTitleColor;
+@synthesize     sliderMinColor                 = _sliderMinColor;
+@synthesize     sliderMaxColor                 = _sliderMaxColor;
+@synthesize     sliderValueColor               = _sliderValueColor;
+@dynamic        beautyPanelSmoothBeautyStyleIcon;
+@dynamic        beautyPanelEyeScaleIcon;
+@dynamic        beautyPanelPTuBeautyStyleIcon;
+@dynamic        beautyPanelNatureBeautyStyleIcon;
+@dynamic        beautyPanelRuddyIcon;
+@dynamic        beautyPanelBgRemovalIcon;
+@dynamic        beautyPanelWhitnessIcon;
+@dynamic        beautyPanelFaceSlimIcon;
+@dynamic        beautyPanelGoodLuckIcon;
+@dynamic        beautyPanelChinIcon;
+@dynamic        beautyPanelFaceVIcon;
+@dynamic        beautyPanelFaceScaleIcon;
+@dynamic        beautyPanelNoseSlimIcon;
+@dynamic        beautyPanelToothWhitenIcon;
+@dynamic        beautyPanelEyeDistanceIcon;
+@dynamic        beautyPanelForeheadIcon;
+@dynamic        beautyPanelFaceBeautyIcon;
+@dynamic        beautyPanelEyeAngleIcon;
+@dynamic        beautyPanelNoseWingIcon;
+@dynamic        beautyPanelLipsThicknessIcon;
+@dynamic        beautyPanelWrinkleRemoveIcon;
+@dynamic        beautyPanelMouthShapeIcon;
+@dynamic        beautyPanelPounchRemoveIcon;
+@dynamic        beautyPanelSmileLinesRemoveIcon;
+@dynamic        beautyPanelEyeLightenIcon;
+@dynamic        beautyPanelNosePositionIcon;
+@dynamic        menuDisableIcon;
+@dynamic        beautyPanelMenuSelectionBackgroundImage;
+@dynamic        sliderThumbImage;
 
-+ (BOOL)resolveInstanceMethod:(SEL)sel
-{
++ (BOOL)resolveInstanceMethod:(SEL)sel {
     NSString *selName = NSStringFromSelector(sel);
     if ([selName hasPrefix:@"set"]) {
         if ([selName hasSuffix:@"Icon:"] || [selName hasSuffix:@"Image:"]) {
@@ -94,12 +92,11 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     return [super resolveInstanceMethod:sel];
 }
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         NSString *resourcePath = [[NSBundle mainBundle] pathForResource:@"UGCKitResources" ofType:@"bundle"];
-        NSBundle *bundle = [NSBundle bundleWithPath:resourcePath];
+        NSBundle *bundle       = [NSBundle bundleWithPath:resourcePath];
         if (nil == bundle) {
             bundle = [NSBundle mainBundle];
         }
@@ -115,10 +112,10 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
 
         _resourceBundle = bundle ?: [NSBundle mainBundle];
 
-        _beautyPanelTitleColor = [UIColor whiteColor];
-        _beautyPanelSelectionColor = [UIColor colorWithRed:0xff/255.0 green:0x58/255.0 blue:0x4c/255.0 alpha:1];
-        _backgroundColor = [UIColor blackColor];
-        _sliderValueColor = [UIColor colorWithRed:1.0 green:0x58/255.0 blue:0x4c/255.0 alpha:1];
+        _beautyPanelTitleColor     = [UIColor whiteColor];
+        _beautyPanelSelectionColor = [UIColor colorWithRed:0xff / 255.0 green:0x58 / 255.0 blue:0x4c / 255.0 alpha:1];
+        _backgroundColor           = [UIColor blackColor];
+        _sliderValueColor          = [UIColor colorWithRed:1.0 green:0x58 / 255.0 blue:0x4c / 255.0 alpha:1];
     }
     return self;
 }
@@ -141,24 +138,21 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     }
 }
 
-
 - (UIImage *)imageNamed:(nonnull NSString *)name {
     return [UIImage imageNamed:name inBundle:_resourceBundle compatibleWithTraitCollection:nil];
 }
 
-- (UIImage *)imageForKey:(NSString *)key
-{
+- (UIImage *)imageForKey:(NSString *)key {
     return _imageDict[key];
 }
 
-- (void)setImage:(UIImage *)image forKey:(NSString *)key
-{
+- (void)setImage:(UIImage *)image forKey:(NSString *)key {
     _imageDict[key] = image;
 }
 
 - (NSString *)localizedString:(nonnull NSString *)key {
     static NSDictionary *defaultStringMap = nil;
-    NSString *string = [_resourceBundle localizedStringForKey:key value:@"" table:nil];
+    NSString *           string           = [_resourceBundle localizedStringForKey:key value:@"" table:nil];
     if (![string isEqualToString:key]) {
         return string;
     }
@@ -166,7 +160,7 @@ static void setImageForKey(id self, SEL selector, UIImage *image) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         defaultStringMap = @{
-            @"TC.Common.Clear": @"清除",
+            @"TC.Common.Clear" : @"清除",
             @"TC.BeautySettingPanel.None" : @"无动效",
             @"TC.BeautySettingPanel.GoodLuck" : @"Good Luck",
             @"TC.BeautySettingPanel.BeautySmooth" : @"美颜(光滑)",

@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSString * TCFilterIdentifier NS_STRING_ENUM;
+typedef NSString *TCFilterIdentifier NS_STRING_ENUM;
 
 extern TCFilterIdentifier const TCFilterIdentifierNone;
 extern TCFilterIdentifier const TCFilterIdentifierBaiXi;
@@ -27,14 +27,14 @@ extern TCFilterIdentifier const TCFilterIdentifierLandiao;
 extern TCFilterIdentifier const TCFilterIdentifierQingliang;
 extern TCFilterIdentifier const TCFilterIdentifierRixi;
 
-@interface TCFilter : NSObject
-@property (readonly, nonatomic) TCFilterIdentifier identifier;
-@property (readonly, nonatomic) NSString *lookupImagePath;
+@interface                                        TCFilter : NSObject
+@property(readonly, nonatomic) TCFilterIdentifier identifier;
+@property(readonly, nonatomic) NSString *         lookupImagePath;
 @end
 
 @interface TCFilterManager : NSObject
 + (instancetype)defaultManager;
-@property (readonly, nonatomic) NSArray<TCFilter *> *allFilters;
+@property(readonly, nonatomic) NSArray<TCFilter *> *allFilters;
 - (TCFilter *)filterWithIdentifier:(TCFilterIdentifier)identifier;
 @end
 

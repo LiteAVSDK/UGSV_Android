@@ -34,6 +34,7 @@
 - (id)initWithFrame:(CGRect)frame pictureList:(NSArray *)pictureList  duration:(CGFloat)duration fps:(float)fps config:(UGCKitRangeContentConfig *)config;
 - (void)updateFrame:(CGFloat)duration;
 - (void)stopGetImageList;
+- (void)setSelectColorInfo:(NSInteger)selectedIndex;
 
 - (void)setPlayTime:(CGFloat)time;
 

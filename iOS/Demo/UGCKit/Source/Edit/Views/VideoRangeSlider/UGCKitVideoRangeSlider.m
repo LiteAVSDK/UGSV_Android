@@ -290,7 +290,16 @@
                 break;
             }
         }
-        [self.delegate onVideoRangeTap:tapTime];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeTap:)]) {
+            [self.delegate onVideoRangeTap:tapTime];
+        }
+    }
+}
+
+- (void)setSelectColorInfo:(NSInteger)selectedIndex
+{
+    if (selectedIndex < _colorInfos.count && _colorInfos[selectedIndex]) {
+        _selectColorInfo = _colorInfos[selectedIndex];
     }
 }
 
@@ -301,7 +310,9 @@
     _leftPos  = self.durationMs * sender.leftScale;
     _rightPos = self.durationMs * sender.rightScale;
     
-    [self.delegate onVideoRangeLeftChanged:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeLeftChanged:)]) {
+        [self.delegate onVideoRangeLeftChanged:self];
+    }
     
     if (_colorType == UGCKitRangeColorType_Paster || _colorType == UGCKitRangeColorType_Text) {
         CGFloat x = self.rangeContent.pinWidth + _leftPos * self.rangeContent.imageListWidth / _durationMs;
@@ -316,7 +327,9 @@
     _leftPos  = self.durationMs * sender.leftScale;
     _rightPos = self.durationMs * sender.rightScale;
     
-    [self.delegate onVideoRangeLeftChangeEnded:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeLeftChangeEnded:)]) {
+        [self.delegate onVideoRangeLeftChangeEnded:self];
+    }
 }
 
 - (void)onRangeCenterChanged:(UGCKitRangeContent *)sender
@@ -324,7 +337,10 @@
     _leftPos  = self.durationMs * sender.leftScale;
     _rightPos = self.durationMs * sender.rightScale;
     _centerPos =  self.durationMs * sender.centerScale;
-    [self.delegate onVideoRangeCenterChanged:self];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeCenterChanged:)]) {
+        [self.delegate onVideoRangeCenterChanged:self];
+    }
 }
 
 - (void)onRangeCenterChangeEnded:(UGCKitRangeContent *)sender
@@ -333,7 +349,9 @@
     _rightPos = self.durationMs * sender.rightScale;
     _centerPos =  self.durationMs * sender.centerScale;
     
-    [self.delegate onVideoRangeCenterChangeEnded:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeCenterChangeEnded:)]) {
+        [self.delegate onVideoRangeCenterChangeEnded:self];
+    }
 }
 
 - (void)onRangeRightChanged:(UGCKitRangeContent *)sender
@@ -341,7 +359,9 @@
     _leftPos  = self.durationMs * sender.leftScale;
     _rightPos = self.durationMs * sender.rightScale;
     
-    [self.delegate onVideoRangeRightChanged:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeRightChanged:)]) {
+        [self.delegate onVideoRangeRightChanged:self];
+    }
     
     if (_colorType == UGCKitRangeColorType_Paster || _colorType == UGCKitRangeColorType_Text) {
         CGFloat x = self.rangeContent.pinWidth + _leftPos * self.rangeContent.imageListWidth / _durationMs;
@@ -356,7 +376,9 @@
     _leftPos  = self.durationMs * sender.leftScale;
     _rightPos = self.durationMs * sender.rightScale;
     
-    [self.delegate onVideoRangeRightChangeEnded:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRangeRightChangeEnded:)]) {
+        [self.delegate onVideoRangeRightChangeEnded:self];
+    }
 }
 
 - (void)onRangeLeftAndRightChanged:(UGCKitRangeContent *)sender
@@ -374,8 +396,9 @@
     
     _currentPos = self.durationMs * pos/self.rangeContent.imageListWidth;
     if (self.disableSeek == NO) {
-        NSLog(@"seek %f", _currentPos);
-        [self.delegate onVideoRange:self seekToPos:self.currentPos];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(onVideoRange:seekToPos:)]) {
+            [self.delegate onVideoRange:self seekToPos:self.currentPos];
+        }
     }
 }
 @end

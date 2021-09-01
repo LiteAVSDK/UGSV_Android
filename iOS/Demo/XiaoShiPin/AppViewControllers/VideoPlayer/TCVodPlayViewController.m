@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger,DragDirection){
     MBProgressHUD*       _hub;
 }
 
--(id)initWithPlayInfoS:(NSArray<TCLiveInfo *>*) liveInfos  liveInfo:(TCLiveInfo *)liveInfo videoIsReady:(videoIsReadyBlock)videoIsReady;
+-(id)initWithPlayInfoS:(NSArray<TCLiveInfo *>*)liveInfos liveInfo:(TCLiveInfo *)liveInfo videoIsReady:(videoIsReadyBlock)videoIsReady;
 {
     self = [super initWithPlayInfo:liveInfo videoIsReady:videoIsReady];
     if (self) {
@@ -182,7 +182,7 @@ typedef NS_ENUM(NSInteger,DragDirection){
 
 
 //在低系统（如7.1.2）可能收不到这个回调，请在onAppDidEnterBackGround和onAppWillEnterForeground里面处理打断逻辑
-- (void) onAudioSessionEvent: (NSNotification *) notification
+- (void)onAudioSessionEvent:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
     AVAudioSessionInterruptionType type = [info[AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
@@ -600,24 +600,32 @@ typedef NS_ENUM(NSInteger,DragDirection){
 
 #pragma mark UISlider - play seek
 -(void)onSeek:(UISlider *)slider{
-    [_currentPlayer seek:_sliderValue];
-    _trackingTouchTS = [[NSDate date]timeIntervalSince1970]*1000;
-    _startSeek = NO;
-}
-
--(void)onSeekBegin:(UISlider *)slider{
-    _startSeek = YES;
-}
-
--(void)onDrag:(UISlider *)slider {
     float progress = slider.value;
     int intProgress = progress + 0.5;
     _currentCell.logicView.playLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d",(int)intProgress / 3600,(int)(intProgress / 60), (int)(intProgress % 60)];
     _sliderValue = slider.value;
 }
 
+-(void)onSeekBegin:(UISlider *)slider{
+    _startSeek = YES;
+    _videoPause = NO;
+}
+
+- (void)onSeekEnd:(UISlider *)slider {
+    _startSeek = NO;
+    _trackingTouchTS = [[NSDate date]timeIntervalSince1970]*1000;
+    if (_sliderValue >= _currentPlayer.duration) {
+        [_currentPlayer seek:0];
+    } else {
+        [_currentPlayer seek:_sliderValue];
+    }
+    
+    [_currentPlayer resume];
+    [_currentCell.logicView.playBtn setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
+}
+
 #pragma mark TXVodPlayListener
--(void) onPlayEvent:(TXVodPlayer *)player event:(int)EvtID withParam:(NSDictionary*)param
+-(void)onPlayEvent:(TXVodPlayer *)player event:(int)EvtID withParam:(NSDictionary*)param
 {
     NSDictionary* dict = param;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -718,12 +726,12 @@ typedef NS_ENUM(NSInteger,DragDirection){
     }
 }
 
--(void) onNetStatus:(TXVodPlayer *)player withParam:(NSDictionary*)param
+-(void)onNetStatus:(TXVodPlayer *)player withParam:(NSDictionary*)param
 {
 
 }
 
--(void) appendLog:(NSString*) evt time:(NSDate*) date mills:(int)mil
+-(void)appendLog:(NSString*)evt time:(NSDate*)date mills:(int)mil
 {
     NSDateFormatter* format = [[NSDateFormatter alloc] init];
     format.dateFormat = @"hh:mm:ss";

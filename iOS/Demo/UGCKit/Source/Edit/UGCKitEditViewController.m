@@ -118,6 +118,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     BOOL          _isSeek;
     BOOL          _isPlay;
     BOOL          _navigationBarHidden;
+    BOOL          _isScrollToStart;
     dispatch_queue_t _imageLoadingQueue;
     NSArray<UGCKitEffectInfo*> *_effectList;
     
@@ -568,6 +569,8 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         [self clearEffect];
         [self onHideEffectView];
         [self resetConfirmBtn];
+        // 清除背景音乐
+        [self->_ugcEdit setBGM:nil result:nil];
     }]];
     [controller addAction:[UIAlertAction actionWithTitle:[_theme localizedString:@"UGCKit.Common.Cancel"]
                                                    style:UIAlertActionStyleCancel
@@ -1309,6 +1312,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             }else{
                 UGCKitVideoPasterInfo* pasterInfo = _videoPasterInfoList[_effectSelectIndex];
                 [_videoPreview addSubview:pasterInfo.pasterView];
+                [_videoCutView setSelectColorInfo:_effectSelectIndex];
                 [self setLeftPanFrame:pasterInfo.startTime rightPanFrame:pasterInfo.endTime];
                 [_ugcEdit previewAtTime:pasterInfo.endTime];
             }
@@ -1323,6 +1327,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             }else{
                 UGCKitVideoTextInfo* textInfo = _videoTextInfoList[_effectSelectIndex];
                 [_videoPreview addSubview:textInfo.textField];
+                [_videoCutView setSelectColorInfo:_effectSelectIndex];
                 [self setLeftPanFrame:textInfo.startTime rightPanFrame:textInfo.endTime];
                 [_ugcEdit previewAtTime:textInfo.endTime];
             }
@@ -1696,10 +1701,11 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 }
 
 #pragma mark TCBGMControllerListener
--(void) onBGMControllerPlay:(NSObject*) path
+-(void)onBGMControllerPlay:(NSObject*) path
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     if (path == nil) {
+        _isScrollToStart = NO;
         [self resetConfirmBtn];
         [self startPlayFromTime:0 toTime:_duration];
         return;
@@ -1708,6 +1714,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             [self onBtnMusicStoped];
         }
         _BGMPath = path;
+        _isScrollToStart = YES;
     }
     __weak __typeof(self) ws = self;
     if([_BGMPath isKindOfClass:[NSString class]]){
@@ -1720,6 +1727,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
             audioAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:strPath] options:dic];
         }
         _BGMDuration = CMTimeGetSeconds(audioAsset.duration);
+        [_musicView freshCutView:_BGMDuration];
         [_ugcEdit setBGM:(NSString *)_BGMPath result:^(int result) {
             if (result == 0) {
                 [ws setBGMStartTime:0 endTime:MAXFLOAT];
@@ -1728,6 +1736,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     } else if([_BGMPath isKindOfClass:[AVURLAsset class]]) {
         AVURLAsset* bgm =  (AVURLAsset*)_BGMPath;
         _BGMDuration = CMTimeGetSeconds(bgm.duration);
+        [_musicView freshCutView:_BGMDuration];
         [_ugcEdit setBGMAsset:(AVAsset *)_BGMPath result:^(int result) {
             if (result == 0) {
                 [ws setBGMStartTime:0 endTime:MAXFLOAT];
@@ -1750,6 +1759,9 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         self->_musicView.hidden = NO;
         self->_bottomMenu.hidden = YES;
         [self resetConfirmBtn];
+        if (self->_isScrollToStart) {
+            [self->_musicView resetSiderView];
+        }
     });
 }
 
@@ -1788,6 +1800,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 }
 -(void)onBGMRangeChange:(CGFloat)startPercent endPercent:(CGFloat)endPercent
 {
+    _isScrollToStart = NO;
     [self setBGMStartTime:_BGMDuration * startPercent endTime:_BGMDuration * endPercent];
 }
 

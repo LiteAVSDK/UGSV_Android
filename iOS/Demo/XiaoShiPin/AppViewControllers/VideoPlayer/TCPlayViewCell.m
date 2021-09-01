@@ -113,47 +113,65 @@
 #pragma TCPlayDecorateDelegate
 -(void)closeVC:(BOOL)isRefresh popViewController:(BOOL)popViewController
 {
-    [_delegate closeVC:isRefresh popViewController:popViewController];
+    if (_delegate && [_delegate respondsToSelector:@selector(closeVC:popViewController:)]) {
+        [_delegate closeVC:isRefresh popViewController:popViewController];
+    }
 }
 
 -(void)clickScreen:(UITapGestureRecognizer *)gestureRecognizer
 {
-    [_delegate clickScreen:gestureRecognizer];
+    if (_delegate && [_delegate respondsToSelector:@selector(clickScreen:)]) {
+        [_delegate clickScreen:gestureRecognizer];
+    }
 }
 
 -(void)clickPlayVod
 {
-    [_delegate clickPlayVod];
+    if (_delegate && [_delegate respondsToSelector:@selector(clickPlayVod)]) {
+        [_delegate clickPlayVod];
+    }
 }
 
 -(void)onSeek:(UISlider *)slider
 {
-    [_delegate onSeek:slider];
+    if (_delegate && [_delegate respondsToSelector:@selector(onSeek:)]) {
+        [_delegate onSeek:slider];
+    }
 }
 
 -(void)onSeekBegin:(UISlider *)slider
 {
-    [_delegate onSeekBegin:slider];
+    if (_delegate && [_delegate respondsToSelector:@selector(onSeekBegin:)]) {
+        [_delegate onSeekBegin:slider];
+    }
 }
 
--(void)onDrag:(UISlider *)slider
+-(void)onSeekEnd:(UISlider *)slider
 {
-    [_delegate onDrag:slider];
+    if (_delegate && [_delegate respondsToSelector:@selector(onSeekEnd:)]) {
+        [_delegate onSeekEnd:slider];
+    }
 }
 
 -(void)clickLog:(UIButton *)button
 {
-    [_delegate clickLog:button];
+    if (_delegate && [_delegate respondsToSelector:@selector(clickLog:)]) {
+        [_delegate clickLog:button];
+    }
 }
 
 -(void)clickChorus:(UIButton *)button
 {
-    [_delegate clickChorus:button];
+    if (_delegate && [_delegate respondsToSelector:@selector(clickChorus:)]) {
+        [_delegate clickChorus:button];
+    }
 }
 
 -(void)clickShare:(UIButton *)button
 {
-    [_delegate clickShare:button];
+    if (_delegate && [_delegate respondsToSelector:@selector(clickShare:)]) {
+        [_delegate clickShare:button];
+    }
 }
 
 

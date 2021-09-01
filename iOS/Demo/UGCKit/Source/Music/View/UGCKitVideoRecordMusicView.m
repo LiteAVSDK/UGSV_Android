@@ -105,7 +105,7 @@
     [self addSubview:_musicCutSlider];
 }
 
--(void) freshCutView:(CGFloat) duration{
+-(void)freshCutView:(CGFloat)duration{
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self _freshCutView:duration];
     });
@@ -118,7 +118,7 @@
     }
 }
 
--(void) resetCutView{
+-(void)resetCutView{
     [_musicCutSlider resetCutView];
 }
 
@@ -173,5 +173,15 @@
 {
     _sldVolumeForBGM.value = 1;
     _sldVolumeForVoice.value = 1;
+}
+
+-(void)resetSiderView
+{
+    if (_musicCutSlider.bgScrollView != nil) {
+        [_musicCutSlider.bgScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
+    if (_startTimeLabel != nil) {
+        [_startTimeLabel setText:[NSString stringWithFormat:L(@"UGCKit.AudioEffect.StartFrom"),[UGCKitBGMSliderCutView timeString:0]]];
+    }
 }
 @end

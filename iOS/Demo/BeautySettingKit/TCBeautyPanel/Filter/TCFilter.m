@@ -25,63 +25,43 @@ TCFilterIdentifier const TCFilterIdentifierRixi      = @"rixi";
 
 @implementation TCFilter
 
-- (instancetype)initWithIdentifier:(TCFilterIdentifier)identifier
-                   lookupImagePath:(NSString *)lookupImagePath
-{
+- (instancetype)initWithIdentifier:(TCFilterIdentifier)identifier lookupImagePath:(NSString *)lookupImagePath {
     if (self = [super init]) {
-        _identifier = identifier;
+        _identifier      = identifier;
         _lookupImagePath = lookupImagePath;
     }
     return self;
 }
 @end
 
-@implementation TCFilterManager
-{
-    NSDictionary<TCFilterIdentifier, TCFilter*> *_filterDictionary;
+@implementation TCFilterManager {
+    NSDictionary<TCFilterIdentifier, TCFilter *> *_filterDictionary;
 }
-+ (instancetype)defaultManager
-{
++ (instancetype)defaultManager {
     static TCFilterManager *defaultManager = nil;
-    static dispatch_once_t onceToken;
+    static dispatch_once_t  onceToken;
     dispatch_once(&onceToken, ^{
         defaultManager = [[TCFilterManager alloc] init];
     });
     return defaultManager;
 }
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
-        NSBundle *bundle = [NSBundle mainBundle];
-        NSString *path = [bundle pathForResource:@"FilterResource" ofType:@"bundle"];
+        NSBundle *     bundle  = [NSBundle mainBundle];
+        NSString *     path    = [bundle pathForResource:@"FilterResource" ofType:@"bundle"];
         NSFileManager *manager = [[NSFileManager alloc] init];
         if ([manager fileExistsAtPath:path]) {
             NSArray<TCFilterIdentifier> *availableFilters = @[
-                TCFilterIdentifierBaiXi,
-                TCFilterIdentifierNormal,
-                TCFilterIdentifierZiRan,
-                TCFilterIdentifierYinghong,
-                TCFilterIdentifierYunshang,
-                TCFilterIdentifierChunzhen,
-                TCFilterIdentifierBailan,
-                TCFilterIdentifierYuanqi,
-                TCFilterIdentifierChaotuo,
-                TCFilterIdentifierXiangfen,
-                TCFilterIdentifierWhite,
-                TCFilterIdentifierLangman,
-                TCFilterIdentifierQingxin,
-                TCFilterIdentifierWeimei,
-                TCFilterIdentifierFennen,
-                TCFilterIdentifierHuaijiu,
-                TCFilterIdentifierLandiao,
-                TCFilterIdentifierQingliang,
-                TCFilterIdentifierRixi];
-            NSMutableArray<TCFilter *> *filters = [[NSMutableArray alloc] initWithCapacity:availableFilters.count];
-            NSMutableDictionary<TCFilterIdentifier, TCFilter*> *filterMap = [[NSMutableDictionary alloc] initWithCapacity:availableFilters.count];
+                TCFilterIdentifierBaiXi, TCFilterIdentifierNormal, TCFilterIdentifierZiRan, TCFilterIdentifierYinghong, TCFilterIdentifierYunshang, TCFilterIdentifierChunzhen,
+                TCFilterIdentifierBailan, TCFilterIdentifierYuanqi, TCFilterIdentifierChaotuo, TCFilterIdentifierXiangfen, TCFilterIdentifierWhite, TCFilterIdentifierLangman,
+                TCFilterIdentifierQingxin, TCFilterIdentifierWeimei, TCFilterIdentifierFennen, TCFilterIdentifierHuaijiu, TCFilterIdentifierLandiao, TCFilterIdentifierQingliang, TCFilterIdentifierRixi
+            ];
+            NSMutableArray<TCFilter *> *                         filters   = [[NSMutableArray alloc] initWithCapacity:availableFilters.count];
+            NSMutableDictionary<TCFilterIdentifier, TCFilter *> *filterMap = [[NSMutableDictionary alloc] initWithCapacity:availableFilters.count];
             for (TCFilterIdentifier identifier in availableFilters) {
-                NSString * itemPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", identifier]];
+                NSString *itemPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", identifier]];
                 if ([manager fileExistsAtPath:path]) {
                     TCFilter *filter = [[TCFilter alloc] initWithIdentifier:identifier lookupImagePath:itemPath];
                     [filters addObject:filter];
@@ -89,14 +69,11 @@ TCFilterIdentifier const TCFilterIdentifierRixi      = @"rixi";
                 }
             }
             _allFilters = filters;
-
         }
     }
     return self;
 }
 
 - (TCFilter *)filterWithIdentifier:(TCFilterIdentifier)identifier;
-{
-    return _filterDictionary[identifier];
-}
+{ return _filterDictionary[identifier]; }
 @end

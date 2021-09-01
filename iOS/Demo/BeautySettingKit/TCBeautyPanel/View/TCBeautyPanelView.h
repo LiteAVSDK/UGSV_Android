@@ -15,9 +15,9 @@ typedef NS_ENUM(NSUInteger, PanelMenuIndex) {
 };
 
 typedef NS_ENUM(NSInteger, TCBeautyStyle) {
-    TCBeautyStyleSmooth    = 0,  ///< 光滑，适用于美女秀场，效果比较明显。
-    TCBeautyStyleNature    = 1,  ///< 自然，磨皮算法更多地保留了面部细节，主观感受上会更加自然。
-    TCBeautyStylePitu      = 2   ///< 企业版美颜算法（企业版有效，其它版本设置此参数无效）
+    TCBeautyStyleSmooth = 0,  ///< 光滑，适用于美女秀场，效果比较明显。
+    TCBeautyStyleNature = 1,  ///< 自然，磨皮算法更多地保留了面部细节，主观感受上会更加自然。
+    TCBeautyStylePitu   = 2   ///< 企业版美颜算法（企业版有效，其它版本设置此参数无效）
 };
 
 @protocol TCBeautyPanelThemeProtocol;
@@ -30,26 +30,23 @@ typedef NS_ENUM(NSInteger, TCBeautyStyle) {
 - (void)onLoadPituFailed;
 @end
 
-@interface TCBeautyPanel : UIView
-@property (nonatomic, assign) NSInteger currentFilterIndex;
-@property (nonatomic, readonly, nullable) NSString* currentFilterName;
-@property (nonatomic, assign) CGFloat bottomOffset;
-@property (nonatomic, assign, readonly) float beautyLevel;
-@property (nonatomic, assign, readonly) float whiteLevel;
-@property (nonatomic, assign, readonly) float ruddyLevel;
-@property (nonatomic, assign, readonly) TCBeautyStyle beautyStyle;
-@property (nonatomic, strong) id<TCBeautyPanelThemeProtocol> theme;
+@interface                                                  TCBeautyPanel : UIView
+@property(nonatomic, assign) NSInteger                      currentFilterIndex;
+@property(nonatomic, readonly, nullable) NSString*          currentFilterName;
+@property(nonatomic, assign) CGFloat                        bottomOffset;
+@property(nonatomic, assign, readonly) float                beautyLevel;
+@property(nonatomic, assign, readonly) float                whiteLevel;
+@property(nonatomic, assign, readonly) float                ruddyLevel;
+@property(nonatomic, assign, readonly) TCBeautyStyle        beautyStyle;
+@property(nonatomic, strong) id<TCBeautyPanelThemeProtocol> theme;
 // 这里是强引用，一般传入一个代理对象，来转发各设置项到SDK
-@property (nonatomic, strong) id<TCBeautyPanelActionPerformer> actionPerformer;
-@property (nonatomic, weak) id<BeautyLoadPituDelegate> pituDelegate;
+@property(nonatomic, strong) id<TCBeautyPanelActionPerformer> actionPerformer;
+@property(nonatomic, weak) id<BeautyLoadPituDelegate>         pituDelegate;
 
 /// 以默认主题实例化美颜面板
-+ (instancetype)beautyPanelWithFrame:(CGRect)frame
-                     actionPerformer:(id<TCBeautyPanelActionPerformer>)actionPerformer;
++ (instancetype)beautyPanelWithFrame:(CGRect)frame actionPerformer:(id<TCBeautyPanelActionPerformer>)actionPerformer;
 
-- (instancetype)initWithFrame:(CGRect)frame
-                        theme:(nullable id<TCBeautyPanelThemeProtocol>)theme
-              actionPerformer:(nullable id<TCBeautyPanelActionPerformer>)actionPerformer;
+- (instancetype)initWithFrame:(CGRect)frame theme:(nullable id<TCBeautyPanelThemeProtocol>)theme actionPerformer:(nullable id<TCBeautyPanelActionPerformer>)actionPerformer;
 
 /**
  * 重置默认值，并通过 actionPerformer 应用默认值
