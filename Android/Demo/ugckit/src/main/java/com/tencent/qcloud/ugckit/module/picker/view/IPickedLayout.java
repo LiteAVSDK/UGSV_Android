@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module.picker.view;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 

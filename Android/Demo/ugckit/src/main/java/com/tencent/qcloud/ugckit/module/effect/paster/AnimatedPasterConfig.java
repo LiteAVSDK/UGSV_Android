@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect.paster;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;

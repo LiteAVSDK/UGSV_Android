@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 
 /**
  * 定制化播放状态控制UI

@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module.record.interfaces;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 
 /**
  * 定制化"多模式录制的录制按钮"

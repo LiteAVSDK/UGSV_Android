@@ -1,13 +1,12 @@
 package com.tencent.qcloud.ugckit.module;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
 import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;

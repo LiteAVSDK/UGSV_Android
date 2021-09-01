@@ -6,9 +6,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -73,7 +73,7 @@ public class TCVideoFollowRecordActivity extends FragmentActivity {
 
             @Override
             public void onMixRecordCompleted(UGCKitResult ugcKitResult) {
-                startEditActivity();
+                startEditActivity(ugcKitResult);
                 finish();
             }
 
@@ -97,9 +97,10 @@ public class TCVideoFollowRecordActivity extends FragmentActivity {
         }
     }
 
-    private void startEditActivity() {
+    private void startEditActivity(UGCKitResult ugcKitResult) {
         // 更新一下VideoInfo的时间
         Intent intent = new Intent(this, TCVideoEditerActivity.class);
+        intent.putExtra(UGCKitConstants.VIDEO_PATH, ugcKitResult.outputPath);
         startActivity(intent);
     }
 

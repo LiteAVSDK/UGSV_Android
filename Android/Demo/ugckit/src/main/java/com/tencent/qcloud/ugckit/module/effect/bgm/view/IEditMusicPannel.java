@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect.bgm.view;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 

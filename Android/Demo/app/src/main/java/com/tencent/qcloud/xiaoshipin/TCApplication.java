@@ -2,7 +2,7 @@ package com.tencent.qcloud.xiaoshipin;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.ugckit.UGCKit;

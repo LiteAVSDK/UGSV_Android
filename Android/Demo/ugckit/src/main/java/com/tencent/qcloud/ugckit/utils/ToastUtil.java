@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.utils;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Toast;
 
 import com.tencent.qcloud.ugckit.UGCKit;

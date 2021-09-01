@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.basic;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Activity跳转的信息保存

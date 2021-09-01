@@ -25,6 +25,7 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
     private RecordMusicPannel  mRecordMusicPannel;
     private SoundEffectsPannel mSoundEffectsPannel;
     private ImageSnapShotView  mImageSnapShotView;
+    private RecordPauseSnapView mRecordPauseSnapView;
 
     public AbsVideoRecordUI(Context context) {
         super(context);
@@ -61,6 +62,8 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mSoundEffectsPannel = (SoundEffectsPannel) findViewById(R.id.sound_effect_pannel);
 
         mImageSnapShotView = (ImageSnapShotView) findViewById(R.id.image_snapshot_view);
+
+        mRecordPauseSnapView = (RecordPauseSnapView) findViewById(R.id.record_pause_snap_view);
     }
 
     public TitleBarLayout getTitleBar() {
@@ -97,6 +100,10 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
 
     public SoundEffectsPannel getSoundEffectPannel() {
         return mSoundEffectsPannel;
+    }
+
+    public RecordPauseSnapView getRecordPauseSnapView() {
+        return mRecordPauseSnapView;
     }
 
     @Override

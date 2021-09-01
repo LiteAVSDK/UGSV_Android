@@ -4,9 +4,7 @@ package com.tencent.qcloud.ugckit.module.picker.data;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-
-import java.io.Serializable;
+import androidx.annotation.NonNull;
 
 public class TCVideoFileInfo implements Parcelable {
     public static final int FILE_TYPE_VIDEO   = 0;

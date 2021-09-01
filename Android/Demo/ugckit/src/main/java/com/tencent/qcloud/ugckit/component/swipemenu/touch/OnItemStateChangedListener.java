@@ -1,9 +1,9 @@
 
 package com.tencent.qcloud.ugckit.component.swipemenu.touch;
 
-import android.support.annotation.IntDef;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.IntDef;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

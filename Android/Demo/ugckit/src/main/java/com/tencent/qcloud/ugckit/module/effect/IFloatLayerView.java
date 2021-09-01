@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
 import android.graphics.Bitmap;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 
 /**
  * 定制化气泡字幕/贴纸的浮层View

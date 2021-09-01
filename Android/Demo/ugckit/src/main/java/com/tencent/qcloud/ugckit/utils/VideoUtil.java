@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.utils;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.io.BufferedInputStream;
@@ -16,7 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class VideoUtil {
-    private static final String TAG = VideoUtil.class.getSimpleName();
+    private static final String TAG = "VideoUtil";
 
     public VideoUtil() {
     }

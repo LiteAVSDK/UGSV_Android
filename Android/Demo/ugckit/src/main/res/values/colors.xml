@@ -214,4 +214,6 @@
     <color name="ugckit_record_button_touch_shot_inner_color">#FF3030</color>
     <!-- 转场 -->
     <color name="ugckit_transition_mark_color">#9000ff00</color>
+    <!-- timeline slider背景 -->
+    <color name="ugckit_slider_bg">#75FB7B</color>
 </resources>

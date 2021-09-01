@@ -3,7 +3,7 @@ package com.tencent.qcloud.ugckit.module.effect;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +16,7 @@ import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressView;
+import com.tencent.qcloud.ugckit.module.effect.time.TCTimeFragment;
 import com.tencent.qcloud.ugckit.module.effect.time.TimeEffect;
 import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
 
@@ -142,6 +143,7 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
             mSpeedSlider = new SliderViewContainer(getContext());
             mSpeedSlider.setSliderIcon(startProgressIcon);
             mSpeedSlider.setStartTimeMs(startEffectTime);
+            mSpeedSlider.setSliderDuration(TCTimeFragment.DEAULT_SPEED_DURATION_MS);
             mSpeedSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
                 @Override
                 public void onStartTimeMsChanged(long timeMs) {
@@ -160,6 +162,7 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
             mRepeatSlider = new SliderViewContainer(getContext());
             mRepeatSlider.setSliderIcon(startProgressIcon);
             mRepeatSlider.setStartTimeMs(startEffectTime);
+            mRepeatSlider.setSliderDuration(TCTimeFragment.DEAULT_REPEAT_DURATION_MS);
             mRepeatSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
                 @Override
                 public void onStartTimeMsChanged(long timeMs) {

@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module.effect.bgm.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;

@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.mixrecord;
 
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 
 /**
  * 定制化倒计时View

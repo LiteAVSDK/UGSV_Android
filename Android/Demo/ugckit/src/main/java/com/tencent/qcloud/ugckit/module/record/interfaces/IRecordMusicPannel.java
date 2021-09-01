@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.module.record.interfaces;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 

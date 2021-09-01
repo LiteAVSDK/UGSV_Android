@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.module.record.interfaces;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Size;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Size;
 
 import com.tencent.ugc.TXRecordCommon;
 

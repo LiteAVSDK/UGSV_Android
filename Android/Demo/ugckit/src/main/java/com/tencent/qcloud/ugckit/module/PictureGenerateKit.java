@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
 import com.tencent.qcloud.ugckit.utils.CoverUtil;

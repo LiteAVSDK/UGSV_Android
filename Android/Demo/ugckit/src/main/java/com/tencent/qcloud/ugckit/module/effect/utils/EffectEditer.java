@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect.utils;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * 生效的配置保存【点击完成】

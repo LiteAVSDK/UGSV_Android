@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.component.dialogfragment;
 
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 
 

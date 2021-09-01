@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.module.effect.time;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +32,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private static final String TAG                = "TCTimeFragment";
-    public static final  long   DEAULT_DURATION_MS = 1000; //默认重复时间段1s
+    public static final  long DEAULT_REPEAT_DURATION_MS = 1000; //默认重复时间段1s
+    public static final  long DEAULT_SPEED_DURATION_MS = 1500; //默认速度时间段1.5s
 
     private ImageView                       mImageCancel;
     private ImageView                       mImageSpeed;
@@ -163,7 +164,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         List<TXVideoEditConstants.TXRepeat> repeatList = new ArrayList<>();
         TXVideoEditConstants.TXRepeat repeat = new TXVideoEditConstants.TXRepeat();
         repeat.startTime = currentPts;
-        repeat.endTime = currentPts + DEAULT_DURATION_MS;
+        repeat.endTime = currentPts + DEAULT_REPEAT_DURATION_MS;
         repeat.repeatTimes = 3;
         repeatList.add(repeat);
         mTXVideoEditer.setRepeatPlay(repeatList);

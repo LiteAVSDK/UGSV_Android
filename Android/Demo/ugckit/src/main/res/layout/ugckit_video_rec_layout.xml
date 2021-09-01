@@ -12,6 +12,12 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
+    <com.tencent.qcloud.ugckit.module.record.RecordPauseSnapView
+        android:id="@+id/record_pause_snap_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"/>
+
     <com.tencent.qcloud.ugckit.module.record.ScrollFilterView
         android:id="@+id/scrollFilterView"
         android:layout_width="match_parent"

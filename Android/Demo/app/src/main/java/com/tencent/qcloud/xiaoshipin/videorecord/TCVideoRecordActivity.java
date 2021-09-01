@@ -6,9 +6,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -66,7 +66,7 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
             @Override
             public void onRecordCompleted(UGCKitResult ugcKitResult) {
                 if (ugcKitResult.errorCode == 0) {
-                    startEditActivity();
+                    startEditActivity(ugcKitResult);
                 } else {
                     ToastUtil.toastShortMessage("record video failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
                 }
@@ -89,8 +89,9 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
-    private void startEditActivity() {
+    private void startEditActivity(UGCKitResult ugcKitResult) {
         Intent intent = new Intent(this, TCVideoEditerActivity.class);
+        intent.putExtra(UGCKitConstants.VIDEO_PATH, ugcKitResult.outputPath);
         startActivity(intent);
     }
 

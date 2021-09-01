@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 

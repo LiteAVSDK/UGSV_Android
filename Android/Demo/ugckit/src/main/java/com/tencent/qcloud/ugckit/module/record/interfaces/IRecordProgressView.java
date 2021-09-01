@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.record.interfaces;
 
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 
 /**
  * 定制化"多段录制进度条"<br>

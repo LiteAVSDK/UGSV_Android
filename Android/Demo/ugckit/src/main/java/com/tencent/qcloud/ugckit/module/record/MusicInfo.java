@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.record;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * 录制-音乐信息

@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.picker.view;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;

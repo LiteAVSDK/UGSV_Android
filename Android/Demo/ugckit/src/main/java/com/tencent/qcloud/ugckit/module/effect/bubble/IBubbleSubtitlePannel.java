@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.module.effect.bubble;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 
 import java.util.List;
 

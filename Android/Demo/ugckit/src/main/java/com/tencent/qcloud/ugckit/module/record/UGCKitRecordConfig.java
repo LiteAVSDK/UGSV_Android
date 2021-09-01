@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.record;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.tencent.liteav.audio.TXEAudioDef;
 import com.tencent.liteav.demo.beauty.BeautyParams;
@@ -30,6 +30,12 @@ public class UGCKitRecordConfig {
     public int     mFPS             = 20;
     public boolean mIsMute          = false;
     public boolean mIsNeedEdit      = true;
+    /**
+     * 录制暂留图片透明度，为0的时候，代表取消暂留图片
+     *
+     * 暂时关闭暂留画面，等IOS上线该功能后再一起打开 kongdywang 2021/08/31/
+     */
+    public float mPauseSnapOpacity = 0f;
     /**
      * 录制最短时间（以毫秒为单位）
      */
@@ -118,5 +124,6 @@ public class UGCKitRecordConfig {
         mBeautyParams = null;
         musicInfo = new MusicInfo();
         mAECType = TXEAudioDef.TXE_AEC_NONE;
+        mPauseSnapOpacity = 0.7f;
     }
 }

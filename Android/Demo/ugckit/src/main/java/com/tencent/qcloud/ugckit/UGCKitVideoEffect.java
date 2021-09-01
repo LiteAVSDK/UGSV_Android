@@ -2,10 +2,10 @@ package com.tencent.qcloud.ugckit;
 
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -86,6 +86,9 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
         getTitleBar().setOnRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 清理时间轴的滑动事件，防止与上一级页面的播放状态冲突
+                getTimelineView().getVideoProgressView().getRecyclerView().clearOnScrollListeners();
+
                 // 点击"完成"，应用当前设置的视频特效
                 ConfigureLoader.getInstance().saveConfigFromDraft();
 

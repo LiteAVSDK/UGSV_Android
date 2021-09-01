@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module.effect.utils;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 

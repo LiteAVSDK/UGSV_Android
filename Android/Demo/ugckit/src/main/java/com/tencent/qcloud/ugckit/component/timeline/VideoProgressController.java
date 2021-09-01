@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.component.timeline;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -290,6 +290,27 @@ public class VideoProgressController {
     public int duration2Distance(long durationMs) {
         float rate = durationMs * 1.0f / mTotalDurationMs;
         return (int) (getThumbnailPicListDisplayWidth() * rate);
+    }
+
+    public int calculateSliderWidth(long durationMs) {
+        int resultWidth;
+        float thumbnailPicDisplayWidth = getThumbnailPicListDisplayWidth();
+        //最小宽度不能低于0.1秒宽度
+        float durationSec = durationMs < 100 ? 0.1F : durationMs / 1000F;
+
+        int durationMinWidth;
+        if(mTotalDurationMs > 1) {
+            durationMinWidth = (int) (thumbnailPicDisplayWidth / (mTotalDurationMs / 1000));
+        } else {
+            durationMinWidth = (int) (mVideoProgressDisplayWidth / 16);
+        }
+
+        resultWidth = (int) (durationMinWidth * durationSec);
+        //如果最终计算出来的宽度大于整个视频时间轴上的宽度，那么将宽度置为视频轴的宽度
+        if(resultWidth > thumbnailPicDisplayWidth) {
+            resultWidth = (int) thumbnailPicDisplayWidth;
+        }
+        return resultWidth;
     }
 
     long distance2Duration(float distance) {

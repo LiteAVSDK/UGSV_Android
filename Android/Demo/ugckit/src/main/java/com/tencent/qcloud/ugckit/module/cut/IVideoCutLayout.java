@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.module.cut;
 
 import android.graphics.Bitmap;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 
 import com.tencent.ugc.TXVideoEditConstants;
 

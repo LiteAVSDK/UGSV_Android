@@ -2,8 +2,8 @@ package com.tencent.qcloud.ugckit;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -69,11 +69,13 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
         getTitleBar().setOnRightClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setEnableRightButton(false);
                 mProgressFragmentUtil.showLoadingProgress(new ProgressFragmentUtil.IProgressListener() {
                     @Override
                     public void onStop() {
                         // 取消裁剪
                         mProgressFragmentUtil.dismissLoadingProgress();
+                        setEnableRightButton(true);
                         boolean editFlag = JumpActivityMgr.getInstance().getEditFlagFromCut();
                         if (editFlag) {
                             ProcessKit.getInstance().stopProcess();
@@ -203,6 +205,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                         ugcKitResult.descMsg = descMsg;
                         listener.onCutterCompleted(ugcKitResult);
                     }
+                    setEnableRightButton(true);
                 }
 
                 @Override
@@ -232,6 +235,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                         ugcKitResult.coverPath = VideoGenerateKit.getInstance().getCoverPath();
                         listener.onCutterCompleted(ugcKitResult);
                     }
+                    setEnableRightButton(true);
                 }
 
                 @Override
@@ -281,6 +285,12 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
     @Override
     public void onPreviewProgress(int time) {
 
+    }
+
+    private void setEnableRightButton(boolean isOpen) {
+        if(null != getTitleBar()) {
+            getTitleBar().getRightButton().setEnabled(isOpen);
+        }
     }
 
     @Override

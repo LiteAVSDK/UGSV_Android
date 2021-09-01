@@ -2,8 +2,8 @@ package com.tencent.qcloud.ugckit.component.bubbleview;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.module.effect.bubble.TCBubbleInfo;
 import com.tencent.qcloud.ugckit.module.effect.bubble.TCSubtitleInfo;

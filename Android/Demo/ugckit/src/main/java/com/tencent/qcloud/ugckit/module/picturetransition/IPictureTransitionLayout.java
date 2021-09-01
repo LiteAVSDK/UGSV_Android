@@ -1,6 +1,6 @@
 package com.tencent.qcloud.ugckit.module.picturetransition;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 /**
  * 定制化图片转场Icon

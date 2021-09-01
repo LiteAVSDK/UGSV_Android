@@ -2,8 +2,8 @@ package com.tencent.qcloud.ugckit;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -91,11 +91,13 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
         getTitleBar().setOnRightClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setEnableRightButton(false);
                 mProgressFragmentUtil.showLoadingProgress(new ProgressFragmentUtil.IProgressListener() {
                     @Override
                     public void onStop() {
                         // 点击进度条"X"取消生成
                         mProgressFragmentUtil.dismissLoadingProgress();
+                        setEnableRightButton(true);
                         PictureGenerateKit.getInstance().stopGenerate();
                         PlayerManagerKit.getInstance().startPlay();
                     }
@@ -174,6 +176,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
                     ugcKitResult.coverPath = PictureGenerateKit.getInstance().getCoverPath();
                     listener.onPictureJoinCompleted(ugcKitResult);
                 }
+                setEnableRightButton(true);
             }
 
             @Override
@@ -184,6 +187,12 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
                 }
             }
         });
+    }
+
+    private void setEnableRightButton(boolean isOpen) {
+        if(null != getTitleBar()) {
+            getTitleBar().getRightButton().setEnabled(isOpen);
+        }
     }
 
     @Override

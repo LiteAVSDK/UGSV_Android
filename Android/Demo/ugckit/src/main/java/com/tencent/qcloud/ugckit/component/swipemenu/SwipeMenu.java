@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
 import android.content.Context;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.widget.LinearLayout;
 
 import java.lang.annotation.Retention;

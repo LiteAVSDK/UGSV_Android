@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module.picturetransition;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.ugc.TXVideoEditConstants;
