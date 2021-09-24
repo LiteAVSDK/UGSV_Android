@@ -41,6 +41,10 @@ public class UGCKitConstants {
     public static final int    TYPE_EDITER_SUBTITLE            = 6;
     public static final int    TYPE_EDITER_TRANSITION          = 7;
     public static final String CHORUS_URL                      = "http://1400100725.vod2.myqcloud.com/8b7d5993vodgzp1400100725/d864a3545285890780576877210/ss2W2I8oIn4A.mp4";   // 合唱演示视频地址
+    /**
+     * 暂时关闭暂留画面，等IOS上线该功能后再一起打开 kongdywang 2021/08/31/
+     */
+    public static final int    DEFAULT_PAUSE_SNAP_OPACITY      = 0;
     // EventBus Msg
     public static final int    EVENT_MSG_PUBLISH_DONE          = 1; // 上传视频成功
     // SP record draft录制草稿

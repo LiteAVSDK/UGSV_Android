@@ -256,6 +256,7 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
 
     @Override
     public void stopPlay() {
+        setEnableRightButton(true);
         PlayerManagerKit.getInstance().stopPlay();
         PlayerManagerKit.getInstance().removeOnPreviewListener(this);
         boolean editFlag = JumpActivityMgr.getInstance().getEditFlagFromCut();

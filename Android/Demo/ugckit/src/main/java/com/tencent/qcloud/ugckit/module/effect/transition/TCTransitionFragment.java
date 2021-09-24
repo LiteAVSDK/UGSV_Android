@@ -108,7 +108,7 @@ public class TCTransitionFragment extends Fragment {
         mModelList.add(new TransitionModel(TXEVideoTransitionDef.CROSS_WARP, R.string.trans_crosswarp, "crosswarp.gif"));
         mModelList.add(new TransitionModel(TXEVideoTransitionDef.CUBE, R.string.trans_cube, "cube.gif"));
         mModelList.add(new TransitionModel(TXEVideoTransitionDef.DOOR_WAY, R.string.trans_doorway, "doorway.gif"));
-        mModelList.add(new TransitionModel(TXEVideoTransitionDef.FADE_GRAY_SCALE, R.string.trans_fadegrayscale, "fadegrayscale.giff"));
+        mModelList.add(new TransitionModel(TXEVideoTransitionDef.FADE_GRAY_SCALE, R.string.trans_fadegrayscale, "fadegrayscale.gif"));
         mModelList.add(new TransitionModel(TXEVideoTransitionDef.FLY_EYE, R.string.trans_flyeye, "flyeye.gif"));
         mModelList.add(new TransitionModel(TXEVideoTransitionDef.PIXELIZE, R.string.trans_pixelize, "pixelize.gif"));
         mModelList.add(new TransitionModel(TXEVideoTransitionDef.SQUEEZE, R.string.trans_squeeze, "squeeze.gif"));

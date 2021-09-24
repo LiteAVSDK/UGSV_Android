@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.tencent.liteav.audio.TXEAudioDef;
 import com.tencent.liteav.demo.beauty.BeautyParams;
+import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.ugc.TXRecordCommon;
 
@@ -32,10 +33,8 @@ public class UGCKitRecordConfig {
     public boolean mIsNeedEdit      = true;
     /**
      * 录制暂留图片透明度，为0的时候，代表取消暂留图片
-     *
-     * 暂时关闭暂留画面，等IOS上线该功能后再一起打开 kongdywang 2021/08/31/
      */
-    public float mPauseSnapOpacity = 0f;
+    public float mPauseSnapOpacity = UGCKitConstants.DEFAULT_PAUSE_SNAP_OPACITY;
     /**
      * 录制最短时间（以毫秒为单位）
      */
@@ -124,6 +123,6 @@ public class UGCKitRecordConfig {
         mBeautyParams = null;
         musicInfo = new MusicInfo();
         mAECType = TXEAudioDef.TXE_AEC_NONE;
-        mPauseSnapOpacity = 0.7f;
+        mPauseSnapOpacity = UGCKitConstants.DEFAULT_PAUSE_SNAP_OPACITY;
     }
 }
