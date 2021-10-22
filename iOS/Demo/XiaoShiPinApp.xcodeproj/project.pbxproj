@@ -7,19 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4005887625FBA72E00C518CC /* YTHandDetector.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005886A25FBA72E00C518CC /* YTHandDetector.bundle */; };
-		4005887725FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin in Resources */ = {isa = PBXBuildFile; fileRef = 4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */; };
-		4005887825FBA72E00C518CC /* RPNSegmenter.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */; };
-		4005887925FBA72E00C518CC /* e1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005886D25FBA72E00C518CC /* e1 */; };
-		4005887A25FBA72E00C518CC /* u1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005886E25FBA72E00C518CC /* u1 */; };
-		4005887B25FBA72E00C518CC /* v1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005886F25FBA72E00C518CC /* v1 */; };
-		4005887C25FBA72E00C518CC /* detector.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887025FBA72E00C518CC /* detector.bundle */; };
-		4005887D25FBA72E00C518CC /* AECore.metallib in Resources */ = {isa = PBXBuildFile; fileRef = 4005887125FBA72E00C518CC /* AECore.metallib */; };
-		4005887E25FBA72E00C518CC /* o1 in Resources */ = {isa = PBXBuildFile; fileRef = 4005887225FBA72E00C518CC /* o1 */; };
-		4005887F25FBA72E00C518CC /* poseest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887325FBA72E00C518CC /* poseest.bundle */; };
-		4005888025FBA72E00C518CC /* FilterEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887425FBA72E00C518CC /* FilterEngine.bundle */; };
-		4005888125FBA72E00C518CC /* ufa.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887525FBA72E00C518CC /* ufa.bundle */; };
-		400B68D9245825370055D584 /* TXLiteAVSDK_Enterprise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400B68D7245825370055D584 /* TXLiteAVSDK_Enterprise.framework */; };
 		406436D024BDA86D0032FF93 /* UGCKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4011E1AB24BDA80F007F636A /* UGCKitResources.bundle */; };
 		406436D124BDA8750032FF93 /* TCBeautyPanelResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4011E1B424BDA824007F636A /* TCBeautyPanelResources.bundle */; };
 		406436D224BDA8A00032FF93 /* TCBeautyPanel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4011E1B224BDA824007F636A /* TCBeautyPanel.framework */; };
@@ -241,16 +228,15 @@
 		4005886A25FBA72E00C518CC /* YTHandDetector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = YTHandDetector.bundle; sourceTree = "<group>"; };
 		4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSFMLandmarks46_relandmark_models.xbin; sourceTree = "<group>"; };
 		4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RPNSegmenter.bundle; sourceTree = "<group>"; };
-		4005886D25FBA72E00C518CC /* e1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = e1; sourceTree = "<group>"; };
-		4005886E25FBA72E00C518CC /* u1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = u1; sourceTree = "<group>"; };
-		4005886F25FBA72E00C518CC /* v1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = v1; sourceTree = "<group>"; };
+		4005886D25FBA72E00C518CC /* e1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e1; sourceTree = "<group>"; };
+		4005886E25FBA72E00C518CC /* u1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = u1; sourceTree = "<group>"; };
+		4005886F25FBA72E00C518CC /* v1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = v1; sourceTree = "<group>"; };
 		4005887025FBA72E00C518CC /* detector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = detector.bundle; sourceTree = "<group>"; };
 		4005887125FBA72E00C518CC /* AECore.metallib */ = {isa = PBXFileReference; lastKnownFileType = "archive.metal-library"; path = AECore.metallib; sourceTree = "<group>"; };
-		4005887225FBA72E00C518CC /* o1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = o1; sourceTree = "<group>"; };
+		4005887225FBA72E00C518CC /* o1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = o1; sourceTree = "<group>"; };
 		4005887325FBA72E00C518CC /* poseest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = poseest.bundle; sourceTree = "<group>"; };
 		4005887425FBA72E00C518CC /* FilterEngine.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterEngine.bundle; sourceTree = "<group>"; };
 		4005887525FBA72E00C518CC /* ufa.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ufa.bundle; sourceTree = "<group>"; };
-		400B68D7245825370055D584 /* TXLiteAVSDK_Enterprise.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_Enterprise.framework; path = ../../SDK/TXLiteAVSDK_Enterprise.framework; sourceTree = "<group>"; };
 		4011E1A324BDA80F007F636A /* UGCKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UGCKit.xcodeproj; path = ./UGCKit/UGCKit.xcodeproj; sourceTree = "<group>"; };
 		4011E1AC24BDA824007F636A /* TCBeautyPanel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TCBeautyPanel.xcodeproj; path = ./BeautySettingKit/TCBeautyPanel.xcodeproj; sourceTree = "<group>"; };
 		40A37344246A3916004E3FC7 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = XiaoShiPin/Frameworks/Bugly.framework; sourceTree = "<group>"; };
@@ -564,7 +550,6 @@
 			files = (
 				406436D324BDA8A30032FF93 /* UGCKit.framework in Frameworks */,
 				406436D224BDA8A00032FF93 /* TCBeautyPanel.framework in Frameworks */,
-				400B68D9245825370055D584 /* TXLiteAVSDK_Enterprise.framework in Frameworks */,
 				40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */,
 				40F4D6872473EC9800847F5B /* QCloudCOSXML.framework in Frameworks */,
 				455AB05E237BED1800AF4A3C /* AssetsLibrary.framework in Frameworks */,
@@ -750,7 +735,6 @@
 			isa = PBXGroup;
 			children = (
 				40A37344246A3916004E3FC7 /* Bugly.framework */,
-				400B68D7245825370055D584 /* TXLiteAVSDK_Enterprise.framework */,
 				455AB05D237BED1800AF4A3C /* AssetsLibrary.framework */,
 				455AAEF0237ABBB800AF4A3C /* libsqlite3.tbd */,
 				455AAEEE237ABBB300AF4A3C /* OpenAL.framework */,
@@ -1295,25 +1279,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4005887625FBA72E00C518CC /* YTHandDetector.bundle in Resources */,
 				457BFBDB23901362004017FE /* InfoPlist.strings in Resources */,
 				453DE2C32379458C0083E759 /* LaunchScreen.storyboard in Resources */,
 				455AAF0A237AEF3C00AF4A3C /* Localizable.strings in Resources */,
-				4005887725FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin in Resources */,
 				453DE2C02379458C0083E759 /* Assets.xcassets in Resources */,
-				4005888125FBA72E00C518CC /* ufa.bundle in Resources */,
-				4005887D25FBA72E00C518CC /* AECore.metallib in Resources */,
-				4005887F25FBA72E00C518CC /* poseest.bundle in Resources */,
-				4005887825FBA72E00C518CC /* RPNSegmenter.bundle in Resources */,
-				4005887B25FBA72E00C518CC /* v1 in Resources */,
 				45C56C2A237A9993009BDB9F /* LICENSE in Resources */,
-				4005887925FBA72E00C518CC /* e1 in Resources */,
 				406436D024BDA86D0032FF93 /* UGCKitResources.bundle in Resources */,
-				4005887A25FBA72E00C518CC /* u1 in Resources */,
 				453DE2BE2379458A0083E759 /* Main.storyboard in Resources */,
-				4005887C25FBA72E00C518CC /* detector.bundle in Resources */,
-				4005888025FBA72E00C518CC /* FilterEngine.bundle in Resources */,
-				4005887E25FBA72E00C518CC /* o1 in Resources */,
 				406436D124BDA8750032FF93 /* TCBeautyPanelResources.bundle in Resources */,
 				45C56C6A237AA12E009BDB9F /* TCVideoEditPrevViewController.xib in Resources */,
 				45C56CA7237AA21F009BDB9F /* MJRefresh.bundle in Resources */,
@@ -1676,7 +1648,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 5GHU44CJHG;
+				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1700,7 +1672,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
+				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1803,7 +1775,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 5GHU44CJHG;
+				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1827,7 +1799,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Wildcard Dev";
+				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = DailyBuild;
