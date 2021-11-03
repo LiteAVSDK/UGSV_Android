@@ -70,6 +70,9 @@ public class TCVideoPickerActivity extends Activity {
     public void startVideoCutActivity(TCVideoFileInfo fileInfo) {
         Intent intent = new Intent(this, TCVideoCutActivity.class);
         intent.putExtra(UGCKitConstants.VIDEO_PATH, fileInfo.getFilePath());
+        if (fileInfo.getFileUri() != null) {
+            intent.putExtra(UGCKitConstants.VIDEO_URI, fileInfo.getFileUri().toString());
+        }
         startActivity(intent);
     }
 

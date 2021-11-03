@@ -6,6 +6,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
+        if (!videoEngineSourcePath.isEmpty()) {
+            classpath 'me.tatarka:gradle-retrolambda:3.7.1'
+        }
     }
 }
 
@@ -14,6 +17,9 @@ allprojects {
         flatDir {
             dirs 'src/main/jniLibs'
             dirs project(':app').file('libs')
+            if (!liteavSourcePath.isEmpty()) {
+                dirs project(':liteav_leb_player').file('src/main/libs')
+            }
         }
         jcenter()
         google()
@@ -25,10 +31,18 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+if (!liteavSourcePath.isEmpty()) {
+    apply from: new File(getRootDir().getPath(), "../source_link_gradle/liteav_source_build.gradle").getAbsolutePath()
+}
+
+if (!videoEngineSourcePath.isEmpty()) {
+    apply from: new File(getRootDir().getPath(), "../source_link_gradle/videoengine_source_build.gradle").getAbsolutePath()
+}
+
 ext {
-    compileSdkVersion = 28
-    buildToolsVersion = "28.0.3"
-    supportSdkVersion = "25.4.0"
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.2"
+    supportSdkVersion = "26.1.0"
     minSdkVersion = 16
     targetSdkVersion = 26
     versionCode = 1
@@ -39,5 +53,9 @@ ext {
     noffmpeg = false
     noijkplay = false
     aekit_version = '1.0.19-cloud'
+    if (!liteavSourcePath.isEmpty()) {
     liteavSdk="com.tencent.liteav:LiteAVSDK_Professional:latest.release"
+    } else {
+    liteavSdk="com.tencent.liteav:LiteAVSDK_Professional:latest.release"
+    }
 }

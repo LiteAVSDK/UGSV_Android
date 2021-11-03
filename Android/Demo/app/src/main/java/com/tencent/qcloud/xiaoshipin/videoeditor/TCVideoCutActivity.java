@@ -1,10 +1,12 @@
 package com.tencent.qcloud.xiaoshipin.videoeditor;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -23,7 +25,7 @@ import com.tencent.qcloud.ugckit.UGCKitVideoCut;
 public class TCVideoCutActivity extends FragmentActivity {
     private String TAG = "TCVideoCutActivity";
     private UGCKitVideoCut mUGCKitVideoCut;
-    private String mInVideoPath;
+
     private IVideoCutKit.OnCutListener mOnCutListener = new IVideoCutKit.OnCutListener() {
         /**
          * 视频裁剪进度条执行完成后调用
@@ -55,8 +57,16 @@ public class TCVideoCutActivity extends FragmentActivity {
         setTheme(R.style.EditerActivityTheme);
         setContentView(R.layout.activity_video_cut);
         mUGCKitVideoCut = (UGCKitVideoCut) findViewById(R.id.video_cutter_layout);
-        mInVideoPath = getIntent().getStringExtra(UGCKitConstants.VIDEO_PATH);
-        mUGCKitVideoCut.setVideoPath(mInVideoPath);
+        String inVideoPath = getIntent().getStringExtra(UGCKitConstants.VIDEO_PATH);
+        String inVideoUri = getIntent().getStringExtra(UGCKitConstants.VIDEO_URI);
+
+        String path;
+        if (Build.VERSION.SDK_INT >= 29) {
+            path = TextUtils.isEmpty(inVideoUri) ? inVideoPath : inVideoUri;
+        } else {
+            path = inVideoPath;
+        }
+        mUGCKitVideoCut.setVideoPath(path);
         mUGCKitVideoCut.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
