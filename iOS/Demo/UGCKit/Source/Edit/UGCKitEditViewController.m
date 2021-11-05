@@ -952,6 +952,17 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
 
 - (void)generateVideo
 {
+    //当不支持二次编码时，弹出提示
+    if (self.generateMode == UGCKitGenerateModeTwoPass && ![_ugcEdit supportsTwoPassEncoding]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:[_theme localizedString:@"UGCKit.Common.NotSupportTwopass"]
+                                                       delegate:nil
+                                              cancelButtonTitle:[_theme localizedString:@"UGCKit.Common.NotSupportTwopassOK"]
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
     [self pausePlay];
     [self confirmGenerateVideo];
 }

@@ -209,20 +209,28 @@ extern BOOL g_bNeedEnterPushSettingView;
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TCUserInfoCellItem *item = _userInfoUISetArry[indexPath.row];
-    TCUserInfoTableViewCell *cell = (TCUserInfoTableViewCell*)[tableView  dequeueReusableCellWithIdentifier:@"cell"];
-    if(cell == nil) {
-        cell = [[TCUserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        [cell initUserinfoViewCellData:item];
-        if (TCUserInfo_View == item.type
-            && NO == [cell.gestureRecognizers containsObject:_longPressGesture]) {
-            [cell addGestureRecognizer:_longPressGesture];
-        } else {
-            [cell removeGestureRecognizer:_longPressGesture];
+    if (TCUserInfo_View == item.type) {
+        // 用户信息
+        TCUserInfoTableViewCell *cell = (TCUserInfoTableViewCell*)[tableView  dequeueReusableCellWithIdentifier:@"cell_userInfo"];
+        if (cell == nil) {
+            cell = [[TCUserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell_userInfo"];
+            [cell initUserinfoViewCellData:item];
+            if (NO == [cell.gestureRecognizers containsObject:_longPressGesture]) {
+                [cell addGestureRecognizer:_longPressGesture];
+            }
         }
+        [cell drawRichCell:item];
+        return cell;
+    }else{
+        // 关于小视频
+        TCUserInfoTableViewCell *cell = (TCUserInfoTableViewCell*)[tableView  dequeueReusableCellWithIdentifier:@"cell_default"];
+        if(cell == nil) {
+            cell = [[TCUserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell_default"];
+            [cell initUserinfoViewCellData:item];
+        }
+        [cell drawRichCell:item];
+        return cell;
     }
-    
-    [cell drawRichCell:item];
-    return cell;
 }
 #pragma mark 点击用户信息页面上的tableview的回调
 /**

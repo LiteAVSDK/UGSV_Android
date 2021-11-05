@@ -1117,7 +1117,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         param.frontCamera = _isFrontCamera;
         param.enableAEC = _config.AECEnabled;
         [[TXUGCRecord shareInstance] startCameraCustom:param preview:_previewController.videoRecordView];
-        
+        _isCameraPreviewOn = YES;
+
         if (_config.watermark) {
             UIImage *watermark = _config.watermark.image;
             CGRect watermarkFrame = _config.watermark.frame;
@@ -1125,7 +1126,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         } else {
             [[TXUGCRecord shareInstance] setWaterMark:nil normalizationFrame:CGRectZero];;
         }
-        
         if (self->_isFromMusicSelectVC) {
             self->_isFromMusicSelectVC = NO;
             return;
@@ -1192,7 +1192,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         if (self->_isFromMusicSelectVC) {
             self->_isFromMusicSelectVC = NO;
         }
-        _isCameraPreviewOn = YES;
     }
 }
 
@@ -1239,6 +1238,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         int stopRet = [TXUGCRecord shareInstance].stopRecord;
         if (stopRet == 0) {
             _isStopRecord = YES;
+            _recordState = RecordStateStopped;
         }
     }
 }
@@ -1764,6 +1764,8 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     [[TXUGCRecord shareInstance] stopRecord];
     [[TXUGCRecord shareInstance] stopCameraPreview];
     [[TXUGCRecord shareInstance].partsManager deleteAllParts];
+    [[TXUGCRecord shareInstance] setReverbType:VIDOE_REVERB_TYPE_0];
+    [[TXUGCRecord shareInstance] setVoiceChangerType:VIDOE_VOICECHANGER_TYPE_0];
     _recordState = RecordStateStopped;
     //    [TCUtil removeCacheFile:_recordVideoPath];
     //    [TCUtil removeCacheFile:_joinVideoPath];

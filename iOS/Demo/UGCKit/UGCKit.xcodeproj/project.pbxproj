@@ -132,6 +132,16 @@
 		F2DA415A23917DA200EB0AAB /* UGCKitBGMCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D52F12238D231A006F71FA /* UGCKitBGMCell.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		17DFBC7B27005E96002B6257 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 453DE2CD237945B10083E759 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 454616C123797C39009CDF83;
+			remoteInfo = UGCKitResources;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		40F4D69C2474CA2100847F5B /* TCBeautyPanel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TCBeautyPanel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4507F44C23AB707600804AD5 /* UGCKitPieProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCKitPieProgressView.h; sourceTree = "<group>"; };
@@ -712,6 +722,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				17DFBC7C27005E96002B6257 /* PBXTargetDependency */,
 			);
 			name = UGCKit;
 			productName = UGCKit;
@@ -859,6 +870,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		17DFBC7C27005E96002B6257 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 454616C123797C39009CDF83 /* UGCKitResources */;
+			targetProxy = 17DFBC7B27005E96002B6257 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		454616CF23797CA5009CDF83 /* Localizable.strings */ = {

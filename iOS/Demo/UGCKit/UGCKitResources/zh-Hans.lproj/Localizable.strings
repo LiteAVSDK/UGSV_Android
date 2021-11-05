@@ -1,5 +1,7 @@
 "UGCKit.Common.OK" = "确定";
 "UGCKit.Common.Cancel" = "取消";
+"UGCKit.Common.NotSupportTwopass" = "该设备不支持该模式";
+"UGCKit.Common.NotSupportTwopassOK" = "好";
 "UGCKit.UGCKit.Common.Downloading" = "下载中";
 "UGCKit.Common.Apply" = "使用";
 "UGCKit.Common.Download" = "下载";

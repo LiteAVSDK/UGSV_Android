@@ -39,6 +39,16 @@
 		45E74D5C23B0A6C900C22B31 /* goodluck.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 45E74D5B23B0A6C900C22B31 /* goodluck.mp4 */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		17DFBC7927005E79002B6257 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4579C37D23AC64DC005ECC1C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4579C3F923AC660C005ECC1C;
+			remoteInfo = TCBeautyPanelResources;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		404DEF2224E23DFE005657DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		404DEF2424E23E1D005657DF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -258,6 +268,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				17DFBC7A27005E79002B6257 /* PBXTargetDependency */,
 			);
 			name = TCBeautyPanel;
 			productName = TCBeautyPanel;
@@ -358,6 +369,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		17DFBC7A27005E79002B6257 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4579C3F923AC660C005ECC1C /* TCBeautyPanelResources */;
+			targetProxy = 17DFBC7927005E79002B6257 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		404DEF2324E23DFE005657DF /* Localizable.strings */ = {

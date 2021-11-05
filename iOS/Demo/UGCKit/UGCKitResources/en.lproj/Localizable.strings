@@ -1,5 +1,7 @@
 "UGCKit.Common.OK" = "OK";
 "UGCKit.Common.Cancel" = "Cancel";
+"UGCKit.Common.NotSupportTwopass" = "notSupportTwopass";
+"UGCKit.Common.NotSupportTwopassOK" = "ok";
 "UGCKit.UGCKit.Common.Downloading" = "Downloading";
 "UGCKit.Common.Apply" = "Apply";
 "UGCKit.Common.Download" = "Download";
