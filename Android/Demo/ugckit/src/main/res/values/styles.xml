@@ -81,4 +81,10 @@
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+    <style name="SuperPlayerAppProgressBarStyle">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/ugckit_seekbar_progress_drawable</item>
+    </style>
+
 </resources>

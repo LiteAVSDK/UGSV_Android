@@ -27,8 +27,8 @@ public class UGCKitRecordConfig {
     public int     mQuality         = TXRecordCommon.VIDEO_QUALITY_HIGH;
     public int     mVideoBitrate    = 9600;
     public int     mResolution      = TXRecordCommon.VIDEO_RESOLUTION_720_1280;
-    public int     mGOP             = 3;
-    public int     mFPS             = 20;
+    public int     mGOP             = 1;
+    public int     mFPS             = 30;
     public boolean mIsMute          = false;
     public boolean mIsNeedEdit      = true;
     /**
@@ -109,8 +109,8 @@ public class UGCKitRecordConfig {
         mQuality = TXRecordCommon.VIDEO_QUALITY_HIGH;
         mVideoBitrate = 9600;
         mResolution = TXRecordCommon.VIDEO_RESOLUTION_720_1280;
-        mGOP = 3;
-        mFPS = 20;
+        mGOP = 1;
+        mFPS = 30;
         mMinDuration = 2 * 1000;
         mMaxDuration = 16 * 1000;
         mHomeOrientation = TXLiveConstants.VIDEO_ANGLE_HOME_DOWN;

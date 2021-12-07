@@ -233,6 +233,8 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
 
         void setCurrentTime(long time);
 
+        void onRefresh();
+
     }
 
     public interface OnTimeChangeListener {

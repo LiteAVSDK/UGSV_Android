@@ -209,6 +209,20 @@ public class VideoEditerSDK {
         return mTXVideoEditer;
     }
 
+    public String getVideoSourcePath() {
+        if (mTXVideoEditer == null) {
+            return null;
+        }
+        return mTXVideoEditer.getVideoSourcePath();
+    }
+
+    public String getVideoProcessPath() {
+        if (mTXVideoEditer == null) {
+            return null;
+        }
+        return mTXVideoEditer.getVideoProcessPath();
+    }
+
     public void constructVideoInfo(@NonNull TXVideoEditConstants.TXVideoInfo videoInfo, long duration) {
         videoInfo.width = 100;
         videoInfo.height = 100;

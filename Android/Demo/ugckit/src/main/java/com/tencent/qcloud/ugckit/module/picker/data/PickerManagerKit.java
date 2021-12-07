@@ -6,10 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+
 import androidx.annotation.NonNull;
 
 import com.tencent.liteav.basic.log.TXCLog;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PickerManagerKit {
@@ -62,7 +64,10 @@ public class PickerManagerKit {
                 String filePath = fileItem.getFilePath();
                 if (filePath != null) {
                     if (filePath.toLowerCase().endsWith("mp4") || filePath.toLowerCase().endsWith(".mov")) {
-                        videos.add(fileItem);
+                        File file = new File(filePath);
+                        if (file.exists() && file.canRead()) {
+                            videos.add(fileItem);
+                        }
                     }
                 }
                 TXCLog.d(TAG, "fileItem = " + fileItem.toString());

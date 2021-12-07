@@ -28,9 +28,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.component.circlebmp.TCGlideCircleTransform;
@@ -256,11 +256,12 @@ public class BitmapUtils {
             view.setImageResource(defResId);
         } else {
             Glide.with(context.getApplicationContext())
-                    .load(url)
                     .asBitmap()
+                    .load(url)
                     .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
                         @Override
-                        public void onResourceReady(@Nullable Bitmap resource, GlideAnimation glideAnimation) {
+                        public void onResourceReady(@NonNull Bitmap resource,
+                                                    @Nullable Transition<? super Bitmap> transition) {
                             if (resource == null) {
                                 return;
                             }

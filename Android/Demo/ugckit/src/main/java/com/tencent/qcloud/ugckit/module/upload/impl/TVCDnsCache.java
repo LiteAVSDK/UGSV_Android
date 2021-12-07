@@ -22,9 +22,10 @@ public class TVCDnsCache {
     private static final String TAG = "TVC-TVCDnsCache";
 
     private        OkHttpClient                            okHttpClient;
-    private static String                                  HTTPDNS_SERVER = "http://119.29.29.29/d?dn=";      //httpdns服务器请求ip
+    private static String                                  HTTPDNS_SERVER = "https://119.29.29.99/d?dn=";      //httpdns服务器请求ip
     private        ConcurrentHashMap<String, List<String>> cacheMap;
     private        ConcurrentHashMap<String, List<String>> fixCacheMap;    //固定的dns缓存，从后台获取，认为这个是可信的
+    private static String                                  HTTPDNS_TOKEN  = "800654663"; //该token用于https加密标志，可明文保存
 
     public TVCDnsCache() {
         okHttpClient = new OkHttpClient().newBuilder()
@@ -39,7 +40,7 @@ public class TVCDnsCache {
     // 对指定域名发起httpdns请求
     public boolean freshDomain(final String domain, final Callback callback) {
         if (useProxy()) return false;
-        String reqUrl = HTTPDNS_SERVER + domain;
+        String reqUrl = HTTPDNS_SERVER + domain + "&token=" + HTTPDNS_TOKEN;
         Log.i(TAG, "freshDNS->request url:" + reqUrl);
         Request request = new Request.Builder()
                 .url(reqUrl)

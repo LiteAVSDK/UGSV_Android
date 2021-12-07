@@ -175,7 +175,7 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
 
             VideoRecordSDK.getInstance().deleteLastPart();
             long duration = VideoRecordSDK.getInstance().getPartManager().getDuration();
-            float timeSecond = duration / 1000;
+            float timeSecond = duration / 1000f;
             mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond) + getResources().getString(R.string.ugckit_unit_second));
             if (mOnRecordButtonListener != null) {
                 mOnRecordButtonListener.onDeleteParts(VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size(), duration);

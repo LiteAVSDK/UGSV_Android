@@ -107,6 +107,9 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
                 case TXVideoEditConstants.VIDEO_COMPRESSED_720P:
                     editer.generateVideo(TXVideoEditConstants.VIDEO_COMPRESSED_720P, mVideoOutputPath);
                     break;
+                case TXVideoEditConstants.VIDEO_COMPRESSED_1080P:
+                    editer.generateVideo(TXVideoEditConstants.VIDEO_COMPRESSED_1080P, mVideoOutputPath);
+                    break;
                 default:
                     editer.generateVideo(TXVideoEditConstants.VIDEO_COMPRESSED_720P, mVideoOutputPath);
                     break;

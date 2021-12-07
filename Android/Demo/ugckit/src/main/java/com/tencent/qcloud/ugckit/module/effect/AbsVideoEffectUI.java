@@ -67,6 +67,15 @@ public abstract class AbsVideoEffectUI extends RelativeLayout implements IVideoE
                 mTimeLineView.setCurrentTime(time);
             }
         }
+
+        @Override
+        public void onRefresh() {
+            // 初始化图片时间轴
+            getTimelineView().initVideoProgressLayout();
+            // 初始化播放器
+            getVideoPlayLayout().initPlayerLayout();
+        }
+
     };
 
     public AbsVideoEffectUI(Context context) {

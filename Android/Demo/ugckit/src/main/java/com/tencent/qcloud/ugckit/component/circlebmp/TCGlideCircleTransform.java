@@ -11,22 +11,22 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
+import java.security.MessageDigest;
+import java.util.Objects;
+
 /**
  * Glide图像裁剪
  */
 public class TCGlideCircleTransform extends BitmapTransformation {
+
+    private final String id = getClass().getName();
+
     public TCGlideCircleTransform(Context context) {
-        super(context);
     }
 
     @Override
     protected Bitmap transform(BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
         return createCircleImage(toTransform, 0);
-    }
-
-    @Override
-    public String getId() {
-        return getClass().getName();
     }
 
     // 根据原图绘制圆形图片
@@ -46,5 +46,20 @@ public class TCGlideCircleTransform extends BitmapTransformation {
         // 绘制图片
         canvas.drawBitmap(source, 0, 0, paint);
         return target;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof TCGlideCircleTransform;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        messageDigest.update((id).getBytes());
     }
 }

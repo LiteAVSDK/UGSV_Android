@@ -1,6 +1,8 @@
 package com.tencent.qcloud.ugckit.module.effect.time;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,8 +22,10 @@ import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.R;
 
 import com.tencent.ugc.TXVideoEditConstants;
+import com.tencent.ugc.TXVideoEditConstants.TXGenerateResult;
 import com.tencent.ugc.TXVideoEditer;
 
+import com.tencent.ugc.TXVideoEditer.TXVideoProcessListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +56,13 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private int                             reverseGif      = R.drawable.ugckit_motion_time_reverse;
     private int                             coverIcon       = R.drawable.ugckit_ic_effect5;
     private TimeLineView.OnTimeLineListener mListener;
+
+    // 倒放跟反复特效需要全I帧视频，这里为等到全I帧视频的状态
+    private boolean mIsProcessing = false; //是否正在转全I帧
+    private boolean mNeedReload = false; //是否需要重新加载全I帧视频
+    private View mRootView;
+    private View mProgressLayer;
+    private ProgressBar mProgressBar;
 
     @Nullable
     @Override
@@ -103,6 +114,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViews(@NonNull View view) {
+        mRootView = view;
         noTimeMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectNormalIcon, R.drawable.ugckit_motion_time_normal);
         slowMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectSlowMotionIcon, R.drawable.ugckit_motion_time_slow);
         repeatGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectRepeatIcon, R.drawable.ugckit_motion_time_repeat);
@@ -142,6 +154,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
             layoutRepeat.setVisibility(View.VISIBLE);
             layoutReverse.setVisibility(View.VISIBLE);
         }
+        checkPorgressLoadding();
     }
 
     private void initRepeatLayout() {
@@ -154,7 +167,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         PlayerManagerKit.getInstance().previewAtTime(currentTime);
         mCurrentEffectStartMs = currentTime;
 
-        mCurrentEffect = TimeEffect.REPEAT_EFFECT;
         if (mListener != null) {
             mListener.setCurrentTime(currentTime);
         }
@@ -170,7 +182,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mTXVideoEditer.setRepeatPlay(repeatList);
     }
 
-
     private void initSpeedLayout() {
         long currentTime = 0;
         if (mListener != null) {
@@ -181,7 +192,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         PlayerManagerKit.getInstance().previewAtTime(currentTime);
         mCurrentEffectStartMs = currentTime;
 
-        mCurrentEffect = TimeEffect.SPEED_EFFECT;
         if (mListener != null) {
             mListener.setCurrentTime(currentTime);
         }
@@ -220,30 +230,136 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     public void onClick(@NonNull View v) {
         int i = v.getId();
         if (i == R.id.time_tv_cancel) {
+            if (mCurrentEffect == TimeEffect.NONE_EFFECT) {
+                return;
+            }
             cancelSetEffect();
+            mCurrentEffect = TimeEffect.NONE_EFFECT;
+            cancleLoadding();
             showNoneLayout();
-
             PlayerManagerKit.getInstance().restartPlay();
         } else if (i == R.id.time_tv_speed) {
+            if (mCurrentEffect == TimeEffect.SPEED_EFFECT) {
+                return;
+            }
             cancelSetEffect();
+            mCurrentEffect = TimeEffect.SPEED_EFFECT;
+            cancleLoadding();
             showSpeedLayout();
-
+            PlayerManagerKit.getInstance().restartPlay();
         } else if (i == R.id.time_tv_reverse) {
             // 当前处于倒放状态 无视
             if (mCurrentEffect == TimeEffect.REVERSE_EFFECT) {
                 return;
             }
             cancelSetEffect();
-            showReverseLayout();
-            mTXVideoEditer.setReverse(true);
             mCurrentEffect = TimeEffect.REVERSE_EFFECT;
-            VideoEditerSDK.getInstance().setReverse(true);
-            PlayerManagerKit.getInstance().restartPlay();
+            if (mIsProcessing) {
+                showReverseLayout();
+                showLoadding();
+                return;
+            }
+            showReverseLayout();
+            setReverse();
         } else if (i == R.id.time_tv_repeat) {
+            if (mCurrentEffect == TimeEffect.REPEAT_EFFECT) {
+                return;
+            }
             cancelSetEffect();
+            mCurrentEffect = TimeEffect.REPEAT_EFFECT;
+            if (mIsProcessing) {
+                showRepeatLayout();
+                showLoadding();
+                return;
+            }
             showRepeatLayout();
+            setRepeat();
         }
     }
+
+    private void setRepeat() {
+        if (mNeedReload && mListener != null) {
+            mListener.onRefresh();
+            mNeedReload = false;
+        }
+        PlayerManagerKit.getInstance().restartPlay();
+    }
+
+    private void setReverse() {
+        mTXVideoEditer.setReverse(true);
+        VideoEditerSDK.getInstance().setReverse(true);
+        if (mNeedReload && mListener != null) {
+            mListener.onRefresh();
+            mNeedReload = false;
+        }
+        PlayerManagerKit.getInstance().restartPlay();
+    }
+
+    private boolean checkPorgressLoadding() {
+        if (mRootView == null) {
+            return false;
+        }
+        if (VideoEditerSDK.getInstance().getVideoSourcePath() != null
+                && VideoEditerSDK.getInstance().getVideoProcessPath() != null
+                && !VideoEditerSDK.getInstance().getVideoSourcePath()
+                .equals(VideoEditerSDK.getInstance().getVideoProcessPath())) {
+            mNeedReload = true;
+            mIsProcessing = true;
+            TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+            editer.setVideoProcessListener(processListener);
+            return true;
+        }
+        return false;
+    }
+
+
+    private void showLoadding(){
+        PlayerManagerKit.getInstance().stopPlay();
+        mProgressLayer = mRootView.findViewById(R.id.progressbar_layer);
+        mProgressLayer.setVisibility(View.VISIBLE);
+    }
+
+    private boolean cancleLoadding() {
+        if (mProgressLayer == null || mProgressLayer.getVisibility() == View.GONE) {
+            return false;
+        }
+        mProgressLayer.setVisibility(View.GONE);
+        return true;
+    }
+
+    // 转全I帧监听
+    TXVideoProcessListener processListener = new TXVideoProcessListener() {
+
+        @Override
+        public void onProcessProgress(float progress) {
+            if (mProgressLayer == null || mProgressLayer.getVisibility() == View.GONE) {
+                return;
+            }
+            if (mProgressBar == null) {
+                mProgressBar = mProgressLayer.findViewById(R.id.progressbar);
+            }
+            mProgressBar.setProgress((int) (progress * 100));
+        }
+
+        @Override
+        public void onProcessComplete(TXGenerateResult result) {
+            Log.i(TAG, "onProcessComplete: ");
+            TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
+            if (editer == null) {
+                return;
+            }
+            editer.setVideoProcessListener(null);
+            //在倒放功能下就reload
+            if (cancleLoadding()) {
+                if (mCurrentEffect == TimeEffect.REVERSE_EFFECT) {
+                    setReverse();
+                } else if (mCurrentEffect == TimeEffect.REPEAT_EFFECT) {
+                    setRepeat();
+                }
+            }
+            mIsProcessing = false;
+        }
+    };
 
 
     /**
@@ -264,17 +380,14 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void cancelSpeedEffect() {
-        mCurrentEffect = TimeEffect.NONE_EFFECT;
         mTXVideoEditer.setSpeedList(null);
     }
 
     private void cancelRepeatEffect() {
-        mCurrentEffect = TimeEffect.NONE_EFFECT;
         mTXVideoEditer.setRepeatPlay(null);
     }
 
     private void cancelReverseEffect() {
-        mCurrentEffect = TimeEffect.NONE_EFFECT;
         mTXVideoEditer.setReverse(false);
         VideoEditerSDK.getInstance().setReverse(false);
     }
@@ -319,8 +432,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             mListener.onRemoveSlider(TimeEffect.SPEED_EFFECT);
         }
-        mCurrentEffect = TimeEffect.REPEAT_EFFECT;
-
         mCircleImageCancelSelect.setVisibility(View.INVISIBLE);
         mCircleSpeedSelect.setVisibility(View.INVISIBLE);
         mCircleImageRepeatSelect.setVisibility(View.VISIBLE);
