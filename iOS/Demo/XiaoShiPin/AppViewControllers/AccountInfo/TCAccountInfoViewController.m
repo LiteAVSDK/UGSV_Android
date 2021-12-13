@@ -282,9 +282,10 @@ extern BOOL g_bNeedEnterPushSettingView;
  */
 - (void)onShowAppVersion:(TCUserInfoCellItem *)menu cell:(TCUserInfoTableViewCell *)cell
 {
-    NSString* rtmpSDKVersion = [NSString stringWithFormat:NSLocalizedString(@"TCUserInfoView.InfoRTMPFmt", nil),[TXLiveBase getSDKVersionStr]];
-    NSString* appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    
+    NSString *rtmpSDKVersion = [NSString stringWithFormat:NSLocalizedString(@"TCUserInfoView.InfoRTMPFmt", nil), [TXLiveBase getSDKVersionStr]];
+    NSString *appShortVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *buildNumber = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *appVersion = [NSString stringWithFormat:@"%@.%@", appShortVersion, buildNumber];
     NSString *info = [NSString stringWithFormat:NSLocalizedString(@"TCUserInfoView.InfoAppFmt", nil), appVersion, rtmpSDKVersion];
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"TCUserInfoView.HintAboutApp", nil)
                                                                         message:info

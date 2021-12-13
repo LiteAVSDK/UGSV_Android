@@ -14,7 +14,8 @@
 #import "TVCCommon.h"
 #import "TVCReport.h"
 
-#define HTTPDNS_SERVER @"http://119.29.29.29/d?dn="  // httpdns服务器
+#define HTTPDNS_SERVER @"https://119.29.29.99/d?dn="  // httpdns服务器
+#define HTTPDNS_TOKEN @"800654663"
 
 typedef void (^TXUGCCompletion)(int result);
 typedef void (^TXUGCHttpCompletion)(NSData *_Nullable data, int errCode);
@@ -123,7 +124,7 @@ static TXUGCPublishOptCenter *_shareInstance = nil;
 }
 
 - (void)freshDomain:(NSString *)domain completion:(TXUGCCompletion)completion {
-    NSString *reqUrl = [HTTPDNS_SERVER stringByAppendingString:domain];
+    NSString *reqUrl  = [HTTPDNS_SERVER stringByAppendingFormat:@"%@%@%@", domain, @"&token=", HTTPDNS_TOKEN];
 
     __weak __typeof(self) weakSelf = self;
 

@@ -345,10 +345,9 @@ didFinishDownloadingToURL:(NSURL *)location {
     task.callback = callback;
 
     NSURL *url = [NSURL URLWithString:srcUrl];
-    NSURLRequest *downloadReq = [NSURLRequest requestWithURL:url
-                                                 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                             timeoutInterval:300.f];
-    NSURLSessionDownloadTask *urlSessionTask =  [_urlSession downloadTaskWithRequest:downloadReq];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:300.f];
+    [request addValue:@"" forHTTPHeaderField:@"Accept-Encoding"];
+    NSURLSessionDownloadTask *urlSessionTask =  [_urlSession downloadTaskWithRequest:request];
     @synchronized (_taskDictionary) {
         _taskDictionary[urlSessionTask] = task;
     }

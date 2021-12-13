@@ -872,7 +872,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         if(-5 == result) [self alert:[_theme localizedString:@"UGCKit.Record.HintLaunchRecordFailed"] msg:[_theme localizedString:@"UGCKit.Record.ErrorLicense"]];
     }else{
         //如果设置了BGM，播放BGM
-        [self playBGM:_bgmBeginTime toTime:MAXFLOAT];
+        [self playBGM:_bgmBeginTime toTime:MAXFLOAT recordSpeed:[self getRecordSpeed]];
 
         //初始化录制状态
         _recordState = RecordStateRecording;
@@ -891,6 +891,28 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
                                                    toTime:_config.maxDuration];
         }
     }
+}
+
+- (TXVideoRecordSpeed)getRecordSpeed {
+    TXVideoRecordSpeed speed;
+    switch (_controlView.speedMode) {
+        case SpeedMode_VerySlow:
+            speed = VIDEO_RECORD_SPEED_SLOWEST;
+            break;
+        case SpeedMode_Slow:
+            speed = VIDEO_RECORD_SPEED_SLOW;
+            break;
+        case SpeedMode_Standard:
+            speed = VIDEO_RECORD_SPEED_NOMAL;
+            break;
+        case SpeedMode_Quick:
+            speed = VIDEO_RECORD_SPEED_FAST;
+            break;
+        case SpeedMode_VeryQuick:
+            speed = VIDEO_RECORD_SPEED_FASTEST;
+            break;
+    }
+    return speed;
 }
 
 - (void)_pauseAndAddMark:(void(^)(void))completion {
@@ -966,7 +988,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     if (_bgmRecording) {
         [self resumeBGM];
     }else{
-        [self playBGM:_bgmBeginTime toTime:MAXFLOAT];
+        [self playBGM:_bgmBeginTime toTime:MAXFLOAT recordSpeed:[self getRecordSpeed]];
         _bgmRecording = YES;
     }
     
@@ -1498,7 +1520,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     }
     [self onSetBGM:path];
     _isScrollToStart = YES;
-    [self playBGM:0 toTime:MAXFLOAT];
+    [self playBGM:0 toTime:MAXFLOAT recordSpeed:VIDEO_RECORD_SPEED_NOMAL];
     dispatch_async(dispatch_get_main_queue(), ^(){
         self->_musicView.hidden = NO;
         [self hideBottomView:YES];
@@ -1558,7 +1580,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 {
     //切换bgm 范围的时候，bgm录制状态置NO
     _bgmRecording = NO;
-    [self playBGM:_BGMDuration * startPercent toTime:_BGMDuration * endPercent];
+    [self playBGM:_BGMDuration * startPercent toTime:_BGMDuration * endPercent recordSpeed:VIDEO_RECORD_SPEED_NOMAL];
     dispatch_async(dispatch_get_main_queue(), ^(){
         self->_musicView.hidden = NO;
         [self hideBottomView:YES];
@@ -1582,7 +1604,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     });
 }
 
--(void)playBGM:(CGFloat)beginTime toTime:(CGFloat)endTime
+-(void)playBGM:(CGFloat)beginTime toTime:(CGFloat)endTime recordSpeed:(TXVideoRecordSpeed)speed
 {
     if (_BGMPath != nil) {
         
@@ -1593,7 +1615,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         [[TXUGCRecord shareInstance] stopBGM];
         
         //试听音乐这里要把RecordSpeed 设置为VIDEO_RECORD_SPEED_NOMAL，否则音乐可能会出现加速或则慢速播现象
-        [[TXUGCRecord shareInstance] setRecordSpeed:VIDEO_RECORD_SPEED_NOMAL];
+        [[TXUGCRecord shareInstance] setRecordSpeed:speed];
         
         [[TXUGCRecord shareInstance] playBGMFromTime:beginTime toTime:endTime withBeginNotify:^(NSInteger errCode) {
             
