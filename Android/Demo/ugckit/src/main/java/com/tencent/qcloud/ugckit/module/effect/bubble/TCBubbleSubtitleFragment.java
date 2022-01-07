@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.tencent.liteav.basic.log.TXCLog;
-
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
@@ -409,7 +407,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
             rect.x = view.getImageX();
             rect.y = view.getImageY();
 
-            TXCLog.i(TAG, "addSubtitlesIntoVideo, subTitle x y = " + rect.x + "," + rect.y);
+            Log.i(TAG, "addSubtitlesIntoVideo, subTitle x y = " + rect.x + "," + rect.y);
 
             rect.width = view.getImageWidth();
             subTitle.frame = rect;

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.tencent.liteav.basic.log.TXCLog;
 
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
@@ -198,7 +199,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         long currentTime = mVideoProgressController.getCurrentTimeMs();
 
         if (PlayerManagerKit.getInstance().isPreviewFinish) {
-            TXCLog.i(TAG, "pressMotion, preview finished, ignore");
+            Log.i(TAG, "pressMotion, preview finished, ignore");
             mStartMark = false;
             return;
         }

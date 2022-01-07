@@ -2,6 +2,8 @@ package com.tencent.qcloud.ugckit;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import android.util.Log;
 import android.view.View;
 
 
@@ -14,7 +16,6 @@ import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoJoiner;
 
@@ -132,7 +133,7 @@ public class UGCKitVideoJoin implements IVideoJoinKit, TXVideoJoiner.TXVideoJoin
     /************************************************************************/
     @Override
     public void onJoinProgress(float progress) {
-        TXLog.d(TAG, "onJoinProgress = " + progress);
+        Log.d(TAG, "onJoinProgress = " + progress);
         mProgressFragmentUtil.updateGenerateProgress((int) (progress * 100));
     }
 

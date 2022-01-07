@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,6 @@ import android.widget.TextView;
 import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.progressbutton.SampleProgressButton;
-import com.tencent.rtmp.TXLog;
 
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
             holder.btnUse.setProgress(info.progress);
             holder.btnUse.setNormalColor(Color.parseColor("#FF6347"));
         }
-        TXLog.d(TAG, "onBindVH   info.status:" + info.status);
+        Log.d(TAG, "onBindVH   info.status:" + info.status);
 
         holder.tvName.setText(info.name);
         holder.itemView.setTag(position);
@@ -98,7 +99,7 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
             holder.btnUse.setProgress(info.progress);
             holder.btnUse.setNormalColor(Color.parseColor("#FF6347"));
         }
-        TXLog.d(TAG, "onBindVH   info.status:" + info.status);
+        Log.d(TAG, "onBindVH   info.status:" + info.status);
 
         holder.tvName.setText(info.name);
         holder.itemView.setTag(position);

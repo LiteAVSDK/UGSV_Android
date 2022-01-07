@@ -24,4 +24,7 @@ public class TimelineViewUtil {
         return mTimeLineView;
     }
 
+    public void release() {
+        mTimeLineView = null;
+    }
 }

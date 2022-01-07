@@ -1,6 +1,7 @@
 package com.tencent.qcloud.ugckit.module.picker.data;
 
 import android.content.Context;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,7 +47,11 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         if (fileInfo.getFileType() == TCVideoFileInfo.FILE_TYPE_VIDEO) {
             holder.duration.setText(DateTimeUtil.formattedTime(fileInfo.getDuration() / 1000));
         }
-        Glide.with(mContext).load(fileInfo.getFileUri()).into(holder.thumb);
+        if (!TextUtils.isEmpty(fileInfo.getFilePath())) {
+            Glide.with(mContext).load(fileInfo.getFilePath()).into(holder.thumb);
+        } else {
+            Glide.with(mContext).load(fileInfo.getFileUri()).into(holder.thumb);
+        }
         holder.thumb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

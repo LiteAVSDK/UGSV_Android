@@ -3,11 +3,11 @@ package com.tencent.qcloud.ugckit.component.timeline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.tencent.liteav.basic.log.TXCLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class VideoProgressController {
 
     public void addRangeSliderView(@Nullable final RangeSliderViewContainer rangeSliderView) {
         if (rangeSliderView == null) {
-            TXCLog.e(TAG, "addRangeSliderView, rangeSliderView is null !");
+            Log.e(TAG, "addRangeSliderView, rangeSliderView is null !");
             return;
         }
         if (mRangeSliderViewContainerList == null) {
@@ -64,7 +64,7 @@ public class VideoProgressController {
 
     public void addRangeSliderView(int type, @Nullable final RangeSliderViewContainer rangeSliderView) {
         if (rangeSliderView == null) {
-            TXCLog.e(TAG, "addRangeSliderView, rangeSliderView is null !");
+            Log.e(TAG, "addRangeSliderView, rangeSliderView is null !");
             return;
         }
         if (mRangeSliderViewContainerList == null) {
@@ -92,12 +92,12 @@ public class VideoProgressController {
 
     public boolean removeRangeSliderView(RangeSliderViewContainer rangeSliderView) {
         if (mVideoProgressView == null) {
-            TXCLog.e(TAG, "removeRangeSliderView, mVideoProgressView is null");
+            Log.e(TAG, "removeRangeSliderView, mVideoProgressView is null");
             return false;
         }
         mVideoProgressView.getParentView().removeView(rangeSliderView);
         if (mRangeSliderViewContainerList == null || mRangeSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "removeRangeSliderView, mRangeSliderViewContainerList is empty");
+            Log.e(TAG, "removeRangeSliderView, mRangeSliderViewContainerList is empty");
             return false;
         }
         return mRangeSliderViewContainerList.remove(rangeSliderView);
@@ -106,15 +106,15 @@ public class VideoProgressController {
     @Nullable
     public View removeRangeSliderView(int index) {
         if (mVideoProgressView == null) {
-            TXCLog.e(TAG, "removeRangeSliderView(index), mVideoProgressView is null");
+            Log.e(TAG, "removeRangeSliderView(index), mVideoProgressView is null");
             return null;
         }
         if (mRangeSliderViewContainerList == null || mRangeSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "removeRangeSliderView(index), mRangeSliderViewContainerList is empty");
+            Log.e(TAG, "removeRangeSliderView(index), mRangeSliderViewContainerList is empty");
             return null;
         }
         if (index > mRangeSliderViewContainerList.size() - 1) {
-            TXCLog.e(TAG, "removeRangeSliderView(index), index out of bounds");
+            Log.e(TAG, "removeRangeSliderView(index), index out of bounds");
             return null;
         }
         RangeSliderViewContainer view = mRangeSliderViewContainerList.remove(index);
@@ -125,16 +125,16 @@ public class VideoProgressController {
     @Nullable
     public View removeRangeSliderView(int type, int index) {
         if (mVideoProgressView == null) {
-            TXCLog.e(TAG, "removeRangeSliderView(type, index), mVideoProgressView is null");
+            Log.e(TAG, "removeRangeSliderView(type, index), mVideoProgressView is null");
             return null;
         }
         if (mRangeSliderViewContainerList == null || mRangeSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "removeRangeSliderView(type, index), mRangeSliderViewContainerList is empty");
+            Log.e(TAG, "removeRangeSliderView(type, index), mRangeSliderViewContainerList is empty");
             return null;
         }
         List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null || rangeSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "removeRangeSliderView(type, index), rangeSliderViewContainerList is empty");
+            Log.e(TAG, "removeRangeSliderView(type, index), rangeSliderViewContainerList is empty");
             return null;
         }
         RangeSliderViewContainer view = rangeSliderViewContainerList.remove(index);
@@ -160,12 +160,12 @@ public class VideoProgressController {
             return null;
         }
         if (mRangeSliderViewContainerHashmap == null) {
-            TXCLog.e(TAG, "getRangeSliderView(type, index), mRangeSliderViewContainerHashmap is null");
+            Log.e(TAG, "getRangeSliderView(type, index), mRangeSliderViewContainerHashmap is null");
             return null;
         }
         List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null || rangeSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "getRangeSliderView(type, index), rangeSliderViewContainer is empty");
+            Log.e(TAG, "getRangeSliderView(type, index), rangeSliderViewContainer is empty");
             return null;
         }
         RangeSliderViewContainer view = rangeSliderViewContainerList.get(index);
@@ -174,12 +174,12 @@ public class VideoProgressController {
 
     public void showAllRangeSliderView(int type, boolean isShow) {
         if (mRangeSliderViewContainerHashmap == null) {
-            TXCLog.e(TAG, "showAllRangeSliderView(type), mRangeSliderViewContainerHashmap is null");
+            Log.e(TAG, "showAllRangeSliderView(type), mRangeSliderViewContainerHashmap is null");
             return;
         }
         List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null || rangeSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "showAllRangeSliderView(type), rangeSliderViewContainer is empty");
+            Log.e(TAG, "showAllRangeSliderView(type), rangeSliderViewContainer is empty");
             return;
         }
 
@@ -194,7 +194,7 @@ public class VideoProgressController {
 
     public void addColorfulProgress(@Nullable ColorfulProgress colorfulProgress) {
         if (colorfulProgress == null) {
-            TXCLog.e(TAG, "addColorfulProgress, colorfulProgress is null !");
+            Log.e(TAG, "addColorfulProgress, colorfulProgress is null !");
             return;
         }
         colorfulProgress.setVideoProgressController(this);
@@ -243,12 +243,12 @@ public class VideoProgressController {
 
     public boolean removeSliderView(SliderViewContainer sliderViewContainer) {
         if (mVideoProgressView == null) {
-            TXCLog.e(TAG, "removeSliderView, mVideoProgressView is null");
+            Log.e(TAG, "removeSliderView, mVideoProgressView is null");
             return false;
         }
         mVideoProgressView.getParentView().removeView(sliderViewContainer);
         if (mSliderViewContainerList == null || mSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "removeSliderView, mSliderViewContainerList is empty");
+            Log.e(TAG, "removeSliderView, mSliderViewContainerList is empty");
             return false;
         }
         return mSliderViewContainerList.remove(sliderViewContainer);
@@ -257,15 +257,15 @@ public class VideoProgressController {
     @Nullable
     public View removeSliderView(int index) {
         if (mVideoProgressView == null) {
-            TXCLog.e(TAG, "removeSliderView(index), mVideoProgressView is null");
+            Log.e(TAG, "removeSliderView(index), mVideoProgressView is null");
             return null;
         }
         if (mSliderViewContainerList == null || mSliderViewContainerList.size() == 0) {
-            TXCLog.e(TAG, "removeSliderView(index), mSliderViewContainerList is empty");
+            Log.e(TAG, "removeSliderView(index), mSliderViewContainerList is empty");
             return null;
         }
         if (index > mSliderViewContainerList.size() - 1) {
-            TXCLog.e(TAG, "removeSliderView(int index), index out of bounds");
+            Log.e(TAG, "removeSliderView(int index), index out of bounds");
             return null;
         }
         SliderViewContainer sliderViewContainer = mSliderViewContainerList.get(index);
@@ -346,11 +346,11 @@ public class VideoProgressController {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                TXCLog.i(TAG, "onScrollStateChanged, new state = " + newState);
+                Log.i(TAG, "onScrollStateChanged, new state = " + newState);
 
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        TXCLog.i(TAG, "onScrollStateChanged, state idle, mCurrentTimeMs = " + mCurrentTimeMs);
+                        Log.i(TAG, "onScrollStateChanged, state idle, mCurrentTimeMs = " + mCurrentTimeMs);
 
                         if (mVideoProgressSeekListener != null) {
                             mVideoProgressSeekListener.onVideoProgressSeekFinish(mCurrentTimeMs);

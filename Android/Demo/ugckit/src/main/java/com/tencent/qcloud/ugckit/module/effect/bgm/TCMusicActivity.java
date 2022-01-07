@@ -14,8 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.tencent.liteav.basic.log.TXCLog;
-
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
@@ -170,7 +168,7 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
 
     private void downloadMusic(int position) {
         TCMusicInfo musicInfo = mTCMusicInfoList.get(position);
-        TXCLog.i(TAG, "tcBgmInfo name = " + musicInfo.name + ", url = " + musicInfo.url);
+        Log.i(TAG, "tcBgmInfo name = " + musicInfo.name + ", url = " + musicInfo.url);
         if (TextUtils.isEmpty(musicInfo.localPath)) {
             downloadMusicInfo(position, musicInfo);
             musicInfo.status = TCMusicInfo.STATE_DOWNLOADING;
@@ -200,7 +198,7 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        TXCLog.i(TAG, "onRefresh");
+        Log.i(TAG, "onRefresh");
         TCMusicManager.getInstance().loadMusicList();
     }
 

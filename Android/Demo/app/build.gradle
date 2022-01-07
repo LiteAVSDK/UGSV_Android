@@ -39,8 +39,6 @@ android {
 
     packagingOptions {
         pickFirst '**/libc++_shared.so'
-        pickFirst '**/libRSSupport.so'
-        pickFirst '**/librsjni.so'
         doNotStrip "*/armeabi/libYTCommon.so"
         doNotStrip "*/armeabi-v7a/libYTCommon.so"
         doNotStrip "*/x86/libYTCommon.so"
@@ -49,17 +47,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
-    compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs/upload')
-    compile 'com.google.android.material:material:1.0.0'
-    compile 'androidx.recyclerview:recyclerview:1.0.0'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.ctiao:dfm:0.4.4'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.tencent.bugly:crashreport_upgrade:1.5.1'
-    compile 'com.tencent.bugly:nativecrashreport:3.8.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
+    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs/upload')
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.code.gson:gson:2.3.1'
+    implementation 'com.tencent.rqd:crashreport:3.4.4'
+    implementation 'com.tencent.rqd:nativecrashreport:3.9.2'
     compile project(':ugckit')
+    implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
 

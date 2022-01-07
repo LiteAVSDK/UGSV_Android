@@ -6,10 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import com.tencent.liteav.basic.log.TXCLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class PickerManagerKit {
                         }
                     }
                 }
-                TXCLog.d(TAG, "fileItem = " + fileItem.toString());
+                Log.d(TAG, "fileItem = " + fileItem.toString());
             }
             while (cursor.moveToNext());
         }

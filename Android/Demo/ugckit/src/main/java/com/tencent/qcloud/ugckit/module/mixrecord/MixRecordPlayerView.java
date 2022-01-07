@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.tencent.cos.xml.utils.StringUtils;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
@@ -60,12 +60,12 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
     @Override
     public void onPlayEvent(TXVodPlayer player, int event, Bundle param) {
         if (event != PLAY_EVT_PLAY_PROGRESS) {
-            TXCLog.i(TAG, "onPlayEvent: " + event);
+            Log.i(TAG, "onPlayEvent: " + event);
             if (event == PLAY_EVT_PLAY_END) {
             } else if (event == PLAY_EVT_PLAY_BEGIN) {
             }
         } else {
-            TXCLog.d(TAG, "onPlayEvent: PLAY_EVT_PLAY_PROGRESS " + param.toString());
+            Log.d(TAG, "onPlayEvent: PLAY_EVT_PLAY_PROGRESS " + param.toString());
         }
     }
 
@@ -233,7 +233,7 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
 
     @Override
     public void releaseVideo() {
-        TXCLog.i(TAG, "releaseVideo");
+        Log.i(TAG, "releaseVideo");
         if (mVodPlayer != null && mPlayerState != PlayerState.STATE_STOPED) {
             mVodPlayer.stopPlay(true);
             mPlayerState = PlayerState.STATE_STOPED;

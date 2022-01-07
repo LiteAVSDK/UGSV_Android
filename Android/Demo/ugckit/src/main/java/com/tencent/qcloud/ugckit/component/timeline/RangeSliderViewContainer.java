@@ -4,12 +4,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.R;
 
 
@@ -99,7 +99,7 @@ public class RangeSliderViewContainer extends LinearLayout {
             public void onPostionChanged(float distance) {
                 long dtime = mVideoProgressController.distance2Duration(distance);
 
-                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView distance = %f, dtime = %d", distance, dtime));
+                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView distance = %f, dtime = %d", distance, dtime));
 
                 if (dtime > 0 && mDurationMs - dtime < 0) {
                     dtime = mDurationMs;
@@ -115,7 +115,7 @@ public class RangeSliderViewContainer extends LinearLayout {
                 MarginLayoutParams layoutParams = (MarginLayoutParams) mStartView.getLayoutParams();
                 int dx = layoutParams.leftMargin;
 
-                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView layoutParams.leftMargin = %d", layoutParams.leftMargin));
+                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView layoutParams.leftMargin = %d", layoutParams.leftMargin));
 
                 changeStartViewLayoutParams();
                 dx = layoutParams.leftMargin - dx;

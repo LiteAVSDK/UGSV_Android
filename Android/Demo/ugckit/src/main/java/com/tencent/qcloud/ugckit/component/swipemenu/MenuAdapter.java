@@ -1,6 +1,7 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
 import android.content.Context;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -93,7 +94,11 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
             holder.setDuration(DateTimeUtil.duration(fileInfo.getDuration()));
             holder.tvDuration.setVisibility(View.VISIBLE);
         }
-        Glide.with(mContext).load(fileInfo.getFileUri()).into(holder.ivThumb);
+        if (!TextUtils.isEmpty(fileInfo.getFilePath())) {
+            Glide.with(mContext).load(fileInfo.getFilePath()).into(holder.ivThumb);
+        } else {
+            Glide.with(mContext).load(fileInfo.getFileUri()).into(holder.ivThumb);
+        }
     }
 
     public ArrayList<TCVideoFileInfo> getAll() {

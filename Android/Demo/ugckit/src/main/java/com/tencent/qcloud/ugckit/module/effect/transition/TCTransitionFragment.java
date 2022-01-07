@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tencent.liteav.basic.enums.TXEVideoTransitionDef;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.timeline.ColorfulProgress;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
@@ -214,7 +215,7 @@ public class TCTransitionFragment extends Fragment {
             long transitionDuration = 1000;
             long totalDuration = VideoEditerSDK.getInstance().getVideoDuration();
             boolean setTransitionResult = mTXVideoEditer.setTransitionEffect(model.type, totalDuration, startTime, transitionDuration);
-            TXCLog.d(TAG, "setTransitionResult=" + setTransitionResult);
+            Log.d(TAG, "setTransitionResult=" + setTransitionResult);
             if (setTransitionResult) {
                 mColorfulProgress.addMark(getResources().getColor(R.color.ugckit_transition_mark_color), transitionDuration);
                 mColorfulProgress.invalidate();

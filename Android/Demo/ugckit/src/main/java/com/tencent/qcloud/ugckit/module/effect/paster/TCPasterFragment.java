@@ -19,8 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.tencent.liteav.basic.log.TXCLog;
-
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
@@ -343,7 +341,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         try {
             String jsonString = FileUtils.getJsonFromFile(filePath);
             if (TextUtils.isEmpty(jsonString)) {
-                TXCLog.e(TAG, "getPasterInfoList, jsonString is empty");
+                Log.e(TAG, "getPasterInfoList, jsonString is empty");
                 return pasterInfoList;
             }
             JSONObject pasterJson = new JSONObject(jsonString);
@@ -405,7 +403,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     @Override
     public void onItemClick(@NonNull TCPasterInfo tcPasterInfo, int position) {
         int index = mFloatLayerViewGroup.getSelectedViewIndex();
-        TXCLog.i(TAG, "onItemClick: index = " + index);
+        Log.i(TAG, "onItemClick: index = " + index);
         RangeSliderViewContainer lastSlider = mVideoProgressController.getRangeSliderView(index);
         if (lastSlider != null) {
             lastSlider.setEditComplete();
@@ -419,7 +417,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         if (pasterType == PasterView.TYPE_CHILD_VIEW_ANIMATED_PASTER) {
             AnimatedPasterConfig animatedPasterConfig = getAnimatedPasterParamFromPath(mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator);
             if (animatedPasterConfig == null) {
-                TXCLog.e(TAG, "onItemClick, animatedPasterConfig is null");
+                Log.e(TAG, "onItemClick, animatedPasterConfig is null");
                 return;
             }
             int keyFrameIndex = animatedPasterConfig.keyframe;
@@ -554,7 +552,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         String configJsonStr = FileUtils.getJsonFromFile(configPath);
 
         if (TextUtils.isEmpty(configJsonStr)) {
-            TXCLog.e(TAG, "getTXAnimatedPasterParamFromPath, configJsonStr is empty");
+            Log.e(TAG, "getTXAnimatedPasterParamFromPath, configJsonStr is empty");
             return animatedPasterConfig;
         }
 
@@ -566,7 +564,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         }
 
         if (jsonObjectConfig == null) {
-            TXCLog.e(TAG, "getTXAnimatedPasterParamFromPath, jsonObjectConfig is null");
+            Log.e(TAG, "getTXAnimatedPasterParamFromPath, jsonObjectConfig is null");
             return animatedPasterConfig;
         }
 
@@ -604,7 +602,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             rect.x = view.getImageX();
             rect.y = view.getImageY();
             rect.width = view.getImageWidth();
-            TXCLog.i(TAG, "addPasterListVideoToEditer, adjustPasterRect, paster x y = " + rect.x + "," + rect.y);
+            Log.i(TAG, "addPasterListVideoToEditer, adjustPasterRect, paster x y = " + rect.x + "," + rect.y);
 
             int childType = view.getChildType();
             if (childType == PasterView.TYPE_CHILD_VIEW_ANIMATED_PASTER) {
@@ -617,7 +615,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
                 txAnimatedPaster.rotation = view.getImageRotate();
 
                 animatedPasterList.add(txAnimatedPaster);
-                TXCLog.i(TAG, "addPasterListVideoToEditer, txAnimatedPaster startTimeMs, endTime is : " + txAnimatedPaster.startTime + ", " + txAnimatedPaster.endTime);
+                Log.i(TAG, "addPasterListVideoToEditer, txAnimatedPaster startTimeMs, endTime is : " + txAnimatedPaster.startTime + ", " + txAnimatedPaster.endTime);
             } else if (childType == PasterView.TYPE_CHILD_VIEW_PASTER) {
                 TXVideoEditConstants.TXPaster txPaster = new TXVideoEditConstants.TXPaster();
 
@@ -627,7 +625,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
                 txPaster.frame = rect;
 
                 pasterList.add(txPaster);
-                TXCLog.i(TAG, "addPasterListVideoToEditer, txPaster startTimeMs, endTime is : " + txPaster.startTime + ", " + txPaster.endTime);
+                Log.i(TAG, "addPasterListVideoToEditer, txPaster startTimeMs, endTime is : " + txPaster.startTime + ", " + txPaster.endTime);
             }
         }
         mTXVideoEditer.setAnimatedPasterList(animatedPasterList);
@@ -640,13 +638,13 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
      * 将贴纸控件的相关参数保存到Manager中去，方便出去之后可以重新进来再次编辑贴纸
      */
     private void saveIntoManager() {
-        TXCLog.i(TAG, "saveIntoManager");
+        Log.i(TAG, "saveIntoManager");
         TCPasterViewInfoManager manager = TCPasterViewInfoManager.getInstance();
         manager.clear();
         for (int i = 0; i < mFloatLayerViewGroup.getChildCount(); i++) {
             PasterView view = (PasterView) mFloatLayerViewGroup.getOperationView(i);
 
-            TXCLog.i(TAG, "saveIntoManager, view centerX and centerY = " + view.getCenterX() + ", " + view.getCenterY() +
+            Log.i(TAG, "saveIntoManager, view centerX and centerY = " + view.getCenterX() + ", " + view.getCenterY() +
                     ", start end time = " + view.getStartTime() + ", " + view.getEndTime());
 
             TCPasterViewInfo info = new TCPasterViewInfo();
@@ -670,13 +668,13 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
      */
     private void recoverFromManager() {
         TCPasterViewInfoManager manager = TCPasterViewInfoManager.getInstance();
-        TXCLog.i(TAG, "recoverFromManager, manager.size = " + manager.getSize());
+        Log.i(TAG, "recoverFromManager, manager.size = " + manager.getSize());
         for (int i = 0; i < manager.getSize(); i++) {
             TCPasterViewInfo info = manager.get(i);
             Bitmap pasterBitmap = BitmapFactory.decodeFile(info.getPasterPath());
-            TXCLog.i(TAG, "recoverFromManager, info.getPasterPath() = " + info.getPasterPath());
+            Log.i(TAG, "recoverFromManager, info.getPasterPath() = " + info.getPasterPath());
             if (pasterBitmap == null) {
-                TXCLog.e(TAG, "recoverFromManager, pasterBitmap is null!");
+                Log.e(TAG, "recoverFromManager, pasterBitmap is null!");
                 continue;
             }
             PasterView view = TCPasterOperationViewFactory.newOperationView(getActivity());

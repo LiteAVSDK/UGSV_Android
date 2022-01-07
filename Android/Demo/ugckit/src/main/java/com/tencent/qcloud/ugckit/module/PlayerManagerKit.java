@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.module;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
 import com.tencent.ugc.TXVideoEditer;
@@ -173,7 +172,7 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
     }
 
     public void playVideo(boolean isMotionFilter) {
-        TXCLog.i(TAG, "playVideo mCurrentState = " + mCurrentState);
+        Log.i(TAG, "playVideo mCurrentState = " + mCurrentState);
         if (mCurrentState == PlayState.STATE_NONE || mCurrentState == PlayState.STATE_STOP) {
             startPlay();
         } else if ((mCurrentState == PlayState.STATE_RESUME || mCurrentState == PlayState.STATE_PLAY) && !isMotionFilter) {

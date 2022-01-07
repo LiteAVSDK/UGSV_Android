@@ -24,6 +24,7 @@ import androidx.renderscript.Element;
 import androidx.renderscript.RenderScript;
 import androidx.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -31,7 +32,6 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.component.circlebmp.TCGlideCircleTransform;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
@@ -105,13 +105,14 @@ public class BitmapUtils {
         if (pdf != null) {
             bitmap = BitmapFactory.decodeFileDescriptor(pdf.getFileDescriptor(), null, options);
 
-            int orientation = getImageOrientation(Uri.parse(picPath));
-            TXCLog.d(TAG, "getImageOrientation from uri，orientation = " + orientation);
+            int orientation = -1;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                orientation = getImageOrientation(pdf.getFileDescriptor());
+                Log.d(TAG, "getImageOrientation from fileDescriptor，orientation = " + orientation);
+            }
             if (orientation == -1) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    orientation = getImageOrientation(pdf.getFileDescriptor());
-                    TXCLog.d(TAG, "getImageOrientation from fileDescriptor，orientation = " + orientation);
-                }
+                orientation = getImageOrientation(Uri.parse(picPath));
+                Log.d(TAG, "getImageOrientation from uri，orientation = " + orientation);
             }
 
             bitmap = rotateBitmap(bitmap, orientation);
@@ -133,7 +134,7 @@ public class BitmapUtils {
             return null;
         }
 
-        TXCLog.d(TAG, "getImageOrientation = " + orientation);
+        Log.d(TAG, "getImageOrientation = " + orientation);
         if (orientation == -1 || orientation == 0) {
             return bitmap;
         }
@@ -177,7 +178,7 @@ public class BitmapUtils {
             return getDegree(orientation);
         } catch (IOException e) {
             e.printStackTrace();
-            TXCLog.e(TAG, "getImageOrientation-filePath,e=" + e.toString());
+            Log.e(TAG, "getImageOrientation-filePath,e=" + e.toString());
             return 0;
         }
     }
@@ -190,8 +191,8 @@ public class BitmapUtils {
             return getDegree(orientation);
         } catch (IOException e) {
             e.printStackTrace();
-            TXCLog.e(TAG, "getImageOrientation-fileDescriptor,e=" + e.toString());
-            return 0;
+            Log.e(TAG, "getImageOrientation-fileDescriptor,e=" + e.toString());
+            return -1;
         }
     }
 

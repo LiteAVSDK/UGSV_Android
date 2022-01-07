@@ -1,14 +1,13 @@
 package com.tencent.qcloud.ugckit.utils;
 
-import androidx.annotation.NonNull;
+import android.util.Log;
 
-import com.tencent.liteav.basic.log.TXCLog;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublishTypeDef;
 import com.tencent.rtmp.TXLiveConstants;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXVideoEditConstants;
 
@@ -226,7 +225,7 @@ public class LogReport {
 
     public void uploadLogs(String action, long code, String errorMsg) {
         String userName = mUserId;
-        TXLog.i(TAG, "uploadLogs action:" + action + ",userName:" + userName + ",code:" + code + ",errorMsg:" + errorMsg);
+        Log.i(TAG, "uploadLogs action:" + action + ",userName:" + userName + ",code:" + code + ",errorMsg:" + errorMsg);
         uploadLogs(action, code, errorMsg, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -241,7 +240,7 @@ public class LogReport {
     }
 
     public void uploadLogs(String action, long code, String errorMsg, okhttp3.Callback callback) {
-        TXLog.w(TAG, "uploadLogs: errorMsg " + errorMsg);
+        Log.w(TAG, "uploadLogs: errorMsg " + errorMsg);
         String reqUrl = DEFAULT_ELK_HOST;
         String body = "";
         try {
@@ -254,7 +253,7 @@ public class LogReport {
             jsonObject.put("appid", UGCKit.getAppContext().getPackageName());
             jsonObject.put("platform", "android");
             body = jsonObject.toString();
-            TXCLog.d(TAG, body);
+            Log.d(TAG, body);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -9,15 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
-import com.tencent.liteav.basic.log.TXCLog;
 
 import com.tencent.qcloud.ugckit.module.effect.time.TCVideoEditerAdapter;
 import com.tencent.qcloud.ugckit.module.effect.utils.Edit;
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 
 /**
@@ -173,7 +171,7 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mAdapter != null) {
-            TXLog.i(TAG, "onDetachedFromWindow");
+            Log.i(TAG, "onDetachedFromWindow");
             mAdapter.clearAllBitmap();
         }
     }
@@ -200,7 +198,7 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            TXCLog.i(TAG, "onScrollStateChanged, new state = " + newState);
+            Log.i(TAG, "onScrollStateChanged, new state = " + newState);
 
             switch (newState) {
                 case RecyclerView.SCROLL_STATE_IDLE:

@@ -241,9 +241,11 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         UGCKitRecordConfig.getInstance().clear();
         // 录制TXUGCRecord是单例，需要释放时还原配置
         getBeautyPanel().clear();
-
+        AudioFocusManager.getInstance().setAudioFocusListener(null);
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
         getBeautyPanel().setOnFilterChangeListener(null);
+        ProcessKit.getInstance().setOnUpdateUIListener(null);
+        VideoRecordSDK.getInstance().setOnRestoreDraftListener(null);
     }
 
     @Override

@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
@@ -27,7 +27,6 @@ import com.tencent.qcloud.ugckit.component.dialog.ActionSheetDialog;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.Config;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoInfoReader;
@@ -109,7 +108,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        TXCLog.i(TAG, "[UGCKit][VideoEdit]backPressed call stopPlay");
+                        Log.i(TAG, "[UGCKit][VideoEdit]backPressed call stopPlay");
                         PlayerManagerKit.getInstance().stopPlay();
                         // 取消设置的特效
                         VideoEditerSDK.getInstance().releaseSDK();
@@ -141,7 +140,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         if (editer == null) {
             VideoEditerSDK.getInstance().initSDK();
         }
-        TXCLog.i(TAG, "[UGCKit][VideoEdit][QuickImport]setVideoPath:" + videoPath);
+        Log.i(TAG, "[UGCKit][VideoEdit][QuickImport]setVideoPath:" + videoPath);
         VideoEditerSDK.getInstance().setVideoPath(videoPath);
 
         // 获取TXVideoInfo，兼容"快速导入"新传入videoPath，之前没有获取视频信息;"全功能导入"，裁剪时已经获取视频基本信息。
@@ -159,7 +158,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         long startTime = VideoEditerSDK.getInstance().getCutterStartTime();
         long endTime = VideoEditerSDK.getInstance().getCutterEndTime();
         if (endTime > startTime) {
-            TXCLog.i(TAG, "[UGCKit][VideoEdit][QuickImport]load thumbnail start time:" + startTime + ",end time:" + endTime);
+            Log.i(TAG, "[UGCKit][VideoEdit][QuickImport]load thumbnail start time:" + startTime + ",end time:" + endTime);
         }
 
         VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
@@ -167,7 +166,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         VideoEditerSDK.getInstance().initThumbnailList(new TXVideoEditer.TXThumbnailListener() {
             @Override
             public void onThumbnail(final int index, long timeMs, final Bitmap bitmap) {
-                TXLog.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
+                Log.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
                 VideoEditerSDK.getInstance().addThumbnailBitmap(timeMs, bitmap);
             }
         }, 1000);
@@ -234,7 +233,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
 
     @Override
     public void stop() {
-        TXCLog.i(TAG, "[UGCKit][VideoEdit]onStop call stopPlay");
+        Log.i(TAG, "[UGCKit][VideoEdit]onStop call stopPlay");
         PlayerManagerKit.getInstance().stopPlay();
 
         stopGenerate();
@@ -244,6 +243,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     public void release() {
         Config.getInstance().clearConfig();
         TelephonyUtil.getInstance().uninitPhoneListener();
+        TelephonyUtil.getInstance().setOnTelephoneListener(null);
     }
 
     @Override

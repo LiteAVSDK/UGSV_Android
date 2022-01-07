@@ -111,6 +111,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         TCTimeViewInfoManager.getInstance().setCurrentEffect(mCurrentEffect, mCurrentEffectStartMs);
+        VideoEditerSDK.getInstance().getEditer().setVideoProcessListener(null);
     }
 
     private void initViews(@NonNull View view) {
