@@ -14,10 +14,6 @@ android {
         renderscriptTargetApi = 14
         renderscriptSupportModeEnabled = true
         multiDexEnabled = true
-
-        ndk {
-            abiFilters rootProject.ext.ndkAbi
-        }
     }
 
     buildTypes {
@@ -50,23 +46,27 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
-    compile 'com.google.android.material:material:1.0.0'
-    compile 'androidx.recyclerview:recyclerview:1.0.0'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.github.bumptech.glide:glide:4.12.0'
-//    compile project(':liteav_sdk')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.code.gson:gson:2.3.1'
+    api 'com.github.bumptech.glide:glide:4.12.0.1@aar'
+    implementation 'com.github.bumptech.glide:gifdecoder:4.12.0'
+    implementation 'com.github.bumptech.glide:disklrucache:4.12.0'
+    implementation 'com.github.bumptech.glide:annotations:4.12.0'
+    implementation 'androidx.exifinterface:exifinterface:1.2.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
     compile rootProject.ext.liteavSdk
-    compile 'androidx.multidex:multidex:2.0.0'
-    compile 'de.hdodenhof:circleimageview:3.1.0'
-    compile 'com.github.castorflex.verticalviewpager:library:19.0.1'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'androidx.annotation:annotation:1.0.0'
-    compile 'com.squareup.okhttp3:okhttp:3.11.0'
-    compile 'com.squareup.okio:okio:1.14.0'
-    compile('com.qcloud.cos:cos-android:5.6.+') {
-        exclude group: 'com.tencent.qcloud', module: 'beacon-android-release'
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation('com.qcloud.cos:cos-android:5.6.+') {
+        exclude group: 'com.qcloud.cos', module: 'beacon-android-release'
     }
-    compile project(':beautysettingkit')
+    implementation project(':beautysettingkit')
 }

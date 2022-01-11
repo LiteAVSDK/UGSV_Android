@@ -4,10 +4,8 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 
@@ -52,12 +50,12 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
 
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
-            TXCLog.i(TAG, "[UGCKit][VideoProcess]generate thumbnail start time:" + cutterStartTime + ",end time:" + cutterEndTime + ",thumbnail count:" + thumbnailCount);
+            Log.i(TAG, "[UGCKit][VideoProcess]generate thumbnail start time:" + cutterStartTime + ",end time:" + cutterEndTime + ",thumbnail count:" + thumbnailCount);
             editer.setThumbnail(thumbnail);
             editer.setThumbnailListener(this);
             editer.setVideoProcessListener(this);
             editer.setCutFromTime(cutterStartTime, cutterEndTime);
-            TXCLog.i(TAG, "[UGCKit][VideoProcess]generate video start time:" + cutterStartTime + ",end time:" + cutterEndTime);
+            Log.i(TAG, "[UGCKit][VideoProcess]generate video start time:" + cutterStartTime + ",end time:" + cutterEndTime);
             editer.processVideo();
         }
     }
@@ -88,7 +86,7 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
 
     @Override
     public void onProcessComplete(@NonNull TXVideoEditConstants.TXGenerateResult result) {
-        TXLog.d(TAG, "onProcessComplete");
+        Log.d(TAG, "onProcessComplete");
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
             editer.setVideoProcessListener(null);
@@ -101,7 +99,7 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
 
     @Override
     public void onThumbnail(int index, long timeMs, Bitmap bitmap) {
-        TXLog.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
+        Log.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
         VideoEditerSDK.getInstance().addThumbnailBitmap(timeMs, bitmap);
     }
 

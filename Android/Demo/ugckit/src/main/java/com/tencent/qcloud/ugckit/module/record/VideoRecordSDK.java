@@ -19,7 +19,6 @@ import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
 
-import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCPartsManager;
@@ -67,12 +66,12 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordSDK = TXUGCRecord.getInstance(UGCKit.getAppContext());
         }
         mCurrentState = STATE_STOP;
-        TXLog.d(TAG, "initSDK");
+        Log.d(TAG, "initSDK");
     }
 
     @Nullable
     public TXUGCRecord getRecorder() {
-        TXLog.d(TAG, "getRecorder mTXUGCRecord:" + mRecordSDK);
+        Log.d(TAG, "getRecorder mTXUGCRecord:" + mRecordSDK);
         return mRecordSDK;
     }
 

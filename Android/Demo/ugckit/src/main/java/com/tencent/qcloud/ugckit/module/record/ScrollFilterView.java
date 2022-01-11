@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -16,8 +17,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.tencent.liteav.basic.log.TXCLog;
 
 import com.tencent.liteav.demo.beauty.utils.ResourceUtils;
 import com.tencent.liteav.demo.beauty.view.BeautyPanel;
@@ -297,7 +296,7 @@ public class ScrollFilterView extends RelativeLayout implements View.OnTouchList
     public boolean onScale(@NonNull ScaleGestureDetector detector) {
         int maxZoom = VideoRecordSDK.getInstance().getRecorder().getMaxZoom();
         if (maxZoom == 0) {
-            TXCLog.i(TAG, "camera not support zoom");
+            Log.i(TAG, "camera not support zoom");
             return false;
         }
 

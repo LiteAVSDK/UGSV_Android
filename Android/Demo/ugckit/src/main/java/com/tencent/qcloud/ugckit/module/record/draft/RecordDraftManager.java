@@ -4,10 +4,10 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 
@@ -141,13 +141,13 @@ public class RecordDraftManager {
     public void deleteLastPart() {
         RecordDraftInfo recordDraftInfo = getLastDraftInfo();
         if (recordDraftInfo == null) {
-            TXCLog.e(TAG, "recordDraftInfo is null, ignore");
+            Log.e(TAG, "recordDraftInfo is null, ignore");
             return;
         }
 
         List<RecordDraftInfo.RecordPart> recordPartList = recordDraftInfo.getPartList();
         if (recordPartList == null || recordPartList.size() == 0) {
-            TXCLog.e(TAG, "recordDraftInfo is empty, ignore");
+            Log.e(TAG, "recordDraftInfo is empty, ignore");
             return;
         }
         recordPartList.remove(recordPartList.size() - 1);

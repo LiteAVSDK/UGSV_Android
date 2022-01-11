@@ -2,12 +2,13 @@ package com.tencent.qcloud.ugckit.module.effect.bgm;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.utils.TCHttpURLClient;
@@ -37,14 +38,14 @@ public class TCMusicManager {
 
     public void loadMusicList() {
         if (isLoading) {
-            TXCLog.e(TAG, "loadMusicList, is loading");
+            Log.e(TAG, "loadMusicList, is loading");
             return;
         }
         isLoading = true;
         TCHttpURLClient.getInstance().get(UGCKitConstants.SVR_BGM_GET_URL, new TCHttpURLClient.OnHttpCallback() {
             @Override
             public void onSuccess(String result) {
-                TXCLog.i(TAG, "http request success:  result = " + result);
+                Log.i(TAG, "http request success:  result = " + result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONObject bgmObject = jsonObject.getJSONObject("bgm");
@@ -111,7 +112,7 @@ public class TCMusicManager {
 
             @Override
             public void onDownloadProgress(int progress) {
-                TXCLog.i(TAG, "downloadMusicInfo, progress = " + progress);
+                Log.i(TAG, "downloadMusicInfo, progress = " + progress);
                 LoadMusicListener loadMusicListener = null;
                 synchronized (TCMusicManager.this) {
                     loadMusicListener = mLoadMusicListener;
@@ -123,7 +124,7 @@ public class TCMusicManager {
 
             @Override
             public void onDownloadSuccess(String filePath) {
-                TXCLog.i(TAG, "onDownloadSuccess, filePath = " + filePath);
+                Log.i(TAG, "onDownloadSuccess, filePath = " + filePath);
                 LoadMusicListener loadMusicListener = null;
                 synchronized (TCMusicManager.this) {
                     loadMusicListener = mLoadMusicListener;

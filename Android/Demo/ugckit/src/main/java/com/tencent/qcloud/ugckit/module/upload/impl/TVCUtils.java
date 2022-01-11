@@ -55,48 +55,6 @@ public class TVCUtils {
         return MD5;
     }
 
-    //IMEI：
-    public static String doRead(Context context) {
-        String imei = "";
-        try {
-            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm != null) imei = tm.getDeviceId();
-            if (imei == null) imei = "";
-        } catch (Exception e) {
-        }
-        return string2Md5(imei);
-    }
-
-    //Android_ID
-    public static String getOrigAndroidID(Context context) {
-
-        String aid = "";
-        try {
-            aid = Settings.Secure.getString(context.getContentResolver(), "android_id");
-        } catch (Throwable e) {
-
-        }
-
-        return string2Md5(aid);
-    }
-
-    //MAC
-    public static String getOrigMacAddr(Context context) {
-        String macAddress = "";
-        try {
-            WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wInfo = wm != null ? wm.getConnectionInfo() : null;
-            macAddress = wInfo != null ? wInfo.getMacAddress() : null;
-            if (macAddress != null) {
-                macAddress = string2Md5(macAddress.replaceAll(":", "").toUpperCase());
-            }
-        } catch (Exception e) {
-        }
-        if (macAddress == null) {
-            macAddress = "";
-        }
-        return macAddress;
-    }
 
     // SimulateIDFA
     public static String getSimulateIDFA(Context context) {

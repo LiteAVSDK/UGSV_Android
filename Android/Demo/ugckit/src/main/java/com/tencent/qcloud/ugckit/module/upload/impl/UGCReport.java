@@ -1,8 +1,9 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
+
+import com.tencent.qcloud.ugckit.basic.TUIBuild;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -206,8 +207,8 @@ public class UGCReport {
             jsonObject.put("reqServerIp", info.reqServerIp);
             jsonObject.put("useHttpDNS", info.useHttpDNS);
             jsonObject.put("platform", 2000); // 1000 - iOS, 2000 - Android
-            jsonObject.put("device", Build.MANUFACTURER + Build.MODEL);
-            jsonObject.put("osType", String.valueOf(Build.VERSION.SDK_INT));
+            jsonObject.put("device", TUIBuild.getManufacturer() + TUIBuild.getModel());
+            jsonObject.put("osType", String.valueOf(TUIBuild.getSdkInt()));
             jsonObject.put("netType", TVCUtils.getNetWorkType(context));
             jsonObject.put("reqTime", info.reqTime);
             jsonObject.put("reportId", info.reportId);

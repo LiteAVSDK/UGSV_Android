@@ -175,11 +175,10 @@ public class ColorfulProgress extends View {
         canvas.drawRect(mViewRectf, mPaint);
     }
 
-    public class MarkInfo {
+    public static class MarkInfo {
         public  int   color;
         public  long  startTimeMs;
         public  float left  = -1;
         private float right = -1;
     }
-
 }

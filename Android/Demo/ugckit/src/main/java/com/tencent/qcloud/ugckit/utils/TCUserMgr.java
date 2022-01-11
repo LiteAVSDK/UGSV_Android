@@ -5,14 +5,11 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
-
-import com.tencent.liteav.basic.log.TXCLog;
+import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.R;
-
-import com.tencent.rtmp.TXLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,7 +120,7 @@ public class TCUserMgr {
             if (callback != null) {
                 callback.onFailure(-1, module + " request failure");
             }
-            TXLog.w(TAG, "xsp_process: " + module + " failure");
+            Log.w(TAG, "xsp_process: " + module + " failure");
         }
 
         @Override
@@ -145,13 +142,13 @@ public class TCUserMgr {
 
             if (code == SUCCESS_CODE) {
                 if (callback != null) callback.onSuccess(data);
-                TXLog.w(TAG, "xsp_process: " + module + " success");
+                Log.w(TAG, "xsp_process: " + module + " success");
             } else {
                 if (callback != null) callback.onFailure(code, message);
-                TXLog.w(TAG, "xsp_process: " + module + " error " + code + " message " + message);
+                Log.w(TAG, "xsp_process: " + module + " error " + code + " message " + message);
             }
 
-            TXLog.d(TAG, "xsp_process: " + response.toString() + ", Body" + body);
+            Log.d(TAG, "xsp_process: " + response.toString() + ", Body" + body);
         }
     }
 
@@ -279,7 +276,7 @@ public class TCUserMgr {
     }
 
     public void uploadLogs(String action, String userName, long code, String errorMsg, okhttp3.Callback callback) {
-        TXLog.w(TAG, "uploadLogs: errorMsg " + errorMsg);
+        Log.w(TAG, "uploadLogs: errorMsg " + errorMsg);
         String reqUrl = LogReport.DEFAULT_ELK_HOST;
         String body = "";
         try {
@@ -292,7 +289,7 @@ public class TCUserMgr {
             jsonObject.put("userName", userName);
             jsonObject.put("platform", "android");
             body = jsonObject.toString();
-            TXCLog.d(TAG, body);
+            Log.d(TAG, body);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -310,7 +307,7 @@ public class TCUserMgr {
                     .put("userid", userid)
                     .put("password", pwd)
                     .toString();
-            TXLog.w(TAG, "xsp_process: start register " + userid);
+            Log.w(TAG, "xsp_process: start register " + userid);
             request("/register", body, new HttpCallback("register", callback));
         } catch (Exception e) {
             e.printStackTrace();
@@ -403,7 +400,7 @@ public class TCUserMgr {
                     .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody))
                     .build();
             mHttpClient.newCall(request).enqueue(callback);
-            TXLog.d(TAG, "xsp_process: " + request.toString() + ", Body" + strBody);
+            Log.d(TAG, "xsp_process: " + request.toString() + ", Body" + strBody);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -472,12 +469,12 @@ public class TCUserMgr {
                     uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, SUCCESS_CODE, "登录成功", new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            TXCLog.d(TAG, "login uploadLogs onFailure");
+                            Log.d(TAG, "login uploadLogs onFailure");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            TXCLog.d(TAG, "login uploadLogs onResponse");
+                            Log.d(TAG, "login uploadLogs onResponse");
                         }
                     });
                     if (callback != null) {
@@ -492,12 +489,12 @@ public class TCUserMgr {
                     uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, code, msg, new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            TXCLog.d(TAG, "login uploadLogs onFailure");
+                            Log.d(TAG, "login uploadLogs onFailure");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            TXCLog.d(TAG, "login uploadLogs onResponse");
+                            Log.d(TAG, "login uploadLogs onResponse");
                         }
                     });
                     if (callback != null) {
@@ -523,7 +520,7 @@ public class TCUserMgr {
     private void loadUserInfo() {
         //TODO: decrypt
         if (mContext == null) return;
-        TXLog.d(TAG, "xsp_process: load local user info");
+        Log.d(TAG, "xsp_process: load local user info");
         SharedPreferences settings = mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
         mUserId = settings.getString(UGCKitConstants.USER_ID, "");
         mUserPwd = settings.getString(UGCKitConstants.USER_PWD, "");
@@ -532,7 +529,7 @@ public class TCUserMgr {
     private void saveUserInfo() {
         //TODO: encrypt
         if (mContext == null) return;
-        TXLog.d(TAG, "xsp_process: save local user info");
+        Log.d(TAG, "xsp_process: save local user info");
         SharedPreferences settings = mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(UGCKitConstants.USER_ID, mUserId);

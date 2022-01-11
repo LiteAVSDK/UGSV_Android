@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import androidx.multidex.MultiDexApplication;
 
-import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.LogReport;
-import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
-import com.tencent.rtmp.TXLiveBase;
 import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXUGCBase;
 
@@ -22,6 +19,7 @@ import com.tencent.ugc.TXUGCBase;
  * sdk初始化,全局提示框
  */
 public class TCApplication extends MultiDexApplication {
+
     private static final String TAG = "TCApplication";
 
 //    private RefWatcher mRefWatcher;
@@ -62,13 +60,9 @@ public class TCApplication extends MultiDexApplication {
      * 初始化SDK，包括Bugly，LiteAVSDK等
      */
     public void initSDK() {
-        //启动bugly组件，bugly组件为腾讯提供的用于crash上报和分析的开放组件，如果您不需要该组件，可以自行移除
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
-        strategy.setAppVersion(TXLiveBase.getSDKVersionStr());
-        CrashReport.initCrashReport(getApplicationContext(), UGCKitConstants.BUGLY_APPID, true, strategy);
-
         TCUserMgr.getInstance().initContext(getApplicationContext());
         TXLog.w(TAG, "app init sdk");
+
     }
 
     private class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -20,7 +21,6 @@ import com.tencent.qcloud.ugckit.module.picturetransition.PictureTransitionKit;
 import com.tencent.qcloud.ugckit.utils.BitmapUtils;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 
@@ -82,7 +82,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
         getPictureTransitionLayout().setTransitionListener(new IPictureTransitionLayout.OnTransitionListener() {
             @Override
             public void transition(int type) {
-                TXLog.i(TAG, "transition type:" + type);
+                Log.i(TAG, "transition type:" + type);
                 initTransition(type);
             }
         });
@@ -115,7 +115,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
      */
     private void initTransition(int type) {
         long duration = PictureTransitionKit.getInstance().pictureTransition(type);
-        TXLog.d(TAG, "initTransition duration:" + duration);
+        Log.d(TAG, "initTransition duration:" + duration);
 
         PlayerManagerKit.getInstance().stopPlay();
         // 设置视频基本信息

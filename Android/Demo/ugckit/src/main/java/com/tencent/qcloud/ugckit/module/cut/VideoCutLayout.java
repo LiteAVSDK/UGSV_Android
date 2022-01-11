@@ -5,19 +5,18 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.R;
 
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.component.slider.VideoCutView;
 import com.tencent.qcloud.ugckit.module.effect.utils.Edit;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
 
 public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, View.OnClickListener, Edit.OnCutChangeListener {
@@ -90,7 +89,7 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
         VideoEditerSDK.getInstance().setCutterStartTime(startTime, endTime);
         PlayerManagerKit.getInstance().startPlay();
 
-        TXLog.d(TAG, "startTime:" + startTime + ",endTime:" + endTime + ",duration:" + duration);
+        Log.d(TAG, "startTime:" + startTime + ",endTime:" + endTime + ",duration:" + duration);
     }
 
     @Override
@@ -111,7 +110,7 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
             cutTimeMs = MAX_DURATION * 1000;
         }
 
-        TXCLog.i(TAG, "[UGCKit][VideoCut]init cut time, start:" + 0 + ", end:" + cutTimeMs);
+        Log.i(TAG, "[UGCKit][VideoCut]init cut time, start:" + 0 + ", end:" + cutTimeMs);
         VideoEditerSDK.getInstance().setCutterStartTime(0, cutTimeMs);
         VideoEditerSDK.getInstance().setVideoDuration(videoInfo.duration);
 

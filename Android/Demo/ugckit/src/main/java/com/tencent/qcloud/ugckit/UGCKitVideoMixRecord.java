@@ -128,7 +128,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
         // 录制TXUGCRecord是单例，需要释放时还原配置
         getBeautyPanel().clear();
-
+        AudioFocusManager.getInstance().setAudioFocusListener(null);
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
     }
 

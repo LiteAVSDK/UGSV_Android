@@ -119,6 +119,7 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
         PlayerManagerKit.getInstance().removeAllPreviewListener();
         PlayerManagerKit.getInstance().removeAllPlayStateListener();
         TelephonyUtil.getInstance().uninitPhoneListener();
+        TimelineViewUtil.getInstance().release();
     }
 
     @Override

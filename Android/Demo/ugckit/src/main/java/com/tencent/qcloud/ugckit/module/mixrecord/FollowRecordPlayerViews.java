@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.tencent.liteav.audio.TXCAudioUGCRecorder;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
 import com.tencent.qcloud.ugckit.utils.ScreenUtils;
@@ -140,14 +139,14 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
      */
     private void setPlayoutVolumeIfNeed() {
         if (TXCAudioUGCRecorder.getInstance().getIsMute()) {
-            TXCLog.d(TAG, "TXCAudioUGCRecorder mIsMute is true");
+            Log.d(TAG, "TXCAudioUGCRecorder mIsMute is true");
             return;
         }
 
         Context appContext = getContext().getApplicationContext();
         AudioManager audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
         if (audioManager.isWiredHeadsetOn() || audioManager.isBluetoothA2dpOn()) {
-            TXCLog.d(TAG, "headset in on");
+            Log.d(TAG, "headset in on");
             return;
         }
 
