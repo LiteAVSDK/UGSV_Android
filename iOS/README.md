@@ -16,31 +16,22 @@ UGCKit 的开发环境要求如下:
 
 在使用 UGCKit 之前，需要将 UGCKit 集成到您的工程当中
 
-1. 导入 UGCKit 
-   将 UGCKit 文件夹拷贝到工程目录中，并将UGCKit中的UGCKit.xcodeproj拖拽到工程中。
-   <img src="https://main.qcloudimg.com/raw/4b8ff842eb939cd920eb16b22424ef22.png" width=800px />
+1. 项目配置：
 
-2. 配置依赖关系   
-   点击工程的Target, 选择 Build Phase 标签，在 Dependencies 中点击加号，选择UGCKit.framework 和 UGCKitResources，点击 Add。
-   <img src="https://main.qcloudimg.com/raw/eadf4d86b3dd62067417d4d449127348.jpg" width=800px />
-   
-3. 链接 UGCKit.framework 和 SDK
-   点击工程的Target, 选择 Build Phase 标签， 在 Link Binary With Libraries 中点击加号，选择UGCKit.framework。
-   <img src="https://main.qcloudimg.com/raw/f58b5a64a5074b334b2c97ec010800fc.jpg" width=800px />
-   在Finder中打开 SDK 目录，将 SDK 拖动到 Link Binary With Libraries 中。
-   <img src="https://main.qcloudimg.com/raw/217de0d27d3fc67152a71d2a1e800647.jpg" width=800px />
-   将UGSVSDK/iOS/Demo/UGCKit/UGCKitResources/FilterResource.bundle拖动到工程中并勾选 App Target。
-   
-4. 导入资源
-   点击工程的Target, 选择 Build Phase 标签， 展开 Copy Bundle Resources。然后在左侧目录中依次展开UGCKit.xcodeproj、Products，拖动 UGCKitResources.bundle 到 Copy Bundle Resources 中。
-   <img src="https://main.qcloudimg.com/raw/fbca78b281f8e87cbbaa036c4f208725.jpg" width=800px />
-
-5. 导入商业版资源（仅用于商业版）
-   将商业版 SDK zip包中SDK/Resouce 拖动到工程中，选择“Create groups"并勾选您的Target，点击Finish。
-   <img src="https://main.qcloudimg.com/raw/5ae899aff95984bf34839653ad2c4b51.jpg" width=800px />
-
-   <img src="https://main.qcloudimg.com/raw/fba634dc19e9e0bf3443f1451a9a2b60.jpg" width=800px />
-
+    i. 项目中使用 cocoapods，根据实际情况选择其中一种操作：
+    
+      - 在项目根目录，执行 `pod init && pod install`，可得到 Podfile 文件。
+      - 把 **BeautySettingKit** 和 **UGCKit** 文件夹拷贝到项目根目录下（Podfile 同级目录）。
+     
+    ii. 打开 Podfile 文件，增加：
+    ```
+     pod 'BeautySettingKit', :path => 'BeautySettingKit/BeautySettingKit.podspec'
+     pod 'UGCKit', :path => 'UGCKit/UGCKit.podspec', :subspecs => ["UGC"]   #subspecs 根据SDK来选择
+    ```
+     
+    iii. 执行`pod install`，并打开`项目名.xcworkspace`，可以看到在`Pods/Development Pods`目录下已有`UGCKit BeautySettingKit`。
+2. 导入商业版资源（仅用于商业版）：
+将商业版 SDK ZIP 包中 EnterprisePITU（在 `App/AppCommon` 目录下）文件夹拖动到工程中，选择 **Create groups** 并勾选您的 Target，单击 **Finish**。
 ### 使用
 
 1. 录制
