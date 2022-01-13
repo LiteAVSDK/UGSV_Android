@@ -53,6 +53,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.code.gson:gson:2.3.1'
+    implementation 'com.tencent.rqd:crashreport:3.4.4'
+    implementation 'com.tencent.rqd:nativecrashreport:3.9.2'
     compile project(':ugckit')
     implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
