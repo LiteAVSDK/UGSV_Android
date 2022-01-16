@@ -53,9 +53,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.code.gson:gson:2.3.1'
-    compile project(':ugckit')
     implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation rootProject.ext.liteavSdk
+    implementation project(':ugckit')
 }
 
