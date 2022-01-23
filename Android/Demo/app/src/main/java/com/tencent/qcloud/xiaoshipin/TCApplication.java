@@ -19,7 +19,6 @@ import com.tencent.ugc.TXUGCBase;
  * sdk初始化,全局提示框
  */
 public class TCApplication extends MultiDexApplication {
-
     private static final String TAG = "TCApplication";
 
 //    private RefWatcher mRefWatcher;
