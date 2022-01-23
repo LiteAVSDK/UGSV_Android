@@ -10,6 +10,7 @@ Android/Demo/.idea
 Android/Demo/.gradle
 Android/Demo/app/build/
 Android/Demo/beautysettingkit/build/
+Android/Demo/local.properties
 
 .gradle
 .idea
