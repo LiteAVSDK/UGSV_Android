@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_compose_record_btn"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/view_take_photo_bkg"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/view_take_photo"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/view_record_click_shot_bkg"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_centerInParent="true" />
+
+    <View
+        android:id="@+id/view_record_click_shot"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerInParent="true" />
+
+    <View
+        android:id="@+id/view_record_touch_shot_bkg"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/view_record_touch_shot"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_record_pause"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/ugckit_pause_record"
+        android:visibility="gone" />
+
+</RelativeLayout>

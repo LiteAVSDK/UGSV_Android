@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.tencent.qcloud.ugckit.module.cut.VideoPlayLayout
+        android:id="@+id/video_play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/video_bottom_layout" />
+
+    <com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerViewGroup
+        android:id="@+id/paster_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerViewGroup
+        android:id="@+id/bubble_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/video_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:background="#0d0d0d"
+        android:orientation="vertical">
+
+        <com.tencent.qcloud.ugckit.module.effect.PlayControlLayout
+            android:id="@+id/play_control_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/ugckit_editer_bottom"
+            android:orientation="horizontal" />
+
+        <com.tencent.qcloud.ugckit.module.effect.TimeLineView
+            android:id="@+id/timeline_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/play_control_layout"
+            android:background="@color/ugckit_editer_bottom" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp" />
+
+    <com.tencent.qcloud.ugckit.component.TitleBarLayout
+        android:id="@+id/titleBar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+    <com.tencent.qcloud.ugckit.module.effect.paster.view.PasterPannel
+        android:id="@+id/paster_select_view"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
+    <com.tencent.qcloud.ugckit.module.effect.bubble.BubbleSubtitlePannel
+        android:id="@+id/bubble_setting_view"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+</RelativeLayout>

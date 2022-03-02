@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Login and register Activity theme. -->
+    <style name="UGCKitBaseWhiteTransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/ugckit_color_primary</item>
+        <item name="colorPrimaryDark">@color/ugckit_black</item>
+        <item name="colorAccent">@color/ugckit_color_primary</item>
+        <item name="colorControlNormal">@color/ugckit_color_transparent_gray</item>
+        <item name="android:textColorHint">@color/ugckit_color_transparent_gray</item>
+        <item name="colorControlActivated">@color/ugckit_color_primary</item>
+        <item name="colorControlHighlight">@color/ugckit_color_primary</item>
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@color/ugckit_color_dark_transparent_gray</item>
+    </style>
+
+    <style name="LoginTheme" parent="UGCKitBaseWhiteTransparentTheme">
+
+    </style>
+</resources>

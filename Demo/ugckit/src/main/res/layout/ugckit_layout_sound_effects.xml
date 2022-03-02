@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="#80000000"
+    android:clickable="false"
+    android:focusable="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_mic_volume"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/ugckit_mic_volume"
+            android:textColor="@color/ugckit_white" />
+
+        <SeekBar
+            android:id="@+id/seekbar_mic_volume"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:maxHeight="4dp"
+            android:minHeight="4dp"
+            android:progress="50"
+            android:progressDrawable="@drawable/ugckit_seekbar_progress_drawable"
+            android:thumb="@drawable/ugckit_play_seekbar_icon" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/layout_reverb_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/btn_reverb_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectDisabled"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_original_sound"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_reverb_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectReverbKTV"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_ktv"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_reverb_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectReverbRoom"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_room"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_reverb_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectReverbHall"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_hall"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_reverb_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectReverbLow"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_deep"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_reverb_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectReverbSonorous"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_loud"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_reverb_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectReverbMagnetic"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_magnetic"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/layout_voicechanger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_voicechanger_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectDisabled"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_original_sound2"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeBadboy"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_wild_kid"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+
+            <TextView
+                android:id="@+id/btn_voicechanger_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeLoli"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_lolita"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeUncle"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_uncle"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeHeavymechanical"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_heavy_metal"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+
+            <TextView
+                android:id="@+id/btn_voicechanger_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeForeigner"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_foreigner"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+
+            <TextView
+                android:id="@+id/btn_voicechanger_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeBeast"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_beast"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeFatty"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_fat_boy"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeElectric"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_heavy_current"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeHeavymechanical"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_heavy_machine"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btn_voicechanger_11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTop="?attr/audioEffectVoicechangeEthereal"
+                android:focusable="false"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/ugckit_layout_sound_effect_vacant"
+                android:textAllCaps="false"
+                android:textColor="@color/ugckit_text_color1"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_volume"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/ugckit_ic_ugc_soundeffect"
+            android:text="音量"
+            android:textColor="@color/ugckit_white" />
+
+        <Button
+            android:id="@+id/btn_voicechange"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text="变声"
+            android:textColor="@color/ugckit_white" />
+
+        <Button
+            android:id="@+id/btn_reverb"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:text="混响"
+            android:textColor="@color/ugckit_white" />
+    </LinearLayout>
+
+
+</LinearLayout>
+

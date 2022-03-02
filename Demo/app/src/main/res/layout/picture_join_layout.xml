@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0d0d0d"
+    android:orientation="vertical">
+
+    <com.tencent.qcloud.ugckit.UGCKitPictureJoin
+        android:id="@+id/picture_transition"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
