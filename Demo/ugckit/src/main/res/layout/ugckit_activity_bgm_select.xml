@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#181D27">
+
+    <FrameLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#181D27">
+
+        <LinearLayout
+            android:id="@+id/back_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:paddingRight="30dp"
+                android:src="@drawable/ugckit_btn_back_no_shaddow" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/ugckit_select_bgm"
+            android:textColor="@color/ugckit_white"
+            android:textSize="18dp" />
+    </FrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_top">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_bgm_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawablePadding="20dp"
+        android:drawableTop="@drawable/ugckit_list_empty"
+        android:gravity="center"
+        android:text="@string/ugckit_no_content"
+        android:textColor="#777"
+        android:textSize="16sp" />
+
+</RelativeLayout>

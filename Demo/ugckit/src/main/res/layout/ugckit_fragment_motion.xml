@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="220dp">
+
+    <ImageView
+        android:id="@+id/iv_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
+        android:src="?attr/editerMotionUndoIcon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/ugckit_editer_bottom"
+        android:orientation="vertical"
+        android:paddingBottom="18dp">
+
+        <HorizontalScrollView
+            android:id="@+id/rl_voicechanger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_soul_out"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_spirit_out_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_spirit_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_soul_out"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_soul_out"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_split"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_split_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_split_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_split"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_split"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_rock_light"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_light_wave_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_light_wave_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_rock_light"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_rock_light"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_dark_dream"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_dark_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_dark_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_dark_dream"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_dark_dream"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_win_shadow"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_win_shadow_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_win_shadow_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_win_shadow"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_win_shadow"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_ghost_shadow"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_ghost_shadow_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_ghost_shadow_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_ghost_shadow"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_ghost_shadow"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_phantom_shadow"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_phantom_shadow_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_phantom_shadow_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_phantom_shadow"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_phantom_shadow"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_ghost"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_ghost_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_ghost_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_ghost"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_ghost"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_lightning"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_lightning_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_lightning_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_lightning"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_lightning"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_mirror"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_mirror_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_mirror_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_mirror"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_mirror"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_illusion"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/ugckit_transparent" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_illusion_select_container"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:visibility="gone">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/ugckit_shape_motion_illusion_press" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ugckit_effect_select" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_illusion"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/ugckit_motion_illusion"
+                        android:textColor="@color/ugckit_white"
+                        android:textSize="10dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </LinearLayout>
+</RelativeLayout>

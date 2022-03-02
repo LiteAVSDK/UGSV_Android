@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ugckit_tencent_tls_ui_white">#FFFFFF</color>
+    <color name="ugckit_tencent_tls_ui_gray">#444444</color>
+    <color name="ugckit_tencent_tls_ui_shadowgray">#CCCCCC</color>
+    <color name="ugckit_tencent_tls_ui_deepgray">#777777</color>
+    <color name="ugckit_tencent_tls_ui_countryCodeColor">#009900</color>
+    <color name="ugckit_tencent_tls_ui_black">#000000</color>
+    <color name="ugckit_tencent_tls_ui_titleBackground">#FFFFFF</color>
+    <color name="ugckit_tencent_tls_ui_titleFontColor">#000000</color>
+    <color name="ugckit_tencent_tls_ui_defaultButtonColor">#0099FF</color>
+    <color name="ugckit_tencent_tls_ui_pressedButtonColor">#0066CC</color>
+    <color name="ugckit_tencent_tls_ui_background">#EEEEEE</color>
+    <color name="ugckit_tencent_tls_ui_transparent">#9000</color>
+
+    <color name="ugckit_c1">#0ACCAC</color>
+    <color name="ugckit_c2">#222b48</color>
+    <color name="ugckit_c3">#F3F3F3</color>
+    <color name="ugckit_c4">#F5F5F5</color>
+    <color name="ugckit_c5">#D8D8D8</color>
+    <color name="ugckit_c6">#FFFFFF</color>
+    <color name="ugckit_c7">#000000</color>
+    <color name="ugckit_c8">#FFFFFF</color>
+    <color name="ugckit_c9">#777777</color>
+
+    <color name="ugckit_color_bottom_bar_background">#FD5D40</color>
+    <color name="ugckit_color_primary_dark">#21a3f5</color>
+    <color name="ugckit_color_accent">#0accac</color>
+    <color name="ugckit_transparent">#00000000</color>
+    <color name="ugckit_color_blue">#440accac</color>
+    <color name="ugckit_color_activity_background">#F3F3F3</color>
+    <color name="ugckit_color_transparent_gray">#88ffffff</color>
+    <color name="ugckit_color_dark_transparent_gray">#a4000000</color>
+    <color name="ugckit_color_very_dark_transparent_gray">#d4000000</color>
+    <color name="ugckit_color_light_transparent_gray">#22ffffff</color>
+    <color name="color_input_dialog_background">#b4ffffff</color>
+
+    <color name="ugckit_color_transparent_black">#44777777</color>
+
+    <color name="ugckit_color_danmu_msg">#30e7d5</color>
+
+    <color name="ugckit_background">#f3f3f3</color>
+    <color name="ugckit_background_gray1">#EBEBEB</color>
+    <color name="ugckit_background_gray2">#E6E6E6</color>
+    <color name="ugckit_background_gray3">#D4D4D4</color>
+    <color name="ugckit_background_gray4">#EFEFF4</color>
+    <color name="ugckit_line">#DDDDDD</color>
+    <color name="ugckit_line_btn">#BBBBBB</color>
+    <color name="ugckit_text_gray1">#777777</color>
+    <color name="ugckit_text_gray2">#767676</color>
+    <color name="ugckit_text_blue1">#1173CB</color>
+    <color name="ugckit_text_blue2">#1173CA</color>
+    <color name="ugckit_panel_black">#25272A</color>
+    <color name="ugckit_white">#FFFFFF</color>
+    <color name="ugckit_black">#000000</color>
+    <color name="ugckit_half_black">#7F000000</color>
+    <color name="ugckit_half_white">#7FFFFFFF</color>
+    <color name="ugckit_btn_red">#D63F41</color>
+    <color name="ugckit_btn_red_hover">#E8484B</color>
+    <color name="ugckit_btn_blue">#0F73CB</color>
+    <color name="ugckit_btn_blue_hover">#1E86E4</color>
+    <color name="ugckit_btn_text">#FFFFFF</color>
+    <color name="ugckit_btn_text_hover">#CCFFFFFF</color>
+    <color name="ugckit_btn_live">#5F6164</color>
+    <color name="ugckit_btn_live_press">#2F3134</color>
+    <!--蒙版-->
+    <color name="ugckit_color_mask">#66000000</color>
+    <color name="ugckit_dialog_btn_pressed_color">#efefef</color>
+
+    <!--app主色调，背景色-->
+    <color name="ugckit_color_primary">#FFFFFF</color>
+    <!--背景色-->
+    <color name="ugckit_color_background">#F5F5F5</color>
+    <!--app主题色，应用于导航，按钮-->
+    <color name="ugckit_color_theme">#80407A</color>
+    <!--主题色激活态，如按钮高亮-->
+    <color name="ugckit_color_theme_active">#A15C9A</color>
+    <!--红色标签/提示-->
+    <color name="color_label_red">#FF447D</color>
+    <!--红色标签/提示高亮-->
+    <color name="color_label_red_active">#FF89AB</color>
+    <!--黄色色标签/提示-->
+    <color name="color_label_yellow">#FFAE20</color>
+    <!--黄色色标签/提示高亮-->
+    <color name="color_label_yellow_active">#FFCD35</color>
+    <!--黄色蒙版-->
+    <color name="color_label_yellow_mask">#4DFFAE20</color>
+    <!--红色-->
+    <color name="color_red">#FF3333</color>
+    <!--文字白色-->
+    <color name="color_text_white">#FFFFFF</color>
+    <!--文字G1-->
+    <color name="ugckit_color_text_g1">#CCCCCC</color>
+    <!--文字G2-->
+    <color name="ugckit_color_text_g2">#999999</color>
+    <!--文字G3-->
+    <color name="ugckit_color_text_g3">#666666</color>
+    <!--文字G4-->
+    <color name="ugckit_color_text_g4">#333333</color>
+    <!--文字black-->
+    <color name="ugckit_color_text_black">#000000</color>
+    <!--gray1-->
+    <color name="ugckit_color_gray1">#F0F0F0</color>
+    <!--light gray-->
+    <color name="ugckit_color_light_gray">#E6E6E6</color>
+    <!--gray2-->
+    <color name="ugckit_color_gray2">#DCDCDC</color>
+    <!--gray3-->
+    <color name="ugckit_color_gray3">#C8C8C8</color>
+    <!--gray4-->
+    <color name="ugckit_color_gray4">#787878</color>
+    <!--gray5-->
+    <color name="ugckit_color_gray5">#505050</color>
+    <!--gray6-->
+    <color name="ugckit_color_gray6">#141414</color>
+    <!--gray7-->
+    <color name="ugckit_color_gray7">#D8D8D8</color>
+    <!--gray8-->
+    <color name="ugckit_color_gray8">#181818</color>
+    <!--green-->
+    <color name="ugckit_color_green">#0accac</color>
+
+    <color name="ugckit_color_red2">#FF584C</color>
+
+    <color name="ugckit_color_send_name">#9966cc</color>
+    <color name="ugckit_color_send_name1">#F12B5B</color>
+    <color name="ugckit_color_send_name2">#2B7DE2</color>
+    <color name="ugckit_color_send_name3">#006599</color>
+    <color name="ugckit_color_send_name4">#FF7906</color>
+    <color name="ugckit_color_send_name5">#1FBCB6</color>
+    <color name="ugckit_color_send_name6">#FFAE1F</color>
+    <color name="ugckit_color_send_name7">#FF437D</color>
+    <!--蒙版-->
+
+    <color name="ugckit_camera_video_grid_bg_color">#F3F4F6</color>
+    <color name="ugckit_pink">#f90051</color>
+
+    <color name="ugckit_umeng_white">#ffffff</color>
+    <color name="ugckit_umeng_blue">#0086DC</color>
+    <color name="ugckit_umeng_black">#000000</color>
+    <color name="ugckit_umeng_background">#D4E0E5</color>
+    <color name="ugckit_umeng_text_color">#575A5C</color>
+    <color name="ugckit_umeng_divide">#C3C6C9</color>
+
+    <color name="ugckit_edit_red">#f00</color>
+    <color name="ugckit_edit_yellow">#FECD52</color>
+    <color name="ugckit_edit_blue">#145CB9</color>
+    <color name="ugckit_edit_green">#21AE58</color>
+
+    <color name="ugckit_record_progress_bg">#66000000</color> <!-- 40%不透明度 -->
+    <color name="ugckit_record_progress">#ff584c</color>
+    <color name="ugckit_record_progress_pending">#a8002d</color>
+
+    <color name="ugckit_record_speed_text_normal">#ffffff</color>
+    <color name="ugckit_record_speed_text_select">#00f5ac</color>
+
+    <color name="ugckit_record_settings_tip">#999999</color>
+    <color name="ugckit_input_text_color">#00f5ac</color>
+    <color name="ugckit_paster_activity_background_color">#0d0d0d</color>
+    <color name="ugckit_bubble_panel_background_color">#0d0d0d</color>
+
+    <!--动态滤镜的颜色-->
+    <color name="ugckit_spirit_out_color">#EC5F9B</color>
+    <color name="ugckit_soul_out_color_press">#B21FC0CC</color>
+
+    <color name="ugckit_screen_split">#EC8435</color>
+    <color name="ugckit_screen_split_press">#B2FFBB00</color>
+
+    <color name="ugckit_light_wave">#1FBCB6</color>
+    <color name="ugckit_rock_light_press">#B2655CE6</color>
+
+    <color name="ugckit_dark_illusion">#449FF3</color>
+    <color name="ugckit_dark_dream_press">#B2006EFF</color>
+
+    <!--5-->
+    <color name="ugckit_win_shaddow_color">#FF6EA745</color>
+    <color name="ugckit_win_shaddow_color_press">#CC6EA745</color>
+    <!--6-->
+    <color name="ugckit_ghost_shaddow_color">#FF47A9B2</color>
+    <color name="ugckit_ghost_shaddow_color_press">#CC47A9B2</color>
+    <!--7-->
+    <color name="ugckit_phantom_shaddow_color">#FF4368BC</color>
+    <color name="ugckit_phantom_shaddow_color_press">#CC4368BC</color>
+    <!--8-->
+    <color name="ugckit_ghost_color">#FF6A3FC6</color>
+    <color name="ugckit_ghost_color_press">#CC6A3FC6</color>
+    <!--9-->
+    <color name="ugckit_lightning_color">#FFC73AD1</color>
+    <color name="ugckit_lightning_color_press">#CCC73AD1</color>
+    <!--10-->
+    <color name="ugckit_mirror_color">#FFDB347F</color>
+    <color name="ugckit_mirror_color_press">#CCDB347F</color>
+    <!--11-->
+    <color name="ugckit_illusion_color">#FF7F554C</color>
+    <color name="ugckit_illusion_color_press">#CC7F554C</color>
+
+    <color name="ugckit_editer_bottom">#1F2531</color>
+    <color name="ugckit_time_bg_normal">#0accac</color>
+    <color name="ugckit_time_bg_selected">#AA0ACCAC</color>
+
+    <color name="ugckit_follow_shot_bg_normal">#ec766a</color>
+    <color name="ugckit_follow_shot_bg_selected">#ec6455</color>
+
+    <!-- 裁剪范围颜色 -->
+    <color name="ugckit_color_accent_transparent30">#B2FF584C</color>
+    <color name="ugckit_actionsheet_gray">#8F8F8F</color>
+
+    <color name="ugckit_cut_line_color">#FFFF584C</color>
+    <!-- RecordButton-->
+    <color name="ugckit_record_button_take_photo_background_color">#a1ffffff</color>
+    <color name="ugckit_record_button_click_shot_background_color">#BEBEBE</color>
+    <color name="ugckit_record_button_click_shotInner_color">#FF3030</color>
+    <color name="ugckit_record_button_touch_shot_background_color">#a1FF3030</color>
+    <color name="ugckit_record_button_touch_shot_inner_color">#FF3030</color>
+    <!-- 转场 -->
+    <color name="ugckit_transition_mark_color">#9000ff00</color>
+    <!-- timeline slider背景 -->
+    <color name="ugckit_slider_bg">#75FB7B</color>
+</resources>

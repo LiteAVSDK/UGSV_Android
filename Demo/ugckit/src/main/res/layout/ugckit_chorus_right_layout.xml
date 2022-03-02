@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:gravity="right"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_beauty"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/iv_beauty"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClick"
+            android:src="@drawable/ugckit_record_beautiful_girl" />
+
+        <TextView
+            android:id="@+id/tv_beauty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_beauty"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@string/ugckit_beauty"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_countdown"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/layout_beauty"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/iv_countdown"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClick"
+            android:src="@drawable/ugckit_btn_timer" />
+
+        <TextView
+            android:id="@+id/tv_countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_countdown"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="@string/ugckit_activity_video_record_timer"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</LinearLayout>

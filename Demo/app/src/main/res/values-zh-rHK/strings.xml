@@ -1,0 +1,446 @@
+<resources>
+    <string name="app_name">小視頻</string>
+
+    <string name="btn_back">返回</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_ok">確定</string>
+    <string name="btn_confirm">確認</string>
+
+    <!--loginActivity -->
+    <string name="activity_login_login">登錄</string>
+    <string name="activity_login_register">註冊新用戶</string>
+    <string name="activity_login_username">用戶名</string>
+    <string name="activity_login_password">密碼</string>
+    <!--loginActivity -->
+
+    <!--registerActivity -->
+    <string name="activity_register_register">註冊</string>
+    <string name="activity_register_username">用戶名(4~24位字母、數字、下劃線）</string>
+    <string name="activity_register_password">密碼(8~16位字符)</string>
+    <string name="activity_register_password_verify">確認密碼</string>
+    <!--registerActivity -->
+
+    <!-- permission check-->
+    <string name="float_window_not_allow">懸浮窗權限未開啟 請在應用-權限中打開懸浮窗權限</string>
+
+    <!-- userinfo fragment-->
+    <string name="app_about">關於</string>
+    <string name="btn_login_out">退出登錄</string>
+
+    <string name="video_edit_segment">設置想要截取的片段</string>
+    <string name="music_empty">空空如也</string>
+    <string name="music_loading">正在加載本地音樂...</string>
+    <string name="follow_shot">合拍</string>
+
+    <!-- TCVideoRecordActivity -->
+    <string name="next_step">下一步</string>
+
+    <string name="speed_very_slow">極慢</string>
+    <string name="speed_slow">慢速</string>
+    <string name="speed_normal">標準</string>
+    <string name="speed_fast">快速</string>
+    <string name="speed_very_fast">極快</string>
+    <string name="aspect">屏比</string>
+    <string name="beauty">美顏</string>
+    <string name="music">音樂</string>
+    <string name="motion">動作</string>
+    <string name="speed">速度</string>
+    <string name="filter">濾鏡</string>
+    <string name="paster">貼紙</string>
+    <string name="subtitle">字幕</string>
+
+    <string name="cancel_record">取消拍攝</string>
+    <string name="confirm_cancel_edit_content">確認放棄當前編輯的內容？</string>
+    <string name="confirm_cancel_record_content">確認放棄當前拍攝的內容？</string>
+    <string name="wrong_click">點錯了</string>
+    <string name="give_up">放棄</string>
+
+    <!--ShortVideoDialog.java-->
+    <string name="video_record_title">拍攝</string>
+    <string name="video_editer_title">編輯</string>
+    <string name="picture_editer_title">圖片</string>
+
+    <!--TCPictureChooseActivityvity-->
+    <string name="picture_choose">選擇圖片</string>
+    <string name="video_long_drag">長按拖拽可調整視頻順序</string>
+
+    <string name="select_bgm">選擇背景音樂</string>
+    <string name="mic_volume">錄音音量</string>
+    <string name="bgm_volume">背景音樂音量</string>
+    <string name="tips">提示</string>
+    <string name="delete_bgm_or_not">確定清除已添加的背景音樂？</string>
+    <string name="confirm_delete">確定清除</string>
+
+    <string name="bgm_start_position">當前從%1$s開始</string>
+
+    <string name="no_content">暫無內容哦~</string>
+    <string name="none">無</string>
+
+    <string name="reverse">倒放</string>
+    <string name="slow_motion">慢動作</string>
+    <string name="repeate">反復</string>
+    <string name="add">新增</string>
+
+    <string name="motion_soul_out">靈魂出竅</string>
+    <string name="motion_split">視頻分裂</string>
+    <string name="motion_rock_light">動感光波</string>
+    <string name="motion_dark_dream">暗黑幻境</string>
+    <string name="motion_win_shadow">百葉窗</string>
+    <string name="motion_ghost_shadow">鬼影</string>
+    <string name="motion_phantom_shadow">幻影</string>
+    <string name="motion_ghost">幽靈</string>
+    <string name="motion_lightning">閃電</string>
+    <string name="motion_mirror">鏡像</string>
+    <string name="motion_illusion">幻覺</string>
+
+    <!--TCVideoPublishActivity-->
+    <string name="cancel_publish_title">取消上傳</string>
+    <string name="cancel_publish_msg">視頻即將上傳完成，真的要取消上傳嗎？</string>
+
+    <!--TCVideoEffectActivityvity-->
+    <string name="revert">撤銷</string>
+    <string name="complete">完成</string>
+    <string name="state_pause">暫停</string>
+    <string name="save_success">保存完成</string>
+    <string name="download">下載</string>
+    <string name="downloaded">已下載</string>
+    <string name="use">使用</string>
+    <string name="downloading">下載中</string>
+    <string name="dynamic_paster">動態貼紙</string>
+    <string name="static_paster">靜態貼紙</string>
+    <string name="bublle_style">氣泡樣式</string>
+    <string name="text_color">文字顏色</string>
+    <string name="video_joining">視頻拼接中...</string>
+    <string name="cancel_joining">取消拼接視頻</string>
+
+    <!--TCVideoPublishActivity-->
+    <string name="publish_success">發佈成功</string>
+
+    <!--关于-->
+    <string name="about_tip1">小視頻是由騰訊云視頻團隊提供的一款原型級別的APP，致力於以DEMO的形式向您展示騰訊視頻云在短視頻領域的各項能力。比如如何利用視頻云SDK進行短視頻的分段錄製和編輯，如何利用對象存儲（COS）服務實現視頻上傳和發佈，如何使用點播（VOD）服務實現視頻的分發</string>
+
+    <string name="language_setting_activity_language">語言</string>
+    <string name="language_setting_activity_follow_system">跟隨系統（重啟生效）</string>
+    <string name="language_setting_activity_save">保存</string>
+
+    <string name="user_info_fragment_setting">設置</string>
+
+    <string name="setting_activity_language">語言</string>
+    <string name="setting_activity_setting">設置</string>
+
+    <string name="beauty_setting_pannel_style">風格</string>
+    <string name="beauty_setting_pannel_beauty">美顏</string>
+    <string name="beauty_setting_pannel_filter">濾鏡</string>
+    <string name="beauty_setting_pannel_dynamic_effect">動效</string>
+    <string name="beauty_setting_pannel_key">摳背</string>
+    <string name="beauty_setting_pannel_green_screen">綠幕</string>
+
+    <string name="beauty_setting_pannel_style_smooth">美顏(光滑)</string>
+    <string name="beauty_setting_pannel_style_natural">美顏(自然)</string>
+    <string name="beauty_setting_pannel_style_hazy">美顏(天天P图)</string>
+
+    <string name="beauty_setting_pannel_beauty_beauty">美顏</string>
+    <string name="beauty_setting_pannel_beauty_whitening">美白</string>
+    <string name="beauty_setting_pannel_beauty_ruddy">紅潤</string>
+    <string name="beauty_setting_pannel_beauty_big_eye">大眼</string>
+    <string name="beauty_setting_pannel_beauty_thin_face">瘦臉</string>
+    <string name="beauty_setting_pannel_beauty_v_face">V臉</string>
+    <string name="beauty_setting_pannel_beauty_chin">下巴</string>
+    <string name="beauty_setting_pannel_beauty_short_face">短臉</string>
+    <string name="beauty_setting_pannel_beauty_small_nose">小鼻</string>
+
+    <string name="beauty_setting_pannel_filter_none">無</string>
+    <string name="beauty_setting_pannel_filter_standard">標準</string>
+    <string name="beauty_setting_pannel_filter_cheery">櫻紅</string>
+    <string name="beauty_setting_pannel_filter_cloud">雲裳</string>
+    <string name="beauty_setting_pannel_filter_pure">純真</string>
+    <string name="beauty_setting_pannel_filter_orchid">白蘭</string>
+    <string name="beauty_setting_pannel_filter_vitality">元氣</string>
+    <string name="beauty_setting_pannel_filter_super">超脫</string>
+    <string name="beauty_setting_pannel_filter_fragrance">香氛</string>
+    <string name="beauty_setting_pannel_filter_romantic">浪漫</string>
+    <string name="beauty_setting_pannel_filter_fresh">清新</string>
+    <string name="beauty_setting_pannel_filter_beautiful">唯美</string>
+    <string name="beauty_setting_pannel_filter_pink">粉嫩</string>
+    <string name="beauty_setting_pannel_filter_reminiscence">懷舊</string>
+    <string name="beauty_setting_pannel_filter_blues">藍調</string>
+    <string name="beauty_setting_pannel_filter_cool">清涼</string>
+    <string name="beauty_setting_pannel_filter_Japanese">日系</string>
+
+    <string name="beauty_setting_pannel_dynamic_effect_none">無動效</string>
+    <string name="beauty_setting_pannel_dynamic_effect_boom">Boom</string>
+    <string name="beauty_setting_pannel_dynamic_effect_neon_mouse">霓虹鼠</string>
+    <string name="beauty_setting_pannel_dynamic_effect_star_ear">星耳</string>
+    <string name="beauty_setting_pannel_dynamic_effect_crazy_cheer_up">瘋狂打call</string>
+    <string name="beauty_setting_pannel_dynamic_effect_Q_cancelonstellation">Q星座</string>
+    <string name="beauty_setting_pannel_dynamic_effect_colored_ribbon">彩色絲帶</string>
+    <string name="beauty_setting_pannel_dynamic_effect_bands_hairband">劉海髮帶</string>
+    <string name="beauty_setting_pannel_dynamic_effect_change_face">變臉</string>
+    <string name="beauty_setting_pannel_dynamic_effect_purple_kitten">紫色小貓</string>
+    <string name="beauty_setting_pannel_dynamic_effect_flower_faerie">花仙子</string>
+    <string name="beauty_setting_pannel_dynamic_effect_little_Princess">小公舉</string>
+
+    <string name="beauty_setting_pannel_key_none">無</string>
+    <string name="beauty_setting_pannel_key_AI_key">AI摳背</string>
+
+    <string name="beauty_setting_pannel_green_screen_none">無</string>
+    <string name="beauty_setting_pannel_green_screen_good_luck">Good luck</string>
+
+    <string name="fragment_user_info_please_lonin">請先登錄</string>
+
+    <string name="fragment_bgm_cancel">取消</string>
+
+    <string name="dialog_ugc_tip_already_known">知道了</string>
+
+    <string name="unit_second">秒</string>
+
+    <string name="fragment_confirm_confirm">確定</string>
+    <string name="fragment_confirm_cancel">取消</string>
+    <string name="fragment_confirm_ok">確定</string>
+    <string name="fragment_confirm_input_tip">請輸入內容</string>
+
+    <string name="activity_register_register_new_user">註冊新用戶</string>
+
+    <string name="tc_ugc_video_list_adapter_video_state_normal">正常</string>
+    <string name="tc_ugc_video_list_adapter_video_state_in_audit">審核中</string>
+    <string name="tc_ugc_video_list_adapter_video_state_pornographic">涉黃</string>
+
+    <string name="tc_ugc_video_list_adapter_just_now">剛剛</string>
+    <string name="tc_ugc_video_list_adapter_mins_ago">分鐘前</string>
+    <string name="tc_ugc_video_list_adapter_hours_ago">小時前</string>
+    <string name="tc_ugc_video_list_adapter_days_ago">天前</string>
+
+    <string name="tc_ugc_video_list_adapter_min_ago">分鐘前</string>
+    <string name="tc_ugc_video_list_adapter_hour_ago">小時前</string>
+    <string name="tc_ugc_video_list_adapter_day_ago">天前</string>
+
+    <string name="fragment_videolist_no_content">暫無內容噢~</string>
+
+    <string name="tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing">圖片異常，結束編輯</string>
+    <string name="tc_picture_join_activity_toast_cancel_video_generation">視頻取消生成</string>
+
+    <string name="activity_picture_join_left_right">左右</string>
+    <string name="activity_picture_join_up_down">上下</string>
+    <string name="activity_picture_join_zoom_in">放大</string>
+    <string name="activity_picture_join_zoom_out">縮小</string>
+    <string name="activity_picture_join_rotate">旋轉</string>
+    <string name="activity_picture_join_fade_in_and_fade_out">淡入淡出</string>
+
+
+    <string name="fragment_input_word_input_tip">请输入内容</string>
+    <string name="fragment_input_word_cancel">取消</string>
+    <string name="fragment_input_word_ok">确定</string>
+
+    <string name="layout_joiner_progress_video_is_generating">視頻生成中...</string>
+
+    <string name="audio_ctrl_accompaniment">伴奏</string>
+    <string name="audio_ctrl_finish">結束</string>
+    <string name="audio_ctrl_voice">人聲</string>
+    <string name="audio_ctrl_vol">音量調節</string>
+
+    <string name="tc_login_activity_login_successfully">登錄成功</string>
+    <string name="tc_login_activity_auto_login_failed">自動登錄失敗</string>
+    <string name="tc_login_activity_no_network_connection">當前無網絡連接</string>
+    <string name="tc_login_activity_password_length_tip">密碼長度應為8-16位</string>
+    <string name="tc_login_activity_username_does_not_meet_specifications">用戶名不規範</string>
+
+    <string name="tc_register_activity_attempt_normal_regist_username_does_not_meet_specifications">用戶名不規範</string>
+    <string name="tc_register_activity_attempt_normal_regist_password_length_error">密碼長度應為8-16位</string>
+    <string name="tc_register_activity_attempt_normal_regist_password_verify_error">兩次輸入密碼不一致</string>
+    <string name="tc_register_activity_attempt_normal_regist_no_network_connection">當前無網絡連接</string>
+
+    <string name="tc_register_activity_register_callback_register_successfully">註冊成功</string>
+    <string name="tc_register_activity_register_callback_auto_login_successfully">自動登錄成功</string>
+    <string name="tc_register_activity_register_callback_auto_login_failed">自動登錄失败</string>
+    <string name="tc_register_activity_register_callback_username_format_error">用戶名格式錯誤</string>
+    <string name="tc_register_activity_register_callback_password_format_error">密碼格式錯誤</string>
+    <string name="tc_register_activity_register_callback_username_already_exists">用戶名已存在</string>
+    <string name="tc_register_activity_register_callback_register_failed">註冊失敗:</string>
+
+
+    <string name="tc_video_record_activity_start_record_start_record_ok">開始錄製成功</string>
+    <string name="tc_video_record_activity_start_record_start_record_err_is_in_recording">存在未完成任務</string>
+    <string name="tc_video_record_activity_start_record_start_record_err_video_path_is_empty">視頻文件路徑為空</string>
+    <string name="tc_video_record_activity_start_record_start_record_err_api_is_lower_than_18">版本小於18</string>
+    <string name="tc_video_record_activity_start_record_start_record_err_not_init">還未初始化結束</string>
+    <string name="tc_video_record_activity_start_record_start_record_err_licence_verification_failed">licence校驗失敗</string>
+    <string name="tc_video_record_activity_start_record_record_failed_tip">錄製失敗，錯誤碼：</string>
+
+    <string name="tc_video_record_activity_on_record_event_evt_camera_cannot_use">攝像頭打開失敗，請檢查權限</string>
+    <string name="tc_video_record_activity_on_record_event_evt_mic_cannot_use">麥克風打開失敗，請檢查權限</string>
+
+    <string name="tc_video_record_activity_on_record_complete_fail_tip">錄製失敗，原因：</string>
+    <string name="tc_video_record_activity_on_record_complete_synthesizing">正在合成...</string>
+
+    <string name="tc_video_record_activity_on_join_progress_synthesizing">正在合成</string>
+
+    <string name="tc_video_record_activity_on_join_complete_synthesis_failed">合成失敗</string>
+
+
+    <string name="tc_video_record_activity_on_request_permissions_result_failed_to_get_permission">獲取權限失敗</string>
+
+    <string name="dialog_title_confirm">確認</string>
+    <string name="dialog_title_error">錯誤</string>
+
+    <string name="tc_constants_error_msg_net_disconnecte">網絡異常，請檢查網絡</string>
+
+    <string name="tc_http_engine_get_error_message_connect_server_failed">連接服務器失敗</string>
+    <string name="tc_http_engine_get_error_message_no_network_connection">無網絡連接</string>
+    <string name="tc_http_engine_get_error_message_network_anomaly">網絡異常，請稍後再試</string>
+
+
+    <string name="tc_http_engine_handle_server_error_connect_server_fail">連接服務器失敗</string>
+    <string name="tc_http_engine_handle_server_error_network_anomaly">網絡異常，請稍後再試</string>
+
+    <string name="tc_utils_check_float_window_permission_yes">開啟</string>
+    <string name="tc_utils_check_float_window_permission_no">不，謝謝</string>
+
+    <string name="tc_static_filter_fragment_original">原圖</string>
+    <string name="tc_static_filter_fragment_standard">標準</string>
+    <string name="tc_static_filter_fragment_cheery">櫻紅</string>
+    <string name="tc_static_filter_fragment_cloud">雲裳</string>
+    <string name="tc_static_filter_fragment_pure">純真</string>
+    <string name="tc_static_filter_fragment_orchid">白蘭</string>
+    <string name="tc_static_filter_fragment_vitality">元氣</string>
+    <string name="tc_static_filter_fragment_super">超脫</string>
+    <string name="tc_static_filter_fragment_fragrance">香氛</string>
+    <string name="tc_static_filter_fragment_romantic">浪漫</string>
+    <string name="tc_static_filter_fragment_fresh">清新</string>
+    <string name="tc_static_filter_fragment_beautiful">唯美</string>
+    <string name="tc_static_filter_fragment_pink">粉嫩</string>
+    <string name="tc_static_filter_fragment_reminiscence">懷舊</string>
+    <string name="tc_static_filter_fragment_blues">藍調</string>
+    <string name="tc_static_filter_fragment_cool">清涼</string>
+    <string name="tc_static_filter_fragment_Japanese">日系</string>
+
+    <string name="tc_video_cutter_activity_oncreate_an_unknown_error_occurred_the_path_cannot_be_empty">發生未知錯誤，路徑不能為空</string>
+
+    <string name="tc_video_cutter_activity_init_work_loading_progress_video_preprocessing">視頻預處理中...</string>
+
+    <string name="tc_video_cutter_activity_load_video_success_already_picked">已選取</string>
+
+    <string name="tc_video_cutter_activity_video_main_handler_edit_failed">編輯失敗</string>
+    <string name="tc_video_cutter_activity_video_main_handler_does_not_support_android_version_below_4.3">暫不支持Android 4.3以下系統</string>
+
+    <string name="tc_live_list_fragment_refresh_list_failed">刷新列表失敗</string>
+
+
+    <string name="tc_video_editer_activity_oncreate_status_is_abnormal_finish_editing">狀態異常，結束編輯</string>
+
+    <string name="tc_video_editer_activity_show_publish_dialog_save">保存</string>
+    <string name="tc_video_editer_activity_show_publish_dialog_publish">發佈</string>
+
+    <string name="tc_video_editer_activity_cancel_video_generation">取消視頻生成</string>
+
+    <string name="video_material_download_progress_material_unzip_failed">素材解壓失敗</string>
+    <string name="video_material_download_progress_download_failed">下載失敗</string>
+    <string name="video_material_download_progress_no_enough_storage_space">存儲空間不足</string>
+
+    <string name="tc_user_mgr_user_does_not_exist">用戶名不存在</string>
+    <string name="tc_user_mgr_wrong_password">密碼錯誤</string>
+
+    <string name="tc_vod_player_activity_download_video_is_downloading">正在下載...</string>
+    <string name="tc_vod_player_activity_download_video_download_failed">下載失敗</string>
+
+    <string name="tc_picture_choose_activity_the_selected_file_does_not_exist">選擇的文件不存在</string>
+    <string name="tc_picture_choose_activity_please_select_multiple_images">請選擇多個圖片</string>
+    <string name="tc_picture_choose_activity_got_it">知道了</string>
+
+    <string name="tc_video_choose_activity_contains_corrupted_video_files">包含已經損壞的視頻文件</string>
+    <string name="tc_video_choose_activity_the_selected_file_does_not_exist">選擇的文件不存在</string>
+    <string name="tc_video_choose_activity_got_it">知道了</string>
+
+    <string name="tc_video_effect_activity_status_is_abnormal_finish_editing">狀態異常，結束編輯</string>
+
+    <string name="tc_video_preprocess_activity_an_unknown_error_occurred_the_path_cannot_be_empty">發生未知錯誤，路徑不能為空</string>
+    <string name="tc_video_preprocess_activity_video_preprocessing">視頻預處理中...</string>
+    <string name="tc_video_preprocess_activity_cancel_preprocessing">取消預處理</string>
+    <string name="tc_video_preprocess_activity_edit_failed">編輯失敗</string>
+    <string name="tc_video_preprocess_activity_does_not_support_android_version_below_4.3">暫不支持Android 4.3以下系統</string>
+
+    <string name="tc_bgm_setting_fragment_video_edit_failed">視頻編輯失敗</string>
+    <string name="tc_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format">背景音僅支持MP3或M4A格式背景</string>
+
+    <string name="tc_bgm_download_progress_download_failed">下載失敗</string>
+    <string name="tc_bgm_download_progress_no_enough_storage_space">存儲空間不足</string>
+
+    <string name="tc_bubble_fragment_double_click_to_edit_text">雙擊修改文字</string>
+
+    <string name="tc_word_input_dialog_please_enter_subtitles">請輸入字幕</string>
+
+    <string name="tc_cutter_fragment_left">左側：</string>
+    <string name="tc_cutter_fragment_right">右側：</string>
+
+    <string name="add_paster_adapter_paster">貼紙</string>
+
+    <string name="tc_time_fragment_video_preprocessing">視頻預處理中...</string>
+
+    <string name="tc_touch_seekbar_low">低</string>
+    <string name="tc_touch_seekbar_mid">中</string>
+    <string name="tc_touch_seekbar_high">高</string>
+
+    <string name="tc_video_repeat_view_tip2">重複時間點 左側 : %1$s， 右側 : %1$s</string>
+    <string name="tc_video_repeat_view_tip1">裁剪區間 左側 : %1$s， 右側 : %1$s</string>
+
+    <string name="tc_video_publisher_activity_no_network_connection">無網絡連接</string>
+    <string name="tc_video_publisher_activity_is_uploading">正在上傳</string>
+    <string name="tc_video_publisher_activity_network_connection_is_disconnected_video_upload_failed">網絡連接斷開，視頻上傳失敗</string>
+
+    //分割线 2018/7/24  --------------------------------------------------------------------------------------------------
+    <string name="video_choose">選擇視頻</string>
+
+    <string name="activity_video_record_take_photo">拍照</string>
+    <string name="activity_video_record_click_start">單擊拍</string>
+    <string name="activity_video_record_long_touch">長按拍</string>
+
+    <string name="activity_video_record_timer">倒計時</string>
+    <string name="activity_video_record_sound_effect">音效</string>
+
+    <string name="activity_video_record_take_photo_success">拍照成功，已存到系統相冊</string>
+    <string name="activity_video_record_take_photo_fail">拍照失敗</string>
+
+    <string name="sound_effect_pannel_change_voice">變聲</string>
+    <string name="sound_effect_pannel_record_reverb">混響</string>
+
+    <string name="layout_sound_effect_ktv">KTV</string>
+    <string name="layout_sound_effect_original_sound">原聲</string>
+    <string name="layout_sound_effect_room">房間</string>
+    <string name="layout_sound_effect_hall">會堂</string>
+    <string name="layout_sound_effect_deep">低沉</string>
+    <string name="layout_sound_effect_loud">洪亮</string>
+    <string name="layout_sound_effect_magnetic">磁性</string>
+
+    <string name="layout_sound_effect_original_sound2">原聲</string>
+    <string name="layout_sound_effect_wild_kid">熊孩子</string>
+    <string name="layout_sound_effect_lolita">蘿莉</string>
+    <string name="layout_sound_effect_uncle">大叔</string>
+    <string name="layout_sound_effect_heavy_metal">重金屬</string>
+    <string name="layout_sound_effect_foreigner">外國人</string>
+    <string name="layout_sound_effect_beast">困獸</string>
+    <string name="layout_sound_effect_fat_boy">死肥仔</string>
+    <string name="layout_sound_effect_heavy_current">強電流</string>
+    <string name="layout_sound_effect_heavy_machine">重機械</string>
+    <string name="layout_sound_effect_vacant">空靈</string>
+
+    <string name="bgm_select_activity_downloading">下載中...</string>
+    <string name="bgm_select_activity_download_failed">下載失敗</string>
+
+    <string name="chorus_title">合唱</string>
+    <string name="video_not_review">視頻未審核</string>
+    <string name="video_porn">視頻涉黃</string>
+
+    <string name="record_part_exist">妳有未錄制完成的視頻，是否繼續？</string>
+
+    <!--registerActivity  loginActivity-->
+    <string name="technical_support">如何獲取技術支持服務？</string>
+    <string name="follow_public_number">關注公衆號“騰訊雲視頻”</string>
+    <string name="send_msg_to_public_number">給公衆號發送“小視頻”</string>
+
+    <!-- userinfo fragment-->
+    <string name="get_technical_support">獲取技術支持服務</string>
+    <string name="download_sdk"><a href='https://cloud.tencent.com/document/product/584/9366'>下載 SDK</a></string>
+    <string name="product_introduction"><a href='https://cloud.tencent.com/product/UGSV'>産品介紹</a></string>
+
+    <string name="follow_and_send_msg_to_public_number">關注公衆號“騰訊雲視頻”\n給公衆號發送“小視頻”</string>
+
+</resources>

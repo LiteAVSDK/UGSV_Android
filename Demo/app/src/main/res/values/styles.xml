@@ -1,0 +1,218 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorActivityBackground</item>
+        <item name="android:listDivider">@drawable/shape_list_divider</item>
+    </style>
+
+    <!-- Login and register Activity theme. -->
+    <style name="BaseWhiteTransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorTransparentGray</item>
+        <item name="android:textColorHint">@color/colorTransparentGray</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorDarkTransparentGray</item>
+    </style>
+
+    <style name="LoginTheme" parent="BaseWhiteTransparentTheme"/>
+
+    <style name="RegisterTheme" parent="BaseWhiteTransparentTheme">
+        <item name="android:windowAnimationStyle">@style/PlayerAnimation</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@drawable/splash_pic</item>
+    </style>
+
+    <style name="PlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/PlayerAnimation</item>
+    </style>
+
+    <style name="PlayerAnimation" parent="android:Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/anim_slice_in_right</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_slice_out_right</item>
+    </style>
+
+    <style name="tencent_tls_ui_theme" parent="android:Theme.Holo.Light.NoActionBar"/>
+
+    <style name="tencent_tls_ui_transparent">
+        <item name="android:windowBackground">@color/tencent_tls_ui_transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
+
+    <!-- Input dialog theme. -->
+    <style name="InputDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/c9</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="NormalDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+
+    <style name="BottomDialog" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!-- 定制UGCkit -->
+    <style name="RecordActivityTheme" parent="UGCKitRecordStyle">
+<!--        &lt;!&ndash; 音乐icon &ndash;&gt;-->
+<!--        <item name="recordMusicIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 屏比icon&ndash;&gt;-->
+<!--        <item name="recordAspect11Icon">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordAspect34Icon">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordAspectFullScreenIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 美颜icon&ndash;&gt;-->
+<!--        <item name="recordBeautyIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 音效icon&ndash;&gt;-->
+<!--        <item name="recordSoundEffectIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 回删icon&ndash;&gt;-->
+<!--        <item name="recordDelIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 闪光灯icon&ndash;&gt;-->
+<!--        <item name="recordTorchOnIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordTorchOffIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 切换摄像头icon&ndash;&gt;-->
+<!--        <item name="recordSwitchCameraIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 速度 &ndash;&gt;-->
+<!--        <item name="recordSpeedSlowestBackgroud">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordSpeedSlowBackground">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordSpeedNormalBackground">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordSpeedFastBackground">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordSpeedFastestBackground">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 录制Button&ndash;&gt;-->
+<!--        <item name="recordButtonPhotoModeOutterBackground">@drawable/record_round_bg</item>-->
+<!--        <item name="recordButtonPhotoModeInnerBackground">@drawable/record_round_bg</item>-->
+<!--        <item name="recordButtonClickModeOutterBackground">@drawable/record_round_bg</item>-->
+<!--        <item name="recordButtonClickModeInnerBackground">@drawable/record_round_bg</item>-->
+<!--        <item name="recordButtonTouchModeOutterBackground">@drawable/record_round_bg</item>-->
+<!--        <item name="recordButtonTouchModeInnerBackground">@drawable/record_round_bg</item>-->
+<!--        &lt;!&ndash; 多段录制进度条&ndash;&gt;-->
+<!--        <item name="recordTimelineColor">@color/colorLabelYellow</item>-->
+<!--        <item name="recordTimelineSelectionColor">@color/colorLabelYellow</item>-->
+<!--        <item name="recordTimelineSeperatorColor">@color/colorLabelYellow</item>-->
+    </style>
+
+    <style name="PickerActivityTheme" parent="UGCKitPickerStyle">
+<!--        <item name="pickerDelIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="pickerNextIcon">@drawable/ugc_record_music</item>-->
+    </style>
+
+    <style name="EditerActivityTheme" parent="UGCKitEditerStyle">
+<!--        &lt;!&ndash; 裁剪条&ndash;&gt;-->
+<!--        <item name="editerCutViewColor">@color/colorLabelYellow</item>-->
+<!--        <item name="editerCutSliderLeftIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerCutSliderRightIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerRotateIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 播放/暂停icon &ndash;&gt;-->
+<!--        <item name="editerPlayIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerPauseIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash; 进度条&ndash;&gt;-->
+<!--        <item name="editerCurrentProgressIcon">@drawable/ugc_record_music</item>-->
+<!--        &lt;!&ndash;动态特效&ndash;&gt;-->
+<!--        <item name="editerMotionUndoIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionSoulOutIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionSoulOutCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionSplitScreenIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionSplitScreenCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionDarkDreamIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionDarkDreamCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionGhostIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionGhostCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionGhostShadowIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionGhostShadowCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionIllusionIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionIllusionCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionLightningIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionLightningCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionMirrorIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionMirrorCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionPhantomShadowIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionPhantomShadowCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionRockLightIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionRockLightCoverColor">@color/edit_yellow</item>-->
+<!--        <item name="editerMotionWinShadowIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerMotionWinShadowCoverColor">@color/edit_yellow</item>-->
+
+        <!--速度特效-->
+<!--        <item name="editerTimeEffectNormalIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerTimeEffectSlowMotionIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerTimeEffectRepeatIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerTimeEffectReverseIcon">@drawable/ugc_record_music</item>-->
+
+<!--        &lt;!&ndash;静态滤镜&ndash;&gt;-->
+<!--        <item name="editerFilterOriginIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterNormalIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterYinghongIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterYunchangIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterChunzhenIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterBailanIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterYuanqiIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterChaotuoIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterXiangfenIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterLangmanIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterQingxinIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterWeimeiIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterFennenIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterHuaijiuIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterLandiaoIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterQingliangIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="editerFilterRixiIcon">@drawable/ugc_record_music</item>-->
+
+<!--        &lt;!&ndash; 贴纸 &ndash;&gt;-->
+<!--        <item name="editerPasterDelIcon">@drawable/ugc_record_music</item>-->
+    </style>
+
+    <style name="MixRecordActivityTheme" parent="UGCKitMixRecordStyle">
+<!--        <item name="countDownIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="recordBeautyIcon">@drawable/ugc_record_music</item>-->
+    </style>
+
+    <style name="PictureTransitionActivityStyle" parent="UGCKitPictureTransitionStyle">
+<!--        <item name="picLeftRightIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="picUpDownIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="picEnlargeIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="picNarrowIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="picRotateIcon">@drawable/ugc_record_music</item>-->
+<!--        <item name="picFadeInOutIcon">@drawable/ugc_record_music</item>-->
+    </style>
+</resources>

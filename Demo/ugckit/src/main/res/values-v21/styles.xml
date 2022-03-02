@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="UGCKitNormalDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/ugckit_color_primary</item>
+        <item name="colorPrimaryDark">@color/ugckit_black</item>
+        <item name="colorAccent">@color/ugckit_color_accent</item>
+        <item name="android:windowMinWidthMajor">50%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:windowBackground">@color/ugckit_color_activity_background</item>
+    </style>
+
+</resources>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="225dp"
+    android:layout_alignParentBottom="true"
+    android:background="#80000000"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout_music_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_music_logo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ugckit_record_music" />
+
+            <TextView
+                android:id="@+id/tx_music_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:gravity="left|center_vertical"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:textColor="@color/ugckit_white" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_bgm_confirm"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/ugckit_drawable_ugc_red_next"
+            android:gravity="center"
+            android:text="@string/ugckit_btn_ok"
+            android:textColor="@color/ugckit_white" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bgm_operation"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="right">
+
+        <ImageView
+            android:id="@+id/btn_bgm_replace"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:src="@drawable/ugckit_ic_music_change_selector" />
+
+        <ImageView
+            android:id="@+id/btn_bgm_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@id/btn_bgm_replace"
+            android:src="@drawable/ugckit_ic_music_del_selector" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_bgm_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:gravity="left|center_vertical"
+        android:text="@string/ugckit_bgm_volume"
+        android:textColor="@color/ugckit_white" />
+
+    <SeekBar
+        android:id="@+id/seekbar_bgm_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="100"
+        android:maxHeight="4dp"
+        android:minHeight="4dp"
+        android:progress="50"
+        android:progressDrawable="@drawable/ugckit_seekbar_progress_drawable"
+        android:thumb="@drawable/ugckit_play_seekbar_icon" />
+
+    <TextView
+        android:id="@+id/tv_bgm_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/ugckit_white"
+        android:textSize="14dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/iv_voice_wave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/ugckit_bgm_wave_voice" />
+
+        <com.tencent.qcloud.ugckit.component.slider.RangeSlider
+            android:id="@+id/bgm_range_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:leftThumbDrawable="@drawable/ugckit_ic_music_left"
+            app:leftThumbIndex="0"
+            app:lineColor="#FF584C"
+            app:lineHeight="3dp"
+            app:rightThumbDrawable="@drawable/ugckit_ic_music_right"
+            app:thumbWidth="19dp"
+            app:tickCount="100" />
+    </RelativeLayout>
+
+</LinearLayout>

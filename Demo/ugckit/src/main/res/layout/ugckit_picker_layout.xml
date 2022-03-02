@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1F2531"
+    android:orientation="vertical">
+
+    <com.tencent.qcloud.ugckit.component.TitleBarLayout
+        android:id="@+id/titleBar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+    <com.tencent.qcloud.ugckit.module.picker.view.PickerListLayout
+        android:id="@+id/choose_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.tencent.qcloud.ugckit.module.picker.view.PickedLayout
+        android:id="@+id/choose_pick_layout"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ugckit_ic_choose_bottom_bg" />
+</LinearLayout>

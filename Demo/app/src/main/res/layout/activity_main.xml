@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fl_tab" />
+
+    <RelativeLayout
+        android:id="@+id/fl_tab"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:background="#1f2531">
+
+        <Button
+            android:id="@+id/btn_home_select"
+            android:layout_width="58dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/tab_home_select" />
+
+        <Button
+            android:id="@+id/btn_home_left"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="67dp"
+            android:layout_toLeftOf="@id/btn_home_select"
+            android:background="@drawable/ic_home_video_selected" />
+
+        <Button
+            android:id="@+id/btn_home_right"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="67dp"
+            android:layout_toRightOf="@id/btn_home_select"
+            android:background="@drawable/ic_user_normal" />
+
+    </RelativeLayout>
+</RelativeLayout>

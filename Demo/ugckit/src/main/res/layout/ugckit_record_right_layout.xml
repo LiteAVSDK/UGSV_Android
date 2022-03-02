@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:gravity="right"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_music"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/iv_music"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="?attr/recordMusicIcon" />
+
+        <ImageView
+            android:id="@+id/iv_music_mask"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ugckit_record_round_bg"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_music"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/ugckit_music"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <com.tencent.qcloud.ugckit.module.record.AspectView
+        android:id="@+id/aspect_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_music"
+        android:layout_marginTop="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/layout_beauty"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aspect_view"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv_beauty"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:src="?attr/recordBeautyIcon" />
+
+        <TextView
+            android:id="@+id/tv_beauty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_beauty"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/ugckit_beauty"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_sound_effect"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_beauty"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv_sound_effect"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:src="?attr/recordAudioEffectIcon" />
+
+        <ImageView
+            android:id="@+id/iv_sound_effect_mask"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ugckit_record_round_bg"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_sound_effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_sound_effect"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/ugckit_activity_video_record_sound_effect"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</LinearLayout>

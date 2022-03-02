@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0d0d0d"
+    android:orientation="vertical">
+
+    <com.tencent.qcloud.ugckit.UGCKitVideoEdit
+        android:id="@+id/video_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/video_edit_layout"
+        layout="@layout/ugckit_video_cutt_kit"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
