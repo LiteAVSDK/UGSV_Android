@@ -48,15 +48,18 @@ public class TabAdapter extends BaseAdapter implements View.OnClickListener {
             tabView = new TextView(mContext);
             BeautyUtils.setTextViewColor(tabView, mBeautyInfo.getBeautyTabNameColorNormal());
             BeautyUtils.setTextViewSize(tabView, mBeautyInfo.getBeautyTabNameSize());
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(mBeautyInfo.getBeautyTabNameWidth(), mBeautyInfo.getBeautyTabNameHeight());
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(mBeautyInfo.getBeautyTabNameWidth(),
+                    mBeautyInfo.getBeautyTabNameHeight());
             tabView.setLayoutParams(layoutParams);
         } else {
             tabView = (TextView) convertView;
         }
         if (position == 0) {
-            tabView.setPadding(BeautyUtils.dip2px(mContext, 20), 0, BeautyUtils.dip2px(mContext, 11), BeautyUtils.dip2px(mContext, 30));
+            tabView.setPadding(BeautyUtils.dip2px(mContext, 20), 0, BeautyUtils.dip2px(mContext, 11),
+                    BeautyUtils.dip2px(mContext, 30));
         } else {
-            tabView.setPadding(BeautyUtils.dip2px(mContext, 12), 0, BeautyUtils.dip2px(mContext, 11), BeautyUtils.dip2px(mContext, 30));
+            tabView.setPadding(BeautyUtils.dip2px(mContext, 12), 0, BeautyUtils.dip2px(mContext, 11),
+                    BeautyUtils.dip2px(mContext, 30));
         }
         BeautyUtils.setTextViewText(tabView, getItem(position).getTabName());
         tabView.setTag(position);

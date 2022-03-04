@@ -5,13 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.tencent.liteav.demo.beauty.model.BeautyInfo;
@@ -68,6 +69,12 @@ public class BeautyUtils {
         imageView.setImageResource(ResourceUtils.getDrawableId(res));
     }
 
+    /**
+     * Read file from assets.
+     *
+     * @param fileName
+     * @return
+     */
     public static String readAssetsFile(String fileName) {
         StringBuilder sb = new StringBuilder();
         InputStream is = null;
@@ -83,8 +90,12 @@ public class BeautyUtils {
             e.printStackTrace();
         } finally {
             try {
-                if (is != null) is.close();
-                if (br != null) br.close();
+                if (is != null) {
+                    is.close();
+                }
+                if (br != null) {
+                    br.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -93,7 +104,9 @@ public class BeautyUtils {
     }
 
     public static Application getApplication() {
-        if (sApplication != null) return sApplication;
+        if (sApplication != null) {
+            return sApplication;
+        }
         Application app = getApplicationByReflect();
         init(app);
         return app;
@@ -119,8 +132,7 @@ public class BeautyUtils {
 
     private static Application getApplicationByReflect() {
         try {
-            @SuppressLint("PrivateApi")
-            Class<?> activityThread = Class.forName("android.app.ActivityThread");
+            @SuppressLint("PrivateApi") Class<?> activityThread = Class.forName("android.app.ActivityThread");
             Object thread = activityThread.getMethod("currentActivityThread").invoke(null);
             Object app = activityThread.getMethod("getApplication").invoke(thread);
             if (app == null) {
@@ -139,6 +151,13 @@ public class BeautyUtils {
         throw new NullPointerException("You should init first.");
     }
 
+    /**
+     * Unzip file to target directory.
+     *
+     * @param zipFile
+     * @param targetDir
+     * @return
+     */
     public static synchronized String unZip(@NonNull String zipFile, @NonNull String targetDir) {
         if (TextUtils.isEmpty(zipFile)) {
             return null;
@@ -152,7 +171,7 @@ public class BeautyUtils {
                     targetFolder.mkdirs();
                 }
                 String dataDir = null;
-                short BUFFER = 4096;
+                short buffer = 4096;
                 FileInputStream fis = null;
                 ZipInputStream zis = null;
                 FileOutputStream fos = null;
@@ -179,12 +198,12 @@ public class BeautyUtils {
                                 dataDir = data1.getPath();
                             }
                         } else {
-                            byte[] data = new byte[BUFFER];
+                            byte[] data = new byte[buffer];
                             String targetFileDir = targetDir + File.separator + strEntry;
                             File targetFile = new File(targetFileDir);
                             try {
                                 fos = new FileOutputStream(targetFile);
-                                dest = new BufferedOutputStream(fos, BUFFER);
+                                dest = new BufferedOutputStream(fos, buffer);
                                 int count;
                                 while ((count = zis.read(data)) != -1) {
                                     dest.write(data, 0, count);
@@ -239,6 +258,13 @@ public class BeautyUtils {
         }
     }
 
+    /**
+     * Get external file path.
+     *
+     * @param context
+     * @param folder
+     * @return
+     */
     @Nullable
     public static File getExternalFilesDir(@NonNull Context context, String folder) {
         if (context == null) {

@@ -1,5 +1,7 @@
 package com.tencent.liteav.demo.beauty.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -8,105 +10,114 @@ import java.util.List;
  */
 public class TabInfo {
 
-    private long           tab_id;                            // long, tab id，tab 唯一标识
-    private int            tab_type;                           // int, tab类型
-    private int            tab_item_name_size;                 // int, item文字大小
-    private int            tab_item_icon_width;                // int, item icon 宽度
-    private int            tab_item_icon_height;               // int, item icon 高度
-    private int            tab_item_level_hint_size;           // int, 进度条提示文字大小
-    private int            tab_item_level_value_size;          // int, 进度条值文字大小
-    private String         tab_name;                        // string, tab 名称
-    private String         tab_item_name_color_normal;      // string, item 文件常规颜色
-    private String         tab_item_name_color_select;      // string, item 文件选中颜色
-    private String         tab_item_level_hint_color;       // string, 进度条提示文字颜色
-    private String         tab_item_level_value_color;      // string, 进度条值文字颜色
-    private String         tab_item_level_progress_drawable;// string, 进度条背景颜色
-    private String         tab_item_level_progress_thumb;   // string, 进度条 bar 颜色
-    private int            tab_item_list_default_selected_index;       // int, 默认选中的item
-    private List<ItemInfo> tab_item_list;
+    @SerializedName("tab_id")
+    private long           mTabId;                            // long, tab id，tab 唯一标识
+    @SerializedName("tab_type")
+    private int            mTabType;                           // int, tab类型
+    @SerializedName("tab_item_name_size")
+    private int            mTabItemNameSize;                 // int, item文字大小
+    @SerializedName("tab_item_icon_width")
+    private int            mTabItemIconWidth;                // int, item icon 宽度
+    @SerializedName("tab_item_icon_height")
+    private int            mTabItemIconHeight;               // int, item icon 高度
+    @SerializedName("tab_item_level_hint_size")
+    private int            mTabItemLevelHintSize;           // int, 进度条提示文字大小
+    @SerializedName("tab_item_level_value_size")
+    private int            mTabItemLevelValueSize;          // int, 进度条值文字大小
+    @SerializedName("tab_name")
+    private String         mTabName;                        // string, tab 名称
+    @SerializedName("tab_item_name_color_normal")
+    private String         mTabItemNameColorNormal;      // string, item 文件常规颜色
+    @SerializedName("tab_item_name_color_select")
+    private String         mTabItemNameColorSelect;      // string, item 文件选中颜色
+    @SerializedName("tab_item_level_hint_color")
+    private String         mTabItemLevelHintColor;       // string, 进度条提示文字颜色
+    @SerializedName("tab_item_level_value_color")
+    private String         mTabItemLevelValueColor;      // string, 进度条值文字颜色
+    @SerializedName("tab_item_level_progress_drawable")
+    private String         mTabItemLevelProgressDrawable;// string, 进度条背景颜色
+    @SerializedName("tab_item_level_progress_thumb")
+    private String         mTabItemLevelProgressThumb;   // string, 进度条 bar 颜色
+    @SerializedName("tab_item_list_default_selected_index")
+    private int            mTabItemListDefaultSelectedIndex;       // int, 默认选中的item
+    @SerializedName("tab_item_list")
+    private List<ItemInfo> mTabItemList;
 
     public long getTabId() {
-        return tab_id;
+        return mTabId;
     }
 
     public int getTabType() {
-        return tab_type;
+        return mTabType;
     }
 
     public String getTabName() {
-        return tab_name;
+        return mTabName;
     }
 
     public int getTabItemNameSize() {
-        return tab_item_name_size;
+        return mTabItemNameSize;
     }
 
     public String getTabItemNameColorNormal() {
-        return tab_item_name_color_normal;
+        return mTabItemNameColorNormal;
     }
 
     public String getTabItemNameColorSelect() {
-        return tab_item_name_color_select;
+        return mTabItemNameColorSelect;
     }
 
     public int getTabItemIconWidth() {
-        return tab_item_icon_width;
+        return mTabItemIconWidth;
     }
 
     public int getTabItemIconHeight() {
-        return tab_item_icon_height;
+        return mTabItemIconHeight;
     }
 
     public String getTabItemLevelHintColor() {
-        return tab_item_level_hint_color;
+        return mTabItemLevelHintColor;
     }
 
     public int getTabItemLevelHintSize() {
-        return tab_item_level_hint_size;
+        return mTabItemLevelHintSize;
     }
 
     public String getTabItemLevelValueColor() {
-        return tab_item_level_value_color;
+        return mTabItemLevelValueColor;
     }
 
     public int getTabItemLevelValueSize() {
-        return tab_item_level_value_size;
+        return mTabItemLevelValueSize;
     }
 
     public String getTabItemLevelProgressDrawable() {
-        return tab_item_level_progress_drawable;
+        return mTabItemLevelProgressDrawable;
     }
 
     public String getTabItemLevelProgressThumb() {
-        return tab_item_level_progress_thumb;
+        return mTabItemLevelProgressThumb;
     }
 
     public int getTabItemListDefaultSelectedIndex() {
-        return tab_item_list_default_selected_index;
+        return mTabItemListDefaultSelectedIndex;
     }
 
     public List<ItemInfo> getTabItemList() {
-        return tab_item_list;
+        return mTabItemList;
     }
 
     @Override
     public String toString() {
-        return "TabInfo{" +
-                "tab_id=" + tab_id +
-                ", tab_name='" + tab_name + '\'' +
-                ", tab_item_name_size=" + tab_item_name_size +
-                ", tab_item_name_color_normal='" + tab_item_name_color_normal + '\'' +
-                ", tab_item_name_color_select='" + tab_item_name_color_select + '\'' +
-                ", tab_item_icon_width=" + tab_item_icon_width +
-                ", tab_item_icon_height=" + tab_item_icon_height +
-                ", tab_item_level_hint_color='" + tab_item_level_hint_color + '\'' +
-                ", tab_item_level_hint_size=" + tab_item_level_hint_size +
-                ", tab_item_level_value_color='" + tab_item_level_value_color + '\'' +
-                ", tab_item_level_value_size=" + tab_item_level_value_size +
-                ", tab_item_level_progress_drawable='" + tab_item_level_progress_drawable + '\'' +
-                ", tab_item_level_progress_thumb='" + tab_item_level_progress_thumb + '\'' +
-                ", tab_item_list_default_selected_index='" + tab_item_list_default_selected_index + '\'' +
-                ", tab_item_list=" + tab_item_list +
-                '}';
+        return "TabInfo{" + "mTabId=" + mTabId + ", mTabName='" + mTabName + '\'' + ", mTabItemNameSize="
+                + mTabItemNameSize + ", mTabItemNameColorNormal='" + mTabItemNameColorNormal + '\''
+                + ", mTabItemNameColorSelect='" + mTabItemNameColorSelect + '\'' + ", mTabItemIconWidth="
+                + mTabItemIconWidth + ", mTabItemIconHeight=" + mTabItemIconHeight + ", mTabItemLevelHintColor='"
+                + mTabItemLevelHintColor + '\'' + ", mTabItemLevelHintSize=" + mTabItemLevelHintSize
+                + ", mTabItemLevelValueColor='" + mTabItemLevelValueColor + '\'' + ", mTabItemLevelValueSize="
+                + mTabItemLevelValueSize + ", mTabItemLevelProgressDrawable='" + mTabItemLevelProgressDrawable + '\''
+                + ", mTabItemLevelProgressThumb='" + mTabItemLevelProgressThumb + '\''
+                + ", mTabItemListDefaultSelectedIndex='" + mTabItemListDefaultSelectedIndex + '\'' + ", mTabItemList="
+                + mTabItemList + '}';
     }
 }

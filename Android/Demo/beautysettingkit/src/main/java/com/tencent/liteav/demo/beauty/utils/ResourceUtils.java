@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+
 import androidx.annotation.StringRes;
 
 public class ResourceUtils {
@@ -60,9 +61,10 @@ public class ResourceUtils {
         drawable.setColor(color);
         drawable.setShape(GradientDrawable.RECTANGLE);
         drawable.setCornerRadii(new float[]{
-                BeautyUtils.dip2px(BeautyUtils.getApplication(), 10), BeautyUtils.dip2px(BeautyUtils.getApplication(), 10),
-                BeautyUtils.dip2px(BeautyUtils.getApplication(), 10), BeautyUtils.dip2px(BeautyUtils.getApplication(), 10),
-                0, 0, 0, 0});
+                BeautyUtils.dip2px(BeautyUtils.getApplication(), 10),
+                BeautyUtils.dip2px(BeautyUtils.getApplication(), 10),
+                BeautyUtils.dip2px(BeautyUtils.getApplication(), 10),
+                BeautyUtils.dip2px(BeautyUtils.getApplication(), 10), 0, 0, 0, 0});
         return drawable;
     }
 }

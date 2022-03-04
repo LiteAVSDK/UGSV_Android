@@ -1,5 +1,7 @@
 package com.tencent.liteav.demo.beauty.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -8,56 +10,58 @@ import java.util.List;
  */
 public class BeautyInfo {
 
-    private int           beauty_tab_name_size;           // int, tab文字大小
-    private int           beauty_tab_name_width;          // int, tab 宽度
-    private int           beauty_tab_name_height;         // int, tab 高度
-    private String        beauty_bg;                   // color/drawable, beauty布局的背景色值
-    private String        beauty_tab_name_color_normal;// color, tab文字常规颜色
-    private String        beauty_tab_name_color_select;// color, tab文字选中颜色
-    private List<TabInfo> beauty_tab_list;
+    @SerializedName("beauty_tab_name_size")
+    private int           mBeautyTabNameSize;        // int, tab文字大小
+    @SerializedName("beauty_tab_name_width")
+    private int           mBeautyTabNameWidth;       // int, tab 宽度
+    @SerializedName("beauty_tab_name_height")
+    private int           mBeautyTabNameHeight;      // int, tab 高度
+    @SerializedName("beauty_bg")
+    private String        mBeautyBg;                 // color/drawable, beauty布局的背景色值
+    @SerializedName("beauty_tab_name_color_normal")
+    private String        mBeautyTabNameColorNormal; // color, tab文字常规颜色
+    @SerializedName("beauty_tab_name_color_select")
+    private String        mBeautyTabNameColorSelect; // color, tab文字选中颜色
+    @SerializedName("beauty_tab_list")
+    private List<TabInfo> mBeautyTabList;
 
     public String getBeautyBg() {
-        return beauty_bg;
+        return mBeautyBg;
     }
 
-    public void setBeautyBg(String beauty_bg) {
-        this.beauty_bg = beauty_bg;
+    public void setBeautyBg(String beautyBg) {
+        this.mBeautyBg = beautyBg;
     }
 
     public int getBeautyTabNameWidth() {
-        return beauty_tab_name_width;
+        return mBeautyTabNameWidth;
     }
 
     public int getBeautyTabNameHeight() {
-        return beauty_tab_name_height;
+        return mBeautyTabNameHeight;
     }
 
     public String getBeautyTabNameColorNormal() {
-        return beauty_tab_name_color_normal;
+        return mBeautyTabNameColorNormal;
     }
 
     public String getBeautyTabNameColorSelect() {
-        return beauty_tab_name_color_select;
+        return mBeautyTabNameColorSelect;
     }
 
     public int getBeautyTabNameSize() {
-        return beauty_tab_name_size;
+        return mBeautyTabNameSize;
     }
 
     public List<TabInfo> getBeautyTabList() {
-        return beauty_tab_list;
+        return mBeautyTabList;
     }
 
     @Override
     public String toString() {
-        return "BeautyInfo{" +
-                ", beauty_bg='" + beauty_bg + '\'' +
-                ", beauty_tab_name_width=" + beauty_tab_name_width +
-                ", beauty_tab_name_height=" + beauty_tab_name_height +
-                ", beauty_tab_name_color_normal='" + beauty_tab_name_color_normal + '\'' +
-                ", beauty_tab_name_color_select='" + beauty_tab_name_color_select + '\'' +
-                ", beauty_tab_name_size=" + beauty_tab_name_size +
-                ", beauty_tab_list=" + beauty_tab_list +
-                '}';
+        return "BeautyInfo{" + ", mBeautyBg='" + mBeautyBg + '\'' + ", mBeautyTabNameWidth=" + mBeautyTabNameWidth
+                + ", mBeautyTabNameHeight=" + mBeautyTabNameHeight + ", mBeautyTabNameColorNormal='"
+                + mBeautyTabNameColorNormal + '\'' + ", mBeautyTabNameColorSelect='" + mBeautyTabNameColorSelect + '\''
+                + ", mBeautyTabNameSize=" + mBeautyTabNameSize + ", mBeautyTabList=" + mBeautyTabList + '}';
     }
 }

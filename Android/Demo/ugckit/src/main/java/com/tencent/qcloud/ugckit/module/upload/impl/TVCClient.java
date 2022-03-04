@@ -49,7 +49,7 @@ import okhttp3.Response;
  * 视频上传客户端
  */
 public class TVCClient {
-    private final static String                   TAG                   = "TVC-Client";
+    private static final String                   TAG                   = "TVC-Client";
     private              Context                  context;
     private              Handler                  mainHandler;
     private              boolean                  busyFlag              = false;
@@ -347,7 +347,10 @@ public class TVCClient {
             Log.e(TAG, "parseInitRsp->response is empty!");
             notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, "init response is empty");
 
-            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, 2, "", "init response is empty", reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, 2,
+                    "", "init response is empty", reqTime, System.currentTimeMillis() - reqTime,
+                    uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "",
+                    0, 0);
 
             setResumeData(uploadInfo.getFilePath(), "", "");
 
@@ -418,23 +421,33 @@ public class TVCClient {
             Log.d(TAG, "cosAcc.isOpen=" + isOpenCosAcc);
             Log.d(TAG, "cosAcc.domain=" + cosAccDomain);
 
-
-            CosXmlServiceConfig cosXmlServiceConfig = new CosXmlServiceConfig.Builder()
+            CosXmlServiceConfig.Builder builder = new CosXmlServiceConfig.Builder()
                     .setRegion(uploadRegion)
                     .setDebuggable(true)
                     .setAccelerate(isOpenCosAcc)
-                    .isHttps(enableHttps)
-                    .builder();
+                    .isHttps(enableHttps);
+
+            if (TXUGCPublishOptCenter.getInstance().isNeedEnableQuic(uploadRegion)) {
+                builder.enableQuic(true)
+                        .setPort(QuicClient.PORT);
+            }
+
+            CosXmlServiceConfig cosXmlServiceConfig = builder.builder();
 
             cosHost = getCosIP(cosXmlServiceConfig);
-
 
             long localTS = System.currentTimeMillis() / 1000L;
             if (serverTS > 0 && (localTS - serverTS > 5 * 60 || serverTS - localTS > 5 * 60)) {
                 localTimeAdvance = localTS - serverTS;
             }
-            mCosXmlService = new CosXmlService(context, cosXmlServiceConfig,
-                    new TVCDirectCredentialProvider(cosTmpSecretId, cosTmpSecretKey, cosToken, localTS - localTimeAdvance, cosExpiredTime));
+            if (null == mCosXmlService) {
+                mCosXmlService = new CosXmlService(context, cosXmlServiceConfig,
+                        new TVCDirectCredentialProvider(cosTmpSecretId, cosTmpSecretKey, cosToken,
+                                localTS - localTimeAdvance, cosExpiredTime));
+            } else {
+                // force update request client
+                mCosXmlService.setNetworkClient(cosXmlServiceConfig);
+            }
 
             List<String> cosIps = TXUGCPublishOptCenter.getInstance().query(cosHost);
             if (cosIps != null && cosIps.size() > 0) {
@@ -445,7 +458,10 @@ public class TVCClient {
             uploadCosVideo();
         } catch (JSONException e) {
             Log.e(TAG, e.toString());
-            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_PARSE_FAILED, 3, "", e.toString(), reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+            setResumeData(uploadInfo.getFilePath(), "", "");
+            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_PARSE_FAILED, 3, "",
+                    e.toString(), reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                    uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
             notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, e.toString());
             return;
         } catch (CosXmlClientException e) {
@@ -453,7 +469,9 @@ public class TVCClient {
             Log.e(TAG, e.toString());
         }
 
-        txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, 0, 0, "", "", reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+        txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, 0, 0, "",
+                "", reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
     }
 
     private String getCosIP(CosXmlServiceConfig cosXmlServiceConfig) {
@@ -632,44 +650,8 @@ public class TVCClient {
                     final long finalTcpConnectionTimeCost = tcpConnectionTimeCost;
                     final long finalRecvRspTimeCost = recvRspTimeCost;
 
-                    mCOSXMLUploadTask.setCosXmlResultListener(new CosXmlResultListener() {
-                        @Override
-                        public void onSuccess(CosXmlRequest cosXmlRequest, CosXmlResult cosXmlResult) {
-                            String requestId = getRequestId(cosXmlResult);
-                            //分片上传完成之后清空本地缓存的断点续传信息
-                            setResumeData(uploadInfo.getFilePath(), "", "");
-                            txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, 0, 0, "", "", reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", requestId, finalTcpConnectionTimeCost, finalRecvRspTimeCost);
-                            Log.i(TAG, "uploadCosVideo finish:  cosBucket " + cosBucket + " cosVideoPath: " + cosVideoPath + "  path: " + uploadInfo.getFilePath() + "  size: " + uploadInfo.getFileSize() + " finalTcpConnectionTimeCost: " + finalTcpConnectionTimeCost + " finalRecvRspTimeCost: " + finalRecvRspTimeCost);
-                            startUploadCoverFile(cosXmlResult);
-                        }
-
-                        @Override
-                        public void onFail(CosXmlRequest cosXmlRequest, CosXmlClientException qcloudException, CosXmlServiceException qcloudServiceException) {
-                            if (qcloudException != null) {
-                                Log.w(TAG, "CosXmlClientException = " + qcloudException.getMessage());
-                                //网络中断导致的
-                                if (!TVCUtils.isNetworkAvailable(context)) {
-                                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED, "cos upload video error: network unreachable");
-                                } else if (!cancleFlag) { //其他错误，非主动取消
-                                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED, "cos upload video error:" + qcloudException.getMessage());
-                                    setResumeData(uploadInfo.getFilePath(), "", "");
-                                }
-                                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0, String.valueOf(qcloudException.errorCode), "CosXmlClientException:" + qcloudException.getMessage(), reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
-                            }
-
-                            if (qcloudServiceException != null) {
-                                Log.w(TAG, "CosXmlServiceException =" + qcloudServiceException.toString());
-                                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0, qcloudServiceException.getErrorCode() == null ? "" : qcloudServiceException.getErrorCode(), "CosXmlServiceException:" + qcloudServiceException.getMessage(), reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", qcloudServiceException.getRequestId(), finalTcpConnectionTimeCost, finalRecvRspTimeCost);
-                                // 临时密钥过期，重新申请一次临时密钥，不中断上传
-                                if (qcloudServiceException.getErrorCode() != null && qcloudServiceException.getErrorCode().equalsIgnoreCase("RequestTimeTooSkewed")) {
-                                    applyUploadUGC(uploadInfo, vodSessionKey);
-                                } else {
-                                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED, "cos upload video error:" + qcloudServiceException.getMessage());
-                                    setResumeData(uploadInfo.getFilePath(), "", "");
-                                }
-                            }
-                        }
-                    });
+                    mCOSXMLUploadTask.setCosXmlResultListener(new MyCosXmlResultListener(finalTcpConnectionTimeCost,
+                            finalRecvRspTimeCost));
 
                     mCOSXMLUploadTask.setTransferStateListener(new TransferStateListener() {
                         @Override
@@ -684,12 +666,27 @@ public class TVCClient {
 
                 } catch (Exception e) {
                     Log.w(TAG, "Exception =" + e.toString());
-                    txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0, "Exception", "HTTP Code:" + e.getMessage(), reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+                    txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
+                            0, "Exception", "HTTP Code:" + e.getMessage(), reqTime,
+                            System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(),
+                            uploadInfo.getFileName(), "", "", 0, 0);
                     notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED, "cos upload video error:" + e.getMessage());
-                    setResumeData(uploadInfo.getFilePath(), "", "");
+                    if (mCosXmlService.getConfig().isEnableQuic()) {
+                        // quic失败，使用http重新上传
+                        quicTransToHttpRetry();
+                    } else {
+                        setResumeData(uploadInfo.getFilePath(), "", "");
+                    }
                 }
             }
         }.start();
+    }
+
+    private void quicTransToHttpRetry() {
+        // quic失败，使用http重新上传 quic request failed,switch to http
+        Log.e(TAG, "quic request failed,switch to http");
+        TXUGCPublishOptCenter.getInstance().disableQuicIfNeed();
+        applyUploadUGC(uploadInfo, vodSessionKey);
     }
 
     // 解析cos上传视频返回信息
@@ -943,5 +940,81 @@ public class TVCClient {
 
     public void setAppId(int appId) {
         this.userAppId = appId;
+    }
+
+    class MyCosXmlResultListener implements CosXmlResultListener {
+
+        private final long mFinalTcpConnectionTimeCost;
+        private final long mFinalRecvRspTimeCost;
+
+        public MyCosXmlResultListener(long finalTcpConnectionTimeCost, long finalRecvRspTimeCost) {
+            this.mFinalTcpConnectionTimeCost = finalTcpConnectionTimeCost;
+            this.mFinalRecvRspTimeCost = finalRecvRspTimeCost;
+        }
+
+        @Override
+        public void onSuccess(CosXmlRequest cosXmlRequest, CosXmlResult cosXmlResult) {
+            String requestId = getRequestId(cosXmlResult);
+            //分片上传完成之后清空本地缓存的断点续传信息
+            setResumeData(uploadInfo.getFilePath(), "", "");
+            txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, 0, 0,
+                    "", "", reqTime, System.currentTimeMillis() - reqTime,
+                    uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(),
+                    "", requestId, mFinalTcpConnectionTimeCost, mFinalRecvRspTimeCost);
+            Log.i(TAG, "uploadCosVideo finish:  cosBucket " + cosBucket
+                    + " cosVideoPath: " + cosVideoPath + "  path: "
+                    + uploadInfo.getFilePath() + "  size: " + uploadInfo.getFileSize()
+                    + " finalTcpConnectionTimeCost: " + mFinalTcpConnectionTimeCost + " finalRecvRspTimeCost: "
+                    + mFinalRecvRspTimeCost);
+            startUploadCoverFile(cosXmlResult);
+        }
+
+        @Override
+        public void onFail(CosXmlRequest cosXmlRequest, CosXmlClientException qcloudException,
+                           CosXmlServiceException qcloudServiceException) {
+            if (qcloudException != null) {
+                Log.w(TAG, "CosXmlClientException = " + qcloudException.getMessage());
+                //网络中断导致的
+                if (!TVCUtils.isNetworkAvailable(context)) {
+                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
+                            "cos upload video error: network unreachable");
+                } else if (!cancleFlag) { //其他错误，非主动取消
+                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
+                            "cos upload video error:" + qcloudException.getMessage());
+                    setResumeData(uploadInfo.getFilePath(), "", "");
+                }
+                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0,
+                        String.valueOf(qcloudException.errorCode),
+                        "CosXmlClientException:" + qcloudException.getMessage(), reqTime,
+                        System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", "",
+                        0, 0);
+            }
+
+            if (qcloudServiceException != null) {
+                Log.w(TAG, "CosXmlServiceException =" + qcloudServiceException.toString());
+                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0,
+                        qcloudServiceException.getErrorCode() == null ? "" : qcloudServiceException.getErrorCode(),
+                        "CosXmlServiceException:" + qcloudServiceException.getMessage(), reqTime,
+                        System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", qcloudServiceException.getRequestId(),
+                        mFinalTcpConnectionTimeCost, mFinalRecvRspTimeCost);
+                // 临时密钥过期，重新申请一次临时密钥，不中断上传
+                if (qcloudServiceException.getErrorCode() != null
+                        && qcloudServiceException.getErrorCode().equalsIgnoreCase("RequestTimeTooSkewed")) {
+                    applyUploadUGC(uploadInfo, vodSessionKey);
+                } else if (mCosXmlService.getConfig().isEnableQuic()) {
+                    // quic失败，使用http重新上传
+                    quicTransToHttpRetry();
+                } else {
+                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
+                            "cos upload video error:" + qcloudServiceException.getMessage());
+                    setResumeData(uploadInfo.getFilePath(), "", "");
+                }
+            } else if (mCosXmlService.getConfig().isEnableQuic()) {
+                // quic失败，使用http重新上传
+                quicTransToHttpRetry();
+            }
+        }
     }
 }
