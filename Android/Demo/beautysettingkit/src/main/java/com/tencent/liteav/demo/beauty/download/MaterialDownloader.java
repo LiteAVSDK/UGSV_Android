@@ -3,9 +3,10 @@ package com.tencent.liteav.demo.beauty.download;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.tencent.liteav.demo.beauty.R;
 import com.tencent.liteav.demo.beauty.utils.BeautyUtils;
@@ -40,6 +41,11 @@ public class MaterialDownloader {
         mProcessing = false;
     }
 
+    /**
+     * Start download material.
+     *
+     * @param listener
+     */
     public void start(@Nullable DownloadListener listener) {
         if (listener == null || TextUtils.isEmpty(mURL) || mProcessing) {
             return;
@@ -62,7 +68,8 @@ public class MaterialDownloader {
                 }
                 String dataDir = BeautyUtils.unZip(file.getPath(), file.getParentFile().getPath());
                 if (TextUtils.isEmpty(dataDir)) {
-                    mListener.onDownloadFail(mContext.getString(R.string.beauty_video_material_download_progress_material_unzip_failed));
+                    mListener.onDownloadFail(
+                            mContext.getString(R.string.beauty_video_material_download_progress_material_unzip_failed));
                     stop();
                     return;
                 }
@@ -73,7 +80,8 @@ public class MaterialDownloader {
 
             @Override
             public void onSaveFailed(File file, Exception e) {
-                mListener.onDownloadFail(mContext.getString(R.string.beauty_video_material_download_progress_download_failed));
+                mListener.onDownloadFail(
+                        mContext.getString(R.string.beauty_video_material_download_progress_download_failed));
                 stop();
             }
 
@@ -90,7 +98,8 @@ public class MaterialDownloader {
         };
         File onlineMaterialDir = BeautyUtils.getExternalFilesDir(mContext, ONLINE_MATERIAL_FOLDER);
         if (onlineMaterialDir == null || onlineMaterialDir.getName().startsWith("null")) {
-            mListener.onDownloadFail(mContext.getString(R.string.beauty_video_material_download_progress_no_enough_storage_space));
+            mListener.onDownloadFail(
+                    mContext.getString(R.string.beauty_video_material_download_progress_no_enough_storage_space));
             stop();
             return;
         }
@@ -99,7 +108,9 @@ public class MaterialDownloader {
         }
 
         ThreadPoolExecutor threadPool = getThreadExecutor();
-        threadPool.execute(new HttpFileHelper(mContext, mURL, onlineMaterialDir.getPath(), mMaterialId + DOWNLOAD_FILE_POSTFIX, fileListener, true));
+        threadPool.execute(
+                new HttpFileHelper(mContext, mURL, onlineMaterialDir.getPath(), mMaterialId + DOWNLOAD_FILE_POSTFIX,
+                        fileListener, true));
     }
 
     public void stop() {
@@ -117,8 +128,7 @@ public class MaterialDownloader {
 
         @TargetApi(Build.VERSION_CODES.GINGERBREAD)
         public DownloadThreadPool(int poolSize) {
-            super(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingDeque<Runnable>(),
+            super(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(),
                     Executors.defaultThreadFactory(), new DiscardOldestPolicy());
         }
     }

@@ -1,6 +1,7 @@
 package com.tencent.liteav.demo.beauty;
 
 import android.graphics.Bitmap;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
@@ -13,7 +14,8 @@ public interface Beauty {
 
     void setBeautyManager(@NonNull TXBeautyManager beautyManager);
 
-    void setBeautySpecialEffects(@NonNull TabInfo tabinfo, @IntRange(from = 0) int tabPosition, @NonNull ItemInfo itemInfo, @IntRange(from = 0) int itemPosition);
+    void setBeautySpecialEffects(@NonNull TabInfo tabinfo, @IntRange(from = 0) int tabPosition,
+                                 @NonNull ItemInfo itemInfo, @IntRange(from = 0) int itemPosition);
 
     void setBeautyStyleAndLevel(int style, int level);
 

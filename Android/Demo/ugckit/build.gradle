@@ -62,8 +62,9 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.squareup.okio:okio:1.14.0'
-    implementation('com.qcloud.cos:cos-android:5.6.+') {
+    implementation ('com.qcloud.cos:cos-android:5.8.3') {
         exclude group: 'com.qcloud.cos', module: 'beacon-android-release'
     }
     implementation project(':beautysettingkit')
+    implementation 'com.qcloud.cos:quic:1.5.37'
 }

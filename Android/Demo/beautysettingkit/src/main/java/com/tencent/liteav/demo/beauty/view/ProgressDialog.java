@@ -20,17 +20,17 @@ public class ProgressDialog {
     public void createLoadingDialog(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.beauty_layout_loading_progress, null);
-        LinearLayout layout = (LinearLayout) v.findViewById(R.id.beauty_ll_progress);
 
         ImageView spaceshipImage = (ImageView) v.findViewById(R.id.beauty_iv_progress_img);
         mTextMsg = (TextView) v.findViewById(R.id.beauty_tv_msg);
-        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context, R.anim.beauty_load_progress_animation);
+        Animation hyperspaceJumpAnimation =
+                AnimationUtils.loadAnimation(context, R.anim.beauty_load_progress_animation);
         spaceshipImage.startAnimation(hyperspaceJumpAnimation);
 
         mDialog = new Dialog(context, R.style.BeautyLoadingDialog);
         mDialog.setCancelable(false);
-        mDialog.setContentView(layout, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout layout = (LinearLayout) v.findViewById(R.id.beauty_ll_progress);
+        mDialog.setContentView(layout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT));
     }
 

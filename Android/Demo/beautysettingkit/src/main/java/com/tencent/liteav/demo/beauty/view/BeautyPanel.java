@@ -2,8 +2,6 @@ package com.tencent.liteav.demo.beauty.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +10,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.tencent.liteav.beauty.TXBeautyManager;
-import com.tencent.liteav.demo.beauty.R;
 import com.tencent.liteav.demo.beauty.Beauty;
 import com.tencent.liteav.demo.beauty.BeautyImpl;
+import com.tencent.liteav.demo.beauty.R;
 import com.tencent.liteav.demo.beauty.adapter.ItemAdapter;
 import com.tencent.liteav.demo.beauty.adapter.TabAdapter;
 import com.tencent.liteav.demo.beauty.model.BeautyInfo;
@@ -26,7 +27,6 @@ import com.tencent.liteav.demo.beauty.utils.ResourceUtils;
 
 /**
  * 美颜面板控件 View
- * <p>
  * -引用，在 xml 中引用该布局，设置其大小
  * -外部可通过 getDefaultBeautyInfo 获取默认美颜面板的属性
  * -外部可通过 setBeautyInfo 设置美颜面板内部属性
@@ -65,7 +65,8 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
             return false;
         }
 
-        public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel) {
+        public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition,
+                                      int beautyLevel) {
             return false;
         }
     }
@@ -89,9 +90,11 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         mCurrentItemInfo[mCurrentTabPosition].setItemLevel(progress);
         mTextLevelValue.setText(String.valueOf(progress));
-        if (mOnBeautyListener == null
-                || !mOnBeautyListener.onLevelChanged(mCurrentTabInfo, mCurrentTabPosition, mCurrentItemInfo[mCurrentTabPosition], mCurrentItemPosition[mCurrentTabPosition], progress)) {
-            mBeauty.setBeautySpecialEffects(mCurrentTabInfo, mCurrentTabPosition, mCurrentItemInfo[mCurrentTabPosition], mCurrentItemPosition[mCurrentTabPosition]);
+        if (mOnBeautyListener == null || !mOnBeautyListener
+                .onLevelChanged(mCurrentTabInfo, mCurrentTabPosition, mCurrentItemInfo[mCurrentTabPosition],
+                        mCurrentItemPosition[mCurrentTabPosition], progress)) {
+            mBeauty.setBeautySpecialEffects(mCurrentTabInfo, mCurrentTabPosition, mCurrentItemInfo[mCurrentTabPosition],
+                    mCurrentItemPosition[mCurrentTabPosition]);
         }
     }
 
@@ -279,8 +282,7 @@ public class BeautyPanel extends FrameLayout implements SeekBar.OnSeekBarChangeL
                 mCurrentItemPosition[tabPosition] = position;
                 mCurrentItemInfo[tabPosition] = itemInfo;
                 createSeekBar(tabInfo, itemInfo);
-                if (mOnBeautyListener == null
-                        || !mOnBeautyListener.onClick(tabInfo, tabPosition, itemInfo, position)) {
+                if (mOnBeautyListener == null || !mOnBeautyListener.onClick(tabInfo, tabPosition, itemInfo, position)) {
                     mBeauty.setBeautySpecialEffects(tabInfo, tabPosition, itemInfo, position);
                 }
             }

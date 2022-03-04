@@ -26,9 +26,10 @@ public class HttpFileHelper implements Runnable {
     private long             mDownloadingSize;
     private boolean          mNeedProgress;
 
-    public HttpFileHelper(Context context, String URL, String folder, String filename, HttpFileListener listener, boolean needProgress) {
+    public HttpFileHelper(Context context, String url, String folder, String filename, HttpFileListener listener,
+                          boolean needProgress) {
         mContext = context;
-        mURL = URL;
+        mURL = url;
         mFolder = folder;
         mFilename = filename;
         mListener = listener;
@@ -37,11 +38,8 @@ public class HttpFileHelper implements Runnable {
 
     @Override
     public void run() {
-        if (!BeautyUtils.isNetworkAvailable(mContext)
-                || TextUtils.isEmpty(mURL)
-                || TextUtils.isEmpty(mFolder)
-                || TextUtils.isEmpty(mFilename)
-                || !mURL.startsWith("http")) {
+        if (!BeautyUtils.isNetworkAvailable(mContext) || TextUtils.isEmpty(mURL) || TextUtils.isEmpty(mFolder)
+                || TextUtils.isEmpty(mFilename) || !mURL.startsWith("http")) {
             fail(null);
             return;
         }
@@ -86,11 +84,11 @@ public class HttpFileHelper implements Runnable {
                     mContentLength = client.getContentLength();
                 }
                 responseIs = client.getInputStream();
-                int length = -1;
-                byte[] buffer = new byte[BUFFERED_READER_SIZE];
                 fos = new FileOutputStream(dstFile);
                 mDownloadingSize = 0;
                 mListener.onProgressUpdate(0);
+                int length = -1;
+                byte[] buffer = new byte[BUFFERED_READER_SIZE];
                 while ((length = responseIs.read(buffer)) != -1) {
                     fos.write(buffer, 0, length);
                     if (mNeedProgress) {

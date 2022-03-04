@@ -1,7 +1,6 @@
 package com.tencent.liteav.demo.beauty.adapter;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tencent.liteav.demo.beauty.R;
 import com.tencent.liteav.demo.beauty.model.ItemInfo;
@@ -74,7 +75,8 @@ public class ItemAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.beauty_view_item, parent, false);
             holder = new ViewHolder(convertView);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.icon.getLayoutParams();
-            int width, height;
+            int width;
+            int height;
             if (mTabInfo.getTabItemIconWidth() == LinearLayout.LayoutParams.MATCH_PARENT) {
                 width = LinearLayout.LayoutParams.MATCH_PARENT;
             } else if (mTabInfo.getTabItemIconWidth() == LinearLayout.LayoutParams.WRAP_CONTENT) {

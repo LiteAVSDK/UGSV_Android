@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.Toast;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
@@ -46,7 +47,8 @@ public class BeautyImpl implements Beauty {
     }
 
     @Override
-    public void setBeautySpecialEffects(@NonNull TabInfo tabinfo, @IntRange(from = 0) int tabPosition, @NonNull ItemInfo itemInfo, @IntRange(from = 0) int itemPosition) {
+    public void setBeautySpecialEffects(@NonNull TabInfo tabinfo, @IntRange(from = 0) int tabPosition,
+                                        @NonNull ItemInfo itemInfo, @IntRange(from = 0) int itemPosition) {
         dispatchEffects(tabinfo, tabPosition, itemInfo, itemPosition);
     }
 
@@ -519,7 +521,8 @@ public class BeautyImpl implements Beauty {
         return BeautyUtils.getDefaultBeautyInfo();
     }
 
-    private void dispatchEffects(@NonNull TabInfo tabInfo, @IntRange(from = 0) int tabPosition, @NonNull ItemInfo itemInfo, @IntRange(from = 0) int itemPosition) {
+    private void dispatchEffects(@NonNull TabInfo tabInfo, @IntRange(from = 0) int tabPosition,
+                                 @NonNull ItemInfo itemInfo, @IntRange(from = 0) int itemPosition) {
         int tabType = tabInfo.getTabType();
         switch (tabType) {
             case BeautyConstants.TAB_TYPE_BEAUTY:
@@ -622,6 +625,9 @@ public class BeautyImpl implements Beauty {
             case BeautyConstants.ITEM_TYPE_BEAUTY_FACE_SHAPE:       // 脸型
                 setFaceBeautyLevel(level);
                 break;
+            default :
+                Log.e(TAG, "wrong itemType : " + itemType);
+                break;
         }
     }
 
@@ -657,11 +663,16 @@ public class BeautyImpl implements Beauty {
             case BeautyConstants.ITEM_TYPE_CUTOUT_BACKGROUND_MATERIAL:
                 downloadVideoMaterial(tabInfo, itemInfo);
                 break;
+            default :
+                Log.e(TAG, "wrong itemType : " + itemType);
+                break;
         }
     }
 
     private void downloadVideoMaterial(@NonNull final TabInfo tabInfo, @NonNull final ItemInfo itemInfo) {
-        MaterialDownloader materialDownloader = new MaterialDownloader(mContext, ResourceUtils.getString(itemInfo.getItemName()), itemInfo.getItemMaterialUrl());
+        MaterialDownloader materialDownloader =
+                new MaterialDownloader(mContext, ResourceUtils.getString(itemInfo.getItemName()),
+                        itemInfo.getItemMaterialUrl());
         materialDownloader.start(new DownloadListener() {
 
             private ProgressDialog mProgressDialog;
@@ -778,6 +789,9 @@ public class BeautyImpl implements Beauty {
                 break;
             case BeautyConstants.ITEM_TYPE_FILTER_JAPANESE:
                 resId = R.drawable.beauty_filter_rixi;
+                break;
+            default :
+                Log.e(TAG, "wrong itemType : " + itemType);
                 break;
         }
         if (resId != 0) {
