@@ -11,12 +11,29 @@
 
 ### Version 8.8 @ 2021.06.18
 - iOS: 修复点播播放器启停多次触发的内存泄漏问题;
+
 - Android: 修复在Android 11上播放hls文件报错的问题;
+
 - Android: 修复特定情况下播放快直播流偶现闪退的问题;
+
 - iOS&Android: 修复VodPlayer播放特定视频seek慢的问题;
+
 - iOS&Android: 修复点播暂停播放后设置进度，画面显示慢的问题;
 
+  
+
+**SDK升级说明**
+
+UGSV SDK 移动端 10.1 版本采用“腾讯视频”同款播放内核打造，视频播放能力获得全面优化升级。
+
+同时从该版本开始将增加对“视频播放”功能模块的授权校验，**如果您的APP已经拥有直播推流 License 或者短视频 License 授权，当您升级至10.1 版本后仍可以继续正常使用，**不受到此次变更影响，您可以登录 [腾讯云视立方控制台](https://console.cloud.tencent.com/vcube) 查看您当前的 License 授权信息。
+
+如果您在此之前从未获得过上述License授权**，且需要使用新版本SDK（10.1及其更高版本）中的直播播放或点播播放功能，则需购买指定 License 获得授权**，详情参见[授权说明](https://cloud.tencent.com/document/product/584/54333)；若您无需使用相关功能或未升级至最新版本SDK，将不受到此次变更的影响。
+
+
+
 ## 问题反馈
+
 为了更好的了解您使用 UGSVSDK 所遇到的问题，方便快速有效定位解决  UGSVSDK 问题，希望您按如下反馈指引反馈issue，方便我们尽快解决您的问题  
 [UGSVSDK issue反馈指引](https://github.com/tencentyun/UGSVSDK/blob/master/UGSVSDK%20issue有效反馈模板.md)
 
@@ -45,7 +62,6 @@
 <img src="https://main.qcloudimg.com/raw/dc697e4f7074e6e5477dab0b1746ea87.png" height="391" width="220" >
 <img src="https://main.qcloudimg.com/raw/db67663711a7680886a86534e4937e54.png" height="391" width="220" >
 </div>
-
 
 
 
