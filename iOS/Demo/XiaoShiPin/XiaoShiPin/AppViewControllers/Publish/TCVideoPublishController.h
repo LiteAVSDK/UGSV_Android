@@ -7,7 +7,10 @@
 
 @property (strong, nonatomic) UITableView      *tableView;
 
-- (instancetype)init:(id)videoRecorder recordType:(NSInteger)recordType RecordResult:(TXRecordResult *)recordResult TCLiveInfo:(TCLiveInfo *)liveInfo;
+- (instancetype)init:(id)videoRecorder
+          recordType:(NSInteger)recordType
+        recordResult:(TXUGCRecordResult *)recordResult
+          tcLiveInfo:(TCLiveInfo *)liveInfo;
 
 - (instancetype)initWithPath:(NSString *)videoPath videoMsg:(TXVideoInfo *) videoMsg;
 

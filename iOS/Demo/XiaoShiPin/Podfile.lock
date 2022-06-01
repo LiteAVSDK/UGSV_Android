@@ -18,10 +18,10 @@ PODS:
     - ZipArchive
   - MBProgressHUD (1.2.0)
   - MJRefresh (3.7.5)
-  - SDWebImage (5.12.1):
-    - SDWebImage/Core (= 5.12.1)
-  - SDWebImage/Core (5.12.1)
-  - UGCKit/Enterprise (0.1.0):
+  - SDWebImage (5.12.5):
+    - SDWebImage/Core (= 5.12.5)
+  - SDWebImage/Core (5.12.5)
+  - UGCKit/UGC (0.1.0):
     - BeautySettingKit
   - ZipArchive (1.4.0)
 
@@ -31,7 +31,7 @@ DEPENDENCIES:
   - MBProgressHUD
   - MJRefresh
   - SDWebImage
-  - UGCKit/Enterprise (from `UGCKit/UGCKit.podspec`)
+  - UGCKit/UGC (from `UGCKit/UGCKit.podspec`)
 
 SPEC REPOS:
   trunk:
@@ -52,10 +52,10 @@ SPEC CHECKSUMS:
   BeautySettingKit: c32527c5f4f9816315c024d30b13da4349f873e9
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
-  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
-  UGCKit: 0fac1f82d39f7ddcc87832bdda15c29671f7b292
+  SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
+  UGCKit: b9060893f4312dfc160101d0289f201d1ff80225
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-PODFILE CHECKSUM: aba8312dc802f6b28e62a1561e1a3cddad39ee42
+PODFILE CHECKSUM: d7902b41c28aa82f27b8b2c05baa3b762cdbc157
 
 COCOAPODS: 1.11.2

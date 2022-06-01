@@ -143,7 +143,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         mConfig.mBeautyParams.mBeautyStyle = 0;
         mConfig.mBeautyParams.mBeautyLevel = 4;
         mConfig.mBeautyParams.mWhiteLevel = 1;
-
+        mConfig.mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_FULL_FILL_SCREEN;
         mConfig.mAECType = buildInfo.getAecType();
 
         List<String> paths = mConfig.getPaths();

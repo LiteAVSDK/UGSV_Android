@@ -74,6 +74,9 @@ public class VideoEditerSDK {
      * @return
      */
     public TXVideoEditConstants.TXVideoInfo getTXVideoInfo() {
+        if (mVideoPath == null) {
+            return mTXVideoInfo;
+        }
         mTXVideoInfo = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(mVideoPath);
         if (mTXVideoInfo != null) {
             Log.d(TAG, "setTXVideoInfo duration:" + mTXVideoInfo.duration);

@@ -144,7 +144,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
         _generateMode = _config.generateMode;
         _effectType = -1;
         _cutPathList = [NSMutableArray array];
-        _videoOutputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputCut.mp4"];
+        _videoOutputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"outputEditCut.mp4"];
 
         _pasterEffectArray = [NSMutableArray array];
         [_pasterEffectArray addObject:({
@@ -1379,7 +1379,7 @@ typedef NS_ENUM(NSInteger,EffectSelectType)
     [_ugcEdit setSpeedList:nil];
     TXRepeat *repeat = [[TXRepeat alloc] init];
     repeat.startTime = _duration / 5;
-    repeat.endTime = repeat.startTime + 0.5;
+    repeat.endTime = repeat.startTime + 1;
     repeat.repeatTimes = 3;
     [_ugcEdit setRepeatPlay:@[repeat]];
     [self startPlayFromTime:0 toTime:_duration];

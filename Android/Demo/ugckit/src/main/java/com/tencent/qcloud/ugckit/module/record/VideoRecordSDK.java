@@ -102,7 +102,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             simpleConfig.needEdit = mUGCKitRecordConfig.mIsNeedEdit;
 
             if (mRecordSDK != null) {
-                mRecordSDK.setVideoRenderMode(mUGCKitRecordConfig.mRecordMode);
+                mRecordSDK.setVideoRenderMode(mUGCKitRecordConfig.mRenderMode);
                 mRecordSDK.setMute(mUGCKitRecordConfig.mIsMute);
             }
             mRecordSDK.startCameraSimplePreview(simpleConfig, videoView);
@@ -318,8 +318,10 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
     public void saveLastPart() {
         if (mRecordSDK != null && mRecordDraftManager != null) {
             List<String> pathList = mRecordSDK.getPartsManager().getPartsPathList();
-            String lastPath = pathList.get(pathList.size() - 1);
-            mRecordDraftManager.saveLastPart(lastPath);
+            if (pathList != null && pathList.size() > 0) {
+                String lastPath = pathList.get(pathList.size() - 1);
+                mRecordDraftManager.saveLastPart(lastPath);
+            }
         }
     }
 

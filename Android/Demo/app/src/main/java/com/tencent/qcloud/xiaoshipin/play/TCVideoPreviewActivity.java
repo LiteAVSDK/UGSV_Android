@@ -102,7 +102,7 @@ public class TCVideoPreviewActivity extends Activity implements ITXVodPlayListen
     @Override
     public void onPlayEvent(TXVodPlayer player, int event, Bundle param) {
         if (mTXCloudVideoView != null) {
-            mTXCloudVideoView.setLogText(null, param, event);
+            // mTXCloudVideoView.setLogText(null, param, event);
         } else if (event == TXLiveConstants.PLAY_EVT_PLAY_END) {
             mTXVodPlayer.resume(); // 播放结束后，可以直接resume()，如果调用stop和start，会导致重新播放会黑一下
         }

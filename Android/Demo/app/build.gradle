@@ -39,6 +39,9 @@ android {
 
     packagingOptions {
         pickFirst '**/libc++_shared.so'
+        pickFirst '**/libtxsoundtouch.so'
+        pickFirst '**/libtxffmpeg.so'
+        pickFirst '**/libliteavsdk.so'
         doNotStrip "*/armeabi/libYTCommon.so"
         doNotStrip "*/armeabi-v7a/libYTCommon.so"
         doNotStrip "*/x86/libYTCommon.so"
@@ -48,8 +51,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
-    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs/upload')
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.code.gson:gson:2.3.1'
