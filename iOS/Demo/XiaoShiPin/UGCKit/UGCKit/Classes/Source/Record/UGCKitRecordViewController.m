@@ -861,6 +861,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     _controlView.btnCountDown.enabled = NO;
     [self startCameraPreview];
     [self syncSpeedRateToSDK];
+    [[TXUGCRecord shareInstance] stopBGM];
     int result = [[TXUGCRecord shareInstance] startRecord:[_coverPath stringByAppendingString:@".mp4"]
                                                 coverPath:[_coverPath stringByAppendingString:@".png"]];
     [UGCKitReporter report:UGCKitReportItem_startrecord userName:nil code:result msg:result == 0 ? @"启动录制成功" : @"启动录制失败"];

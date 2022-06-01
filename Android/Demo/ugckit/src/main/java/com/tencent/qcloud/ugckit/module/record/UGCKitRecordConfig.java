@@ -78,6 +78,12 @@ public class UGCKitRecordConfig {
      */
     public int mRecordMode = RecordModeView.RECORD_MODE_CLICK;
 
+
+    /**
+     * 渲染模式
+     */
+    public int mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_ADJUST_RESOLUTION;
+
     /**
      * 美颜参数
      */
@@ -120,6 +126,7 @@ public class UGCKitRecordConfig {
         mTouchFocus = false;
         mAspectRatio = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16;
         mRecordMode = RecordModeView.RECORD_MODE_CLICK;
+        mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_ADJUST_RESOLUTION;
         mBeautyParams = null;
         musicInfo = new MusicInfo();
         mAECType = TXEAudioDef.TXE_AEC_NONE;

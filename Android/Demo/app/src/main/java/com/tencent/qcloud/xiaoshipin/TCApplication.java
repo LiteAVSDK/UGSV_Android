@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import androidx.multidex.MultiDexApplication;
 
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXUGCBase;
 
 //import com.squareup.leakcanary.LeakCanary;
@@ -60,7 +60,7 @@ public class TCApplication extends MultiDexApplication {
      */
     public void initSDK() {
         TCUserMgr.getInstance().initContext(getApplicationContext());
-        TXLog.w(TAG, "app init sdk");
+        TXCLog.w(TAG, "app init sdk");
 
     }
 

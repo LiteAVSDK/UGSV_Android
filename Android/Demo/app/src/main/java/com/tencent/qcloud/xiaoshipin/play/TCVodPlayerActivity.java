@@ -29,7 +29,6 @@ import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
 import com.tencent.qcloud.xiaoshipin.videorecord.FollowRecordDownloader;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
-import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.TXVodPlayConfig;
 import com.tencent.rtmp.TXVodPlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -117,15 +116,15 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
         mVerticalViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                TXLog.d(TAG, "mVerticalViewPager, onPageScrolled position = " + position);
+                TXCLog.d(TAG, "mVerticalViewPager, onPageScrolled position = " + position);
             }
 
             @Override
             public void onPageSelected(int position) {
-                TXLog.d(TAG, "mVerticalViewPager, onPageSelected position = " + position);
+                TXCLog.d(TAG, "mVerticalViewPager, onPageSelected position = " + position);
                 mCurrentPosition = position;
                 // 滑动界面，首先让之前的播放器暂停，并seek到0
-                TXLog.d(TAG, "滑动后，让之前的播放器暂停，mTXVodPlayer = " + mTXVodPlayer);
+                TXCLog.d(TAG, "滑动后，让之前的播放器暂停，mTXVodPlayer = " + mTXVodPlayer);
                 if (mTXVodPlayer != null) {
                     mTXVodPlayer.seek(0);
                     mTXVodPlayer.pause();
@@ -140,7 +139,7 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
         mVerticalViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
-                TXLog.d(TAG, "mVerticalViewPager, transformPage pisition = " + position + " mCurrentPosition" + mCurrentPosition);
+                TXCLog.d(TAG, "transformPage position = " + position + " mCurrentPosition" + mCurrentPosition);
                 if (position != 0) {
                     return;
                 }
@@ -385,14 +384,14 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
                 playerInfo.isBegin = true;
             }
             if (mTXVodPlayer == player) {
-                TXLog.i(TAG, "onPlayEvent, event I FRAME, player = " + player);
+                TXCLog.i(TAG, "onPlayEvent, event I FRAME, player = " + player);
                 mIvCover.setVisibility(View.GONE);
 
                 LogReport.getInstance().reportVodPlaySucc(event);
             }
         } else if (event == TXLiveConstants.PLAY_EVT_VOD_PLAY_PREPARED) {
             if (mTXVodPlayer == player) {
-                TXLog.i(TAG, "onPlayEvent, event prepared, player = " + player);
+                TXCLog.i(TAG, "onPlayEvent, event prepared, player = " + player);
                 mTXVodPlayer.resume();
             }
         } else if (event == TXLiveConstants.PLAY_EVT_PLAY_BEGIN) {
@@ -403,7 +402,7 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
             }
         } else if (event < 0) {
             if (mTXVodPlayer == player) {
-                TXLog.i(TAG, "onPlayEvent, event prepared, player = " + player);
+                TXCLog.i(TAG, "onPlayEvent, event prepared, player = " + player);
 
                 LogReport.getInstance().reportVodPlayFail(event);
             }

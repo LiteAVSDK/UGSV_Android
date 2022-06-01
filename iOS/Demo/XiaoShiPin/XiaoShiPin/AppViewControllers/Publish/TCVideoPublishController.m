@@ -43,7 +43,7 @@
     TXLivePlayer     *_livePlayer;
     
     TXPublishParam   *_videoPublishParams;
-    TXRecordResult   *_recordResult;
+    TXUGCRecordResult   *_recordResult;
     
     NSInteger       _selectBtnTag;
     BOOL            _isPublished;
@@ -54,7 +54,10 @@
     BOOL            _isNetWorkErr;
 }
 
-- (instancetype)init:(id)videoRecorder recordType:(NSInteger)recordType RecordResult:(TXRecordResult *)recordResult  TCLiveInfo:(TCLiveInfo *)liveInfo
+- (instancetype)init:(id)videoRecorder
+          recordType:(NSInteger)recordType
+        recordResult:(TXUGCRecordResult *)recordResult
+          tcLiveInfo:(TCLiveInfo *)liveInfo
 {
     self = [super init];
     if (self) {
@@ -91,14 +94,14 @@
 
 - (instancetype)initWithPath:(NSString *)videoPath videoMsg:(TXVideoInfo *) videoMsg
 {
-    TXRecordResult *recordResult = [TXRecordResult new];
+    TXUGCRecordResult *recordResult = [TXUGCRecordResult new];
     recordResult.coverImage = videoMsg.coverImage;
     recordResult.videoPath = videoPath;
 
     
     return [self init:nil recordType:0
-         RecordResult:recordResult
-           TCLiveInfo:nil];
+         recordResult:recordResult
+           tcLiveInfo:nil];
 }
 
 - (void)dealloc

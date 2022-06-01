@@ -207,7 +207,7 @@ public class UGCReport {
             jsonObject.put("reqServerIp", info.reqServerIp);
             jsonObject.put("useHttpDNS", info.useHttpDNS);
             jsonObject.put("platform", 2000); // 1000 - iOS, 2000 - Android
-            jsonObject.put("device", TUIBuild.getManufacturer() + TUIBuild.getModel());
+//            jsonObject.put("device", TUIBuild.getManufacturer() + TUIBuild.getModel());
             jsonObject.put("osType", String.valueOf(TUIBuild.getSdkInt()));
             jsonObject.put("netType", TVCUtils.getNetWorkType(context));
             jsonObject.put("reqTime", info.reqTime);

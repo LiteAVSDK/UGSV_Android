@@ -12,6 +12,11 @@ if (!videoEngineSourcePath.isEmpty()) {
     apply from: new File(settingsDir, '../source_link_gradle/videoengine_source_settings.gradle').getAbsolutePath()
 }
 
+// 重构 源码编译调试的配置
+if (!liteavRefactorSourcePath.isEmpty()) {
+    apply from: new File(settingsDir, '../source_link_gradle/liteav_refactor_source_settings.gradle').getAbsolutePath()
+}
+
 
 
 

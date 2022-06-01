@@ -55,6 +55,9 @@ public class RecordPauseSnapView extends androidx.appcompat.widget.AppCompatImag
         return mOpacityRate;
     }
 
+    /**
+     * 暂停状态下的暂留画面：抓取当前视频截图，并以mPauseSnapOpacity透明度显示在播放器上
+     */
     public void catchPauseImage() {
         setSnapViewAlpha(UGCKitRecordConfig.getInstance().mPauseSnapOpacity);
         //不使用takePhoto方法，takePhoto方法会把当前照片存储到本地，该功能暂不需要存储
@@ -111,8 +114,8 @@ public class RecordPauseSnapView extends androidx.appcompat.widget.AppCompatImag
 
             float drawHeight = width * mImageSizeRate;
 
-            float top = (height / 2f) - (drawHeight / 2);
-            float bottom = (height / 2f) + (drawHeight / 2);
+            final float top = (height / 2f) - (drawHeight / 2);
+            final float bottom = (height / 2f) + (drawHeight / 2);
 
             mImageDrawRect.left = 0;
             mImageDrawRect.top = top;
