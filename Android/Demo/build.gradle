@@ -1,7 +1,6 @@
 buildscript {
     repositories {
 
-
         jcenter()
         google()
         mavenCentral()
@@ -11,13 +10,16 @@ buildscript {
         if (!videoEngineSourcePath.isEmpty()) {
             classpath 'me.tatarka:gradle-retrolambda:3.7.1'
         }
+        if (!liteavRefactorSourcePath.isEmpty()) {
+            classpath 'me.tatarka:gradle-retrolambda:3.7.1'
+            classpath 'com.github.kezong:fat-aar:1.3.6'
+        }
     }
 }
 
 allprojects {
     repositories {
         flatDir {
-            dirs 'src/main/jniLibs'
             dirs project(':app').file('libs')
             if (!liteavSourcePath.isEmpty()) {
                 dirs project(':liteav_leb_player').file('src/main/libs')
@@ -41,6 +43,10 @@ if (!videoEngineSourcePath.isEmpty()) {
     apply from: new File(getRootDir().getPath(), "../source_link_gradle/videoengine_source_build.gradle").getAbsolutePath()
 }
 
+if (!liteavRefactorSourcePath.isEmpty()) {
+    apply from: new File(getRootDir().getPath(), "../source_link_gradle/liteav_refactor_source_build.gradle").getAbsolutePath()
+}
+
 ext {
     compileSdkVersion = 29
     buildToolsVersion = "29.0.2"
@@ -49,15 +55,10 @@ ext {
     targetSdkVersion = 26
     versionCode = 1
     versionName = "v1.0"
-    proguard = true
-    rootPrj = "$projectDir/.."
     ndkAbi = 'armeabi-v7a'
-    noffmpeg = false
-    noijkplay = false
-    aekit_version = '1.0.19-cloud'
-    if (!liteavSourcePath.isEmpty()) {
-    liteavSdk="com.tencent.liteav:LiteAVSDK_Professional:latest.release"
+    if (!liteavSourcePath.isEmpty() || !liteavRefactorSourcePath.isEmpty()) {
+    liteavSdk="com.tencent.liteav:LiteAVSDK_UGC:latest.release"
     } else {
-    liteavSdk="com.tencent.liteav:LiteAVSDK_Professional:latest.release"
+    liteavSdk="com.tencent.liteav:LiteAVSDK_UGC:latest.release"
     }
 }

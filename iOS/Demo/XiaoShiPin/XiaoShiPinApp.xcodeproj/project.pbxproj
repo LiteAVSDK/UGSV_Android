@@ -3,12 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1726EFBE2769DD4300C8E597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2BF2379458C0083E759 /* Assets.xcassets */; };
-		17F136442771C13300105998 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		260B1EDB6C55A0F80B90DDBD /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A8E65936623F0FDD441EB7 /* TXLiteAVSDK_UGC.framework */; };
+		400443652837B61F00DAA0DE /* TXFFmpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */; };
+		400443662837B61F00DAA0DE /* TXFFmpeg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		400443692837B62600DAA0DE /* TXSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400443682837B62600DAA0DE /* TXSoundTouch.xcframework */; };
+		4004436A2837B62600DAA0DE /* TXSoundTouch.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 400443682837B62600DAA0DE /* TXSoundTouch.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4005887625FBA72E00C518CC /* YTHandDetector.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005886A25FBA72E00C518CC /* YTHandDetector.bundle */; };
 		4005887725FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin in Resources */ = {isa = PBXBuildFile; fileRef = 4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */; };
 		4005887825FBA72E00C518CC /* RPNSegmenter.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */; };
@@ -22,6 +26,9 @@
 		4005888025FBA72E00C518CC /* FilterEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887425FBA72E00C518CC /* FilterEngine.bundle */; };
 		4005888125FBA72E00C518CC /* ufa.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887525FBA72E00C518CC /* ufa.bundle */; };
 		40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A37344246A3916004E3FC7 /* Bugly.framework */; };
+		40E96180283BB09D00D4C80F /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E9617F283BB09D00D4C80F /* GLKit.framework */; };
+		40E96184283BB0E800D4C80F /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E96183283BB0E800D4C80F /* MetalKit.framework */; };
+		40E96186283BB38800D4C80F /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E96185283BB38800D4C80F /* CoreServices.framework */; };
 		40F4D6822473EC9800847F5B /* TVCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F4D66A2473EC9800847F5B /* TVCUtils.m */; };
 		40F4D6832473EC9800847F5B /* TXUGCPublish.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F4D66C2473EC9800847F5B /* TXUGCPublish.m */; };
 		40F4D6842473EC9800847F5B /* TXUGCPublishUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F4D6712473EC9800847F5B /* TXUGCPublishUtil.m */; };
@@ -78,11 +85,29 @@
 		45D52F74238D6998006F71FA /* PhotoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F71238D6998006F71FA /* PhotoUtil.m */; };
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
-		A5E94247C7F9DE6615188E97 /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9E5C3DDE914C2B941B8A3C /* TXLiteAVSDK_UGC.framework */; };
 		BC42E64A1F750919B895C9AF /* Pods_XiaoShiPinApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C5E080F5371855F071110B /* Pods_XiaoShiPinApp.framework */; };
+		F507085B284646050093256C /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F507085A284646050093256C /* ReplayKit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		400443672837B61F00DAA0DE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				400443662837B61F00DAA0DE /* TXFFmpeg.xcframework in Embed Frameworks */,
+				4004436A2837B62600DAA0DE /* TXSoundTouch.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		12A8E65936623F0FDD441EB7 /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
+		400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXFFmpeg.xcframework; path = ../../SDK/TXFFmpeg.xcframework; sourceTree = "<group>"; };
+		400443682837B62600DAA0DE /* TXSoundTouch.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXSoundTouch.xcframework; path = ../../SDK/TXSoundTouch.xcframework; sourceTree = "<group>"; };
 		4005886A25FBA72E00C518CC /* YTHandDetector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = YTHandDetector.bundle; sourceTree = "<group>"; };
 		4005886B25FBA72E00C518CC /* MSFMLandmarks46_relandmark_models.xbin */ = {isa = PBXFileReference; lastKnownFileType = file; path = MSFMLandmarks46_relandmark_models.xbin; sourceTree = "<group>"; };
 		4005886C25FBA72E00C518CC /* RPNSegmenter.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RPNSegmenter.bundle; sourceTree = "<group>"; };
@@ -96,6 +121,10 @@
 		4005887425FBA72E00C518CC /* FilterEngine.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterEngine.bundle; sourceTree = "<group>"; };
 		4005887525FBA72E00C518CC /* ufa.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ufa.bundle; sourceTree = "<group>"; };
 		40A37344246A3916004E3FC7 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = XiaoShiPin/Frameworks/Bugly.framework; sourceTree = "<group>"; };
+		40E9617F283BB09D00D4C80F /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		40E96181283BB0A400D4C80F /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		40E96183283BB0E800D4C80F /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		40E96185283BB38800D4C80F /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		40F4D6682473EC9800847F5B /* TXUGCPublishOptCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXUGCPublishOptCenter.h; sourceTree = "<group>"; };
 		40F4D6692473EC9800847F5B /* TVCHttpMessageURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVCHttpMessageURLProtocol.h; sourceTree = "<group>"; };
 		40F4D66A2473EC9800847F5B /* TVCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVCUtils.m; sourceTree = "<group>"; };
@@ -210,8 +239,8 @@
 		64C5E080F5371855F071110B /* Pods_XiaoShiPinApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XiaoShiPinApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7216AF6672BE96A755F9A006 /* Pods-XiaoShiPinApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XiaoShiPinApp.release.xcconfig"; path = "Target Support Files/Pods-XiaoShiPinApp/Pods-XiaoShiPinApp.release.xcconfig"; sourceTree = "<group>"; };
 		8C0241A1CF41E8DFFB38B885 /* Pods-XiaoShiPinApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XiaoShiPinApp.debug.xcconfig"; path = "Target Support Files/Pods-XiaoShiPinApp/Pods-XiaoShiPinApp.debug.xcconfig"; sourceTree = "<group>"; };
-		AB9E5C3DDE914C2B941B8A3C /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 		CA1752BBB634FB42BC710760 /* Pods-XiaoShiPinApp.dailybuild.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XiaoShiPinApp.dailybuild.xcconfig"; path = "Target Support Files/Pods-XiaoShiPinApp/Pods-XiaoShiPinApp.dailybuild.xcconfig"; sourceTree = "<group>"; };
+		F507085A284646050093256C /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,17 +248,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F507085B284646050093256C /* ReplayKit.framework in Frameworks */,
+				400443652837B61F00DAA0DE /* TXFFmpeg.xcframework in Frameworks */,
 				40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */,
+				40E96184283BB0E800D4C80F /* MetalKit.framework in Frameworks */,
 				40F4D6872473EC9800847F5B /* QCloudCOSXML.framework in Frameworks */,
+				40E96180283BB09D00D4C80F /* GLKit.framework in Frameworks */,
 				455AB05E237BED1800AF4A3C /* AssetsLibrary.framework in Frameworks */,
 				455AAEF1237ABBB900AF4A3C /* libsqlite3.tbd in Frameworks */,
 				455AAEEF237ABBB300AF4A3C /* OpenAL.framework in Frameworks */,
+				400443692837B62600DAA0DE /* TXSoundTouch.xcframework in Frameworks */,
 				455AAEED237ABBAE00AF4A3C /* libresolv.tbd in Frameworks */,
 				40F4D6892473EC9800847F5B /* QCloudCore.framework in Frameworks */,
 				455AAEEB237ABBAA00AF4A3C /* libc++.tbd in Frameworks */,
 				40F4D6882473EC9800847F5B /* libmtasdk.a in Frameworks */,
 				BC42E64A1F750919B895C9AF /* Pods_XiaoShiPinApp.framework in Frameworks */,
-				A5E94247C7F9DE6615188E97 /* TXLiteAVSDK_UGC.framework in Frameworks */,
+				40E96186283BB38800D4C80F /* CoreServices.framework in Frameworks */,
+				260B1EDB6C55A0F80B90DDBD /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +403,13 @@
 		453DE42323795B620083E759 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F507085A284646050093256C /* ReplayKit.framework */,
+				40E96185283BB38800D4C80F /* CoreServices.framework */,
+				40E96183283BB0E800D4C80F /* MetalKit.framework */,
+				40E96181283BB0A400D4C80F /* Metal.framework */,
+				40E9617F283BB09D00D4C80F /* GLKit.framework */,
+				400443682837B62600DAA0DE /* TXSoundTouch.xcframework */,
+				400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */,
 				40A37344246A3916004E3FC7 /* Bugly.framework */,
 				455AB05D237BED1800AF4A3C /* AssetsLibrary.framework */,
 				455AAEF0237ABBB800AF4A3C /* libsqlite3.tbd */,
@@ -375,7 +417,7 @@
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
 				64C5E080F5371855F071110B /* Pods_XiaoShiPinApp.framework */,
-				AB9E5C3DDE914C2B941B8A3C /* TXLiteAVSDK_UGC.framework */,
+				12A8E65936623F0FDD441EB7 /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -567,6 +609,7 @@
 				453DE2AE2379458A0083E759 /* Resources */,
 				AF05FFE73C5D9761507FC255 /* [CP] Embed Pods Frameworks */,
 				747C7675D6178C89E845A2CF /* [CP] Copy Pods Resources */,
+				400443672837B61F00DAA0DE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -932,7 +975,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = F8A3GH6Q4W;
+				DEVELOPMENT_TEAM = 2ZNSKQLPTK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -948,6 +991,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/XiaoShiPin/Dependencies",
 					"$(inherited)",
+					"$(SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers",
 				);
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -963,9 +1007,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yunxiao.dev.liteavdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
+				PROVISIONING_PROFILE_SPECIFIER = "Yunxiao Develop Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -997,6 +1041,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/XiaoShiPin/Dependencies",
 					"$(inherited)",
+					"$(SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers",
 				);
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1083,7 +1128,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = F8A3GH6Q4W;
+				DEVELOPMENT_TEAM = 2ZNSKQLPTK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1099,6 +1144,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/XiaoShiPin/Dependencies",
 					"$(inherited)",
+					"$(SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers",
 				);
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1114,9 +1160,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yunxiao.dev.liteavdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
+				PROVISIONING_PROFILE_SPECIFIER = "Yunxiao Develop Profile";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = DailyBuild;

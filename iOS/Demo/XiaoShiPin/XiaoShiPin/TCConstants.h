@@ -13,7 +13,7 @@
 #define kHttpServerAddr @"http://demo.vod2.myqcloud.com/lite/" //正式环境
 
 //数据上报
-#define DEFAULT_ELK_HOST @""
+#define DEFAULT_ELK_HOST                     @"https://ilivelog.qcloud.com"
 
 //bugly组件Appid，bugly为腾讯提供的用于App Crash收集和分析的组件
 #define BUGLY_APP_ID                         @"f991dc1856"

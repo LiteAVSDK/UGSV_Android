@@ -233,6 +233,8 @@ public class VideoProgressController {
         mSliderViewContainerList.add(sliderViewContainer);
         sliderViewContainer.setVideoProgressControlloer(this);
         mVideoProgressView.getParentView().addView(sliderViewContainer);
+
+        mTotalDurationMs += sliderViewContainer.getSliderDuration();
         sliderViewContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -246,6 +248,7 @@ public class VideoProgressController {
             Log.e(TAG, "removeSliderView, mVideoProgressView is null");
             return false;
         }
+        mTotalDurationMs -= sliderViewContainer.getSliderDuration();
         mVideoProgressView.getParentView().removeView(sliderViewContainer);
         if (mSliderViewContainerList == null || mSliderViewContainerList.size() == 0) {
             Log.e(TAG, "removeSliderView, mSliderViewContainerList is empty");
@@ -269,6 +272,7 @@ public class VideoProgressController {
             return null;
         }
         SliderViewContainer sliderViewContainer = mSliderViewContainerList.get(index);
+        mTotalDurationMs -= sliderViewContainer.getSliderDuration();
         mVideoProgressView.getParentView().removeView(sliderViewContainer);
         return sliderViewContainer;
     }
