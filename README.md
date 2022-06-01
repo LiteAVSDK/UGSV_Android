@@ -9,16 +9,9 @@
 | iOS      | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_iOS_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11638) |
 | Android  | [下载](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_UGC_Android_latest.zip) | [DOC](https://cloud.tencent.com/document/product/584/11631) |
 
-### Version 8.8 @ 2021.06.18
-- iOS: 修复点播播放器启停多次触发的内存泄漏问题;
-
-- Android: 修复在Android 11上播放hls文件报错的问题;
-
-- Android: 修复特定情况下播放快直播流偶现闪退的问题;
-
-- iOS&Android: 修复VodPlayer播放特定视频seek慢的问题;
-
-- iOS&Android: 修复点播暂停播放后设置进度，画面显示慢的问题;
+### Version 8.8 @ 2022.06.01
+- iOS&Android: UGC上传支持quic&升级cos sdk版本，提供定制分片大小&并发上传数量的接口
+- iOS&Android：适配10.1 SDK需要微调的代码
 
   
 
