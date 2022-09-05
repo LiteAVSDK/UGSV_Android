@@ -1,12 +1,16 @@
 package com.tencent.qcloud.xiaoshipin.videochoose;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.tencent.qcloud.xiaoshipin.manager.PermissionManager;
 import com.tencent.qcloud.ugckit.module.picker.view.IPickerLayout;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
@@ -17,8 +21,11 @@ import com.tencent.qcloud.xiaoshipin.videojoiner.TCVideoJoinerActivity;
 
 import java.util.ArrayList;
 
-public class TCVideoPickerActivity extends Activity {
+public class TCVideoPickerActivity extends FragmentActivity
+        implements ActivityCompat.OnRequestPermissionsResultCallback,
+        PermissionManager.OnStoragePermissionGrantedListener {
     private UGCKitVideoPicker mUGCKitVideoPicker;
+    private PermissionManager mStoragePermissionManager;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -28,6 +35,9 @@ public class TCVideoPickerActivity extends Activity {
         setTheme(R.style.PickerActivityTheme);
         setContentView(R.layout.activity_video_picker);
         mUGCKitVideoPicker = (UGCKitVideoPicker) findViewById(R.id.video_choose_layout);
+        mStoragePermissionManager = new PermissionManager(this, PermissionManager.PermissionType.STORAGE);
+        mStoragePermissionManager.setOnStoragePermissionGrantedListener(this);
+        mStoragePermissionManager.checkoutIfShowPermissionIntroductionDialog();
         mUGCKitVideoPicker.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,4 +92,14 @@ public class TCVideoPickerActivity extends Activity {
         startActivity(intent);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mStoragePermissionManager.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+        mUGCKitVideoPicker.loadVideoList();
+    }
 }

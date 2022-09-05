@@ -30,13 +30,15 @@
     return self;
 }
 
-- (instancetype)initWith:(NSString *)key value:(NSString *)value type:(TCUserInfoCellType)type action:(TCUserInfoCellAction)action
+- (instancetype)initWith:(NSString *)key value:(NSString *)value type:(TCUserInfoCellType)type
+               rightText:(NSString *)rightText action:(TCUserInfoCellAction)action
 {
     if (self = [self init])
     {
         _tip    = key;
         _type   = type;
         _value  = value;
+        _rightText = rightText;
         _action = action;
     }
     return self;
@@ -88,6 +90,12 @@
     [super prepareForReuse];
     [faceImage sd_setImageWithURL:nil];
 }
+
+-(void)setFrame:(CGRect)frame
+{
+    frame.size.height = frame.size.height - 5;
+    [super setFrame:frame];
+}
 /**
  *  用于初始化数据 目前只用于当在 用户信息界面 上的第一个组合cell
  *
@@ -107,6 +115,7 @@
         faceImage.layer.masksToBounds = YES;
         faceImage.layer.borderWidth   = 2;
         faceImage.layer.borderColor   = uiBorderColor.CGColor;
+        faceImage.userInteractionEnabled = YES;
         
         nickText = [[UILabel alloc] init];
         nickText.textAlignment = NSTextAlignmentCenter;
@@ -159,6 +168,17 @@
             self.textLabel.textColor = [UIColor whiteColor];
             self.textLabel.font      = [UIFont systemFontOfSize:16];
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        }
+        break;
+        case TCUserInfo_RightText:
+        {
+            self.textLabel.text      = item.tip;
+            self.textLabel.textColor = [UIColor whiteColor];
+            self.textLabel.font      = [UIFont systemFontOfSize:16];
+            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            self.detailTextLabel.text = item.rightText;
+            self.detailTextLabel.textColor = [UIColor whiteColor];
         }
         break;
         default:

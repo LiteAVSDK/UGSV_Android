@@ -21,6 +21,8 @@ import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
 
+import java.io.File;
+
 /**
  * 视频生成管理
  */
@@ -204,13 +206,14 @@ public class VideoGenerateKit extends BaseGenerateKit implements TXVideoGenerate
             editer.release();
         }
         VideoEditerSDK.getInstance().clear();
+        AlbumSaver.getInstance(UGCKit.getAppContext()).release();
     }
 
     private void saveAndUpdate(@NonNull TXVideoEditConstants.TXGenerateResult result) {
         if (mSaveToDCIM) {
             long duration = VideoEditerSDK.getInstance().getVideoDuration();
             AlbumSaver.getInstance(UGCKit.getAppContext()).setOutputProfile(mVideoOutputPath, duration, mCoverPath);
-            AlbumSaver.getInstance(UGCKit.getAppContext()).saveVideoToDCIM();
+            AlbumSaver.getInstance(UGCKit.getAppContext()).saveVideoToDCIMAsync(null);
         }
         // UI更新
         if (mOnUpdateUIListener != null) {

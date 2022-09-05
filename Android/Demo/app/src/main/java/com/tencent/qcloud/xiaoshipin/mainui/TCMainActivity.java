@@ -9,15 +9,22 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 
 import com.tencent.liteav.basic.log.TXCLog;
+import com.tencent.qcloud.ugckit.PermissionIntroductionDialog;
+import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.ShortVideoDialog;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
@@ -59,10 +66,6 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         initView();
 
         showVideoFragment();
-
-        if (checkPermission()) {
-            return;
-        }
 
         checkLastRecordPart();
     }
@@ -131,22 +134,6 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         resources.updateConfiguration(configuration, displayMetrics);
     }
 
-    private boolean checkPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            int REQUEST_CODE_CONTACT = 101;
-            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            //验证是否许可权限
-            for (String str : permissions) {
-                if (this.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
-                    //申请权限
-                    this.requestPermissions(permissions, REQUEST_CODE_CONTACT);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private void initView() {
         mShortVideoDialog = new ShortVideoDialog();
 
@@ -188,6 +175,7 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         if (!TCUserMgr.getInstance().hasUser()) {
             Intent intent = new Intent(TCMainActivity.this, TCLoginActivity.class);
             startActivity(intent);
+            finish();
         } else {
             // 防止多次点击
             if (System.currentTimeMillis() - mLastClickPubTS > 1000) {
@@ -235,5 +223,4 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         mCurrentFragment = fragment;
         transaction.commit();
     }
-
 }

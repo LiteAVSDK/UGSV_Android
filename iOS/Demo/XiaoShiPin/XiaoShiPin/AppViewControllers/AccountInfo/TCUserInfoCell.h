@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, TCUserInfoCellType)
     TCUserInfo_Edit,  // 点击后切换到 编辑个人信息 页面
     TCUserInfo_About, // 点击后显示小直播版本号
     TCUserInfo_Authenticate,   // 实名认证
+    TCUserInfo_RightText,//右边有文字
 };
 /*
  * TCUserInfoCellItem 类说明 : 该类用于存储tableview中每一条cell内容
@@ -48,11 +49,14 @@ typedef NS_ENUM(NSInteger, TCUserInfoCellType)
 
 @property (nonatomic, copy) NSString *value;
 
+@property (nonatomic, copy) NSString *rightText;  //右边文字
+
 @property (nonatomic, copy) TCUserInfoCellAction action;
 
 + (NSInteger)heightOf:(TCUserInfoCellItem *)item;
 
-- (instancetype)initWith:(NSString *)tip value:(NSString *)value type:(TCUserInfoCellType)type action:(TCUserInfoCellAction)action;
+- (instancetype)initWith:(NSString *)tip value:(NSString *)value type:(TCUserInfoCellType)type
+rightText:(NSString *)rightText action:(TCUserInfoCellAction)action;
 
 @end
 

@@ -3,18 +3,18 @@ package com.tencent.qcloud.ugckit;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.tencent.liteav.demo.beauty.Beauty;
-import com.tencent.liteav.demo.beauty.BeautyParams;
-import com.tencent.liteav.demo.beauty.model.ItemInfo;
-import com.tencent.liteav.demo.beauty.model.TabInfo;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -44,7 +44,12 @@ import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoInfoReader;
+import com.tencent.xmagic.XMagicImpl;
+import com.tencent.xmagic.module.XmagicResParser;
+import com.tencent.xmagic.panel.XmagicPanelDataManager;
+import com.tencent.xmagic.telicense.TELicenseCheck;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -64,6 +69,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     private ProgressDialogUtil    mProgressDialogUtil;
     private boolean isInStopProcessing = false;
     private ExecutorService videoProcessExecutor;
+
+    private XMagicImpl             mXMagic;
+    private XMagicImpl.XmagicState xmagicState = XMagicImpl.XmagicState.STARTED;
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -114,7 +122,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                 //使用录制的currentState状态来判断是否是STOP状态，虽然可以完美解决防重复点击问题，但是如果用户按返回回到该界面，
                 //无法再次点击下一步，currentState状态仍然是stop。
                 //所以这里采用一个新的布尔值进行限制
-                if(isInStopProcessing) {
+                if (isInStopProcessing) {
                     return;
                 }
                 isInStopProcessing = true;
@@ -154,49 +162,49 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         mProgressDialogUtil = new ProgressDialogUtil(mActivity);
 
         UGCKitRecordConfig config = UGCKitRecordConfig.getInstance();
-        config.mBeautyParams = new BeautyParams();
-
-        // 设置默认美颜
-        config.mBeautyParams.mBeautyStyle = 0;
-        config.mBeautyParams.mBeautyLevel = 4;
-        config.mBeautyParams.mWhiteLevel = 1;
         // 初始化默认配置
         VideoRecordSDK.getInstance().initConfig(config);
-        VideoRecordSDK.getInstance().updateBeautyParam(config.mBeautyParams);
+        initBeauty();
+    }
 
-        TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
-        getBeautyPanel().setBeautyManager(txugcRecord.getBeautyManager());
-        getBeautyPanel().setOnFilterChangeListener(new Beauty.OnFilterChangeListener() {
+    private void initBeauty() {
+        TXUGCRecord instance = TXUGCRecord.getInstance(UGCKit.getAppContext());
+        instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
             @Override
-            public void onChanged(Bitmap filterImage, int index) {
-                getScrollFilterView().doTextAnimator(index);
+            public int onTextureCustomProcess(int textureId, int width, int height) {
+                if (xmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
+                    return mXMagic.process(textureId, width, height);
+                }
+                return textureId;
+            }
+
+            @Override
+            public void onDetectFacePoints(float[] floats) {
+            }
+
+            @Override
+            public void onTextureDestroyed() {
+                if (Looper.getMainLooper() != Looper.myLooper()) {  //非主线程
+                    boolean stopped = xmagicState == XMagicImpl.XmagicState.STOPPED;
+                    if (stopped || xmagicState == XMagicImpl.XmagicState.DESTROYED) {
+                        if (mXMagic != null) {
+                            mXMagic.onDestroy();
+                        }
+                    }
+                    if (xmagicState == XMagicImpl.XmagicState.DESTROYED) {
+                        TXUGCRecord.getInstance(UGCKit.getAppContext()).setVideoProcessListener(null);
+                    }
+                }
             }
         });
-        getBeautyPanel().setOnBeautyListener(new BeautyPanel.OnBeautyListener() {
+        XMagicImpl.checkAuth(new TELicenseCheck.TELicenseCheckListener() {
             @Override
-            public void onTabChange(TabInfo tabInfo, int position) {
-
-            }
-
-            @Override
-            public boolean onClose() {
-                getBeautyPanel().setVisibility(View.GONE);
-                getRecordMusicPannel().setVisibility(View.GONE);
-                getSoundEffectPannel().setVisibility(View.GONE);
-
-                getRecordBottomLayout().setVisibility(View.VISIBLE);
-                getRecordRightLayout().setVisibility(View.VISIBLE);
-                return true;
-            }
-
-            @Override
-            public boolean onClick(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition) {
-                return false;
-            }
-
-            @Override
-            public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition, int beautyLevel) {
-                return false;
+            public void onLicenseCheckFinish(int errorCode, String msg) {
+                if (errorCode == TELicenseCheck.ERROR_OK) {
+                    loadXmagicRes();
+                } else {
+                    Log.e("TAG", "auth fail ，please check auth url and key" + errorCode + " " + msg);
+                }
             }
         });
     }
@@ -215,12 +223,20 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     public void start() {
         // 打开录制预览界面
         VideoRecordSDK.getInstance().startCameraPreview(getRecordVideoView());
+        if (xmagicState == XMagicImpl.XmagicState.STOPPED) {
+            initXMagic();
+            xmagicState = XMagicImpl.XmagicState.STARTED;
+        }
     }
 
     @Override
     public void stop() {
         Log.d(TAG, "stop");
         isInStopProcessing = false;
+        if (mXMagic != null) {
+            xmagicState = XMagicImpl.XmagicState.STOPPED;
+            mXMagic.onPause();
+        }
         TelephonyUtil.getInstance().uninitPhoneListener();
 
         getRecordBottomLayout().getRecordButton().pauseRecordAnim();
@@ -234,16 +250,18 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     @Override
     public void release() {
         Log.d(TAG, "release");
+        xmagicState = XMagicImpl.XmagicState.DESTROYED;
+        XmagicPanelDataManager.getInstance().clearData();
         getRecordBottomLayout().getRecordProgressView().release();
         // 停止录制
         VideoRecordSDK.getInstance().releaseRecord();
 
         UGCKitRecordConfig.getInstance().clear();
         // 录制TXUGCRecord是单例，需要释放时还原配置
-        getBeautyPanel().clear();
+//        getBeautyPanel().clear();
         AudioFocusManager.getInstance().setAudioFocusListener(null);
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
-        getBeautyPanel().setOnFilterChangeListener(null);
+//        getBeautyPanel().setOnFilterChangeListener(null);
         ProcessKit.getInstance().setOnUpdateUIListener(null);
         VideoRecordSDK.getInstance().setOnRestoreDraftListener(null);
     }
@@ -414,6 +432,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         getRecordRightLayout().setVisibility(View.GONE);
         // 显示美颜Pannel
         getBeautyPanel().setVisibility(View.VISIBLE);
+        if (mXMagic != null) {
+            mXMagic.setBeautyStateOpen();
+        }
     }
 
     /**
@@ -723,4 +744,46 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         UGCKitRecordConfig.getInstance().mIsNeedEdit = enable;
     }
 
+
+
+    private void loadXmagicRes() {
+        if (XMagicImpl.isLoadedRes) {
+            XmagicResParser.parseRes(mActivity.getApplicationContext());
+            initXMagic();
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                XmagicResParser.copyRes(mActivity.getApplicationContext());
+                XmagicResParser.parseRes(mActivity.getApplicationContext());
+                XMagicImpl.isLoadedRes = true;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        initXMagic();
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+    /**
+     * 初始化美颜SDK
+     */
+
+    private void initXMagic() {
+        if (mXMagic == null) {
+            mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
+        } else {
+            mXMagic.onResume();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mXMagic != null && data != null) {
+            mXMagic.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

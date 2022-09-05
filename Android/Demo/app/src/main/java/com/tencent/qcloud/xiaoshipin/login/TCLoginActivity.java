@@ -1,23 +1,45 @@
 package com.tencent.qcloud.xiaoshipin.login;
 
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.SHARED_PREFERENCE_FILE_NAME_PERMISSION;
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.SHARED_PREFERENCE_FIRST_START;
+
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import com.google.android.material.textfield.TextInputLayout;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.tencent.qcloud.xiaoshipin.R;
-import com.tencent.qcloud.ugckit.utils.TCUserMgr;
-import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
-import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
+import androidx.annotation.NonNull;
+
+import com.google.android.material.textfield.TextInputLayout;
+import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.NetworkUtil;
+import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
+import com.tencent.qcloud.xiaoshipin.R;
+import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
+import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
+import com.tencent.ugc.TXUGCBase;
 
 import org.json.JSONObject;
 
@@ -39,12 +61,25 @@ public class TCLoginActivity extends Activity {
 
     private TextView tvBack;
 
+    private TextView mTvUserProtocol;
+
+    private CheckBox mCbAgreeProtocol;
+
+    private int[][] chineseScrollProtocol = {{96, 107}, {285, 296}, {424, 438}, {509, 520}, {599, 610}};
+
+    private int[][] englishScrollProtocol = {{385, 419}, {1054, 1093}, {1536, 1584}, {1969, 2019}, {2166, 2206}};
+
+    private int[][] chineseDownProtocol = {{4, 13}, {14, 25}, {26, 41}, {42, 56}, {58, 68}};
+
+    private int[][] englishDownProtocol = {{19, 45}, {46, 87}, {88, 144}, {146, 193}, {198, 237}};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         etLogin = (AutoCompleteTextView) findViewById(R.id.et_login);
+
 
         etPassword = (EditText) findViewById(R.id.et_password);
 
@@ -60,10 +95,275 @@ public class TCLoginActivity extends Activity {
 
         tvBack = (TextView) findViewById(R.id.login_tv_back);
 
+        mTvUserProtocol = (TextView) findViewById(R.id.tv_protocol);
+        mCbAgreeProtocol = (CheckBox) findViewById(R.id.cb_protocol);
+
+        findViewById(R.id.checkbox_group).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCbAgreeProtocol.setChecked(!mCbAgreeProtocol.isChecked());
+            }
+        });
+
+        mCbAgreeProtocol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    btnLogin.setBackgroundResource(R.drawable.btn_login_pressed);
+                    btnLogin.setTextColor(getResources().getColor(R.color.actionsheet_gray));
+                } else {
+                    btnLogin.setBackgroundResource(R.drawable.btn_login_normal);
+                    btnLogin.setTextColor(getResources().getColor(R.color.black));
+                }
+            }
+        });
+
+        if (isFirstStart()) {
+            showStatementDialog();
+        }
+
+        btnLogin.setBackgroundResource(R.drawable.btn_login_pressed);
+        btnLogin.setTextColor(getResources().getColor(R.color.actionsheet_gray));
+
         userNameLoginViewInit();
+
+        updateStatement(this, mTvUserProtocol);
 
         //检测是否存在缓存
         checkLogin();
+    }
+
+    public boolean isFirstStart() {
+        SharedPreferenceUtils preferences = new SharedPreferenceUtils(
+                this, SHARED_PREFERENCE_FILE_NAME_PERMISSION);
+        Boolean isFirst = (Boolean) preferences.getSharedPreference(SHARED_PREFERENCE_FIRST_START, true);
+        if (isFirst) {
+            // 第一次
+            preferences.put(SHARED_PREFERENCE_FIRST_START, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private SpannableString showDownSpan() {
+        final SpannableString builder = new SpannableString(getString(R.string.login_protocol_down));
+        int[][] tempProtocolArray = null;
+        if (getSystemLanguage().equals("US")) {
+            tempProtocolArray = englishDownProtocol;
+        } else {
+            tempProtocolArray = chineseDownProtocol;
+        }
+        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://web.sdk.qcloud.com/document/Tencent-UGSV-User-Agreement.html");
+            }
+        };
+        builder.setSpan(privacyClickableSpan, tempProtocolArray[0][0], tempProtocolArray[0][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ClickableSpan protocolPrivacyProtectionClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/cd1aaba55e1548c7975ef10fbe9785f7");
+            }
+        };
+        builder.setSpan(protocolPrivacyProtectionClickableSpan, tempProtocolArray[1][0],
+                tempProtocolArray[1][1], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        ClickableSpan protocolPersonalInformationClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/ac0e6b4500c442839d632828a35083da");
+            }
+        };
+        builder.setSpan(protocolPersonalInformationClickableSpan, tempProtocolArray[2][0], tempProtocolArray[2][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan protocolThirdPartEndClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/ac99514d96824473aff08e88dba7ee92");
+            }
+        };
+        builder.setSpan(protocolThirdPartEndClickableSpan, tempProtocolArray[3][0], tempProtocolArray[3][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan protocolChildrenPrivacyClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/privacy-children.htm");
+            }
+        };
+        builder.setSpan(protocolChildrenPrivacyClickableSpan, tempProtocolArray[4][0], tempProtocolArray[4][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    private void showStatementDialog() {
+        final Dialog mDialog = new Dialog(this, R.style.LoginShowTipTheme);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.login_show_tip_dialog_confirm, null);
+        TextView tvDownProtocol = (TextView) view.findViewById(R.id.tv_all_protocol);
+        tvDownProtocol.setMovementMethod(LinkMovementMethod.getInstance());
+        SpannableString builder = showDownSpan();
+        tvDownProtocol.setText(builder);
+        tvDownProtocol.setHighlightColor(Color.TRANSPARENT);
+        TextView tvScrollProtocol = (TextView) view.findViewById(R.id.tv_message);
+        tvScrollProtocol.setMovementMethod(LinkMovementMethod.getInstance());
+        SpannableStringBuilder scrollBuilder = showScrollSpan();
+        tvScrollProtocol.setText(scrollBuilder);
+        tvScrollProtocol.setHighlightColor(Color.TRANSPARENT);
+        Button btnNeg = (Button) view.findViewById(R.id.btn_negative);
+        Button btnPos = (Button) view.findViewById(R.id.btn_positive);
+        btnNeg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                }
+            }
+        });
+        btnPos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCbAgreeProtocol.setChecked(true);
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                }
+            }
+        });
+        mDialog.setContentView(view);
+        mDialog.show();
+    }
+
+    private String getSystemLanguage() {
+        return getResources().getConfiguration().locale.getCountry();
+    }
+
+
+
+
+    private SpannableStringBuilder showScrollSpan() {
+        final SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(getString(R.string.login_protocol_scroll));
+        int[][] tempProtocolArray = null;
+        if (getSystemLanguage().equals("US")) {
+            tempProtocolArray = englishScrollProtocol;
+        } else {
+            tempProtocolArray = chineseScrollProtocol;
+        }
+        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/ea00e5256ad442c483cd685d27b2e49f");
+            }
+        };
+        builder.setSpan(privacyClickableSpan, tempProtocolArray[0][0], tempProtocolArray[0][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ClickableSpan protocolPrivacyProtectionClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/ac0e6b4500c442839d632828a35083da");
+            }
+        };
+        builder.setSpan(protocolPrivacyProtectionClickableSpan, tempProtocolArray[1][0],
+                tempProtocolArray[1][1], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        ClickableSpan protocolPersonalInformationClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/ac99514d96824473aff08e88dba7ee92");
+            }
+        };
+        builder.setSpan(protocolPersonalInformationClickableSpan, tempProtocolArray[2][0], tempProtocolArray[2][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan protocolThirdPartEndClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/cd1aaba55e1548c7975ef10fbe9785f7");
+            }
+        };
+        builder.setSpan(protocolThirdPartEndClickableSpan, tempProtocolArray[3][0], tempProtocolArray[3][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ClickableSpan protocolChildrenPrivacyClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                setProtocolText(ds);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(TCLoginActivity.this, null, "https://privacy.qq.com/document/preview/cd1aaba55e1548c7975ef10fbe9785f7");
+            }
+        };
+        builder.setSpan(protocolChildrenPrivacyClickableSpan, tempProtocolArray[4][0], tempProtocolArray[4][1],
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    private void setProtocolText(TextPaint ds) {
+        ds.setColor(getResources().getColor(R.color.login_color_blue));
+        ds.setUnderlineText(false);
     }
 
     /**
@@ -102,6 +402,13 @@ public class TCLoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (!mCbAgreeProtocol.isChecked()) {
+                    Toast.makeText(TCLoginActivity.this, getString(R.string.login_protocol_tip),
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //调用normal登录逻辑
                 showOnLoading(true);
 
@@ -172,6 +479,8 @@ public class TCLoginActivity extends Activity {
 
     private void login(final String username, String password) {
         final TCUserMgr tcLoginMgr = TCUserMgr.getInstance();
+        // ELK数据上报：启动次数
+        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_START_UP, 0, "");
         tcLoginMgr.login(username, password, new TCUserMgr.Callback() {
             @Override
             public void onSuccess(JSONObject data) {
@@ -230,4 +539,64 @@ public class TCLoginActivity extends Activity {
         }
     }
 
+    public static void updateStatement(final Context context, TextView tVUserProtocol) {
+        final SpannableStringBuilder builder = new SpannableStringBuilder();
+        String protocolStart = context.getString(R.string.login_protocol_start);
+        String privacyProtocol = context.getString(R.string.login_privacy_protocol_detail);
+        String userAgreement = context.getString(R.string.login_user_agreement_detail);
+        String protocolAnd = context.getString(R.string.login_protocol_and);
+        builder.append(protocolStart);
+        builder.append(privacyProtocol);
+        builder.append(protocolAnd);
+        builder.append(userAgreement);
+
+        int privacyStartIndex = protocolStart.length();
+        int privacyEndIndex = privacyStartIndex + privacyProtocol.length();
+        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(context.getResources().getColor(R.color.login_color_blue));
+                ds.setUnderlineText(false);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(context, context.getString(R.string.login_privacy_protocol), "https://privacy.qq.com/document/preview/cd1aaba55e1548c7975ef10fbe9785f7");
+            }
+        };
+        builder.setSpan(privacyClickableSpan, privacyStartIndex, privacyEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        int userAgreementStartIndex = privacyEndIndex + protocolAnd.length();
+        int userAgreementEndIndex = userAgreementStartIndex + userAgreement.length();
+        ClickableSpan userAgreementClickableSpan = new ClickableSpan() {
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(context.getResources().getColor(R.color.login_color_blue));
+                ds.setUnderlineText(false);
+            }
+
+            @Override
+            public void onClick(View widget) {
+                jumpToWebViewActivity(context, context.getString(R.string.login_user_agreement), "https://web.sdk.qcloud.com/document/Tencent-UGSV-User-Agreement.html");
+            }
+        };
+        builder.setSpan(userAgreementClickableSpan, userAgreementStartIndex, userAgreementEndIndex,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        tVUserProtocol.setMovementMethod(LinkMovementMethod.getInstance());
+        tVUserProtocol.setText(builder);
+        tVUserProtocol.setHighlightColor(Color.TRANSPARENT);
+    }
+
+    public static void jumpToWebViewActivity(Context context, String title, String url) {
+        Intent intent = new Intent();
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.setAction("com.tencent.liteav.action.webview");
+        intent.setPackage(context.getPackageName());
+        intent.putExtra("title", title);
+        intent.putExtra("url", url);
+        context.startActivity(intent);
+    }
 }

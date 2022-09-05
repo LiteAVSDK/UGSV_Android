@@ -49,4 +49,5 @@ typedef NS_ENUM(NSUInteger, UGCKitRecordStyle) {
 @interface UGCKitRecordViewController : UIViewController
 - (instancetype)initWithConfig:(UGCKitRecordConfig *)config theme:(UGCKitTheme *)theme;
 @property (nonatomic,copy) void (^completion)(UGCKitResult *result);
+@property (assign, nonatomic) int heightF;
 @end

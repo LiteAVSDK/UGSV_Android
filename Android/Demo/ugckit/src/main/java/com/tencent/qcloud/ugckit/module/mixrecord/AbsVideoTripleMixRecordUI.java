@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
-import com.tencent.liteav.demo.beauty.model.BeautyInfo;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
@@ -22,7 +19,7 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
     private ScrollFilterView      mScrollFilterView;
     private MixRecordRightLayout  mFollowRecordRightLayout;
     private MixRecordBottomLayout mMixRecordBottomLayout;
-    private BeautyPanel           mBeautyPannel;
+    private RelativeLayout        mBeautyPannel;
     private CountDownTimerView    mCountDownTimerView;
 
     public AbsVideoTripleMixRecordUI(Context context) {
@@ -45,12 +42,12 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
         mCountDownTimerView = (CountDownTimerView) findViewById(R.id.countdown_timer_view);
         mFollowRecordRightLayout = (MixRecordRightLayout) findViewById(R.id.record_right_layout);
         mMixRecordBottomLayout = (MixRecordBottomLayout) findViewById(R.id.record_bottom_layout);
-        mBeautyPannel = (BeautyPanel) findViewById(R.id.beauty_pannel);
+        mBeautyPannel = (RelativeLayout) findViewById(R.id.beauty_pannel);
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
-        BeautyInfo defaultBeauty = mBeautyPannel.getDefaultBeautyInfo();
-        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
-        mBeautyPannel.setBeautyInfo(defaultBeauty);
-        mScrollFilterView.setBeautyPannel(mBeautyPannel);
+//        BeautyInfo defaultBeauty = mBeautyPannel.getDefaultBeautyInfo();
+//        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
+//        mBeautyPannel.setBeautyInfo(defaultBeauty);
+//        mScrollFilterView.setBeautyPannel(mBeautyPannel);
 
         mTitleBar.setVisible(true, ITitleBarLayout.POSITION.RIGHT);
         mTitleBar.setTitle(getResources().getString(R.string.ugckit_triple_replace_file), ITitleBarLayout.POSITION.RIGHT);//
@@ -104,7 +101,7 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
     /**
      * 获取"美颜"面板
      */
-    public BeautyPanel getBeautyPanel() {
+    public RelativeLayout getBeautyPanel() {
         return mBeautyPannel;
     }
 

@@ -3,6 +3,10 @@ package com.tencent.qcloud.ugckit;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +14,6 @@ import android.view.View;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfigBuildInfo;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
-import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -37,7 +40,12 @@ import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoInfoReader;
+import com.tencent.xmagic.XMagicImpl;
+import com.tencent.xmagic.module.XmagicResParser;
+import com.tencent.xmagic.panel.XmagicPanelDataManager;
+import com.tencent.xmagic.telicense.TELicenseCheck;
 
+import java.io.File;
 import java.util.List;
 
 public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements IMixRecordRightLayout.OnItemClickListener, RecordButton.OnRecordButtonListener,
@@ -50,6 +58,10 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     private              FragmentActivity     mActivity;
     private              MixRecordJoiner      mJoiner;
     private              MixRecordConfig      mConfig;
+
+
+    private              XMagicImpl              mXMagic;
+    private              XMagicImpl.XmagicState  xmagicState = XMagicImpl.XmagicState.STARTED;
 
     public UGCKitVideoMixRecord(Context context) {
         super(context);
@@ -94,8 +106,52 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             }
         });
 
-        TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
-        getBeautyPanel().setBeautyManager(txugcRecord.getBeautyManager());
+        initBeauty();
+    }
+
+    private void initBeauty() {
+        TXUGCRecord instance = TXUGCRecord.getInstance(UGCKit.getAppContext());
+        instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
+            @Override
+            public int onTextureCustomProcess(int textureId, int width, int height) {
+                if (xmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
+                    return mXMagic.process(textureId, width, height);
+                }
+                return textureId;
+            }
+
+            @Override
+            public void onDetectFacePoints(float[] floats) {
+            }
+
+            @Override
+            public void onTextureDestroyed() {
+                if (Looper.getMainLooper() != Looper.myLooper()) {  //非主线程
+                    boolean stopped = xmagicState == XMagicImpl.XmagicState.STOPPED;
+                    if (stopped || xmagicState == XMagicImpl.XmagicState.DESTROYED) {
+                        if (mXMagic != null) {
+                            mXMagic.onDestroy();
+                        }
+                    }
+                    if (xmagicState == XMagicImpl.XmagicState.DESTROYED) {
+                        if (mXMagic != null) {
+                            mXMagic.onDestroy();
+                            TXUGCRecord.getInstance(UGCKit.getAppContext()).setVideoProcessListener(null);
+                        }
+                    }
+                }
+            }
+        });
+        XMagicImpl.checkAuth(new TELicenseCheck.TELicenseCheckListener() {
+            @Override
+            public void onLicenseCheckFinish(int errorCode, String msg) {
+                if (errorCode == TELicenseCheck.ERROR_OK) {
+                    loadXmagicRes();
+                } else {
+                    Log.e("TAG", "鉴权失败，请检查鉴权url和key" + errorCode + " " + msg);
+                }
+            }
+        });
     }
 
     @Override
@@ -104,11 +160,20 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         VideoRecordSDK.getInstance().startCameraPreview(getPlayViews().getVideoView());
         // 播放跟拍视频
         getPlayViews().startVideo();
+
+        if (xmagicState == XMagicImpl.XmagicState.STOPPED) {
+            initXMagic();
+            xmagicState = XMagicImpl.XmagicState.STARTED;
+        }
     }
 
     @Override
     public void stop() {
         Log.d(TAG, "stop");
+        if (mXMagic != null) {
+            xmagicState = XMagicImpl.XmagicState.STOPPED;
+            mXMagic.onPause();
+        }
         getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
         getFollowRecordBottomLayout().closeTorch();
         // 停止录制预览界面
@@ -121,13 +186,15 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
     @Override
     public void release() {
+        xmagicState = XMagicImpl.XmagicState.DESTROYED;
+        XmagicPanelDataManager.getInstance().clearData();
         getFollowRecordBottomLayout().getRecordProgressView().release();
         // 停止录制
         VideoRecordSDK.getInstance().releaseRecord();
         getPlayViews().releaseVideo();
 
         // 录制TXUGCRecord是单例，需要释放时还原配置
-        getBeautyPanel().clear();
+//        getBeautyPanel().clear();
         AudioFocusManager.getInstance().setAudioFocusListener(null);
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
     }
@@ -137,13 +204,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         MixRecordConfig info = new MixRecordConfig();
         info.setInfo(buildInfo.getVideoPaths(), buildInfo.getRecordIndex(), buildInfo.getWidth(), buildInfo.getHeight(), buildInfo.getRecordRatio());
         mConfig = info;
-        mConfig.mBeautyParams = new BeautyParams();
         mConfig.mIsMute = buildInfo.isMute();
-        // 设置默认美颜
-        mConfig.mBeautyParams.mBeautyStyle = 0;
-        mConfig.mBeautyParams.mBeautyLevel = 4;
-        mConfig.mBeautyParams.mWhiteLevel = 1;
-        mConfig.mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_FULL_FILL_SCREEN;
         mConfig.mAECType = buildInfo.getAecType();
 
         List<String> paths = mConfig.getPaths();
@@ -154,7 +215,6 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         getFollowRecordBottomLayout().setDuration(mConfig.mMinDuration, mConfig.mMaxDuration);
         // 初始化默认配置
         VideoRecordSDK.getInstance().initConfig(mConfig);
-        VideoRecordSDK.getInstance().updateBeautyParam(mConfig.mBeautyParams);
     }
 
     @Override
@@ -273,6 +333,9 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         getFollowRecordRightLayout().setVisibility(View.GONE);
         // 显示美颜Pannel
         getBeautyPanel().setVisibility(View.VISIBLE);
+        if (mXMagic != null) {
+            mXMagic.setBeautyStateOpen();
+        }
     }
 
     @Override
@@ -445,6 +508,52 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     @Override
     public void setEditVideoFlag(boolean enable) {
         mConfig.mIsNeedEdit = enable;
+    }
+
+
+
+
+
+    private void loadXmagicRes() {
+        if (XMagicImpl.isLoadedRes) {
+            XmagicResParser.parseRes(mActivity.getApplicationContext());
+            initXMagic();
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                XmagicResParser.copyRes(mActivity.getApplicationContext());
+                XmagicResParser.parseRes(mActivity.getApplicationContext());
+                XMagicImpl.isLoadedRes = true;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        initXMagic();
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+    /**
+     * 初始化美颜SDK
+     */
+
+    private void initXMagic() {
+        if (mXMagic == null) {
+            mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
+        } else {
+            mXMagic.onResume();
+        }
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mXMagic != null && data != null) {
+            mXMagic.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

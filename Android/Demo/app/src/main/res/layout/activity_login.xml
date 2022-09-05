@@ -92,6 +92,38 @@
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RelativeLayout
+                android:layout_below="@id/til_password"
+                android:id="@+id/protocol_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/checkbox_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:paddingTop="13dp"
+                    android:paddingEnd="5dp"
+                    android:paddingRight="5dp">
+
+                    <CheckBox
+                        android:id="@+id/cb_protocol"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@drawable/login_check_box_selector"
+                        android:button="@null" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_toRightOf="@id/checkbox_group"
+                    android:id="@+id/tv_protocol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/login_main_text"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
@@ -100,7 +132,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignRight="@+id/til_password"
-                android:layout_below="@+id/til_password"
+                android:layout_below="@+id/protocol_layout"
                 android:layout_marginBottom="6dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"

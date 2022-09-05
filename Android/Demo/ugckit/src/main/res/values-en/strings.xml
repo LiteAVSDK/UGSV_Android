@@ -433,4 +433,19 @@
     <string name="trans_squeeze">Squeeze</string>
     <string name="trans_swap">Swap</string>
     <string name="trans_invalid_timestamp">invalid transition timestamp,please set again</string>
+    <string name="permission_introduction_title">Description of storage permission application</string>
+    <string name="permission_introduction_positive">allow authorization</string>
+    <string name="permission_introduction_write">Used to store SDK configuration files, log files and media files, read local media files</string>
+    <string name="permission_introduction_camera">Used to capture camera images, take photos and record videos</string>
+    <string name="permission_introduction_audio">Used to collect user voice and record voice</string>
+    <string name="permission_introduction_write_title">storage permission</string>
+    <string name="permission_introduction_camera_title">camera permission</string>
+    <string name="permission_introduction_audio_title">Microphone permissions</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="app_personal_information_collection">Personal Information Collection Instructions</string>
+    <string name="beauty_cam_introduction">When you use the beauty function, we will perform real-time intelligent recognition on your facial pixel information captured in real time, and collect your facial pixel information in real time during the beautification process to provide you with better beauty effects. We will not Store or associate your facial pixel information in any form. This information is sensitive personal information, please provide it with caution. If you do not authorize, you will not be able to use this function; you can also disable this function by turning off Beauty at any time.</string>
+    <string name="btn_forbit">Forbit</string>
+    <string name="permission_always_allow">Always Allow</string>
+    <string name="need_storage_permission">Need Storage Permission</string>
+
 </resources>

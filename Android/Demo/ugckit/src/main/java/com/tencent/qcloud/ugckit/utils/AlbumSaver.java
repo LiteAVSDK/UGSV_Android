@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
@@ -19,6 +21,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 用于将视频保存到本地相册
@@ -26,7 +30,7 @@ import java.io.IOException;
 public class AlbumSaver {
 
     private static final String TAG                     = "AlbumSaver";
-    public static final  String VOLUME_EXTERNAL_PRIMARY = "external_primary";
+    public  static final String VOLUME_EXTERNAL_PRIMARY = "external_primary";
     private static final String IS_PENDING              = "is_pending";
 
     private static AlbumSaver      sInstance;
@@ -35,6 +39,7 @@ public class AlbumSaver {
     private        long            mVideoDuration;
     private        String          mVideoOutputPath;
     private        String          mCoverImagePath;
+    private        ExecutorService mExecutorService;
 
     public static AlbumSaver getInstance(@NonNull Context context) {
         if (sInstance == null) {
@@ -45,6 +50,7 @@ public class AlbumSaver {
 
     private AlbumSaver(@NonNull Context context) {
         mContext = context.getApplicationContext();
+        mExecutorService = Executors.newFixedThreadPool(7);
         mContentResolver = context.getApplicationContext().getContentResolver();
     }
 
@@ -62,17 +68,38 @@ public class AlbumSaver {
     }
 
     /**
-     * 插入到本地相册
+     * 异步插入到本地相册
      */
-    public void saveVideoToDCIM() {
+    public void saveVideoToDCIMAsync(final OnSaveVideoToDCIMListener listener) {
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+               if (saveVideoToDCIM()) {
+                   if (listener != null) {
+                       listener.onSavedSuccess();
+                   }
+               } else {
+                   if (listener != null) {
+                       listener.onSavedFailed();
+                   }
+               }
+            }
+        });
+    }
+
+    /**
+     * 同步插入到本地相册
+     */
+    public boolean saveVideoToDCIM() {
         if (Build.VERSION.SDK_INT >= 29) {
-            saveVideoToDCIMOnAndroid10();
+            return saveVideoToDCIMOnAndroid10();
         } else {
-            saveVideoToDCIMBelowAndroid10();
+            return saveVideoToDCIMBelowAndroid10();
         }
     }
 
-    private void saveVideoToDCIMBelowAndroid10() {
+
+    private boolean saveVideoToDCIMBelowAndroid10() {
         File file = new File(mVideoOutputPath);
         if (file.exists()) {
             try {
@@ -86,18 +113,21 @@ public class AlbumSaver {
                     insertVideoThumb(file.getPath(), mCoverImagePath);
                 }
                 ToastUtil.toastShortMessage("视频已保存到手机相册");
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
         } else {
             Log.d(TAG, "file :" + mVideoOutputPath + " is not exists");
+            return false;
         }
     }
 
     /**
      * Android 10(Q) 保存视频文件到本地的方法
      */
-    private void saveVideoToDCIMOnAndroid10() {
+    private boolean saveVideoToDCIMOnAndroid10() {
         File file = new File(mVideoOutputPath);
         if (file.exists()) {
             ContentValues values = new ContentValues();
@@ -161,8 +191,10 @@ public class AlbumSaver {
             UGCKit.getAppContext().getContentResolver().update(item, values, null, null);
 
             ToastUtil.toastShortMessage("视频已保存到手机相册");
+            return true;
         } else {
             Log.d(TAG, "file :" + mVideoOutputPath + " is not exists");
+            return false;
         }
     }
 
@@ -216,5 +248,16 @@ public class AlbumSaver {
             }
             cursor.close();
         }
+    }
+
+    public void release() {
+        sInstance = null;
+        mExecutorService.shutdown();
+    }
+
+    public interface OnSaveVideoToDCIMListener {
+        void onSavedSuccess();
+
+        void onSavedFailed();
     }
 }

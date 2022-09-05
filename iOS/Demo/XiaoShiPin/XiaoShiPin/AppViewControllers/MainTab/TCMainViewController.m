@@ -158,7 +158,12 @@ typedef NS_ENUM(NSInteger, TCVideoAction) {
     [self addChildViewController:accountInfoViewController imageName:@"User_normal" selectedImageName:@"User_click" title:nil];
     
     self.delegate = self; // this make tabBaController call
-    [self setSelectedIndex:0];
+
+    if([TCLoginParam shareInstance].isExpired){
+        [self setSelectedIndex:2];
+    }else{
+        [self setSelectedIndex:0];
+    }
 }
 
 - (void) initBottomView

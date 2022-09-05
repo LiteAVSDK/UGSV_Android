@@ -14,6 +14,8 @@
 #import "TCUtil.h"
 #import <Bugly/Bugly.h>
 #import "SDKHeader.h"
+#import <XMagic/TELicenseCheck.h>
+
 @interface AppDelegate ()
 
 @end
@@ -37,6 +39,14 @@
 //    [Bugly startWithAppId:@"6efe67cbad" config:config];
 
     [TXUGCBase setLicenceURL:@"" key:@""];
+    [TELicenseCheck setTELicense:@"" key:@"" completion:^(NSInteger authresult, NSString * _Nonnull errorMsg) {
+               if (authresult == TELicenseCheckOk) {
+                    NSLog(@"鉴权成功");
+                } else {
+                    NSLog(@"鉴权失败");
+                }
+        }];
+
     [TXLiveBase setLogLevel:LOGLEVEL_VERBOSE];
     [UGCKitReporter registerReporter:[TCUtil class]];
     TCMainViewController *mainController = [[TCMainViewController alloc] init];

@@ -2,8 +2,10 @@ package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -29,12 +31,12 @@ import okhttp3.Response;
  */
 public class TCUserMgr {
 
-    public static final String  TAG          = "TCUserMgr";
-    public static final int     SUCCESS_CODE = 200;
-    private             String  mAppId       = "";
-    private             String  mSubAppId    = "";
-    private             String  mSecretId    = "";
-    private             boolean userid;
+    public static final String TAG = "TCUserMgr";
+    public static final int SUCCESS_CODE = 200;
+    private String mAppId = "";
+    private String mSubAppId = "";
+    private String mSecretId = "";
+    private boolean userid;
 
     private TCUserMgr() {
         mHttpClient = new OkHttpClient().newBuilder()
@@ -55,30 +57,30 @@ public class TCUserMgr {
     }
 
     private OkHttpClient mHttpClient;
-    private Context      mContext;
+    private Context mContext;
     @Nullable
-    private String       mUserId       = "";
+    private String mUserId = "";
     @Nullable
-    private String       mUserPwd      = "";
-    private String       mToken        = "";
-    private String       mRefreshToken = "";
-    private int          mTokenExpires = 0;
-    private long         mSdkAppID     = 0;
-    private String       mUserSig      = "";
-    private String       mAccountType;
-    private String       mNickName     = "";
-    private String       mUserAvatar   = "";
-    private int          mSex          = -1;//0:male,1:female,-1:unknown
-    private String       mCoverPic;
-    private String       mLocation;
+    private String mUserPwd = "";
+    private String mToken = "";
+    private String mRefreshToken = "";
+    private int mTokenExpires = 0;
+    private long mSdkAppID = 0;
+    private String mUserSig = "";
+    private String mAccountType;
+    private String mNickName = "";
+    private String mUserAvatar = "";
+    private int mSex = -1;//0:male,1:female,-1:unknown
+    private String mCoverPic;
+    private String mLocation;
 
 
     //cos 配置
     public static class CosInfo {
-        public String bucket   = "";
-        public String appID    = "";
+        public String bucket = "";
+        public String appID = "";
         public String secretID = "";
-        public String region   = "";
+        public String region = "";
     }
 
     @NonNull
@@ -108,7 +110,7 @@ public class TCUserMgr {
 
     public static class HttpCallback implements okhttp3.Callback {
         private Callback callback;
-        private String   module;
+        private String module;
 
         public HttpCallback(String module, Callback callback) {
             this.callback = callback;
@@ -241,6 +243,31 @@ public class TCUserMgr {
         mUserAvatar = "";
         mLocation = "";
         clearUserInfo();
+    }
+
+    public void logOff(@NonNull final Callback callback) {
+        try {
+            JSONObject body = new JSONObject()
+                    .put("userid", mUserId);
+            request("/cancellation", body, new HttpCallback("cancellation", new Callback() {
+                @Override
+                public void onSuccess(JSONObject data) {
+                    if (callback != null) {
+                        mUserId = "";
+                        callback.onSuccess(data);
+                    }
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+                    if (callback != null) {
+                        callback.onFailure(code, msg);
+                    }
+                }
+            }));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void refresh(@Nullable final Callback callback) {

@@ -1,15 +1,12 @@
 package com.tencent.qcloud.ugckit;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import android.util.AttributeSet;
 
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
@@ -24,10 +21,10 @@ import java.util.ArrayList;
 /**
  * Module：视频选择
  */
-public class UGCKitVideoPicker extends AbsPickerUI implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class UGCKitVideoPicker extends AbsPickerUI {
     private Activity mActivity;
     @NonNull
-    private Handler  mHandlder = new Handler();
+    private Handler mHandlder = new Handler();
 
     public UGCKitVideoPicker(Context context) {
         super(context);
@@ -56,25 +53,17 @@ public class UGCKitVideoPicker extends AbsPickerUI implements ActivityCompat.OnR
                 getPickedLayout().addItem(fileInfo);
             }
         });
-        // 加载视频
-        loadVideoList();
     }
 
-    private void loadVideoList() {
+    public void loadVideoList() {
         mActivity = (Activity) getContext();
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            mHandlder.post(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<TCVideoFileInfo> list = PickerManagerKit.getInstance(mActivity).getAllVideo();
-                    getPickerListLayout().updateItems(list);
-                }
-            });
-        } else {
-            if (Build.VERSION.SDK_INT >= 23) {
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        mHandlder.post(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<TCVideoFileInfo> list = PickerManagerKit.getInstance(mActivity).getAllVideo();
+                getPickerListLayout().updateItems(list);
             }
-        }
+        });
     }
 
     /**
@@ -91,13 +80,6 @@ public class UGCKitVideoPicker extends AbsPickerUI implements ActivityCompat.OnR
     @Override
     public void resumeRequestBitmap() {
         getPickerListLayout().resumeRequestBitmap();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            loadVideoList();
-        }
     }
 
     @Override

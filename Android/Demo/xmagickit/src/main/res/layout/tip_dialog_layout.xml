@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tip_dialog_bg_shape">
+
+    <TextView
+        android:id="@+id/tip_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/color_E6000000"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tip_dialog_msg_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:minHeight="80dp"
+        android:textColor="@color/color_4d000000"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/tip_dialog_title" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_cccccc"
+        app:layout_constraintTop_toBottomOf="@+id/tip_dialog_msg_tv" />
+
+    <View
+        android:id="@+id/tip_dialog_line"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/color_cccccc"
+        app:layout_constraintBottom_toBottomOf="@+id/tip_dialog_left_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tip_dialog_msg_tv" />
+
+    <Button
+        android:id="@+id/tip_dialog_left_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/color_E6000000"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/tip_dialog_line"
+        app:layout_constraintTop_toBottomOf="@+id/tip_dialog_msg_tv" />
+
+    <Button
+        android:id="@+id/tip_dialog_right_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:textColor="@color/color_f14257"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="@id/tip_dialog_line"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tip_dialog_left_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

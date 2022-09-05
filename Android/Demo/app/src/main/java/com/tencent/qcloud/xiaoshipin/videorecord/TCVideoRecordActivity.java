@@ -6,14 +6,17 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.xiaoshipin.manager.PermissionManager;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -24,16 +27,21 @@ import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 import com.tencent.qcloud.ugckit.UGCKitVideoRecord;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_AUDIO;
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_CAMERA;
 
 /**
  * 小视频录制界面
- *
  */
-public class TCVideoRecordActivity extends FragmentActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class TCVideoRecordActivity extends FragmentActivity
+        implements ActivityCompat.OnRequestPermissionsResultCallback,
+        PermissionManager.OnCameraPermissionGrantedListener {
 
     private UGCKitVideoRecord mUGCKitVideoRecord;
+
+    private PermissionManager mAudioPermissionManager;
+
+    private PermissionManager mCameraPermissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,7 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
         setContentView(R.layout.activity_video_record);
 
         mUGCKitVideoRecord = (UGCKitVideoRecord) findViewById(R.id.video_record_layout);
+
 
         UGCKitRecordConfig ugcKitRecordConfig = UGCKitRecordConfig.getInstance();
         mUGCKitVideoRecord.setConfig(ugcKitRecordConfig);
@@ -80,7 +89,14 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
                 startActivityForResult(bgmIntent, UGCKitConstants.ACTIVITY_MUSIC_REQUEST_CODE);
             }
         });
+        mAudioPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.AUDIO);
+        mCameraPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.CAMERA);
+
+
+        mCameraPermissionManager.setOnCameraPermissionGrantedListener(this);
+        mCameraPermissionManager.checkoutIfShowPermissionIntroductionDialog();
     }
+
 
     private void initWindowParam() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
@@ -98,26 +114,14 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
     @Override
     protected void onStart() {
         super.onStart();
-        if (hasPermission()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PackageManager.PERMISSION_GRANTED == ActivityCompat
+                    .checkSelfPermission(this, Manifest.permission.CAMERA)) {
+                mUGCKitVideoRecord.start();
+            }
+        } else {
             mUGCKitVideoRecord.start();
         }
-    }
-
-    private boolean hasPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            List<String> permissions = new ArrayList<>();
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
-                permissions.add(Manifest.permission.CAMERA);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
-                permissions.add(Manifest.permission.RECORD_AUDIO);
-            }
-            if (permissions.size() != 0) {
-                ActivityCompat.requestPermissions(this, permissions.toArray(new String[0]), 100);
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -140,6 +144,8 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mUGCKitVideoRecord.onActivityResult(requestCode,resultCode,data);
         if (requestCode != UGCKitConstants.ACTIVITY_MUSIC_REQUEST_CODE) {
             return;
         }
@@ -161,9 +167,20 @@ public class TCVideoRecordActivity extends FragmentActivity implements ActivityC
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            mUGCKitVideoRecord.start();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (grantResults != null) {
+            if (requestCode == REQUEST_CODE_CAMERA) {
+                mCameraPermissionManager.onRequestPermissionsResult(requestCode, grantResults);
+            } else if (requestCode == REQUEST_CODE_AUDIO) {
+                mAudioPermissionManager.onRequestPermissionsResult(requestCode,grantResults);
+            }
         }
+    }
+
+    @Override
+    public void onCameraPermissionGranted() {
+        mUGCKitVideoRecord.start();
+        mAudioPermissionManager.checkoutIfShowPermissionIntroductionDialog();
     }
 }

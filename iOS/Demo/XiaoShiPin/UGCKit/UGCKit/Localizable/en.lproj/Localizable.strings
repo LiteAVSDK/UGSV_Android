@@ -20,6 +20,10 @@
 "UGCKit.Common.Close" = "Close";
 "UGCKit.Common.Clear" = "Clear";
 "UGCKit.Common.Choose" = "Choose";
+"UGCKit.Common.openBeautyTitle" = "Personal Information Collection Instructions";
+"UGCKit.Common.openBeautyMsg" = "When you use the beauty function, we will perform real-time intelligent recognition on your facial pixel information captured in real time, and collect your facial pixel information in real time during the beautification process to provide you with better beauty effects. We will not Store or associate your facial pixel information in any form. This information is sensitive personal information, please provide it with caution. If you do not authorize, you will not be able to use this function; you can also disable this function by turning off Beauty at any time.";
+"UGCKit.Common.openBeautyForbidden" = "prohibit";
+"UGCKit.Common.openBeautyAllow" = "always allow";
 "UGCKit.Media.VideoSynthesizing" = "Processing…";
 "UGCKit.Media.HintVideoSynthesizeFailed" = "Unable to create";
 "TC.Common.Clear" = "Clear";

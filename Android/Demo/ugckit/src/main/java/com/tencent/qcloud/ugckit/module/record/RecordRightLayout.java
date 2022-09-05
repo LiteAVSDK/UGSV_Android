@@ -3,6 +3,8 @@ package com.tencent.qcloud.ugckit.module.record;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,12 +12,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.tencent.qcloud.ugckit.PermissionIntroductionDialog;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordRightLayout;
+import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 
 public class RecordRightLayout extends RelativeLayout implements IRecordRightLayout,
-        View.OnClickListener, AspectView.OnAspectListener {
+        View.OnClickListener, AspectView.OnAspectListener, PermissionIntroductionDialog.PositiveClickListener {
     private static final String TAG = "RecordRightLayout";
+    private static final String DIALOG_NAME = "PermissionIntroductionDialog";
+    private static final String SHARED_PREFERENCE_FILE_NAME_PERMISSION = "permission";
+    private static final String SHARED_PREFERENCE_KEY_BEAUTY = "beauty";
+
 
     private Activity            mActivity;
     private ImageView           mImageMusic;        // 音乐
@@ -31,6 +39,8 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
     private ImageView           mImageSoundEffectMask;
     private RelativeLayout      mLayoutSoundEffect;
     private OnItemClickListener mOnItemClickListener;
+    private PermissionIntroductionDialog mPermissionIntroductionDialog;
+    private SharedPreferenceUtils sharedPreferenceUtils;
 
     public RecordRightLayout(Context context) {
         super(context);
@@ -49,6 +59,12 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
 
     private void initViews() {
         mActivity = (Activity) getContext();
+        mPermissionIntroductionDialog = new PermissionIntroductionDialog(getContext()
+                .getString(R.string.app_personal_information_collection),
+                getContext().getString(R.string.beauty_cam_introduction),
+                PermissionIntroductionDialog.DialogPosition.BOTTOM);
+        sharedPreferenceUtils = new SharedPreferenceUtils(getContext(), SHARED_PREFERENCE_FILE_NAME_PERMISSION);
+        mPermissionIntroductionDialog.setPositiveClickListener(this);
         inflate(mActivity, R.layout.ugckit_record_right_layout, this);
 
         mLayoutMusic = (RelativeLayout) findViewById(R.id.layout_music);
@@ -76,12 +92,23 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
     public void onClick(@NonNull View view) {
         int id = view.getId();
         if (id == R.id.iv_beauty) {
-            mOnItemClickListener.onShowBeautyPanel();
+            if (!(Boolean) sharedPreferenceUtils.getSharedPreference(SHARED_PREFERENCE_KEY_BEAUTY,false)) {
+                FragmentActivity temp = (FragmentActivity) getContext();
+                mPermissionIntroductionDialog.show(temp.getSupportFragmentManager(), DIALOG_NAME);
+            } else {
+                mOnItemClickListener.onShowBeautyPanel();
+            }
         } else if (id == R.id.iv_music) {
             mOnItemClickListener.onShowMusicPanel();
         } else if (id == R.id.iv_sound_effect) {
             mOnItemClickListener.onShowSoundEffectPanel();
         }
+    }
+
+    @Override
+    public void onClickPositive() {
+        mOnItemClickListener.onShowBeautyPanel();
+        sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_BEAUTY,true);
     }
 
     /**

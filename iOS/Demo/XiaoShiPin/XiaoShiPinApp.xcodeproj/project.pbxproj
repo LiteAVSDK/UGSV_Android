@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1726EFBE2769DD4300C8E597 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 453DE2BF2379458C0083E759 /* Assets.xcassets */; };
-		260B1EDB6C55A0F80B90DDBD /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A8E65936623F0FDD441EB7 /* TXLiteAVSDK_UGC.framework */; };
+		2E5E70A9346E3B3A45FF25BB /* TXLiteAVSDK_UGC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB266C9BB3B82849BFEABF0D /* TXLiteAVSDK_UGC.framework */; };
+		400443612837B52E00DAA0DE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		400443652837B61F00DAA0DE /* TXFFmpeg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */; };
 		400443662837B61F00DAA0DE /* TXFFmpeg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		400443692837B62600DAA0DE /* TXSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400443682837B62600DAA0DE /* TXSoundTouch.xcframework */; };
@@ -25,6 +26,7 @@
 		4005887F25FBA72E00C518CC /* poseest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887325FBA72E00C518CC /* poseest.bundle */; };
 		4005888025FBA72E00C518CC /* FilterEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887425FBA72E00C518CC /* FilterEngine.bundle */; };
 		4005888125FBA72E00C518CC /* ufa.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4005887525FBA72E00C518CC /* ufa.bundle */; };
+		409A4488286C3630004033CB /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409A4487286C3630004033CB /* ReplayKit.framework */; };
 		40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A37344246A3916004E3FC7 /* Bugly.framework */; };
 		40E96180283BB09D00D4C80F /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E9617F283BB09D00D4C80F /* GLKit.framework */; };
 		40E96184283BB0E800D4C80F /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40E96183283BB0E800D4C80F /* MetalKit.framework */; };
@@ -85,8 +87,12 @@
 		45D52F74238D6998006F71FA /* PhotoUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D52F71238D6998006F71FA /* PhotoUtil.m */; };
 		45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D56F8A238E60FD008DA052 /* UGCKitWrapper.m */; };
 		45E8294B2384EB7800702418 /* TCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E8294A2384EB7800702418 /* TCNavigationController.m */; };
+		6E650EE327D6F5A900D37497 /* TCAvatarListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E650EE227D6F5A900D37497 /* TCAvatarListCell.m */; };
+		6E650F2127DA15FE00D37497 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E650F2027DA15FE00D37497 /* AboutViewController.m */; };
+		6E650F2427DB379100D37497 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E650F2327DB379100D37497 /* DetailViewController.m */; };
+		6E650F2927DB490100D37497 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E650F2827DB490100D37497 /* SettingViewController.m */; };
+		6E650F2C27DB4F1500D37497 /* DeleteAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E650F2B27DB4F1500D37497 /* DeleteAccountViewController.m */; };
 		BC42E64A1F750919B895C9AF /* Pods_XiaoShiPinApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C5E080F5371855F071110B /* Pods_XiaoShiPinApp.framework */; };
-		F507085B284646050093256C /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F507085A284646050093256C /* ReplayKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -105,7 +111,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		12A8E65936623F0FDD441EB7 /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 		400443642837B61E00DAA0DE /* TXFFmpeg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXFFmpeg.xcframework; path = ../../SDK/TXFFmpeg.xcframework; sourceTree = "<group>"; };
 		400443682837B62600DAA0DE /* TXSoundTouch.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXSoundTouch.xcframework; path = ../../SDK/TXSoundTouch.xcframework; sourceTree = "<group>"; };
 		4005886A25FBA72E00C518CC /* YTHandDetector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = YTHandDetector.bundle; sourceTree = "<group>"; };
@@ -120,6 +125,7 @@
 		4005887325FBA72E00C518CC /* poseest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = poseest.bundle; sourceTree = "<group>"; };
 		4005887425FBA72E00C518CC /* FilterEngine.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterEngine.bundle; sourceTree = "<group>"; };
 		4005887525FBA72E00C518CC /* ufa.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ufa.bundle; sourceTree = "<group>"; };
+		409A4487286C3630004033CB /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		40A37344246A3916004E3FC7 /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bugly.framework; path = XiaoShiPin/Frameworks/Bugly.framework; sourceTree = "<group>"; };
 		40E9617F283BB09D00D4C80F /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		40E96181283BB0A400D4C80F /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -237,10 +243,20 @@
 		45E829492384EB7800702418 /* TCNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCNavigationController.h; sourceTree = "<group>"; };
 		45E8294A2384EB7800702418 /* TCNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCNavigationController.m; sourceTree = "<group>"; };
 		64C5E080F5371855F071110B /* Pods_XiaoShiPinApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XiaoShiPinApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E650EE127D6F5A900D37497 /* TCAvatarListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCAvatarListCell.h; sourceTree = "<group>"; };
+		6E650EE227D6F5A900D37497 /* TCAvatarListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCAvatarListCell.m; sourceTree = "<group>"; };
+		6E650F1F27DA15FE00D37497 /* AboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		6E650F2027DA15FE00D37497 /* AboutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		6E650F2227DB379100D37497 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		6E650F2327DB379100D37497 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		6E650F2727DB490100D37497 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		6E650F2827DB490100D37497 /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		6E650F2A27DB4F1500D37497 /* DeleteAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeleteAccountViewController.h; sourceTree = "<group>"; };
+		6E650F2B27DB4F1500D37497 /* DeleteAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeleteAccountViewController.m; sourceTree = "<group>"; };
 		7216AF6672BE96A755F9A006 /* Pods-XiaoShiPinApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XiaoShiPinApp.release.xcconfig"; path = "Target Support Files/Pods-XiaoShiPinApp/Pods-XiaoShiPinApp.release.xcconfig"; sourceTree = "<group>"; };
 		8C0241A1CF41E8DFFB38B885 /* Pods-XiaoShiPinApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XiaoShiPinApp.debug.xcconfig"; path = "Target Support Files/Pods-XiaoShiPinApp/Pods-XiaoShiPinApp.debug.xcconfig"; sourceTree = "<group>"; };
 		CA1752BBB634FB42BC710760 /* Pods-XiaoShiPinApp.dailybuild.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XiaoShiPinApp.dailybuild.xcconfig"; path = "Target Support Files/Pods-XiaoShiPinApp/Pods-XiaoShiPinApp.dailybuild.xcconfig"; sourceTree = "<group>"; };
-		F507085A284646050093256C /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
+		CB266C9BB3B82849BFEABF0D /* TXLiteAVSDK_UGC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_UGC.framework; path = ../../SDK/TXLiteAVSDK_UGC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,7 +264,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F507085B284646050093256C /* ReplayKit.framework in Frameworks */,
+				409A4488286C3630004033CB /* ReplayKit.framework in Frameworks */,
 				400443652837B61F00DAA0DE /* TXFFmpeg.xcframework in Frameworks */,
 				40A37345246A3916004E3FC7 /* Bugly.framework in Frameworks */,
 				40E96184283BB0E800D4C80F /* MetalKit.framework in Frameworks */,
@@ -264,7 +280,7 @@
 				40F4D6882473EC9800847F5B /* libmtasdk.a in Frameworks */,
 				BC42E64A1F750919B895C9AF /* Pods_XiaoShiPinApp.framework in Frameworks */,
 				40E96186283BB38800D4C80F /* CoreServices.framework in Frameworks */,
-				260B1EDB6C55A0F80B90DDBD /* TXLiteAVSDK_UGC.framework in Frameworks */,
+				2E5E70A9346E3B3A45FF25BB /* TXLiteAVSDK_UGC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,7 +419,7 @@
 		453DE42323795B620083E759 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F507085A284646050093256C /* ReplayKit.framework */,
+				409A4487286C3630004033CB /* ReplayKit.framework */,
 				40E96185283BB38800D4C80F /* CoreServices.framework */,
 				40E96183283BB0E800D4C80F /* MetalKit.framework */,
 				40E96181283BB0A400D4C80F /* Metal.framework */,
@@ -417,7 +433,7 @@
 				455AAEEC237ABBAE00AF4A3C /* libresolv.tbd */,
 				455AAEEA237ABBAA00AF4A3C /* libc++.tbd */,
 				64C5E080F5371855F071110B /* Pods_XiaoShiPinApp.framework */,
-				12A8E65936623F0FDD441EB7 /* TXLiteAVSDK_UGC.framework */,
+				CB266C9BB3B82849BFEABF0D /* TXLiteAVSDK_UGC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -458,6 +474,16 @@
 				454616B023797BD3009CDF83 /* TCAccountInfoViewController.m */,
 				454616AC23797BC8009CDF83 /* TCEditUserInfoViewController.h */,
 				454616AB23797BC8009CDF83 /* TCEditUserInfoViewController.m */,
+				6E650EE127D6F5A900D37497 /* TCAvatarListCell.h */,
+				6E650EE227D6F5A900D37497 /* TCAvatarListCell.m */,
+				6E650F1F27DA15FE00D37497 /* AboutViewController.h */,
+				6E650F2027DA15FE00D37497 /* AboutViewController.m */,
+				6E650F2227DB379100D37497 /* DetailViewController.h */,
+				6E650F2327DB379100D37497 /* DetailViewController.m */,
+				6E650F2727DB490100D37497 /* SettingViewController.h */,
+				6E650F2827DB490100D37497 /* SettingViewController.m */,
+				6E650F2A27DB4F1500D37497 /* DeleteAccountViewController.h */,
+				6E650F2B27DB4F1500D37497 /* DeleteAccountViewController.m */,
 			);
 			path = AccountInfo;
 			sourceTree = "<group>";
@@ -770,6 +796,7 @@
 				40F4D6852473EC9800847F5B /* TVCReport.m in Sources */,
 				40F4D6822473EC9800847F5B /* TVCUtils.m in Sources */,
 				454616B323797BD3009CDF83 /* TCAccountInfoViewController.m in Sources */,
+				6E650F2927DB490100D37497 /* SettingViewController.m in Sources */,
 				40F4D6832473EC9800847F5B /* TXUGCPublish.m in Sources */,
 				454616DB23797D82009CDF83 /* TCLog.m in Sources */,
 				454616E723797DCE009CDF83 /* TCLoginModel.m in Sources */,
@@ -777,11 +804,13 @@
 				45C56BD0237A986F009BDB9F /* UIView+Additions.m in Sources */,
 				453DE2B52379458A0083E759 /* AppDelegate.m in Sources */,
 				454616E023797DB2009CDF83 /* TCUserInfoModel.m in Sources */,
+				6E650EE327D6F5A900D37497 /* TCAvatarListCell.m in Sources */,
 				45D52F74238D6998006F71FA /* PhotoUtil.m in Sources */,
 				454616A923797B9F009CDF83 /* TCMainViewController.m in Sources */,
 				455AAEDB237AB69600AF4A3C /* QCloudAuthentationHeadV5Creator.m in Sources */,
 				45D56F8B238E60FD008DA052 /* UGCKitWrapper.m in Sources */,
 				454616D823797D77009CDF83 /* TCUtil.m in Sources */,
+				6E650F2427DB379100D37497 /* DetailViewController.m in Sources */,
 				45C56C51237A9F2E009BDB9F /* TCPlayDecorateView.m in Sources */,
 				453DE2C62379458C0083E759 /* main.m in Sources */,
 				45C56C6B237AA12E009BDB9F /* TCVideoEditPrevViewController.m in Sources */,
@@ -793,6 +822,8 @@
 				40F4D6842473EC9800847F5B /* TXUGCPublishUtil.m in Sources */,
 				454616F923797E50009CDF83 /* HUDHelper.m in Sources */,
 				45C56C30237A9BE5009BDB9F /* NSData+Common.m in Sources */,
+				6E650F2127DA15FE00D37497 /* AboutViewController.m in Sources */,
+				6E650F2C27DB4F1500D37497 /* DeleteAccountViewController.m in Sources */,
 				40F4D68D2473EC9800847F5B /* TVCClientInner.m in Sources */,
 				45C56C72237AA1E5009BDB9F /* TCVideoPublishController.m in Sources */,
 				454616EF23797DEA009CDF83 /* TXWechatInfoView.m in Sources */,
@@ -971,11 +1002,13 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 2ZNSKQLPTK;
+				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -992,6 +1025,7 @@
 					"$(SRCROOT)/XiaoShiPin/Dependencies",
 					"$(inherited)",
 					"$(SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers",
+					"$(SRCROOT)/../../SDK/TXLiteAVSDK_UGC.framework/Headers",
 				);
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1007,9 +1041,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yunxiao.dev.liteavdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Yunxiao Develop Profile";
+				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1021,6 +1055,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -1042,6 +1078,7 @@
 					"$(SRCROOT)/XiaoShiPin/Dependencies",
 					"$(inherited)",
 					"$(SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers",
+					"$(SRCROOT)/../../SDK/TXLiteAVSDK_UGC.framework/Headers",
 				);
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1124,11 +1161,13 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 2ZNSKQLPTK;
+				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1145,6 +1184,7 @@
 					"$(SRCROOT)/XiaoShiPin/Dependencies",
 					"$(inherited)",
 					"$(SRCROOT)/../../SDK/TXLiteAVSDK_Professional.framework/Headers",
+					"$(SRCROOT)/../../SDK/TXLiteAVSDK_UGC.framework/Headers",
 				);
 				INFOPLIST_FILE = XiaoShiPin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1160,9 +1200,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yunxiao.dev.liteavdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.fx.xiaoshipin.db;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Yunxiao Develop Profile";
+				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = DailyBuild;
