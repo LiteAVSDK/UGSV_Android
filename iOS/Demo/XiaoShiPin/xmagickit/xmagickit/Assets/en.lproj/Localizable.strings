@@ -1,0 +1,177 @@
+/*
+  Localizable.strings
+  BeautyDemo
+
+  Created by tao yue on 2022/3/8.
+  
+*/
+"main_ac_title" = "Tencent Effects Demo";
+"select_pixel_label" = "select pixel";
+"beauty_img_txt" = "Image Beauty";
+"beauty_preview_txt" = "Live preview";
+"use_rear_camera" = "use rear camera";
+
+"xmagic_pannel_tab1" = "Beauty";
+"xmagic_pannel_tab2" = "Body";
+"xmagic_pannel_tab3" = "Lut";
+"xmagic_pannel_tab4" = "Motion";
+"xmagic_pannel_tab5" = "Makeup";
+"xmagic_pannel_tab6" = "Segmentation";
+
+"revert_btn_txt" = "revert";
+"pannel_close_btn_txt" = "put away";
+"pannel_expand_btn_txt" = "expand";
+"strength" = "strength";
+"revert_tip_title" = "Are you sure you want to reset";
+"revert_tip_msg" = "\n Reset will restore all current effects to default, irreversible";
+"revert_tip_dialog_left_btn" = "cancel";
+"revert_tip_dialog_right_btn" = "confirm";
+"pannel_beauty_switch_open_txt" = "open beauty";
+"pannel_beauty_switch_close_txt" = "close beauty";
+
+"autohtin_body_strength_label" = "auto slimming";
+"body_leg_stretch_label" = "leg stretch";
+"body_slim_leg_strength_label" = "slim leg";
+"body_waish_strength_label"  = "thin waist";
+"body_thin_shoulder_strength_label" = "thin shoulders";
+"body_slim_head_strength_label" = "slim head";
+
+"beauty_whiten_label" = "whiten";
+"beauty_smooth_label" = "smooth";
+"beauty_ruddy_label" = "rosy";
+"image_contrast_label" = "contrast";
+"image_saturation_label" = "saturation";
+"image_sharpen_label" = "clear";
+"beauty_enlarge_eye_label" = "enlarge eye";
+"beauty_thin_face_label" = "thin face";
+"beauty_thin_face1_label" = "nature";
+"beauty_thin_face2_label" = "goddess";
+"beauty_thin_face3_label" = "hansome";
+"beauty_v_face_label" = "V face";
+"beauty_narrow_face_label" = "thin face";
+"beauty_short_face_label" = "short face";
+"beauty_basic_face_label" = "face style";
+"beauty_lips_label" = "lipstick";
+"beauty_lips1_label" = "old-style red";
+"beauty_lips2_label" = "peach color";
+"beauty_lips3_label" = "Coral Orange";
+"beauty_lips4_label" = "gentle powder";
+"beauty_lips5_label" = "vitality Orange";
+"beauty_redcheeks_label" = "face blush";
+"beauty_redcheeks1_label" = "simple";
+"beauty_redcheeks2_label" = "midsummer";
+"beauty_redcheeks3_label" = "shy";
+"beauty_redcheeks4_label" = "mature";
+"beauty_redcheeks5_label" = "freckle";
+"beauty_liti_label" = "soft light";
+"beauty_liti1_label" = "nature";
+"beauty_liti2_label" = "handsome";
+"beauty_liti3_label" = "light";
+"beauty_liti4_label" = "fresh";
+"beauty_thin_cheek_label" = "thin cheekbones";
+"beauty_chin_label" = "jaw";
+"beauty_forehead_label" ="forehead";
+"beauty_eye_lighten_label" = "dazzling";
+"beauty_eye_distance_label" = "eye distance";
+"beauty_eye_angle_label" = "corner of eye";
+"beauty_thin_nose_label" = "thin nose";
+"beauty_nose_wing_label" = "Nose";
+"beauty_nose_position_label" = "nose position";
+"beauty_tooth_beauty_label" = "tooth";
+"beauty_remove_pounch_label" = "wrinkle removal";
+"beauty_wrinkle_smooth_label" = "remove nasal lines";
+"beauty_remove_eye_pouch_label" = "remove eye bags";
+"beauty_mouth_size_label" = "mouth size";
+"beauty_mouth_height_label" = "mouth height";
+
+"item_none_label" = "none";
+"lut_item1_label" = "white";
+"lut_item2_label" = "nature";
+"lut_item3_label" = "first love";
+"lut_item4_label" = "heartbeat";
+"lut_item5_label" = "tokyo";
+
+"motion_2d_label" = "2D motion";
+"motion_3d_label" = "3D motion";
+"motion_hand_label" = "gesture motion";
+"motion_gan_label" = "interesting";
+"segmentation_custom_label" = "custom segmentation";
+
+"video_fenfenxia" = "peach makeup";
+"video_guajiezhuang" = "vitality makeup";
+"video_shuimitao" = "peach makeup";
+"video_xiaohuazhuang" = "school flower makeup";
+"video_shaishangzhuang" = "sunburn makeup";
+"video_zhiganzhuang" = "texture makeup";
+"video_nvtuanzhuang" = "girl group makeup";
+"video_hongjiuzhuang" = "red wine makeup";
+"video_xuejiezhuang" = "school sister makeup";
+
+"video_lianliancaomei" = "love strawberry";
+"video_zuijiuweixun" = "drunk";
+"video_tianxinmengniiu" = "sweetheart";
+"video_litihuaduo" = "three-dimensional flowers";
+"video_aiyimanman" = "full of love";
+"video_keaituya" = "cute doodle";
+"video_naipingmianmo" = "bottle mask";
+"video_qiqiupaidui" = "Balloon Party";
+"video_mengmengxiong" = "cute bear";
+"video_aixinyanhua" = "love fireworks";
+"video_xingganxiaochou" = "sexy clown";
+"video_xiaohonghua" = "little safflower";
+"video_qipaoshui" = "sparkling water";
+"video_kangnaixin" = "Ambience Carnation";
+"video_xiangsuyuzhou" = "Pixel Universe";
+"video_shangtoule" = "up";
+"video_xiaohongxing" = "little red star";
+"video_xiaohuangmao" = "childlike duck hat";
+"video_chudao" = "Debut in C position";
+"video_fenweiqiehuan" = "atmosphere switch";
+"video_bingjingaixin" = "ice crystal love";
+"video_biaobai" = "confession";
+"video_kawayixiaoxiong" = "Kawaii Bear";
+"video_yaogunyue" = "shake music";
+"video_rixishaonv" = "Japanese girl";
+"video_tutujiang" = "bunny sauce";
+"video_xuancainihong" = "colorful neon";
+"video_kaixueqianhou" = "Before and after school";
+"video_nightgown" = "Felt headband";
+"video_xuanmeizhuang" = "vitality sticker";
+"video_quebanzhuang" = "Japanese freckles makeup";
+"video_lengliebingmo" = "cold icy pupil";
+"video_dongriliange" = "winter love song";
+"video_fugu_dv" = "Vintage DV";
+"video_baozilian" = "bun face";
+"video_boom" = "Dynamic Sunglasses";
+"video_boys" = "flashing love";
+"video_cherries" = "small cherry";
+"video_guifeiface" = "Concubine face";
+"video_heimaomi" = "cute meow";
+"video_liuhaifadai" = "bangs hair band";
+"video_otwogirl" = "polka dot girl";
+"video_shuangmahua" = "double twist";
+"video_egaoshuangwanzi" = "spoof double balls";
+"video_yazi" = "shaking duck";
+"video_tantanfagu" = "bouncy headband";
+"video_ningmengyayamao" = "Lemon Duck Duck Cap";
+"video_hudiejie" = "magic bow";
+"video_maoxinvhai" = "cat girl";
+"video_jinli" = "koi";
+"video_zhixingmeigui" = "intellectual rose";
+"video_tiankulamei" = "sweet cool babes";
+"video_feitianzhuzhu" = "flying pig";
+"video_tonghuagushi" = "A fairy tale";
+"video_shoushiwu" = "finger bubbles";
+"video_sakuragirl" = "sakura girl";
+"video_bubblegum" = "childhood bubble gum";
+"video_3DFace_springflower" = "Flower Fairy";
+
+"video_empty_segmentation" = "segmentation";
+"video_segmentation_blur_45" = "blurred background-weak";
+"video_segmentation_blur_75" = "blurred background-severe";
+"video_segmentation_transparent_bg" = "transparent";
+"video_guaishoutuya" = "monster doodle";
+
+"select_resource_label" = "resource type";
+"local_resource_label" = "assets";
+"internet_resource_label" = "internet";

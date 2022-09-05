@@ -11,12 +11,15 @@
 #import "TCUtil.h"
 #import "TCLoginParam.h"
 #import "TCRegisterViewController.h"
-#import "TCRegisterViewController.h"
 #import "TCUserInfoModel.h"
 #import "UGCKit.h"
 #import "TXWechatInfoView.h"
 #import "UIView+Additions.h"
 #import "MBProgressHUD.h"
+#import "TCWebViewController.h"
+#import "AppDelegate.h"
+#import "SettingViewController.h"
+#import "DeleteAccountViewController.h"
 
 @interface TCLoginViewController ()<UITextFieldDelegate, TCLoginListener, UIGestureRecognizerDelegate>
 {
@@ -29,6 +32,10 @@
     TXWechatInfoView *_wechatInfoView;    // 公众号信息
     UIView         *_lineView1;
     UIView         *_lineView2;
+    UIButton       *_agreeBtn;          //同意协议
+    UIView         *_coverView;
+    UIView         *_contentView;
+    UIView         *_alphaView;
     
     BOOL           _isSMSLoginType;     // YES 表示手机号登录，NO 表示用户名登录
 }
@@ -47,11 +54,23 @@
         [self autoLogin];
     }else {
     }
+    
+    [self checkOpen];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES];
+    [self removeViewController];
+}
+
+-(void)removeViewController{
+    for(int i = 0; i < self.navigationController.viewControllers.count; i++){
+    UIViewController *viewC = self.navigationController.viewControllers[i];
+    if([viewC.class isEqual:SettingViewController.class]){
+        [viewC removeFromParentViewController];
+    }
+}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,7 +89,6 @@
         [[TCLoginModel sharedInstance] login:_loginParam.identifier hashPwd:_loginParam.hashedPwd succ:^(NSString* userName, NSString* md5pwd ,NSString *token,NSString *refreshToken,long expires) {
             [weakSelf loginOK:userName hashedPwd:md5pwd token:token refreshToken:refreshToken expires:expires];
             [self _hideHUD];
-            [self dismissViewControllerAnimated:YES completion:nil];
             // TODO: s
 //            [[AppDelegate sharedAppDelegate] enterMainUI];
         } fail:^(NSString *userName, int errCode, NSString *errMsg) {
@@ -139,9 +157,12 @@
     _loginBtn = [[UIButton alloc] init];
     _loginBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [_loginBtn setTitle:NSLocalizedString(@"TCLoginView.Login", nil) forState:UIControlStateNormal];
-    [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_loginBtn setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
-    [_loginBtn setBackgroundImage:[UIImage imageNamed:@"button_pressed"] forState:UIControlStateSelected];
+    [_loginBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_loginBtn.layer setCornerRadius:17.5];
+    [_loginBtn.layer setBorderWidth:1];
+    _loginBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _loginBtn.layer.borderColor = [UIColor clearColor].CGColor;
+    _loginBtn.clipsToBounds = YES;
     [_loginBtn addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     
     _regBtn = [[UIButton alloc] init];
@@ -154,6 +175,26 @@
     TXWechatInfoView *infoView = [[TXWechatInfoView alloc] initWithFrame:CGRectMake(10, _regBtn.bottom+20, self.view.width - 20, 100)];
     _wechatInfoView = infoView;
     
+    _agreeBtn = [[UIButton alloc] init];
+    [_agreeBtn setBackgroundImage:[UIImage imageNamed:@"select_icon"] forState:UIControlStateNormal];
+    [_agreeBtn setBackgroundImage:[UIImage imageNamed:@"selected_icon"] forState:UIControlStateSelected];
+    [_agreeBtn addTarget:self action:@selector(clickAgreeBtn) forControlEvents:UIControlEventTouchUpInside];
+    _agreeBtn.frame = CGRectMake(20, 196, 20, 20);
+    
+    NSString *content = NSLocalizedString(@"TCLogin.agreement", nil);
+    UITextView *contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(40, 190, [[UIScreen mainScreen] bounds].size.width - 40, 60)];
+    if ([self isCurrentLanguageHans]) {
+        contentTextView.attributedText = [self getContentLabelAttributedText:content range1:NSMakeRange(7, 6) range2:NSMakeRange(content.length - 6, 6) fontSize:14];
+    }else{
+        contentTextView.attributedText = [self getContentLabelAttributedText:content range1:NSMakeRange(29, 14) range2:NSMakeRange(content.length - 14, 14) fontSize:14];
+    }
+    contentTextView.textAlignment = NSTextAlignmentLeft;
+    contentTextView.delegate = self;
+    contentTextView.editable = NO;        //必须禁止输入，否则点击将弹出输入键盘
+    contentTextView.scrollEnabled = NO;
+    contentTextView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:contentTextView];
+    [self.view addSubview:_agreeBtn];
     [self.view addSubview:_accountTextField];
     [self.view addSubview:_lineView1];
     [self.view addSubview:_pwdTextField];
@@ -194,7 +235,7 @@
     [_lineView2 setX:22];
     
     [_loginBtn setSize:CGSizeMake(screen_width - 44, 35)];
-    [_loginBtn setY:_lineView2.bottom + 36];
+    [_loginBtn setY:_lineView2.bottom + 50];
     [_loginBtn setX:22];
 
     [_regBtn sizeToFit];
@@ -217,9 +258,218 @@
 
 }
 
+-(void) checkOpen{
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]){
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+    [self openAlertWindow];
+    }
+}
+
+-(void) openAlertWindow{
+    _coverView = [UIView new];
+    _coverView.frame = self.view.bounds;
+    _coverView.backgroundColor = [UIColor blackColor];
+    _coverView.alpha = 0.5;
+    _coverView.userInteractionEnabled = YES;
+    [self.view addSubview:_coverView];
+    
+    _contentView = [UIView new];
+    _contentView.backgroundColor = [UIColor whiteColor];
+    _contentView.frame = CGRectMake(25, 200,
+    [UIScreen mainScreen].bounds.size.width - 50,[self isCurrentLanguageHans]? 380 : 480);
+    _contentView.layer.cornerRadius = 10;
+    _contentView.layer.masksToBounds = YES;
+    _contentView.userInteractionEnabled = YES;
+    [self.view addSubview:_contentView];
+    
+    UILabel *titleLabel = [UILabel new];
+    titleLabel.text = NSLocalizedString(@"TCLogin.welcome", nil);
+    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    titleLabel.numberOfLines = 0;
+    titleLabel.frame = CGRectMake(0,10,
+                                  _contentView.bounds.size.width,80);
+    [_contentView addSubview:titleLabel];
+    
+    UIButton *cancelBtn = [UIButton new];
+    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    [cancelBtn setTitle:NSLocalizedString(@"TCLogin.disagree", nil)
+               forState:UIControlStateNormal];
+    [cancelBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    cancelBtn.frame = CGRectMake(0,_contentView.bounds.size.height - 40,
+                                 _contentView.bounds.size.width/2,40);
+    [cancelBtn addTarget:self action:@selector(closeAlertWindow) forControlEvents:UIControlEventTouchUpInside];
+    [_contentView addSubview:cancelBtn];
+    
+    UIButton *confirmBtn = [UIButton new];
+    confirmBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    [confirmBtn setTitle:NSLocalizedString(@"TCLogin.agree", nil)
+                forState:UIControlStateNormal];
+    [confirmBtn setTitleColor:[UIColor colorWithRed:0/255.0 green:108/255.0 blue:255/255.0 alpha:1/1.0] forState:UIControlStateNormal];
+    confirmBtn.frame = CGRectMake(_contentView.bounds.size.width/2,_contentView.bounds.size.height - 40,
+                                 _contentView.bounds.size.width/2,40);
+    [confirmBtn addTarget:self action:@selector(clickConfirm) forControlEvents:UIControlEventTouchUpInside];
+    [_contentView addSubview:confirmBtn];
+    
+    UIView *vLine = [UIView new];
+    vLine.backgroundColor = [UIColor grayColor];
+    vLine.alpha = 0.5;
+    vLine.frame = CGRectMake(_contentView.bounds.size.width/2, _contentView.bounds.size.height - 40, 1, 40);
+    [_contentView addSubview:vLine];
+    
+    UIView *hLine = [UIView new];
+    hLine.backgroundColor = [UIColor grayColor];
+    hLine.alpha = 0.5;
+    hLine.frame = CGRectMake(0, _contentView.bounds.size.height - 40, _contentView.bounds.size.width, 1);
+    [_contentView addSubview:hLine];
+    
+    UITextView *contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(20, 70, _contentView.bounds.size.width - 40, [self isCurrentLanguageHans] ? 160 : 160)];
+    NSString *string = NSLocalizedString(@"TCLogin.privacyDetail", nil);
+    if ([self isCurrentLanguageHans]){
+        contentTextView.attributedText = [self getDetailLabelAttributedText:string range1:NSMakeRange(96, 11)
+        range2:NSMakeRange(285, 11) range3:NSMakeRange(424, 14) range4:NSMakeRange(509, 11)
+        range5:NSMakeRange(599, 11) scrollDetai:YES];
+    }else{
+        contentTextView.attributedText = [self getDetailLabelAttributedText:string
+        range1:NSMakeRange(385, 34) range2:NSMakeRange(1054, 39) range3:NSMakeRange(1536, 48)
+        range4:NSMakeRange(1969, 50)range5:NSMakeRange(2166, 40) scrollDetai:YES];
+    }
+    contentTextView.textAlignment = NSTextAlignmentLeft;
+    contentTextView.delegate = self;
+    contentTextView.editable = NO;        //必须禁止输入，否则点击将弹出输入键盘
+    contentTextView.scrollEnabled = YES;
+    contentTextView.font = [UIFont systemFontOfSize:16];
+    [_contentView addSubview:contentTextView];
+    
+    _alphaView = [UIView new];
+    _alphaView.backgroundColor = [UIColor whiteColor];
+    _alphaView.frame = CGRectMake(20, 215, contentTextView.bounds.size.width, 20);
+    [self changeAlphaWithView:_alphaView];
+    [_contentView addSubview:_alphaView];
+    
+    UITextView *bottomTextView = [[UITextView alloc] initWithFrame:CGRectMake(20, 235, _contentView.bounds.size.width - 40, [self isCurrentLanguageHans] ? 105 : 205)];
+    NSString *text = NSLocalizedString(@"TCLogin.privacyBottom", nil);
+    if ([self isCurrentLanguageHans]){
+        bottomTextView.attributedText = [self getDetailLabelAttributedText:text range1:NSMakeRange(4, 9)
+            range2:NSMakeRange(14, 11) range3:NSMakeRange(26, 15) range4:NSMakeRange(42, 14)
+            range5:NSMakeRange(58, 10) scrollDetai:NO];
+    }else{
+        bottomTextView.attributedText = [self getDetailLabelAttributedText:text range1:NSMakeRange(19, 26)
+            range2:NSMakeRange(46, 41) range3:NSMakeRange(88, 56) range4:NSMakeRange(146, 47)
+            range5:NSMakeRange(198, 39) scrollDetai:NO];
+    }
+    bottomTextView.font = [UIFont systemFontOfSize:14];
+    bottomTextView.scrollEnabled = NO;
+    bottomTextView.editable = NO;
+    bottomTextView.delegate = self;
+    [_contentView addSubview:bottomTextView];
+}
+
+
+- (void)changeAlphaWithView:(UIView *)changeView{
+    CAGradientLayer *_gradLayer = [CAGradientLayer layer];
+    NSArray *colors = [NSArray arrayWithObjects:
+                       (id)[[UIColor colorWithWhite:0 alpha:0.7] CGColor],
+                       (id)[[UIColor colorWithWhite:0 alpha:0.9] CGColor],
+                       (id)[[UIColor colorWithWhite:0 alpha:1] CGColor],
+                       nil];
+    [_gradLayer setColors:colors];
+    [_gradLayer setStartPoint:CGPointMake(0, 0)];
+    [_gradLayer setEndPoint:CGPointMake(0, 1)];
+    [_gradLayer setFrame:CGRectMake(0, 0, changeView.bounds.size.width, changeView.bounds.size.height)];
+    [changeView.layer setMask:_gradLayer];
+}
+
+- (NSAttributedString *)getContentLabelAttributedText:(NSString *)text range1:(NSRange)range1 range2:(NSRange)range2 fontSize:(CGFloat)fontSize
+{
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSForegroundColorAttributeName:[UIColor blackColor]}];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range1];
+    [attrStr addAttribute:NSLinkAttributeName value:@"yinsizhengce://" range:range1];
+    
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range2];
+    [attrStr addAttribute:NSLinkAttributeName value:@"yonghuxieyi://" range:range2];
+    return attrStr;
+}
+
+- (NSAttributedString *)getDetailLabelAttributedText:(NSString *)text range1:(NSRange)range1 range2:(NSRange)range2 range3:(NSRange)range3 range4:(NSRange)range4
+    range5:(NSRange)range5 scrollDetai:(BOOL)scrollDetai
+{
+    NSMutableAttributedString *attrStr;
+    if (scrollDetai) {
+        attrStr = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16],NSForegroundColorAttributeName:[UIColor blackColor]}];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range1];
+        [attrStr addAttribute:NSLinkAttributeName value:@"zhengcezhaiyao://" range:range1];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range2];
+        [attrStr addAttribute:NSLinkAttributeName value:@"yishouji://" range:range2];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range3];
+        [attrStr addAttribute:NSLinkAttributeName value:@"gongxiangqingdan://" range:range3];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range4];
+        [attrStr addAttribute:NSLinkAttributeName value:@"baohuzhiyin://" range:range4];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range5];
+        [attrStr addAttribute:NSLinkAttributeName value:@"baohuzhiyin://" range:range5];
+    }else{
+        attrStr = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor blackColor]}];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range1];
+        [attrStr addAttribute:NSLinkAttributeName value:@"yonghuxieyi://" range:range1];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range2];
+        [attrStr addAttribute:NSLinkAttributeName value:@"baohuzhiyin://" range:range2];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range3];
+        [attrStr addAttribute:NSLinkAttributeName value:@"xinxiqingdan://" range:range3];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range4];
+        [attrStr addAttribute:NSLinkAttributeName value:@"gongxiangqingdan://" range:range4];
+        
+        [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range5];
+        [attrStr addAttribute:NSLinkAttributeName value:@"baohushengming://" range:range5];
+    }
+    return attrStr;
+}
+
+-(void)closeAlertWindow{
+    [_coverView removeFromSuperview];
+    [_contentView removeFromSuperview];
+}
+
+-(void)clickConfirm{
+    [self closeAlertWindow];
+    [_agreeBtn setSelected:YES];
+    _loginBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+}
+
+-(void)clickAgreeBtn{
+    [_agreeBtn setSelected:!_agreeBtn.selected];
+    if (_agreeBtn.selected) {
+        _loginBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+    }else{
+        _loginBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    }
+}
+
+
+
 - (void)onGoBack:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-//    [[AppDelegate sharedAppDelegate] enterMainUI];
+    [self goBack:YES];
+}
+
+-(void)goBack:(BOOL)isExit{
+    UIViewController *parentController = self.presentingViewController;
+    if (parentController == nil) {
+        if (isExit) {
+            exit(0);
+        }else{
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)hideKeyboard {
@@ -239,6 +489,12 @@
 }
 
 - (void)login:(UIButton *)button {
+    if (!_agreeBtn.selected) {
+        [self _alert:NSLocalizedString(@"TCLogin.PleaseAgree", nil)
+             message:@""
+         buttonTitle:NSLocalizedString(@"Common.OK", nil)];
+        return;;
+    }
     NSString *userName = _accountTextField.text;
     NSString *failedReason = nil;
     if (![[TCLoginModel sharedInstance] validateUserName:userName failedReason:&failedReason]) {
@@ -313,7 +569,8 @@
     [[TCLoginModel sharedInstance] scheduleRefreshLoginForExpireDate:_loginParam.expireDate];
     //[[AppDelegate sharedAppDelegate] enterMainUI];
     [TCUtil report:xiaoshipin_login userName:userName code:200 msg:@"登录成功"];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KReloadUserInfoNotification object:nil];
+    [self goBack:NO];
 }
 
 - (void)_alert:(NSString *)title message:(NSString *)message buttonTitle:(NSString *)buttonTitle; {
@@ -329,6 +586,21 @@
 
 - (void)_hideHUD {
     [[MBProgressHUD HUDForView:self.view] hideAnimated:YES];
+}
+
+/**
+ 判断当前语言是否是简体中文
+ */
+- (BOOL)isCurrentLanguageHans
+{
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage isEqualToString:@"zh-Hans-CN"])
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -354,4 +626,42 @@
     UIView *view = [self.view hitTest:location withEvent:nil];
     return ![view isKindOfClass:[UIControl class]] && location.x <= 20;
 }
+#pragma mark 富文本点击事件
+-(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction  API_AVAILABLE(ios(10.0)){
+    if ([[URL scheme] isEqualToString:@"yonghuxieyi"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://web.sdk.qcloud.com/document/Tencent-UGSV-User-Agreement.html"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"yinsizhengce"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ea00e5256ad442c483cd685d27b2e49f"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"zhengcezhaiyao"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ea00e5256ad442c483cd685d27b2e49f"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"yishouji"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ac0e6b4500c442839d632828a35083da"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"gongxiangqingdan"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ac99514d96824473aff08e88dba7ee92"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"baohuzhiyin"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/cd1aaba55e1548c7975ef10fbe9785f7"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"xinxiqingdan"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ac0e6b4500c442839d632828a35083da"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }else if ([[URL scheme] isEqualToString:@"baohushengming"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/privacy-children.htm"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }
+    return YES;
+}
 @end
+

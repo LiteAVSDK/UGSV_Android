@@ -23,6 +23,8 @@ typedef void (^TCLoginFail)(NSString* userName,int errCode, NSString* errMsg);
 
 typedef void (^TCLogoutComplete)(void);
 
+typedef void (^TCDeleteComplete)(int code);
+
 @protocol TCLoginListener <NSObject>
 - (void)loginOK:(NSString*)userName hashedPwd:(NSString*)pwd token:(NSString *)token refreshToken:(NSString *)refreshToken expires:(NSInteger) expires;
 - (void)loginFail:(NSString*)userName code:(int)errCode message:(NSString *)errMsg;
@@ -76,6 +78,14 @@ typedef void (^TCLogoutComplete)(void);
  @param completion 登出回调
  */
 - (void)logout:(TCLogoutComplete)completion;
+
+/**
+ 注销账户
+ 
+ @param identifier 用户id
+ @param completion 回调
+ */
+-(void)deleteAccount:(NSString *)identifier completion:(TCDeleteComplete)completion;
 
 - (void)getCosSign:(void (^)(int errCode, NSString* msg, NSDictionary* resultDict))completion;
 - (void)getVodSign:(void (^)(int errCode, NSString* msg, NSDictionary* resultDict))completion;

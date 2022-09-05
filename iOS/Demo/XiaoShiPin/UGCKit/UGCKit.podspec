@@ -38,7 +38,10 @@ TODO: Add long description of the pod here.
     ss.source_files = 'UGCKit/Classes/**/*.{h,m}'
     framework_path="../../../SDK/TXLiteAVSDK_Professional.framework"
     ss.pod_target_xcconfig={
-        'HEADER_SEARCH_PATHS'=> ["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]
+        'HEADER_SEARCH_PATHS'=> [
+          "$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers",
+          "$(PODS_TARGET_SRCROOT)/../../../SDK/TXLiteAVSDK_UGC.framework/Headers"
+        ]
     }
     ss.resource_bundles = {
       'UGCKitResources' => ['UGCKit/Localizable/**/*','UGCKit/Assets/**/*.{png,xcassets,bundle,storyboard,xib}']
@@ -57,4 +60,5 @@ TODO: Add long description of the pod here.
     }
   end
   s.dependency 'BeautySettingKit'
+  s.dependency 'xmagickit'
 end

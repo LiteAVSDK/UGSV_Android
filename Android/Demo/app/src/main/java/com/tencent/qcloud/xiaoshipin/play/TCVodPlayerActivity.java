@@ -3,9 +3,11 @@ package com.tencent.qcloud.xiaoshipin.play;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -165,6 +167,7 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
         if (!TCUserMgr.getInstance().hasUser()) {
             Intent intent = new Intent(this, TCLoginActivity.class);
             startActivity(intent);
+            finish();
             return false;
         }
         return true;

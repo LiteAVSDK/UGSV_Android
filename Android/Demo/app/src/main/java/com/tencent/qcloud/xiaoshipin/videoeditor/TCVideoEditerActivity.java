@@ -2,15 +2,19 @@ package com.tencent.qcloud.xiaoshipin.videoeditor;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.tencent.qcloud.xiaoshipin.manager.PermissionManager;
 import com.tencent.qcloud.ugckit.module.editer.UGCKitEditConfig;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
@@ -23,7 +27,9 @@ import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.xiaoshipin.videopublish.TCVideoPublisherActivity;
 
 
-public class TCVideoEditerActivity extends FragmentActivity implements View.OnClickListener {
+public class TCVideoEditerActivity extends FragmentActivity implements View.OnClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        PermissionManager.OnStoragePermissionGrantedListener {
 
     private static final String TAG = "TCVideoEditerActivity";
     /**
@@ -45,6 +51,9 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
     private TextView mTvSubtitle;
     // 转场
     private TextView mTextTransition;
+
+    private PermissionManager mStoragePermissionManager;
+
     private IVideoEditKit.OnEditListener mOnVideoEditListener = new IVideoEditKit.OnEditListener() {
         @Override
         public void onEditCompleted(UGCKitResult ugcKitResult) {
@@ -70,7 +79,9 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         setContentView(R.layout.activity_video_editer);
         initData();
         mUGCKitVideoEdit = (UGCKitVideoEdit) findViewById(R.id.video_edit);
-
+        mStoragePermissionManager = new PermissionManager(this, PermissionManager.PermissionType.STORAGE);
+        mStoragePermissionManager.setOnStoragePermissionGrantedListener(this);
+        mStoragePermissionManager.checkoutIfShowPermissionIntroductionDialog();
         UGCKitEditConfig config = new UGCKitEditConfig();
         config.isPublish = true;
         mUGCKitVideoEdit.setConfig(config);
@@ -193,5 +204,16 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         Intent intent = new Intent(this, TCVideoEffectActivity.class);
         intent.putExtra(UGCKitConstants.KEY_FRAGMENT, effectType);
         startActivityForResult(intent, UGCKitConstants.ACTIVITY_OTHER_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mStoragePermissionManager.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+        mUGCKitVideoEdit.setIsGranted(true);
     }
 }

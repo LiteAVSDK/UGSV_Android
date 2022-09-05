@@ -35,6 +35,18 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".userinfo.TCAboutActivity"
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".logoff.TCLogOffActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain" />
+
         <activity
             android:name="com.tencent.qcloud.xiaoshipin.mainui.TCSplashActivity"
             android:launchMode="singleTop"
@@ -88,6 +100,21 @@
         <activity
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
             android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name=".webview.TCWebViewActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain">
+
+            <intent-filter>
+                <action android:name="com.tencent.liteav.action.webview" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
         <activity
             android:name="com.umeng.qq.tencent.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -127,7 +154,7 @@
             android:name="com.tencent.qcloud.xiaoshipin.videojoiner.TCVideoJoinerActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name="com.tencent.qcloud.xiaoshipin.userinfo.TCAboutActivity" />
+        <activity android:name="com.tencent.qcloud.xiaoshipin.userinfo.TCAboutIntroductionActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * button是退出登陆按钮,点击后退出登陆并且返回到登录页面
  */
-@interface TCAccountInfoViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface TCAccountInfoViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> 
 
 @property (strong, nonatomic) UITableView *dataTable;
 

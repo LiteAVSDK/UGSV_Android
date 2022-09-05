@@ -1,0 +1,250 @@
+<resources>
+    <string name="app_name">TencentEffect</string>
+    <string name="not_support">当前设备不支持该</string>
+    <string name="not_auth">权限不足</string>
+    <string name="check_noauth_tip">没有权限或资源缺失，若有疑问请请联系接口人咨询</string>
+
+    <string name="revert_tip_title">确定重置吗</string>
+    <string name="revert_tip_msg">重置会将目前所有特效恢复至默认效果，不可撤回</string>
+    <string name="revert_tip_dialog_left_btn">取消</string>
+    <string name="revert_tip_dialog_right_btn">确定</string>
+    <string name="revert_btn_txt">重置</string>
+    <string name="pannel_close_btn_txt">收起</string>
+    <string name="pannel_expand_btn_txt">展开</string>
+    <string name="pannel_beauty_switch_open_txt">打开美颜</string>
+    <string name="pannel_beauty_switch_close_txt">关闭美颜</string>
+
+
+    <string name="downloading_tip">下载中:</string>
+    <string name="download_failed_tip">下载失败</string>
+    <string name="download_success_tip">下载成功</string>
+    <string name="motion_download_result_tip">动效下载结果</string>
+    <string name="confirm_tip">确定</string>
+    <string name="motion_downloading_tip">动效下载中，成功%s/%s ，失败%s个</string>
+    <string name="motion_download_complete_tip">动效下载完成，成功%s个，失败%s个</string>
+    <string name="success_tip">成功</string>
+    <string name="failed_tip">失败：</string>
+    <string name="downloading_motion_tip">正在下载动效：</string>
+    <string name="auth_success_tip">授权成功</string>
+    <string name="auth_failed_tip">授权失败</string>
+    <string name="please_download_tip">%s没有下载好，请先下载</string>
+    <string name="copying_tip">资源拷贝中...</string>
+    <string name="unable_to_download_tip">空间不足，无法下载%s</string>
+    <string name="download_dialog_title">提示</string>
+    <string name="download_dialog_content">1，把assets、libs、动效资源的zip包上传到云端，生成下载URL\n2,更新demo工程的ResDownloadConfig.java里的URL和MD5 \n3,如果切换了加载方式，请卸载重装demo \n4,更详细的指引，请参考SDK/文档/doc.html/Android接入指引</string>
+    <string name="download_dialog_negative_btn">取消</string>
+    <string name="download_dialog_positive_btn">我已完成上述操作</string>
+    <string name="no_beauty_test">无美颜相机</string>
+    <string name="beauty_img_txt">图片精修</string>
+    <string name="beauty_preview_txt">实时拍摄</string>
+    <string name="select_pixel_label">选择像素</string>
+    <string name="select_resource_label">资源位置</string>
+    <string name="local_resource_label">内置APK</string>
+    <string name="internet_resource_label">网络</string>
+    <string name="main_ac_title">腾讯特效引擎Demo</string>
+    <string name="download_options_label">启用断点续传（请确保你的下载服务器支持）</string>
+    <string name="download_options_1">下载libs</string>
+    <string name="download_options_2">下载assets</string>
+    <string name="download_options_3">下载动效资源</string>
+
+
+    <!--美颜面板-->
+    <string name="autohtin_body_strength_label">一键瘦身</string>
+    <string name="body_leg_stretch_label">长腿</string>
+    <string name="body_slim_leg_strength_label">瘦腿</string>
+    <string name="body_waish_strength_label">瘦腰</string>
+    <string name="body_thin_shoulder_strength_label">瘦肩</string>
+    <string name="body_slim_head_strength_label">小头</string>
+
+    <string name="beauty_whiten_label">美白</string>
+    <string name="beauty_smooth_label">磨皮</string>
+    <string name="beauty_ruddy_label">红润</string>
+    <string name="image_contrast_label">对比度</string>
+    <string name="image_saturation_label">饱和度</string>
+    <string name="image_sharpen_label">清晰度</string>
+    <string name="beauty_enlarge_eye_label">大眼</string>
+    <string name="beauty_thin_face_label">瘦脸</string>
+    <string name="beauty_thin_face1_label">自然</string>
+    <string name="beauty_thin_face2_label">女神</string>
+    <string name="beauty_thin_face3_label">英俊</string>
+    <string name="beauty_v_face_label">V脸</string>
+    <string name="beauty_narrow_face_label">窄脸</string>
+    <string name="beauty_short_face_label">短脸</string>
+    <string name="beauty_basic_face_label">脸型</string>
+    <string name="beauty_lips_label">口红</string>
+    <string name="beauty_lips1_label">复古红</string>
+    <string name="beauty_lips2_label">蜜桃色</string>
+    <string name="beauty_lips3_label">珊瑚橘</string>
+    <string name="beauty_lips4_label">温柔粉</string>
+    <string name="beauty_lips5_label">活力橙</string>
+    <string name="beauty_redcheeks_label">腮红</string>
+    <string name="beauty_redcheeks1_label">简约</string>
+    <string name="beauty_redcheeks2_label">盛夏</string>
+    <string name="beauty_redcheeks3_label">害羞</string>
+    <string name="beauty_redcheeks4_label">成熟</string>
+    <string name="beauty_redcheeks5_label">雀斑</string>
+    <string name="beauty_liti_label">立体</string>
+    <string name="beauty_liti1_label">自然</string>
+    <string name="beauty_liti2_label">俊朗</string>
+    <string name="beauty_liti3_label">光芒</string>
+    <string name="beauty_liti4_label">清新</string>
+    <string name="beauty_thin_cheek_label">瘦颧骨</string>
+    <string name="beauty_chin_label">下巴</string>
+    <string name="beauty_forehead_label">额头</string>
+    <string name="beauty_eye_lighten_label">亮眼</string>
+    <string name="beauty_eye_distance_label">眼距</string>
+    <string name="beauty_eye_angle_label">眼角</string>
+    <string name="beauty_thin_nose_label">瘦鼻</string>
+    <string name="beauty_nose_wing_label">鼻翼</string>
+    <string name="beauty_nose_position_label">鼻子位置</string>
+    <string name="beauty_tooth_beauty_label">白牙</string>
+    <string name="beauty_remove_pounch_label">祛皱</string>
+    <string name="beauty_wrinkle_smooth_label">祛法令纹</string>
+    <string name="beauty_remove_eye_pouch_label">祛眼袋</string>
+    <string name="beauty_mouth_size_label">嘴型</string>
+    <string name="beauty_mouth_height_label">嘴唇厚度</string>
+
+    <string name="item_none_label">无</string>
+    <string name="lut_item1_label">白皙</string>
+    <string name="lut_item2_label">自然</string>
+    <string name="lut_item3_label">初恋</string>
+    <string name="lut_item4_label">心动</string>
+    <string name="lut_item5_label">东京</string>
+
+    <string name="motion_2d_label">2D动效</string>
+    <string name="motion_3d_label">3D动效</string>
+    <string name="motion_hand_label">手势动效</string>
+    <string name="motion_gan_label">趣味</string>
+    <string name="segmentation_custom_label">自定义背景</string>
+
+
+    <string name="motion_resource_str">
+                   video_lianliancaomei:恋恋草莓,
+                   video_zuijiuweixun:醉酒微醺,
+                   video_tianxinmengniiu:甜心萌牛,
+                   video_litihuaduo:立体花朵,
+                   video_aiyimanman:爱意满满,
+                   video_keaituya:可爱涂鸦,
+                   video_naipingmianmo:奶瓶面膜,
+                   video_qiqiupaidui:气球派对,
+                   video_mengmengxiong:萌萌熊,
+                   video_aixinyanhua:爱心烟花,
+                   video_xingganxiaochou:性感小丑,
+                   video_xiaohonghua:小红花,
+                   video_qipaoshui:气泡水,
+                   video_kangnaixin:氛围康乃馨,
+                   video_xiangsuyuzhou:像素宇宙,
+                   video_shangtoule:上头了,
+                   video_xiaohongxing:小红星,
+                   video_xiaohuangmao:童趣鸭鸭帽,
+                   video_chudao:C位出道,
+                   video_fenweiqiehuan:氛围切换,
+                   video_bingjingaixin:冰晶爱心,
+                   video_biaobai:表白,
+                   video_kawayixiaoxiong:卡哇伊小熊,
+                   video_yaogunyue:摇摇乐,
+                   video_rixishaonv:日系少女,
+                   video_tutujiang:兔兔酱,
+                   video_xuancainihong:炫彩霓虹,
+                   video_kaixueqianhou:上学前后,
+                   video_nightgown:毛毡发箍,
+                   video_xuanmeizhuang:元气贴纸,
+                   video_quebanzhuang:日系雀斑妆,
+                   video_lengliebingmo:冷冽冰瞳,
+                   video_dongriliange:冬日恋歌,
+                   video_fugu_dv:复古DV,
+                   video_baozilian:包子脸,
+                   video_boom:动感墨镜,
+                   video_boys:闪动爱心,
+                   video_cherries:小樱桃,
+                   video_guifeiface:贵妃脸,
+                   video_heimaomi:可爱喵,
+                   video_liuhaifadai:刘海发带,
+                   video_otwogirl:波点女孩,
+                   video_shuangmahua:双麻花,
+                   video_egaoshuangwanzi:恶搞双丸子,
+                   video_yazi:抖抖鸭,
+                   video_tantanfagu:弹弹发箍,
+                   video_ningmengyayamao:柠檬鸭鸭帽,
+                   video_hudiejie:魔法蝴蝶结,
+                   video_maoxinvhai:猫系女孩,
+                   video_jinli:锦鲤,
+                   video_zhixingmeigui:知性玫瑰,
+                   video_tiankulamei:甜酷辣妹,
+                   video_feitianzhuzhu:飞天猪猪,
+                   video_tonghuagushi:童话故事,
+                   video_shoushiwu:手指泡泡,
+                   video_sakuragirl:樱花女孩,
+                   video_bubblegum:童年泡泡糖,
+                   video_3DFace_springflower:花仙子
+    </string>
+
+    <string name="makeup_resource_str">
+                   video_fenfenxia:桃花妆,
+                   video_guajiezhuang:元气妆,
+                   video_shuimitao:蜜桃妆,
+                   video_xiaohuazhuang:校花妆,
+                   video_shaishangzhuang:晒伤妆,
+                   video_zhiganzhuang:质感妆,
+                   video_nvtuanzhuang:女团妆,
+                   video_hongjiuzhuang:红酒妆,
+                   video_xuejiezhuang:学姐妆
+    </string>
+
+    <string name="segmentation_resource_str">
+          video_empty_segmentation:分割,
+          video_segmentation_blur_45:背景模糊-弱,
+          video_segmentation_blur_75:背景模糊-强,
+          video_segmentation_transparent_bg:背景透明
+    </string>
+
+
+    <string name="xmagic_pannel_tab1">美颜</string>
+    <string name="xmagic_pannel_tab2">美体</string>
+    <string name="xmagic_pannel_tab3">滤镜</string>
+    <string name="xmagic_pannel_tab4">动效</string>
+    <string name="xmagic_pannel_tab5">美妆</string>
+    <string name="xmagic_pannel_tab6">分割</string>
+    <string name="xmagic_pannel_tab7">键值对</string>
+
+    <!--授权错误码-->
+    <string name="error_0">授权成功</string>
+    <string name="error_1">无效授权, 请检查授权文件的文件名/路径是否正确，比如license和licence的拼写方式是否统一</string>
+    <string name="error_1002">网络连接失败, 请检查是否正常联网、是否ping通initAuth中的授权服务器URL:</string>
+    <string name="error_1003">网络初始化错误, 服务器URL:</string>
+    <string name="error_1045">授权设备已达上限，请申请续期后再使用</string>
+    <string name="error_16">授权文件已过期, 请检查系统时间, 或者续期</string>
+    <string name="error_2">packageName 不匹配, 请检查您的 App 使用的 packageName 和申请的是否一致, 检查是否使用了正确的授权文件</string>
+    <string name="error_2002">证书下载失败, 建议重装APP重新激活</string>
+    <string name="error_2003">证书保存失败, 建议重装APP重新激活</string>
+    <string name="error_2004">没有写权限, 检查APP读写权限</string>
+    <string name="error_3003">证书文件为空, 建议重装APP重新激活</string>
+    <string name="error_3004">授权文件解析失败，可能是授权文件损坏，或者授权文件版本不匹配, 检查授权文件是否正确，或者重新申请新版本的授权文件</string>
+    <string name="error_3005">证书解析出错, 建议重装APP重新激活</string>
+    <string name="error_3006">证书解析出错, 建议重装APP重新激活</string>
+    <string name="error_3007">序列号为空, 设备生产厂商务必填写唯一的序列号</string>
+    <string name="error_3008">序列号解析错误, 设备生产厂商务必填写唯一的序列号</string>
+    <string name="error_3013">设备信息不匹配, 确认是否在平台上添加了序列号, 重装APP重新激活</string>
+    <string name="error_3014">设备信息不匹配, 确认是否在平台上添加了序列号, 重装APP重新激活</string>
+    <string name="error_3015">package name不匹配, 检查项目的package name</string>
+    <string name="error_3016">package name为空, 建议重新申请授权</string>
+    <string name="error_3017">证书已过期（累积时间）, 请续期</string>
+    <string name="error_3018">证书已过期, 请续期</string>
+    <string name="error_3019">license版本不匹配, 请更新common库或license</string>
+    <string name="error_3022">设备信息不匹配, 建议重装APP重新激活</string>
+    <string name="error_4001">设备序列号无效, 设备生产厂商务必填写唯一的序列号</string>
+    <string name="error_4003">没有权限获取序列号, 检查READ_PHONE_STATE权限</string>
+    <string name="error_9999">授权信息错误</string>
+    <string name="error_n1">授权文件路径错误, 请检查文件名/路径</string>
+    <string name="error_n10">授权文件路径错误, 请检查文件名/路径，或检查initType参数（0或2）</string>
+    <string name="error_n1001">请求字段中参数错误, 检查APPID是否正确</string>
+    <string name="error_n1005">设备时间和服务器不符, 请确认设备时间正确</string>
+    <string name="error_n1104">设备序列号不匹配, 检查在平台登记的序列号和设备实际序列号是否一致</string>
+    <string name="error_n1301">序列号信息为空, 备生产厂商务必填写唯一的序列号</string>
+    <string name="error_n1302">没有查询到序列号记录, 确认是否在平台上添加了序列号</string>
+    <string name="error_n1401">该设备续期次数超过限制, 换一台设备重新申请授权，或申请解禁</string>
+    <string name="error_n1402">授权时间无效, 请申请续期</string>
+    <string name="error_n1405">授权数量已达上限，请申请增加数量</string>
+    <string name="error_n1407">授权已过期</string>
+    <string name="error_unknow">未收录的错误码</string>
+</resources>

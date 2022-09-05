@@ -1,8 +1,10 @@
 include ':app'
 
-include ':beautysettingkit'
 
 include ':ugckit'
+
+// 引入xmagic美颜模块
+include ':xmagickit'
 
 if (!liteavSourcePath.isEmpty()) {
     apply from: new File(settingsDir, '../source_link_gradle/liteav_source_settings.gradle').getAbsolutePath()

@@ -42,6 +42,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     [super viewDidLoad];
     
     [self setUpToolbarItems];
+    
+    _theme = [UGCKitTheme sharedTheme];
     /*
     // Fetch user albums and smart albums
     __weak __typeof(self) weakSelf = self;

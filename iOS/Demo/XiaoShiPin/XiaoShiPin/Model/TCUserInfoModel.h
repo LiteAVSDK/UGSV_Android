@@ -8,6 +8,7 @@
 
 #define ERROR_SUCESS 200
 #define KReloadUserInfoNotification @"KReloadUserInfoNotification"
+#define KClearUserInfoNotification @"KClearUserInfoNotification"
 #define USER_COSTOMINFO_PARAM @"Tag_Profile_IM_SelfSignature"
 #import <Foundation/Foundation.h>
 /*
@@ -35,6 +36,7 @@
 
 
 typedef void (^TCUserInfoSaveHandle)(int errCode,NSString *strMsg);
+typedef void (^TCFetchUserInfoHandle)(int errCode,NSString *strMsg);
 
 /*
  *  TCUserInfoModel 类说明 : 该类用于管理用户资料信息,目前只包括: 昵称 封面 头像 性别
@@ -53,7 +55,7 @@ typedef void (^TCUserInfoSaveHandle)(int errCode,NSString *strMsg);
 
 + (instancetype)sharedInstance;
 
-- (void)fetchUserInfo;
+- (void)fetchUserInfo:(NSString *)identifier token:(NSString *)token expires:(NSInteger *)expires handler:(TCFetchUserInfoHandle)handle;
 
 - (void)setBucket:(NSString *)bucket secretId:(NSString*)secretId appid:(long long)appid region:(NSString *)region accountType:(NSString *)accountType;
 

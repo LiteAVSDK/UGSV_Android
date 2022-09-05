@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="90dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_item_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_item_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_item_icon" />
+
+    <ImageView
+        android:id="@+id/img_item_foreground_gray"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@color/color_80333333"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_item_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_item_icon"
+        app:layout_constraintRight_toRightOf="@+id/iv_item_icon"
+        app:layout_constraintTop_toTopOf="@+id/iv_item_icon" />
+
+    <Switch
+        android:id="@+id/item_beauty_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:thumb="@drawable/thumb"
+        android:track="@drawable/track"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_item_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_item_icon" />
+
+    <View
+        android:id="@+id/item_right_line"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/color_80333333"
+        app:layout_constraintBottom_toBottomOf="@+id/item_beauty_switch"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_beauty_switch" />
+</androidx.constraintlayout.widget.ConstraintLayout>

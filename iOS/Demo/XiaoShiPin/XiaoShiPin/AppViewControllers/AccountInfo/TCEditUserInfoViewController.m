@@ -42,13 +42,22 @@
     
     __weak typeof(self) ws = self;
     TCUserInfoData  *_profile = [[TCUserInfoModel sharedInstance] getUserProfile ];
-    TCUserInfoCellItem *faceItem = [[TCUserInfoCellItem alloc] initWith:NSLocalizedString(@"TCEditUserInfoView.ItemFace", nil) value:nil type:TCUserInfo_EditFace action:^(TCUserInfoCellItem *menu, TCEditUserInfoTableViewCell *cell) {
+    TCUserInfoCellItem *faceItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCEditUserInfoView.ItemFace", nil) value:nil
+    type:TCUserInfo_EditFace rightText:@""
+    action:^(TCUserInfoCellItem *menu, TCEditUserInfoTableViewCell *cell) {
         [ws modifyUserInfoFaceImage:menu cell:cell]; } ];
     
-    TCUserInfoCellItem *nickItem = [[TCUserInfoCellItem alloc] initWith:NSLocalizedString(@"TCEditUserInfoView.ItemNick", nil) value:_profile.nickName type:TCUserInfo_EditNick action:^(TCUserInfoCellItem *menu, TCEditUserInfoTableViewCell *cell) {
-        nil; }];
+    TCUserInfoCellItem *nickItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCEditUserInfoView.ItemNick", nil)
+    value:_profile.nickName type:TCUserInfo_EditNick rightText:@""
+    action:^(TCUserInfoCellItem *menu, TCEditUserInfoTableViewCell *cell) {nil;}];
     
-    TCUserInfoCellItem *genderItem = [[TCUserInfoCellItem alloc] initWith:NSLocalizedString(@"TCEditUserInfoView.ItemSex", nil) value:(USERINFO_MALE == _profile.gender ? NSLocalizedString(@"TCEditUserInfoView.SexMale", nil):NSLocalizedString(@"TCEditUserInfoView.SexFemale", nil)) type:TCUserInfo_EditGender action:^(TCUserInfoCellItem *menu, TCEditUserInfoTableViewCell *cell) {
+    TCUserInfoCellItem *genderItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCEditUserInfoView.ItemSex", nil)
+    value:(USERINFO_MALE == _profile.gender ? NSLocalizedString(@"TCEditUserInfoView.SexMale", nil):NSLocalizedString(@"TCEditUserInfoView.SexFemale", nil))
+    type:TCUserInfo_EditGender rightText:@""
+    action:^(TCUserInfoCellItem *menu, TCEditUserInfoTableViewCell *cell) {
         [ws modifyUserInfoGender:menu cell:cell]; }];
     
     _userInfoArry = [NSMutableArray arrayWithArray:@[faceItem, nickItem, genderItem]];
