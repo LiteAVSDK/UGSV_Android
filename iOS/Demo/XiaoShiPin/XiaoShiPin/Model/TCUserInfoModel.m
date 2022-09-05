@@ -77,38 +77,39 @@ static TCUserInfoModel *_shareInstance = nil;
 /**
  *  通过id信息从服务器上拉取用户信息
  */
--(void)fetchUserInfo
+-(void)fetchUserInfo:(NSString *)identifier token:(NSString *)token expires:(NSInteger *)expires handler:(TCFetchUserInfoHandle)handle
 {
     DebugLog(@"开始通过用户id拉取用户资料信息");
     __weak typeof(self) weakSelf = self;
-
-    NSDictionary* params = @{@"userid": _loginParam.identifier, @"timestamp":@([[NSDate date] timeIntervalSince1970] * 1000), @"expires":@(_loginParam.expires)};
-    [TCUtil asyncSendHttpRequest:@"get_user_info" token:_loginParam.token params:params handler:^(int resultCode, NSString *message, NSDictionary *resultDict) {
+    _loginParam.expires = *(expires);
+    NSDictionary* params = @{@"userid": identifier, @"timestamp":@([[NSDate date] timeIntervalSince1970] * 1000), @"expires":@(_loginParam.expires)};
+    [TCUtil asyncSendHttpRequest:@"get_user_info" token:token params:params handler:^(int resultCode, NSString *message, NSDictionary *resultDict) {
         if (resultCode == 200) {
             DebugLog(@"从服务器上拉取用户资料信息成功%@", resultDict);
-            weakSelf.userInfo.identifier = weakSelf.loginParam.identifier;
+            weakSelf.userInfo.identifier = identifier;
             weakSelf.userInfo.nickName = resultDict[@"nickname"];
             weakSelf.userInfo.gender = [((NSNumber*)resultDict[@"sex"]) intValue];
             weakSelf.userInfo.faceURL = resultDict[@"avatar"];
             weakSelf.userInfo.coverURL = resultDict[@"frontcover"];
             
             [weakSelf saveToLocal];
-        }
-        else {
+        }else {
             DebugLog(@"从服务器上拉取用户资料信息失败 errCode = %d, errMsg = %@", resultCode, message);
         }
+        handle(resultCode,message);
     }];
 }
 
 - (void)uploadUserInfo:(TCUserInfoSaveHandle)handle
 {
-    NSString* nickname = _userInfo.nickName.length < 1 ? _userInfo.identifier : _userInfo.nickName;
+    NSString* nickname = (NSNull *)_userInfo.nickName == [NSNull null] ? _userInfo.identifier : _userInfo.nickName;
     NSString* avatar = _userInfo.faceURL == nil ? @"" : _userInfo.faceURL;
     NSString* frontcover = _userInfo.coverURL == nil ? @"" : _userInfo.coverURL;
     
     NSDictionary* params = @{@"userid": _loginParam.identifier, @"timestamp":@([[NSDate date] timeIntervalSince1970] * 1000), @"expires":@(_loginParam.expires), @"nickname": nickname, @"avatar": avatar, @"frontcover": frontcover, @"sex": @(_userInfo.gender)};
     [TCUtil asyncSendHttpRequest:@"upload_user_info" token:_loginParam.token params:params handler:^(int resultCode, NSString *message, NSDictionary *resultDict) {
 
+        [self saveToLocal];
         handle(resultCode, message);
     }];
 }
@@ -217,9 +218,15 @@ static TCUserInfoModel *_shareInstance = nil;
 - (void)saveToLocal {
     // 保存昵称，头像，封页, 性别 到本地，方便其他进程读取
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-    [dic setObject:_userInfo.nickName forKey:@"nickName"];
-    [dic setObject:_userInfo.faceURL forKey:@"faceURL"];
-    [dic setObject:_userInfo.coverURL forKey:@"coverURL"];
+    if (_userInfo.nickName != nil) {
+        [dic setObject:_userInfo.nickName forKey:@"nickName"];
+    }
+    if(_userInfo.faceURL != nil){
+        [dic setObject:_userInfo.faceURL forKey:@"faceURL"];
+    }
+    if (_userInfo.coverURL != nil) {
+        [dic setObject:_userInfo.coverURL forKey:@"coverURL"];
+    }
     [dic setObject:@(_userInfo.gender) forKey:@"gender"];
     
     NSData *data = [TCUtil dictionary2JsonData: dic];

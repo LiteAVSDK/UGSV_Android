@@ -1,28 +1,34 @@
 package com.tencent.qcloud.xiaoshipin.login;
 
+import static com.tencent.qcloud.xiaoshipin.login.TCLoginActivity.updateStatement;
+
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.textfield.TextInputLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.tencent.qcloud.ugckit.utils.TCUserMgr;
-import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
+import com.google.android.material.textfield.TextInputLayout;
 import com.tencent.qcloud.ugckit.utils.LogReport;
+import com.tencent.qcloud.ugckit.utils.NetworkUtil;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
-import com.tencent.qcloud.ugckit.utils.NetworkUtil;
-import com.tencent.qcloud.ugckit.utils.ToastUtil;
+import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
+import com.tencent.ugc.TXUGCBase;
 
 import org.json.JSONObject;
 
@@ -55,6 +61,10 @@ public class TCRegisterActivity extends Activity {
 
     private TextView tvBackBtn;
 
+    private TextView mTvUserProtocol;
+
+    private CheckBox mCbAgreeProtocol;
+
     //动画
     AlphaAnimation fadeInAnimation, fadeOutAnimation;
 
@@ -75,6 +85,31 @@ public class TCRegisterActivity extends Activity {
         tilPassword = (TextInputLayout) findViewById(R.id.til_password);
         tvBackBtn = (TextView) findViewById(R.id.tv_back);
 
+        mTvUserProtocol = (TextView) findViewById(R.id.tv_protocol_register);
+        mCbAgreeProtocol = (CheckBox) findViewById(R.id.cb_protocol_register);
+
+        findViewById(R.id.checkbox_group_register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCbAgreeProtocol.setChecked(!mCbAgreeProtocol.isChecked());
+            }
+        });
+
+        btnRegister.setBackgroundResource(R.drawable.btn_login_pressed);
+
+        mCbAgreeProtocol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    btnRegister.setBackgroundResource(R.drawable.btn_login_pressed);
+                } else {
+                    btnRegister.setBackgroundResource(R.drawable.btn_login_normal);
+                }
+            }
+        });
+
+        updateStatement(this, mTvUserProtocol);
+
         fadeInAnimation = new AlphaAnimation(0.0f, 1.0f);
         fadeOutAnimation = new AlphaAnimation(1.0f, 0.0f);
         fadeInAnimation.setDuration(250);
@@ -83,6 +118,7 @@ public class TCRegisterActivity extends Activity {
         LayoutTransition layoutTransition = new LayoutTransition();
         relativeLayout.setLayoutTransition(layoutTransition);
     }
+
 
     @Override
     protected void onResume() {
@@ -162,6 +198,12 @@ public class TCRegisterActivity extends Activity {
     }
 
     private void attemptNormalRegist(String username, String password, String passwordVerify) {
+
+        if (!mCbAgreeProtocol.isChecked()) {
+            Toast.makeText(TCRegisterActivity.this, getString(R.string.login_protocol_tip), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!UserInfoUtil.isUsernameVaild(username)) {
             showRegistError(getResources().getString(R.string.tc_register_activity_attempt_normal_regist_username_does_not_meet_specifications));
             return;
@@ -225,14 +267,16 @@ public class TCRegisterActivity extends Activity {
                 tcLoginMgr.uploadLogs(LogReport.ELK_ACTION_REGISTER, username, TCUserMgr.SUCCESS_CODE, "注册成功", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d(TAG,"uploadLogs onFailure");
+                        Log.d(TAG, "uploadLogs onFailure");
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        Log.d(TAG,"uploadLogs onResponse");
+                        Log.d(TAG, "uploadLogs onResponse");
                     }
                 });
+                // ELK数据上报：启动次数
+                LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_START_UP, 0, "");
                 tcLoginMgr.login(username, password, new TCUserMgr.Callback() {
                     @Override
                     public void onSuccess(JSONObject data) {
@@ -262,12 +306,12 @@ public class TCRegisterActivity extends Activity {
                 tcLoginMgr.uploadLogs(LogReport.ELK_ACTION_REGISTER, username, code, errorMsg, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d(TAG,"uploadLogs onFailure");
+                        Log.d(TAG, "uploadLogs onFailure");
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        Log.d(TAG,"uploadLogs onResponse");
+                        Log.d(TAG, "uploadLogs onResponse");
                     }
                 });
                 showToast(getResources().getString(R.string.tc_register_activity_register_callback_register_failed) + errorMsg);

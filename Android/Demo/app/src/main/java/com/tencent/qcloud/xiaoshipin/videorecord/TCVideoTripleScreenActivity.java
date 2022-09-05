@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,6 +19,7 @@ import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.UGCKitVideoMixRecord;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
+import com.tencent.qcloud.xiaoshipin.manager.PermissionManager;
 import com.tencent.qcloud.ugckit.module.mixrecord.IVideoMixRecordKit;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordActionData;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfigBuildInfo;
@@ -28,32 +31,42 @@ import com.tencent.ugc.TXRecordCommon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TCVideoTripleScreenActivity extends FragmentActivity {
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_AUDIO;
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_CAMERA;
+
+public class TCVideoTripleScreenActivity
+        extends FragmentActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
+        PermissionManager.OnCameraPermissionGrantedListener {
 
     private static final String TAG = "TCVideoTripleScreenActivity";
-    public static int  REQUEST_CODE = 100;
+    public static int REQUEST_CODE = 100;
     private UGCKitVideoMixRecord mUGCKitVideoMixRecord;
     // 三屏视频合唱跟拍的视频路径
     private String mFollowShotVideoPath;
 
+    private PermissionManager mAudioPermissionManager;
+
+    private PermissionManager mCameraPermissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         initWindowParam();
 
         // 必须在代码中设置主题(setTheme)或者在AndroidManifest中设置主题(android:theme)
         setTheme(R.style.MixRecordActivityTheme);
-
         initData();
         setContentView(R.layout.activity_video_triple);
         mUGCKitVideoMixRecord = (UGCKitVideoMixRecord) findViewById(R.id.video_chorus);
 
+
         List<String> paths = new ArrayList<>();
         paths.add(mFollowShotVideoPath);
         paths.add(mFollowShotVideoPath);
-        MixRecordConfigBuildInfo buildInfo = new MixRecordConfigBuildInfo(paths,1,1080,1920, TXRecordCommon.VIDEO_ASPECT_RATIO_16_9);
+        MixRecordConfigBuildInfo buildInfo = new MixRecordConfigBuildInfo(paths,
+                1, 1080, 1920, TXRecordCommon.VIDEO_ASPECT_RATIO_16_9);
         mUGCKitVideoMixRecord.setMixRecordInfo(buildInfo);
         mUGCKitVideoMixRecord.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +87,19 @@ public class TCVideoTripleScreenActivity extends FragmentActivity {
 
             @Override
             public void onMixRecordAction(IVideoMixRecordKit.MixRecordActionT actionT, Object object) {
-                if(actionT== IVideoMixRecordKit.MixRecordActionT.MIX_RECORD_ACTION_T_SELECT){
-                    MixRecordActionData data =(MixRecordActionData)object;
+                if (actionT == IVideoMixRecordKit.MixRecordActionT.MIX_RECORD_ACTION_T_SELECT) {
+                    MixRecordActionData data = (MixRecordActionData) object;
                     Intent intent = new Intent(TCVideoTripleScreenActivity.this, TCTripleRecordVideoPickerActivity.class);
-                    startActivityForResult(intent,REQUEST_CODE);
+                    startActivityForResult(intent, REQUEST_CODE);
                 }
             }
         });
+        mAudioPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.AUDIO);
+        mCameraPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.CAMERA);
+
+        mCameraPermissionManager.setOnCameraPermissionGrantedListener(this);
+
+        mCameraPermissionManager.checkoutIfShowPermissionIntroductionDialog();
     }
 
     private void startEditActivity(UGCKitResult ugcKitResult) {
@@ -93,11 +112,12 @@ public class TCVideoTripleScreenActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CODE && data!=null){
+        mUGCKitVideoMixRecord.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == REQUEST_CODE && data != null) {
             String path = data.getStringExtra("file");
 //            int index = data.getIntExtra("index",-1);
 //            TXCLog.d(TAG,"path="+path+" "+index);
-            mUGCKitVideoMixRecord.updateMixFile(-1,path);
+            mUGCKitVideoMixRecord.updateMixFile(-1, path);
         }
     }
 
@@ -120,7 +140,12 @@ public class TCVideoTripleScreenActivity extends FragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (hasPermission()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PackageManager.PERMISSION_GRANTED == ActivityCompat
+                    .checkSelfPermission(this, Manifest.permission.CAMERA)) {
+                mUGCKitVideoMixRecord.start();
+            }
+        } else {
             mUGCKitVideoMixRecord.start();
         }
     }
@@ -148,27 +173,21 @@ public class TCVideoTripleScreenActivity extends FragmentActivity {
         mUGCKitVideoMixRecord.backPressed();
     }
 
-    private boolean hasPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            List<String> permissions = new ArrayList<>();
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
-                permissions.add(Manifest.permission.CAMERA);
-            }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)) {
-                permissions.add(Manifest.permission.RECORD_AUDIO);
-            }
-            if (permissions.size() != 0) {
-                ActivityCompat.requestPermissions(this, permissions.toArray(new String[0]), 100);
-                return false;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (grantResults != null) {
+            if (requestCode == REQUEST_CODE_CAMERA) {
+                mCameraPermissionManager.onRequestPermissionsResult(requestCode, grantResults);
+            } else if (requestCode == REQUEST_CODE_AUDIO) {
+                mAudioPermissionManager.onRequestPermissionsResult(requestCode,grantResults);
             }
         }
-        return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            mUGCKitVideoMixRecord.start();
-        }
+    public void onCameraPermissionGranted() {
+        mUGCKitVideoMixRecord.start();
+        mAudioPermissionManager.checkoutIfShowPermissionIntroductionDialog();
     }
 }

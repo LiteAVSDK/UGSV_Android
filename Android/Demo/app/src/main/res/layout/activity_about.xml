@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#181D27"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
@@ -26,22 +29,180 @@
             android:src="@drawable/btn_back_no_shaddow" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_about_logo" />
+        android:layout_height="match_parent"
+        android:background="#181D27"
+        android:orientation="vertical"
+        tools:ignore="contentDescription">
 
-    <TextView
-        android:id="@+id/tv_about"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="@string/about_tip1"
-        android:textColor="@color/white"
-        android:textSize="14dp" />
+        <RelativeLayout
+            android:id="@+id/layout_sdk"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#1F2531">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/app_sdk_version"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_sdk_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sep5"
+            android:layout_below="@id/layout_sdk"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+        <RelativeLayout
+            android:layout_below="@id/sep5"
+            android:id="@+id/layout_application"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#1F2531">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/app_version"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_app_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:layout_marginRight="15dp" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sep1"
+            android:layout_below="@id/layout_application"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+        <RelativeLayout
+            android:layout_below="@id/sep1"
+            android:id="@+id/layout_small_video"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#1F2531">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/app_tencent_cloud_xiaoshipin"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sep6"
+            android:layout_below="@id/layout_small_video"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+        <RelativeLayout
+            android:layout_below="@id/sep6"
+            android:id="@+id/layout_get_technical_support"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#1F2531">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/get_technical_support"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/user_info_next" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sep3"
+            android:layout_below="@id/layout_get_technical_support"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_download_sdk"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@id/sep3"
+            android:background="#1F2531">
+
+            <TextView
+                android:id="@+id/tv_download_sdk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/download_sdk"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/sep4"
+            android:layout_below="@id/layout_download_sdk"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_product_introduction"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@id/sep4"
+            android:background="#1F2531">
+
+            <TextView
+                android:id="@+id/tv_product_introduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="@string/product_introduction"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 </LinearLayout>

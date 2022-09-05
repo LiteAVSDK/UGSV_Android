@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>9.5.0</string>
+	<string>10.6.0</string>
 	<key>CFBundleVersion</key>
-	<string>1411</string>
+	<string>2824</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -94,15 +94,15 @@
 		</dict>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>App添加BGM需要使用您的媒体资料库权限，否则无法添加本地音乐，请点击“好”以允许App访问您的媒体资料库。</string>
+	<string>App添加BGM需要使用您的媒体资料库权限，用于存储 SDK 配置文件、日志文件和媒体文件，读取本地媒体文件。否则无法添加本地音乐，请点击“好”以允许App访问您的媒体资料库。</string>
 	<key>NSCameraUsageDescription</key>
-	<string>App录制视频需要使用您的相机权限，否则无法正常录制，请点击“好”以允许App访问您的相机。</string>
+	<string>APP需要访问您的相机权限，用于采集摄像头画面，进行照片拍摄和视频录制。</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>App录制视频需要使用您的麦克风权限，否则无法正常录制，请点击“好”以允许App访问您的麦克风。</string>
+	<string>APP需要访问您的麦克风权限，用户采集用户声音，进行声音录制。</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>App保存视频需要使用您的照片权限，否则无法保存视频，请点击“好”以允许App访问您的照片。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App保存视频需要使用您的照片权限，否则无法保存视频，请点击“好”以允许App访问您的照片。</string>
+	<string>APP需要访问您的照片权限，用于保存拍摄或者编辑后的媒体文件，并读取本地媒体文件以进行短视频制作。</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

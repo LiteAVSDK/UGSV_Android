@@ -1,0 +1,256 @@
+<resources>
+    <string name="app_name">TencentEffect</string>
+    <string name="not_support">当前设备不支持该</string>
+    <string name="not_auth">权限不足</string>
+    <string name="check_noauth_tip">No permission or lack of resources, if you have any questions, please contact the interface person for consultation</string>
+
+    <string name="revert_tip_title">Are you sure you want to reset</string>
+    <string name="revert_tip_msg">Reset will restore all current effects to default, irreversible</string>
+    <string name="revert_tip_dialog_left_btn">cancel</string>
+    <string name="revert_tip_dialog_right_btn">confirm</string>
+    <string name="revert_btn_txt">revert</string>
+    <string name="pannel_close_btn_txt">put away</string>
+    <string name="pannel_expand_btn_txt">expand</string>
+    <string name="pannel_beauty_switch_open_txt">open beauty</string>
+    <string name="pannel_beauty_switch_close_txt">close beauty</string>
+
+    <string name="downloading_tip">downloading:</string>
+    <string name="download_failed_tip">download failed</string>
+    <string name="download_success_tip">download success</string>
+    <string name="motion_download_result_tip">motion download results</string>
+    <string name="confirm_tip">confirm</string>
+    <string name="motion_downloading_tip">downloading motion, %s/%s succeeded, %s failed</string>
+    <string name="motion_download_complete_tip">motion download completed, %s successful, %s failed</string>
+    <string name="success_tip">success</string>
+    <string name="failed_tip">failed:</string>
+    <string name="downloading_motion_tip">downloading motion:</string>
+    <string name="auth_success_tip">auth success</string>
+    <string name="auth_failed_tip">auth failed</string>
+    <string name="please_download_tip">%s has not been downloaded, please download it first</string>
+    <string name="copying_tip">resource copying...</string>
+    <string name="unable_to_download_tip">insufficient space to download%s</string>
+    <string name="download_dialog_title">Tip</string>
+    <string name="download_dialog_content">1. Upload the zip package of assets, libs, and animation resources to the cloud, generate a download URL\n2, update the URL and MD5 in ResDownloadConfig.java of the demo project \n3, if you switch the loading method, please uninstall and reinstall the demo \ n4, for more detailed guidelines, please refer to SDK/Documents/doc.html/Android Access Guidelines</string>
+    <string name="download_dialog_negative_btn">cancel</string>
+    <string name="download_dialog_positive_btn">have done the above</string>
+    <string name="no_beauty_test">no beauty camera</string>
+    <string name="beauty_img_txt">Image Beauty</string>
+    <string name="beauty_preview_txt">Live preview</string>
+    <string name="select_pixel_label">select pixel</string>
+    <string name="select_resource_label">resource type</string>
+    <string name="local_resource_label">assets</string>
+    <string name="internet_resource_label">internet</string>
+    <string name="main_ac_title">Tencent Effects Demo</string>
+    <string name="download_options_label">Enable resumable upload (please make sure your download server supports it)</string>
+    <string name="download_options_1">download libs</string>
+    <string name="download_options_2">download assets</string>
+    <string name="download_options_3">download motion</string>
+
+
+
+
+    <!--美颜面板-->
+    <string name="autohtin_body_strength_label">auto slimming</string>
+    <string name="body_leg_stretch_label">leg stretch</string>
+    <string name="body_slim_leg_strength_label">slim leg</string>
+    <string name="body_waish_strength_label">thin waist</string>
+    <string name="body_thin_shoulder_strength_label">thin shoulders</string>
+    <string name="body_slim_head_strength_label">slim head</string>
+
+    <string name="beauty_whiten_label">whiten</string>
+    <string name="beauty_smooth_label">smooth</string>
+    <string name="beauty_ruddy_label">rosy</string>
+    <string name="image_contrast_label">contrast</string>
+    <string name="image_saturation_label">saturation</string>
+    <string name="image_sharpen_label">clear</string>
+    <string name="beauty_enlarge_eye_label">enlarge eye</string>
+    <string name="beauty_thin_face_label">thin face</string>
+    <string name="beauty_thin_face1_label">nature</string>
+    <string name="beauty_thin_face2_label">goddess</string>
+    <string name="beauty_thin_face3_label">hansome</string>
+    <string name="beauty_v_face_label">V face</string>
+    <string name="beauty_narrow_face_label">thin face</string>
+    <string name="beauty_short_face_label">short face</string>
+    <string name="beauty_basic_face_label">face style</string>
+    <string name="beauty_lips_label">lipstick</string>
+    <string name="beauty_lips1_label">old-style red</string>
+    <string name="beauty_lips2_label">peach color</string>
+    <string name="beauty_lips3_label">Coral Orange</string>
+    <string name="beauty_lips4_label">gentle powder</string>
+    <string name="beauty_lips5_label">vitality Orange</string>
+    <string name="beauty_redcheeks_label">face blush</string>
+    <string name="beauty_redcheeks1_label">simple</string>
+    <string name="beauty_redcheeks2_label">midsummer</string>
+    <string name="beauty_redcheeks3_label">shy</string>
+    <string name="beauty_redcheeks4_label">mature</string>
+    <string name="beauty_redcheeks5_label">freckle</string>
+    <string name="beauty_liti_label">soft light</string>
+    <string name="beauty_liti1_label">nature</string>
+    <string name="beauty_liti2_label">handsome</string>
+    <string name="beauty_liti3_label">light</string>
+    <string name="beauty_liti4_label">fresh</string>
+    <string name="beauty_thin_cheek_label">thin cheekbones</string>
+    <string name="beauty_chin_label">jaw</string>
+    <string name="beauty_forehead_label">forehead</string>
+    <string name="beauty_eye_lighten_label">dazzling</string>
+    <string name="beauty_eye_distance_label">eye distance</string>
+    <string name="beauty_eye_angle_label">corner of eye</string>
+    <string name="beauty_thin_nose_label">thin nose</string>
+    <string name="beauty_nose_wing_label">Nose</string>
+    <string name="beauty_nose_position_label">nose position</string>
+    <string name="beauty_tooth_beauty_label">tooth</string>
+    <string name="beauty_remove_pounch_label">wrinkle removal</string>
+    <string name="beauty_wrinkle_smooth_label">remove nasal lines</string>
+    <string name="beauty_remove_eye_pouch_label">remove eye bags</string>
+    <string name="beauty_mouth_size_label">mouth size</string>
+    <string name="beauty_mouth_height_label">mouth height</string>
+
+    <string name="item_none_label">none</string>
+    <string name="lut_item1_label">white</string>
+    <string name="lut_item2_label">nature</string>
+    <string name="lut_item3_label">first love</string>
+    <string name="lut_item4_label">heartbeat</string>
+    <string name="lut_item5_label">tokyo</string>
+
+    <string name="motion_2d_label">2D motion</string>
+    <string name="motion_3d_label">3D motion</string>
+    <string name="motion_hand_label">gesture motion</string>
+    <string name="motion_gan_label">interesting</string>
+    <string name="segmentation_custom_label">custom segmentation</string>
+
+
+    <string name="motion_resource_str">
+                   video_lianliancaomei:love strawberry,
+                   video_zuijiuweixun:drunk,
+                   video_tianxinmengniiu:sweetheart,
+                   video_litihuaduo:three-dimensional flowers,
+                   video_aiyimanman:full of love,
+                   video_keaituya:cute doodle,
+                   video_naipingmianmo:bottle mask,
+                   video_qiqiupaidui:Balloon Party,
+                   video_mengmengxiong:cute bear,
+                   video_aixinyanhua:love fireworks,
+                   video_xingganxiaochou:sexy clown,
+                   video_xiaohonghua:little safflower,
+                   video_qipaoshui:sparkling water,
+                   video_kangnaixin:Ambience Carnation,
+                   video_xiangsuyuzhou:Pixel Universe,
+                   video_shangtoule:up,
+                   video_xiaohongxing:little red star,
+                   video_xiaohuangmao:childlike duck hat,
+                   video_chudao:Debut in C position,
+                   video_fenweiqiehuan:atmosphere switch,
+                   video_bingjingaixin:ice crystal love,
+                   video_biaobai:confession,
+                   video_kawayixiaoxiong:Kawaii Bear,
+                   video_yaogunyue:shake music,
+                   video_rixishaonv:Japanese girl,
+                   video_tutujiang:bunny sauce,
+                   video_xuancainihong:colorful neon,
+                   video_kaixueqianhou:Before and after school,
+                   video_nightgown:Felt headband,
+                   video_xuanmeizhuang:vitality sticker,
+                   video_quebanzhuang:Japanese freckles makeup,
+                   video_lengliebingmo:cold icy pupil,
+                   video_dongriliange:winter love song,
+                   video_fugu_dv:Vintage DV,
+                   video_baozilian:bun face,
+                   video_boom:Dynamic Sunglasses,
+                   video_boys:flashing love,
+                   video_cherries:small cherry,
+                   video_guifeiface:Concubine face,
+                   video_heimaomi:cute meow,
+                   video_liuhaifadai:bangs hair band,
+                   video_otwogirl:polka dot girl,
+                   video_shuangmahua:double twist,
+                   video_egaoshuangwanzi:spoof double balls,
+                   video_yazi:shaking duck,
+                   video_tantanfagu:bouncy headband,
+                   video_ningmengyayamao:Lemon Duck Duck Cap,
+                   video_hudiejie:magic bow,
+                   video_maoxinvhai:cat girl,
+                   video_jinli:koi,
+                   video_zhixingmeigui:intellectual rose,
+                   video_tiankulamei:sweet cool babes,
+                   video_feitianzhuzhu:flying pig,
+                   video_tonghuagushi:A fairy tale,
+                   video_shoushiwu:finger bubbles,
+                   video_sakuragirl:sakura girl,
+                   video_bubblegum:childhood bubble gum,
+                   video_3DFace_springflower:Flower Fairy
+    </string>
+
+    <string name="makeup_resource_str">
+                   video_fenfenxia:peach makeup,
+                   video_guajiezhuang:vitality makeup,
+                   video_shuimitao:peach makeup,
+                   video_xiaohuazhuang:school flower makeup,
+                   video_shaishangzhuang:sunburn makeup,
+                   video_zhiganzhuang:texture makeup,
+                   video_nvtuanzhuang:girl group makeup,
+                   video_hongjiuzhuang:red wine makeup,
+                   video_xuejiezhuang:school sister makeup
+    </string>
+
+    <string name="segmentation_resource_str">
+          video_empty_segmentation:segmentation,
+          video_segmentation_blur_45:blurred background-weak,
+          video_segmentation_blur_75:blurred background-severe,
+          video_segmentation_transparent_bg:transparent
+    </string>
+
+
+    <string name="xmagic_pannel_tab1">Beauty</string>
+    <string name="xmagic_pannel_tab2">Body</string>
+    <string name="xmagic_pannel_tab3">Lut</string>
+    <string name="xmagic_pannel_tab4">Motion</string>
+    <string name="xmagic_pannel_tab5">Makeup</string>
+    <string name="xmagic_pannel_tab6">Segmentation</string>
+    <string name="xmagic_pannel_tab7">KV</string>
+
+
+
+
+
+
+    <!--授权错误码-->
+    <string name="error_0">Authorization success</string>
+    <string name="error_1">Invalid authorization. Please check whether the authorization file name/path are correct; for example, "license" may be misspelled as "licence".</string>
+    <string name="error_1002">Network connection failed. Please check whether the network connection is normal and whether the following authorization server URL in initAuth can be pinged successfully: </string>
+    <string name="error_1003">An error occurred while initializing the network. Server URL: </string>
+    <string name="error_1045">The number of authorized devices has reached the upper limit. Please apply for renewal first before using them.</string>
+    <string name="error_16">The authorization file has expired. Please check the system time or renew the file</string>
+    <string name="error_2">The packageName value does not match. Please check whether the packageName used by your application is the same as the one applied for and whether the correct authorization file is used.</string>
+    <string name="error_2002">Failed to download the certificate. We recommend you reinstall the application and activate it again.</string>
+    <string name="error_2003">Failed to save the certificate. We recommend you reinstall the application and activate it again.</string>
+    <string name="error_2004">No write permission. Please check the application is read/write permissions.</string>
+    <string name="error_3003">The certificate file is empty. We recommend you reinstall the application and activate it again.</string>
+    <string name="error_3004">Failed to parse the authorization file. This may be because that the authorization file is corrupted or the version does not match. Please check whether the authorization file is correct or apply for a new authorization file.</string>
+    <string name="error_3005">An error occurred while parsing the certificate. We recommend you reinstall the application and activate it again.</string>
+    <string name="error_3006">An error occurred while parsing the certificate. We recommend you reinstall the application and activate it again.</string>
+    <string name="error_3007">The device SN is empty. The device vendor must enter a unique SN.</string>
+    <string name="error_3008">An error occurred while parsing the SN. The device vendor must enter a unique SN.</string>
+    <string name="error_3013">The device information does not match. Please check whether the SN has been added on the platform and then reinstall the application and activate it again.</string>
+    <string name="error_3014">The device information does not match. Please check whether the SN has been added on the platform and then reinstall the application and activate it again.</string>
+    <string name="error_3015">The package name does not match. Please check the project is package name</string>
+    <string name="error_3016">The package name is empty. We recommend you apply for authorization again.</string>
+    <string name="error_3017">The certificate has expired (accumulated time). Please renew it.</string>
+    <string name="error_3018">The certificate has expired. Please renew it</string>
+    <string name="error_3019">The license version does not match. Please update the common library or license.</string>
+    <string name="error_3022">The device information does not match. Please reinstall the application and activate it again.</string>
+    <string name="error_4001">The device SN is invalid. The device vendor must enter a unique SN.</string>
+    <string name="error_4003">No permission to get the SN. Please check the READ_PHONE_STATE permission.</string>
+    <string name="error_9999">auth info is error</string>
+    <string name="error_n1">The authorization file path is incorrect. Please check the filename/path.</string>
+    <string name="error_n10">The authorization file path is incorrect. Please check the filename/path or the initType parameter value (0 or 2).</string>
+    <string name="error_n1001">A parameter in the request field is incorrect. Please check whether the APPID is correct.</string>
+    <string name="error_n1005">The device time and server time do not match. Please check whether the device time is correct.</string>
+    <string name="error_n1104">The device SN does not match. Please check whether the SN registered on the platform is the same as the actual device SN.</string>
+    <string name="error_n1301">The SN information is empty. The device vendor must enter a unique SN.</string>
+    <string name="error_n1302">No SN records found. Please check whether the SN is added on the platform.</string>
+    <string name="error_n1401">The number of renewal times for the device exceeds the limit. Please change a device to apply for authorization again or apply for unblocking.</string>
+    <string name="error_n1402">The authorization time is invalid. Please apply for renewal.</string>
+    <string name="error_n1405">The number of authorizations has reached the upper limit. Please apply for an increase of the limit.</string>
+    <string name="error_n1407">The authorization has expired.</string>
+    <string name="error_unknow">Uncollected error code</string>
+</resources>

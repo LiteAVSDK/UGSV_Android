@@ -190,11 +190,14 @@ static TCLoginModel *_sharedInstance = nil;
                 [[TCUserInfoModel sharedInstance] setBucket:resultDict[@"cos_info"][@"Bucket"] secretId:resultDict[@"cos_info"][@"SecretId"]
                                                       appid:[resultDict[@"cos_info"][@"Appid"] longLongValue] region:resultDict[@"cos_info"][@"Region"] accountType:weakSelf.accountType];
             }
-            //_loginParam
-            [TCLoginModel setAutoLogin:YES];
-            succ(username, hashPwd ,token,refreshToken,expires);
 
-            [[TCUserInfoModel sharedInstance] fetchUserInfo];
+            [[TCUserInfoModel sharedInstance] fetchUserInfo:username token:token expires:&expires handler:^(int code, NSString *msg){
+                if (code == 200) {
+                    succ(username, hashPwd ,token,refreshToken,expires);
+                }else{
+                    fail(username,resultCode, message);
+                }
+            }];
         }
         else {
             fail(username,resultCode, message);
@@ -211,6 +214,19 @@ static TCLoginModel *_sharedInstance = nil;
     self.sign = nil;
     self.txTime = nil;
     _loginParam = nil;
+}
+
+-(void)deleteAccount:(NSString *)identifier completion:(TCDeleteComplete)completion{
+    [TCLoginModel setAutoLogin:NO];
+    NSDictionary* params = @{@"userid": identifier};
+    [TCUtil asyncSendHttpRequest:@"cancellation" params:params handler:^(int resultCode, NSString *message, NSDictionary *resultDict) {
+        self.sign = nil;
+        self.txTime = nil;
+        _loginParam = nil;
+        if(completion){
+            completion(resultCode);
+        }
+    }];
 }
 
 - (void)getCosSign:(void (^)(int, NSString *, NSDictionary *))completion

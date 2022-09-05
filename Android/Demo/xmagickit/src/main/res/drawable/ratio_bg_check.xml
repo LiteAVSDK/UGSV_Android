@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 连框颜色值 -->
+    <item
+        >
+
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp"/>
+            <solid android:color="#F14257" />
+        </shape>
+    </item>
+    <!-- 主体背景颜色值 -->
+    <!-- 此处定义只有上下两边有边框 高度为1像素-->
+    <item
+        android:right="1dp"
+        android:left="1dp"
+        android:bottom="1dp"
+        android:top="1dp">
+
+        <!--边框里面背景颜色 白色-->
+        <shape>
+            <corners android:radius="9dp"/>
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+</layer-list>

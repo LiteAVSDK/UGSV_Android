@@ -1,0 +1,179 @@
+/*
+  Localizable.strings
+  BeautyDemo
+
+  Created by tao yue on 2022/3/8.
+  
+*/
+"main_ac_title" = "腾讯特效引擎Demo";
+"select_pixel_label" = "选择像素";
+"beauty_img_txt" = "图片精修";
+"beauty_preview_txt" = "实时拍摄";
+"use_rear_camera" = "使用后置摄像头";
+
+"xmagic_pannel_tab1" = "美颜";
+"xmagic_pannel_tab2" = "美体";
+"xmagic_pannel_tab3" = "滤镜";
+"xmagic_pannel_tab4" = "动效";
+"xmagic_pannel_tab5" = "美妆";
+"xmagic_pannel_tab6" = "分割";
+
+"revert_btn_txt" = "重置";
+"pannel_close_btn_txt" = "收起";
+"pannel_expand_btn_txt" = "展开";
+"strength" = "强度";
+"revert_tip_title" = "确定重置吗";
+"revert_tip_msg" = "\n重置会将目前所有特效恢复至默认效果，不可撤回";
+"revert_tip_dialog_left_btn" = "取消";
+"revert_tip_dialog_right_btn" = "确定";
+"pannel_beauty_switch_open_txt" = "打开美颜";
+"pannel_beauty_switch_close_txt" = "关闭美颜";
+
+"autohtin_body_strength_label" = "一键瘦身";
+"body_leg_stretch_label" = "长腿";
+"body_slim_leg_strength_label" = "瘦腿";
+"body_waish_strength_label"  = "瘦腰";
+"body_thin_shoulder_strength_label" = "瘦肩";
+"body_slim_head_strength_label" = "小头";
+
+"beauty_whiten_label" = "美白";
+"beauty_smooth_label" = "磨皮";
+"beauty_ruddy_label" = "红润";
+"image_contrast_label" = "对比度";
+"image_saturation_label" = "饱和度";
+"image_sharpen_label" = "清晰度";
+"beauty_enlarge_eye_label" = "大眼";
+"beauty_thin_face_label" = "瘦脸";
+"beauty_thin_face1_label" = "自然";
+"beauty_thin_face2_label" = "女神";
+"beauty_thin_face3_label" = "英俊";
+"beauty_v_face_label" = "V脸";
+"beauty_narrow_face_label" = "窄脸";
+"beauty_short_face_label" = "短脸";
+"beauty_basic_face_label" = "脸型";
+"beauty_lips_label" = "口红";
+"beauty_lips1_label" = "复古红";
+"beauty_lips2_label" = "蜜桃色";
+"beauty_lips3_label" = "珊瑚橘";
+"beauty_lips4_label" = "温柔粉";
+"beauty_lips5_label" = "活力橙";
+"beauty_redcheeks_label" = "腮红";
+"beauty_redcheeks1_label" = "简约";
+"beauty_redcheeks2_label" = "盛夏";
+"beauty_redcheeks3_label" = "害羞";
+"beauty_redcheeks4_label" = "成熟";
+"beauty_redcheeks5_label" = "雀斑";
+"beauty_liti_label" = "立体";
+"beauty_liti1_label" = "自然";
+"beauty_liti2_label" = "俊朗";
+"beauty_liti3_label" = "光芒";
+"beauty_liti4_label" = "清新";
+"beauty_thin_cheek_label" = "瘦颧骨";
+"beauty_chin_label" = "下巴";
+"beauty_forehead_label" ="额头";
+"beauty_eye_lighten_label" = "亮眼";
+"beauty_eye_distance_label" = "眼距";
+"beauty_eye_angle_label" = "眼角";
+"beauty_thin_nose_label" = "瘦鼻";
+"beauty_nose_wing_label" = "鼻翼";
+"beauty_nose_position_label" = "鼻子位置";
+"beauty_tooth_beauty_label" = "白牙";
+"beauty_remove_pounch_label" = "祛皱";
+"beauty_wrinkle_smooth_label" = "祛法令纹";
+"beauty_remove_eye_pouch_label" = "祛眼袋";
+"beauty_mouth_size_label" = "嘴型";
+"beauty_mouth_height_label" = "嘴唇厚度";
+
+"item_none_label" = "无";
+"lut_item1_label" = "白皙";
+"lut_item2_label" = "自然";
+"lut_item3_label" = "初恋";
+"lut_item4_label" = "心动";
+"lut_item5_label" = "东京";
+
+"motion_2d_label" = "2D动效";
+"motion_3d_label" = "3D动效";
+"motion_hand_label" = "手势动效";
+"motion_gan_label" = "趣味";
+"segmentation_custom_label" = "自定义背景";
+
+"video_fenfenxia" = "桃花妆";
+"video_guajiezhuang" = "元气妆";
+"video_shuimitao" = "蜜桃妆";
+"video_xiaohuazhuang" = "校花妆";
+"video_shaishangzhuang" = "晒伤妆";
+"video_zhiganzhuang" = "质感妆";
+"video_nvtuanzhuang" = "女团妆";
+"video_hongjiuzhuang" = "红酒妆";
+"video_xuejiezhuang" = "学姐妆";
+
+"video_lianliancaomei" = "恋恋草莓";
+"video_zuijiuweixun" = "醉酒微醺";
+"video_tianxinmengniiu" = "甜心萌牛";
+"video_litihuaduo" = "立体花朵";
+"video_aiyimanman" = "爱意满满";
+"video_keaituya" = "可爱涂鸦";
+"video_naipingmianmo" = "奶瓶面膜";
+"video_qiqiupaidui" = "气球派对";
+"video_mengmengxiong" = "萌萌熊";
+"video_aixinyanhua" = "爱心烟花";
+"video_xingganxiaochou" = "性感小丑";
+"video_xiaohonghua" = "小红花";
+"video_qipaoshui" = "气泡水";
+"video_kangnaixin" = "氛围康乃馨";
+"video_xiangsuyuzhou" = "像素宇宙";
+"video_shangtoule" = "上头了";
+"video_xiaohongxing" = "小红星";
+"video_xiaohuangmao" = "童趣鸭鸭帽";
+"video_chudao" = "C位出道";
+"video_fenweiqiehuan" = "氛围切换";
+"video_bingjingaixin" = "冰晶爱心";
+"video_biaobai" = "表白";
+"video_kawayixiaoxiong" = "卡哇伊小熊";
+"video_yaogunyue" = "摇摇乐";
+"video_rixishaonv" = "日系少女";
+"video_tutujiang" = "兔兔酱";
+"video_xuancainihong" = "炫彩霓虹";
+"video_kaixueqianhou" = "上学前后";
+"video_nightgown" = "毛毡发箍";
+"video_xuanmeizhuang" = "元气贴纸";
+"video_quebanzhuang" = "日系雀斑妆";
+"video_lengliebingmo" = "冷冽冰瞳";
+"video_dongriliange" = "冬日恋歌";
+"video_fugu_dv" = "复古DV";
+"video_baozilian" = "包子脸";
+"video_boom" = "动感墨镜";
+"video_boys" = "闪动爱心";
+"video_cherries" = "小樱桃";
+"video_guifeiface" = "贵妃脸";
+"video_heimaomi" = "可爱喵";
+"video_liuhaifadai" = "刘海发带";
+"video_otwogirl" = "波点女孩";
+"video_shuangmahua" = "双麻花";
+"video_egaoshuangwanzi" = "恶搞双丸子";
+"video_yazi" = "抖抖鸭";
+"video_tantanfagu" = "弹弹发箍";
+"video_ningmengyayamao" = "柠檬鸭鸭帽";
+"video_hudiejie" = "魔法蝴蝶结";
+"video_maoxinvhai" = "猫系女孩";
+"video_jinli" = "锦鲤";
+"video_zhixingmeigui" = "知性玫瑰";
+"video_tiankulamei" = "甜酷辣妹";
+"video_feitianzhuzhu" = "飞天猪猪";
+"video_tonghuagushi" = "童话故事";
+"video_shoushiwu" = "手指泡泡";
+"video_sakuragirl" = "樱花女孩";
+"video_bubblegum" = "童年泡泡糖";
+"video_3DFace_springflower" = "花仙子";
+
+"video_empty_segmentation" = "分割";
+"video_segmentation_blur_45" = "背景模糊-弱";
+"video_segmentation_blur_75" = "背景模糊-强";
+"video_segmentation_transparent_bg" = "背景透明";
+"video_guaishoutuya" = "怪兽涂鸦";
+
+"select_resource_label" = "资源位置";
+"local_resource_label" = "本地";
+"internet_resource_label" = "网络";
+
+

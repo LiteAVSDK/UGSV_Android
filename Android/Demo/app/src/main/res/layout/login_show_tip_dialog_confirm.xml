@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_root"
+    android:layout_width="270dp"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/login_color_white">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/login_protocol_title"
+        android:textColor="@color/login_color_black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+       />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+
+        <ScrollView
+            android:id="@+id/sroll_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_margin="6dp"
+                android:text="@string/login_protocol_scroll"
+                android:textColor="@color/login_main_text"
+                android:textSize="14sp"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp"
+                />
+        </ScrollView>
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/shape_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_all_protocol"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/login_protocol_down"
+            android:textColor="@color/login_main_text"
+            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/view_divide"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/login_color_line"
+         />
+
+    <LinearLayout
+        android:id="@+id/cl_button_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        >
+
+        <Button
+            android:id="@+id/btn_negative"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:text="@string/login_user_refuse"
+            android:textColor="@color/login_color_input_no_match"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:background="@color/login_transparent"
+            android:gravity="center"/>
+
+        <View
+            android:id="@+id/view_divide_vertical"
+            android:layout_width="1dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:background="@color/login_color_line"/>
+
+        <Button
+            android:id="@+id/btn_positive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:background="@color/login_transparent"
+            android:gravity="center"
+            android:text="@string/login_user_approve"
+            android:textAlignment="center"
+            android:textColor="@color/login_color_tab_select"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

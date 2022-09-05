@@ -216,4 +216,6 @@
     <color name="ugckit_transition_mark_color">#9000ff00</color>
     <!-- timeline slider背景 -->
     <color name="ugckit_slider_bg">#75FB7B</color>
+
+    <color name="app_dialog_bg">#66000000</color>
 </resources>

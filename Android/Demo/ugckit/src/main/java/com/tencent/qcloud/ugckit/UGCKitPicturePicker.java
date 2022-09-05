@@ -1,15 +1,12 @@
 package com.tencent.qcloud.ugckit;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import android.util.AttributeSet;
 
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
@@ -28,11 +25,11 @@ import java.util.ArrayList;
  * <p>
  * 1、加载本地了本地相册所有图片<br>
  */
-public class UGCKitPicturePicker extends AbsPickerUI implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private static final int      MIN_SELECTED_PIC_COUNT = 3;
-    private              Activity mActivity;
+public class UGCKitPicturePicker extends AbsPickerUI {
+    private static final int MIN_SELECTED_PIC_COUNT = 3;
+    private Activity mActivity;
     @NonNull
-    private              Handler  mHandlder              = new Handler();
+    private Handler mHandlder = new Handler();
 
     public UGCKitPicturePicker(Context context) {
         super(context);
@@ -62,7 +59,6 @@ public class UGCKitPicturePicker extends AbsPickerUI implements ActivityCompat.O
             }
         });
         // 加载图片
-        loadPictureList();
         getPickedLayout().setMinSelectedItemCount(MIN_SELECTED_PIC_COUNT);
     }
 
@@ -88,28 +84,15 @@ public class UGCKitPicturePicker extends AbsPickerUI implements ActivityCompat.O
      * 1、已授权读取手机SD卡权限，则通过{@link PickerManagerKit#getAllPictrue()} 读取本地相册扫描出的所有图片
      * 2、未授权读取手机SD卡权限，在Android6.0需要动态获取权限
      */
-    private void loadPictureList() {
+    public void loadPictureList() {
         mActivity = (Activity) getContext();
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            mHandlder.post(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<TCVideoFileInfo> list = PickerManagerKit.getInstance(mActivity).getAllPictrue();
-                    getPickerListLayout().updateItems(list);
-                }
-            });
-        } else {
-            if (Build.VERSION.SDK_INT >= 23) {
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        mHandlder.post(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<TCVideoFileInfo> list = PickerManagerKit.getInstance(mActivity).getAllPictrue();
+                getPickerListLayout().updateItems(list);
             }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            loadPictureList();
-        }
+        });
     }
 
     @Override
@@ -124,6 +107,4 @@ public class UGCKitPicturePicker extends AbsPickerUI implements ActivityCompat.O
             }
         });
     }
-
-
 }

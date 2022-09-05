@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.liteav.audio.TXCAudioUGCRecorder;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftInfo;
@@ -77,7 +76,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
 
     public void initConfig(@NonNull UGCKitRecordConfig config) {
         mUGCKitRecordConfig = config;
-        Log.d(TAG, "initConfig mBeautyParam:" + mUGCKitRecordConfig.mBeautyParams);
+        Log.d(TAG, "initConfig mBeautyParam:" + mUGCKitRecordConfig);
     }
 
     public UGCKitRecordConfig getConfig() {
@@ -102,7 +101,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             simpleConfig.needEdit = mUGCKitRecordConfig.mIsNeedEdit;
 
             if (mRecordSDK != null) {
-                mRecordSDK.setVideoRenderMode(mUGCKitRecordConfig.mRecordMode);
+                mRecordSDK.setVideoRenderMode(mUGCKitRecordConfig.mRenderMode);
                 mRecordSDK.setMute(mUGCKitRecordConfig.mIsMute);
             }
             mRecordSDK.startCameraSimplePreview(simpleConfig, videoView);
@@ -144,43 +143,43 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
         return mCurrentState;
     }
 
-    public void updateBeautyParam(@NonNull BeautyParams beautyParams) {
-        mUGCKitRecordConfig.mBeautyParams = beautyParams;
-        if (mRecordSDK != null) {
-            mRecordSDK.getBeautyManager().setBeautyStyle(beautyParams.mBeautyStyle);
-            mRecordSDK.getBeautyManager().setBeautyLevel(beautyParams.mBeautyLevel);
-            mRecordSDK.getBeautyManager().setWhitenessLevel(beautyParams.mWhiteLevel);
-            mRecordSDK.getBeautyManager().setRuddyLevel(beautyParams.mRuddyLevel);
-            mRecordSDK.getBeautyManager().setFaceSlimLevel(beautyParams.mFaceSlimLevel);
-            mRecordSDK.getBeautyManager().setEyeScaleLevel(beautyParams.mBigEyeLevel);
-            mRecordSDK.getBeautyManager().setFaceVLevel(beautyParams.mFaceVLevel);
-            mRecordSDK.getBeautyManager().setFaceShortLevel(beautyParams.mFaceShortLevel);
-            mRecordSDK.getBeautyManager().setChinLevel(beautyParams.mChinSlimLevel);
-            mRecordSDK.getBeautyManager().setNoseSlimLevel(beautyParams.mNoseSlimLevel);
-            mRecordSDK.getBeautyManager().setMotionTmpl(beautyParams.mMotionTmplPath);
-            mRecordSDK.getBeautyManager().setEyeLightenLevel(beautyParams.mEyeLightenLevel);
-            mRecordSDK.getBeautyManager().setToothWhitenLevel(beautyParams.mToothWhitenLevel);
-            mRecordSDK.getBeautyManager().setWrinkleRemoveLevel(beautyParams.mWrinkleRemoveLevel);
-            mRecordSDK.getBeautyManager().setPounchRemoveLevel(beautyParams.mPounchRemoveLevel);
-            mRecordSDK.getBeautyManager().setSmileLinesRemoveLevel(beautyParams.mSmileLinesRemoveLevel);
-            mRecordSDK.getBeautyManager().setForeheadLevel(beautyParams.mForeheadLevel);
-            mRecordSDK.getBeautyManager().setEyeDistanceLevel(beautyParams.mEyeDistanceLevel);
-            mRecordSDK.getBeautyManager().setEyeAngleLevel(beautyParams.mEyeAngleLevel);
-            mRecordSDK.getBeautyManager().setMouthShapeLevel(beautyParams.mMouthShapeLevel);
-            mRecordSDK.getBeautyManager().setNoseWingLevel(beautyParams.mNoseWingLevel);
-            mRecordSDK.getBeautyManager().setNosePositionLevel(beautyParams.mNosePositionLevel);
-            mRecordSDK.getBeautyManager().setLipsThicknessLevel(beautyParams.mLipsThicknessLevel);
-            mRecordSDK.getBeautyManager().setFaceBeautyLevel(beautyParams.mFaceBeautyLevel);
-            mRecordSDK.getBeautyManager().setGreenScreenFile(beautyParams.mGreenFile);
-            mRecordSDK.getBeautyManager().setFilterStrength(beautyParams.mFilterStrength / 10.f);
-        }
-    }
-
-    public void updateMotionParam(@NonNull BeautyParams beautyParams) {
-        if (mRecordSDK != null) {
-            mRecordSDK.getBeautyManager().setMotionTmpl(beautyParams.mMotionTmplPath);
-        }
-    }
+//    public void updateBeautyParam(@NonNull BeautyParams beautyParams) {
+//        mUGCKitRecordConfig.mBeautyParams = beautyParams;
+//        if (mRecordSDK != null) {
+//            mRecordSDK.getBeautyManager().setBeautyStyle(beautyParams.mBeautyStyle);
+//            mRecordSDK.getBeautyManager().setBeautyLevel(beautyParams.mBeautyLevel);
+//            mRecordSDK.getBeautyManager().setWhitenessLevel(beautyParams.mWhiteLevel);
+//            mRecordSDK.getBeautyManager().setRuddyLevel(beautyParams.mRuddyLevel);
+//            mRecordSDK.getBeautyManager().setFaceSlimLevel(beautyParams.mFaceSlimLevel);
+//            mRecordSDK.getBeautyManager().setEyeScaleLevel(beautyParams.mBigEyeLevel);
+//            mRecordSDK.getBeautyManager().setFaceVLevel(beautyParams.mFaceVLevel);
+//            mRecordSDK.getBeautyManager().setFaceShortLevel(beautyParams.mFaceShortLevel);
+//            mRecordSDK.getBeautyManager().setChinLevel(beautyParams.mChinSlimLevel);
+//            mRecordSDK.getBeautyManager().setNoseSlimLevel(beautyParams.mNoseSlimLevel);
+//            mRecordSDK.getBeautyManager().setMotionTmpl(beautyParams.mMotionTmplPath);
+//            mRecordSDK.getBeautyManager().setEyeLightenLevel(beautyParams.mEyeLightenLevel);
+//            mRecordSDK.getBeautyManager().setToothWhitenLevel(beautyParams.mToothWhitenLevel);
+//            mRecordSDK.getBeautyManager().setWrinkleRemoveLevel(beautyParams.mWrinkleRemoveLevel);
+//            mRecordSDK.getBeautyManager().setPounchRemoveLevel(beautyParams.mPounchRemoveLevel);
+//            mRecordSDK.getBeautyManager().setSmileLinesRemoveLevel(beautyParams.mSmileLinesRemoveLevel);
+//            mRecordSDK.getBeautyManager().setForeheadLevel(beautyParams.mForeheadLevel);
+//            mRecordSDK.getBeautyManager().setEyeDistanceLevel(beautyParams.mEyeDistanceLevel);
+//            mRecordSDK.getBeautyManager().setEyeAngleLevel(beautyParams.mEyeAngleLevel);
+//            mRecordSDK.getBeautyManager().setMouthShapeLevel(beautyParams.mMouthShapeLevel);
+//            mRecordSDK.getBeautyManager().setNoseWingLevel(beautyParams.mNoseWingLevel);
+//            mRecordSDK.getBeautyManager().setNosePositionLevel(beautyParams.mNosePositionLevel);
+//            mRecordSDK.getBeautyManager().setLipsThicknessLevel(beautyParams.mLipsThicknessLevel);
+//            mRecordSDK.getBeautyManager().setFaceBeautyLevel(beautyParams.mFaceBeautyLevel);
+//            mRecordSDK.getBeautyManager().setGreenScreenFile(beautyParams.mGreenFile);
+//            mRecordSDK.getBeautyManager().setFilterStrength(beautyParams.mFilterStrength / 10.f);
+//        }
+//    }
+//
+//    public void updateMotionParam(@NonNull BeautyParams beautyParams) {
+//        if (mRecordSDK != null) {
+//            mRecordSDK.getBeautyManager().setMotionTmpl(beautyParams.mMotionTmplPath);
+//        }
+//    }
 
     /**
      * 更新当前屏比
@@ -318,8 +317,10 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
     public void saveLastPart() {
         if (mRecordSDK != null && mRecordDraftManager != null) {
             List<String> pathList = mRecordSDK.getPartsManager().getPartsPathList();
-            String lastPath = pathList.get(pathList.size() - 1);
-            mRecordDraftManager.saveLastPart(lastPath);
+            if (pathList != null && pathList.size() > 0) {
+                String lastPath = pathList.get(pathList.size() - 1);
+                mRecordDraftManager.saveLastPart(lastPath);
+            }
         }
     }
 

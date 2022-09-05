@@ -1,6 +1,5 @@
 package com.tencent.qcloud.xiaoshipin.videochoose;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,7 +7,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.xiaoshipin.manager.PermissionManager;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.module.picker.view.IPickerLayout;
@@ -20,18 +24,27 @@ import java.util.ArrayList;
 /**
  * 图片选择类，用于选择多张图片，返回图片路径集合S
  */
-public class TCPicturePickerActivity extends Activity {
+public class TCPicturePickerActivity extends FragmentActivity
+        implements ActivityCompat.OnRequestPermissionsResultCallback,
+        PermissionManager.OnStoragePermissionGrantedListener {
 
     private UGCKitPicturePicker mUGCKitPicturePicker;
+
+    private PermissionManager mStoragePermissionManager;
+
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
         initWindowParam();
         // 必须在代码中设置主题(setTheme)或者在AndroidManifest中设置主题(android:theme)
         setTheme(R.style.PickerActivityTheme);
         setContentView(R.layout.activity_ugc_video_list);
         mUGCKitPicturePicker = (UGCKitPicturePicker) findViewById(R.id.picture_choose);
+        mStoragePermissionManager = new PermissionManager(this, PermissionManager.PermissionType.STORAGE);
+        mStoragePermissionManager.setOnStoragePermissionGrantedListener(this);
+        mStoragePermissionManager.checkoutIfShowPermissionIntroductionDialog();
         mUGCKitPicturePicker.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,5 +91,16 @@ public class TCPicturePickerActivity extends Activity {
         Intent intent = new Intent(TCPicturePickerActivity.this, TCPictureJoinActivity.class);
         intent.putExtra(UGCKitConstants.INTENT_KEY_MULTI_PIC_LIST, picturePathList);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        mStoragePermissionManager.onRequestPermissionsResult(requestCode, grantResults);
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+        mUGCKitPicturePicker.loadPictureList();
     }
 }

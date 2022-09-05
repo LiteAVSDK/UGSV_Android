@@ -4,6 +4,7 @@ package com.tencent.qcloud.ugckit.module.upload;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import com.tencent.qcloud.ugckit.module.upload.impl.TVCClient;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCConstants;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadInfo;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadListener;
+import com.tencent.qcloud.ugckit.module.upload.impl.TVCUtils;
 import com.tencent.qcloud.ugckit.module.upload.impl.TXUGCPublishOptCenter;
 
 import java.io.File;
@@ -59,13 +61,7 @@ public class TXUGCPublish {
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
         }
 
-        boolean bVideoFileExist = false;
-        try {
-            File file = new File(param.videoPath);
-            bVideoFileExist = file.isFile() && file.exists();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        boolean bVideoFileExist = TVCUtils.isExistsForPathOrUri(mContext, param.videoPath);
 
         if (!bVideoFileExist) {
             //Log.e(TAG, "publishVideo invalid video file");
@@ -80,7 +76,8 @@ public class TXUGCPublish {
         }
 
         if (mTVCClient == null) {
-            mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume, param.enableHttps, 10);
+            mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume,
+                    param.enableHttps, 10, param.sliceSize, param.concurrentCount);
         } else {
             mTVCClient.updateSignature(param.signature);
         }
@@ -209,7 +206,8 @@ public class TXUGCPublish {
         }
 
         if (mTVCClient == null) {
-            mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume, param.enableHttps, 10);
+            mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume,
+                    param.enableHttps, 10, param.sliceSize, param.concurrentCount);
         } else {
             mTVCClient.updateSignature(param.signature);
         }
@@ -349,10 +347,40 @@ public class TXUGCPublish {
 
     private String getFileType(String filePath) {
         String fileType = "";
-        if (filePath != null && filePath.length() != 0) {
+        if (null == filePath || filePath.length() == 0) {
+            return fileType;
+        }
+        fileType = getFileTypeBySuffix(filePath);
+        if (TextUtils.isEmpty(fileType) && filePath.startsWith("content://")) {
+            fileType = getFileTypeByUri(Uri.parse(filePath));
+        }
+        if (TextUtils.isEmpty(fileType)) {
+            String absolutePath = TVCUtils.getAbsolutePath(mContext, filePath);
+            fileType = getFileTypeBySuffix(absolutePath);
+        }
+        return fileType;
+    }
+
+    private String getFileTypeBySuffix(String filePath) {
+        String fileType = "";
+        if (null != filePath && filePath.length() != 0) {
             int index = filePath.lastIndexOf(".");
             if (index != -1) {
                 fileType = filePath.substring(index + 1);
+            }
+        }
+        return fileType;
+    }
+
+    private String getFileTypeByUri(Uri uri) {
+        String fileType = "";
+        if (null != uri) {
+            fileType = mContext.getContentResolver().getType(uri);
+            if (!TextUtils.isEmpty(fileType)) {
+                int index = fileType.lastIndexOf("/");
+                if (index != -1) {
+                    fileType = fileType.substring(index + 1);
+                }
             }
         }
         return fileType;

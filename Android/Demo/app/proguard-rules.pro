@@ -138,3 +138,10 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+-keep class com.tencent.xmagic.** { *;}
+-keep class org.light.** { *;}
+-keep class org.libpag.** { *;}
+-keep class org.extra.** { *;}
+-keep class com.gyailib.**{ *;}
+-keep class com.tencent.youtu.**{ *;}
+-keep class com.tencent.cloud.iai.lib.** { *;}

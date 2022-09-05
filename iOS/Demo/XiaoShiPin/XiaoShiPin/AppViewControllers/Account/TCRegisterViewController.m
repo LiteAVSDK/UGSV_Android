@@ -13,6 +13,7 @@
 #import "TCUtil.h"
 #import "MBProgressHUD.h"
 #import "TCUserInfoModel.h"
+#import "TCWebViewController.h"
 
 #define L(X) NSLocalizedString((X), nil)
 
@@ -27,6 +28,7 @@
     UITextField    *_pwdTextField2;     // 确认密码（用户名注册）
     TXWechatInfoView *_wechatInfoView;
     UIButton       *_regBtn;            // 注册
+    UIButton       *_agreeBtn;
     UIView         *_lineView1;
     UIView         *_lineView2;
     UIView         *_lineView3;
@@ -108,15 +110,39 @@
     _regBtn = [[UIButton alloc] init];
     _regBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [_regBtn setTitle:NSLocalizedString(@"TCRegisterView.DoRegister", nil) forState:UIControlStateNormal];
-    [_regBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_regBtn setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
-    [_regBtn setBackgroundImage:[UIImage imageNamed:@"button_pressed"] forState:UIControlStateSelected];
+    [_regBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_regBtn.layer setCornerRadius:17.5];
+    [_regBtn.layer setBorderWidth:1];
+    _regBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _regBtn.layer.borderColor = [UIColor clearColor].CGColor;
+    _regBtn.clipsToBounds = YES;
     [_regBtn addTarget:self action:@selector(reg:) forControlEvents:UIControlEventTouchUpInside];
     
     TXWechatInfoView *infoView = [[TXWechatInfoView alloc] initWithFrame:CGRectMake(10, _regBtn.bottom+20, self.view.width - 20, 100)];
     _wechatInfoView = infoView;
+    
+    _agreeBtn = [[UIButton alloc] init];
+    [_agreeBtn setBackgroundImage:[UIImage imageNamed:@"select_icon"] forState:UIControlStateNormal];
+    [_agreeBtn setBackgroundImage:[UIImage imageNamed:@"selected_icon"] forState:UIControlStateSelected];
+    [_agreeBtn addTarget:self action:@selector(clickAgreeBtn) forControlEvents:UIControlEventTouchUpInside];
+    _agreeBtn.frame = CGRectMake(20, 235.5, 20, 20);
+    
+    NSString *content = NSLocalizedString(@"TCLogin.agreement", nil);
+    UITextView *contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(40, 230, [[UIScreen mainScreen] bounds].size.width - 40, 60)];
+    if ([self isCurrentLanguageHans]) {
+        contentTextView.attributedText = [self getContentLabelAttributedText:content range1:NSMakeRange(7, 6) range1:NSMakeRange(content.length - 6, 6) fontSize:14];
+    }else{
+        contentTextView.attributedText = [self getContentLabelAttributedText:content range1:NSMakeRange(29, 14) range1:NSMakeRange(content.length - 14, 14) fontSize:14];
+    }
+    contentTextView.textAlignment = NSTextAlignmentLeft;
+    contentTextView.delegate = self;
+    contentTextView.editable = NO;        //必须禁止输入，否则点击将弹出输入键盘
+    contentTextView.scrollEnabled = NO;
+    contentTextView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:contentTextView];
 
-        [self.view addSubview:_accountTextField];
+    [self.view addSubview:_agreeBtn];
+    [self.view addSubview:_accountTextField];
     [self.view addSubview:_lineView1];
     [self.view addSubview:_pwdTextField];
     [self.view addSubview:_lineView2];
@@ -158,7 +184,7 @@
     [_lineView3 setX:22];
     
     [_regBtn setSize:CGSizeMake(screen_width - 44, 35)];
-    [_regBtn setY:_lineView3.bottom + 36];
+    [_regBtn setY:_lineView3.bottom + 50];
     [_regBtn setX:22];
     
     _wechatInfoView.top = _regBtn.bottom + 30;
@@ -181,6 +207,26 @@
                                                                            attributes:@{NSForegroundColorAttributeName: [UIColor colorWithWhite:1 alpha:0.5]}];
 }
 
+- (NSAttributedString *)getContentLabelAttributedText:(NSString *)text range1:(NSRange)range1 range1:(NSRange)range2 fontSize:(CGFloat)fontSize
+{
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSForegroundColorAttributeName:[UIColor blackColor]}];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range1];
+    [attrStr addAttribute:NSLinkAttributeName value:@"yinsizhengce://" range:range1];
+    
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range2];
+    [attrStr addAttribute:NSLinkAttributeName value:@"yonghuxieyi://" range:range2];
+    return attrStr;
+}
+
+-(void)clickAgreeBtn{
+    [_agreeBtn setSelected:!_agreeBtn.selected];
+    if (_agreeBtn.selected) {
+        _regBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+    }else{
+        _regBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    }
+}
+
 - (void)clickScreen {
     [_accountTextField resignFirstResponder];
     [_pwdTextField resignFirstResponder];
@@ -188,6 +234,13 @@
 }
 
 - (void)reg:(UIButton *)button {
+    
+    if (!_agreeBtn.selected) {
+        [self _alert:NSLocalizedString(@"TCLogin.PleaseAgree", nil)
+             message:@""
+         buttonTitle:NSLocalizedString(@"Common.OK", nil)];
+        return;;
+    }
     TCLoginModel *loginModel = [TCLoginModel sharedInstance];
     
     NSString *userName = _accountTextField.text;
@@ -225,9 +278,8 @@
                                                 password:pwd
                                                     succ:^(NSString* userName, NSString* md5pwd ,NSString *token,NSString *refreshToken,long expires) {
             [weakSelf _hideHUD];
+            [self goBack];
             [weakSelf.loginListener loginOK:userName hashedPwd:md5pwd token:token refreshToken:refreshToken expires:expires];
-            //将信息同步到用户主界面显示
-            [[NSNotificationCenter defaultCenter] postNotificationName:KReloadUserInfoNotification object:nil];
         } fail:^(NSString *userName, int errCode, NSString *errMsg) {
             [weakSelf _hideHUD];
             [weakSelf.loginListener loginFail:userName code:errCode message:errMsg];
@@ -271,6 +323,27 @@
     [[MBProgressHUD HUDForView:self.view] hideAnimated:YES];
 }
 
+-(void)goBack{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
+}
+
+/**
+ 判断当前语言是否是简体中文
+ */
+- (BOOL)isCurrentLanguageHans
+{
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage isEqualToString:@"zh-Hans-CN"])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -286,5 +359,18 @@
     }
     return YES;
 }
-
+#pragma mark 富文本点击事件
+-(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction  API_AVAILABLE(ios(10.0)){
+    if ([[URL scheme] isEqualToString:@"yonghuxieyi"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://web.sdk.qcloud.com/document/Tencent-UGSV-User-Agreement.html"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }
+    else if ([[URL scheme] isEqualToString:@"yinsizhengce"]) {
+        TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ea00e5256ad442c483cd685d27b2e49f"];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }
+    return YES;
+}
 @end

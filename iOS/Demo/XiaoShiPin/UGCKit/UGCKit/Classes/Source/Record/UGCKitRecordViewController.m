@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Tencent. All rights reserved.
 #import "UGCKitRecordViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import <BeautySettingKit/TCBeautyPanel.h>
+//#import <TCBeautyPanel/TCBeautyPanel.h>
 #import "SDKHeader.h"
 #import "UGCKitMem.h"
 #import "UGCKitMediaPickerViewController.h"
@@ -19,9 +19,15 @@
 #import "UGCKit_UIViewAdditions.h"
 #import "UGCKitConstants.h"
 #import <objc/runtime.h>
+#import <Masonry/Masonry.h>
 #import "UGCKitReporterInternal.h"
 #import "SDKHeader.h"
-
+#import "BeautyView.h"
+#import <XMagic/XMagic.h>
+#import <OpenGLES/EAGL.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#import <YTCommonXMagic/yt_auth_apple.h>
 static const CGFloat BUTTON_CONTROL_SIZE = 40;
 static const CGFloat AudioEffectViewHeight = 150;
 
@@ -78,7 +84,8 @@ typedef NS_ENUM(NSInteger, RecordState) {
 @interface UGCKitRecordViewController()
 <TXUGCRecordListener, UIGestureRecognizerDelegate,
 MPMediaPickerControllerDelegate,TCBGMControllerListener,TXVideoJoinerListener,
-UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPituDelegate
+UGCKitVideoRecordMusicViewDelegate,UGCKitAudioEffectPanelDelegate,YTSDKEventListener,
+YTSDKLogListener,TXVideoCustomProcessDelegate,TXVideoCustomProcessListener
 #if POD_PITU
 , MCCameraDynamicDelegate
 #endif
@@ -93,9 +100,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     BOOL                            _isFrontCamera;
     BOOL                            _vBeautyShow;
     BOOL                            _preloadingVideos;
-    // Chorus
-    TXVideoBeautyStyle              _beautyStyle;
-    float                           _beautyDepth;
     float                           _whitenDepth;
     float                           _ruddinessDepth;
     float                           _eye_level;
@@ -137,7 +141,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     UGCKitVideoRecordMusicView *  _musicView;
     SpeedMode                 _speedMode;
     
-    TCBeautyPanel *      _vBeauty;
+    BeautyView *      _vBeauty;
     UGCKitProgressHUD*        _hud;
     CGFloat                   _bgmBeginTime;
     BOOL                      _bgmRecording;
@@ -162,13 +166,147 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 @property (strong, nonatomic) IBOutlet UIButton *btnChangeVideo;
 
 @property (assign, nonatomic) CaptureMode captureMode;
-
+// initData
+@property (nonatomic, assign) BOOL initData;  //initData
 @property (strong, nonatomic) UGCKitRecordPreviewController *previewController;
-
+//xmagic对象
+@property(nonatomic, strong) XMagic *xMagicKit;  //xmagic对象
+//提示信息
+@property(nonatomic, strong) UILabel *tipsLabel;  //提示信息
 @end
 
 
 @implementation UGCKitRecordViewController
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillResignActive:)
+    name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewDidBecomeActive:)
+    name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [self.navigationController setNavigationBarHidden:_navigationBarHidden animated:NO];
+    [super viewWillDisappear:animated];
+}
+
+// 退后台停止渲染
+- (void)viewWillResignActive:(NSNotification *)noti {
+    [self.xMagicKit onPause];
+}
+
+// 后台返回恢复动效
+- (void)viewDidBecomeActive:(NSNotification *)noti {
+    // 恢复动效
+    [self.xMagicKit onResume];
+}
+//处理纹理，接入第三方美颜
+- (GLuint)onPreProcessTexture:(GLuint)texture width:(CGFloat)width height:(CGFloat)height{
+    if(!_xMagicKit){
+           [self buildBeautySDK:(int)width and:(int)height texture:texture];
+           self.heightF = height;
+       }
+       if(_xMagicKit != nil && self.heightF != height){
+           [_xMagicKit setRenderSize:CGSizeMake(width, height)];
+       }
+       YTProcessInput *input = [[YTProcessInput alloc] init];
+       input.textureData = [[YTTextureData alloc] init];
+       input.textureData.texture = texture;
+       input.textureData.textureWidth = width;
+       input.textureData.textureHeight = height;
+       input.dataType = kYTTextureData;
+       
+       EAGLContext* cloudContext = [EAGLContext currentContext];
+       EAGLContext* xmagicContext = [self.xMagicKit getCurrentGlContext];
+       
+       if(cloudContext != xmagicContext){
+           [EAGLContext setCurrentContext: xmagicContext];
+       }
+       
+       YTProcessOutput *output =[self.xMagicKit process:input withOrigin:YtLightImageOriginTopLeft withOrientation:YtLightCameraRotation0];
+       
+       if(cloudContext != xmagicContext){
+           [EAGLContext setCurrentContext: cloudContext];
+       }
+       
+      return output.textureData.texture;
+
+}
+
+- (void)onLog:(YtSDKLoggerLevel) loggerLevel withInfo:(NSString * _Nonnull) logInfo{
+    NSLog(@"[%ld]-%@", (long)loggerLevel, logInfo);
+}
+- (void)onAssetEvent:(id)event
+{
+    NSLog(@"asset event:%@", event);
+}
+- (void)onTipsEvent:(id)event
+{
+    
+}
+- (void)onAIEvent:(id)event
+{
+    NSDictionary *eventDict = (NSDictionary *)event;
+    if (eventDict[@"face_info"] != nil) {
+        NSArray *face_list = eventDict[@"face_info"];
+        NSLog(@"face count %lu", (unsigned long)face_list.count);
+    } else if (eventDict[@"hand_info"] != nil) {
+        NSArray *hand_list = eventDict[@"hand_info"];
+        NSLog(@"hand count %lu", (unsigned long)hand_list.count);
+    } else if (eventDict[@"body_info"] != nil) {
+        NSArray *body_list = eventDict[@"body_info"];
+        NSLog(@"body count %lu", (unsigned long)body_list.count);
+    }
+}
+//HB构建SDK，初始化接口
+- (void)buildBeautySDK:(int)width and:(int)height texture:(unsigned)textureID {
+
+    NSString *beautyConfigPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    beautyConfigPath = [beautyConfigPath stringByAppendingPathComponent:@"beauty_config.json"];
+    NSFileManager *localFileManager=[[NSFileManager alloc] init];
+    BOOL isDir = YES;
+    NSDictionary * beautyConfigJson = @{};
+    if ([localFileManager fileExistsAtPath:beautyConfigPath isDirectory:&isDir] && !isDir) {
+        NSString *beautyConfigJsonStr = [NSString stringWithContentsOfFile:beautyConfigPath encoding:NSUTF8StringEncoding error:nil];
+        NSError *jsonError;
+        NSData *objectData = [beautyConfigJsonStr dataUsingEncoding:NSUTF8StringEncoding];
+        beautyConfigJson = [NSJSONSerialization JSONObjectWithData:objectData
+        options:NSJSONReadingMutableContainers error:&jsonError];
+    }
+    NSDictionary *assetsDict = @{@"core_name":@"LightCore.bundle",
+            @"root_path":[[NSBundle mainBundle] bundlePath],
+            @"plugin_3d":@"Light3DPlugin.bundle",
+            @"plugin_hand":@"LightHandPlugin.bundle",
+            @"plugin_segment":@"LightSegmentPlugin.bundle",
+
+            @"beauty_config":beautyConfigJson
+    };
+
+    // Init beauty kit
+    self.xMagicKit = [[XMagic alloc] initWithRenderSize:CGSizeMake(width,height) assetsDict:assetsDict];
+    // Register log
+    [self.xMagicKit registerSDKEventListener:self];
+    [self.xMagicKit registerLoggerListener:self withDefaultLevel:YT_SDK_VERBOSE_LEVEL];
+    //去掉磨皮
+    [self.xMagicKit configPropertyWithType:@"beauty" withName:@"beauty.smooth" withData:@"0.0" withExtraInfo:nil];
+
+//    _vBeauty.beautyKitRef = self.xMagicKit;
+    [_vBeauty setXMagic:self.xMagicKit];
+    _vBeauty.viewController = self;
+    __weak __typeof(self)weakSelf = self;
+    _vBeauty.itemSelectedBlock = ^() {
+        __strong typeof(self) strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(self) strongSelf = weakSelf;
+            strongSelf.tipsLabel.hidden = YES;
+        });
+    };
+    [_vBeauty updateAllBeautyValue];
+}
 
 - (instancetype)initWithConfig:(UGCKitRecordConfig *)config theme:(UGCKitTheme *)theme
 {
@@ -200,8 +338,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     _isFrontCamera = YES;
     _vBeautyShow = NO;
 
-    _beautyStyle = VIDOE_BEAUTY_STYLE_SMOOTH;
-    _beautyDepth = 6.3;
     _whitenDepth = 2.7;
 
     _isCameraPreviewOn = NO;
@@ -231,7 +367,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    _initData = FALSE;
+    self.xMagicKit = nil;
+    self.heightF = 0;
     [self initUI];
+//    buildBeautySDK
     [self initBeautyUI];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
@@ -263,11 +403,11 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.navigationController setNavigationBarHidden:_navigationBarHidden animated:NO];
-}
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+//    [self.navigationController setNavigationBarHidden:_navigationBarHidden animated:NO];
+//}
 
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -420,11 +560,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 
     UIPinchGestureRecognizer* pinchGensture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(onPInchZoom:)];
     [self.view addGestureRecognizer:pinchGensture];
-
-    // 滑动滤镜
-    UIPanGestureRecognizer* panGensture = [[UIPanGestureRecognizer alloc] initWithTarget:self action: @selector (onPanSlideFilter:)];
-    panGensture.delegate = self;
-    [self.view addGestureRecognizer:panGensture];
     
     if (UGCKitRecordStyleDuet == _config.recordStyle) { // 分屏合拍
         videoContainer.frame = CGRectMake(0, CGRectGetMaxY(_btnNext.frame) + 20,
@@ -507,19 +642,34 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 #pragma mark ---- Video Beauty UI ----
 -(void)initBeautyUI
 {
-    NSUInteger controlHeight = [ TCBeautyPanel getHeight];
-    CGFloat offset = 0;
-    if (@available(iOS 11, *)) {
-        offset = [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom;
+    UIEdgeInsets gSafeInset;
+#if __IPHONE_11_0 && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
+    if(gSafeInset.bottom > 0){
     }
-    _vBeauty = [[ TCBeautyPanel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - controlHeight - offset,
-                                                              self.view.frame.size.width, controlHeight)
-                                             theme:_theme
-                                         actionPerformer:[TCBeautyPanelActionProxy proxyWithSDKObject:[TXUGCRecord shareInstance]]];
-    _vBeauty.hidden = YES;
-    _vBeauty.pituDelegate = self;
-    _vBeauty.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    [self.view addSubview:_vBeauty];
+    if (@available(iOS 11.0, *)) {
+        gSafeInset = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
+    } else
+#endif
+    {
+        gSafeInset = UIEdgeInsetsZero;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //美颜选项界面
+        _vBeauty = [[BeautyView alloc] init];
+        [self.view addSubview:_vBeauty];
+        [_vBeauty mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(self.view);
+            make.centerX.mas_equalTo(self.view);
+            make.height.mas_equalTo(254);
+            if(gSafeInset.bottom > 0.0){  // 适配全面屏
+                make.bottom.mas_equalTo(self.view.mas_bottom).mas_offset(0);
+            } else {
+                make.bottom.mas_equalTo(self.view.mas_bottom).mas_offset(-10);
+            }
+        }];
+        _vBeauty.hidden = YES;
+    });
 }
 
 - (void)setSelectedSpeed:(SpeedMode)tag
@@ -735,11 +885,60 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 
 -(IBAction)onBtnBeautyClicked:(id)sender
 {
+    if(!_vBeautyShow && ![[NSUserDefaults standardUserDefaults] boolForKey:@"beauty"]){
+        [self openDialog];
+    }else{
+        [self showBeauty];
+    }
+}
+
+-(void)showBeauty{
     _vBeautyShow = !_vBeautyShow;
     _musicView.hidden = YES;
     _vBeauty.hidden = !_vBeautyShow;
     [self hideBottomView:_vBeautyShow];
 }
+
+-(void)openDialog{
+    // 初始化UIAlertController
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+
+    //修改title字体及颜色
+    NSMutableAttributedString *titleStr = [[NSMutableAttributedString alloc] initWithString:[_theme localizedString:@"UGCKit.Common.openBeautyTitle"]];
+    [titleStr addAttribute:NSForegroundColorAttributeName
+    value:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.9/1.0]
+    range:NSMakeRange(0, titleStr.length)];
+    [titleStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(0, titleStr.length)];
+    [alertController setValue:titleStr forKey:@"attributedTitle"];
+
+    // 修改message字体及颜色
+    NSMutableAttributedString *messageStr = [[NSMutableAttributedString alloc] initWithString:[_theme localizedString:@"UGCKit.Common.openBeautyMsg"]];
+    [messageStr addAttribute:NSForegroundColorAttributeName
+    value:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3/1.0]
+    range:NSMakeRange(0, messageStr.length)];
+    [messageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:18] range:NSMakeRange(0, messageStr.length)];
+    [alertController setValue:messageStr forKey:@"attributedMessage"];
+
+    // 添加UIAlertAction
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:
+    [_theme localizedString:@"UGCKit.Common.openBeautyAllow"]
+    style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"beauty"];
+        [self showBeauty];
+    }];
+    // KVC修改字体颜色
+    [sureAction setValue:[UIColor colorWithRed:241/255.0 green:66/255.0 blue:87/255.0 alpha:1/1.0] forKey:@"_titleTextColor"];
+    [alertController addAction:sureAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:
+    [_theme localizedString:@"UGCKit.Common.openBeautyForbidden"]
+    style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
+        NSLog(@"取消");
+    }];
+    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 -(IBAction)onTapCameraSwitch
 {
     _isFrontCamera = !_isFrontCamera;
@@ -861,6 +1060,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     _controlView.btnCountDown.enabled = NO;
     [self startCameraPreview];
     [self syncSpeedRateToSDK];
+    [[TXUGCRecord shareInstance] stopBGM];
     int result = [[TXUGCRecord shareInstance] startRecord:[_coverPath stringByAppendingString:@".mp4"]
                                                 coverPath:[_coverPath stringByAppendingString:@".png"]];
     [UGCKitReporter report:UGCKitReportItem_startrecord userName:nil code:result msg:result == 0 ? @"启动录制成功" : @"启动录制失败"];
@@ -916,6 +1116,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 - (void)_pauseAndAddMark:(void(^)(void))completion {
+    [self pauseBGM];
     NSUInteger countBefore = [TXUGCRecord shareInstance].partsManager.getVideoPathList.count;
     UGCKitRecordControlView *controlView = _controlView;
     void (^afterPause)(void)= ^{
@@ -943,7 +1144,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     __weak __typeof(self) weakSelf = self;
     UGCKitRecordControlView *controlView = _controlView;
     controlView.btnStartRecord.enabled = NO;
-    [self pauseBGM];
     if (_captureMode != CaptureModePress) {
         [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
     }
@@ -1140,7 +1340,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         param.enableAEC = _config.AECEnabled;
         [[TXUGCRecord shareInstance] startCameraCustom:param preview:_previewController.videoRecordView];
         _isCameraPreviewOn = YES;
-
+        [[TXUGCRecord shareInstance] setVideoProcessDelegate:self];
         if (_config.watermark) {
             UIImage *watermark = _config.watermark.image;
             CGRect watermarkFrame = _config.watermark.frame;
@@ -1160,13 +1360,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
         }
         
         if (!self->_isFromMusicSelectVC) {
-            TXBeautyManager *beautyManager = [[TXUGCRecord shareInstance] getBeautyManager];
-            [beautyManager setBeautyStyle:(TXBeautyStyle)_beautyStyle];
-            [beautyManager setBeautyLevel:_beautyDepth];
-            [beautyManager setWhitenessLevel:_whitenDepth];
-            [beautyManager setRuddyLevel:_ruddinessDepth];
-            [beautyManager setEyeScaleLevel:_eye_level];
-            [beautyManager setFaceSlimLevel:_face_level];
+    
         }
         
 #if POD_PITU
@@ -1218,7 +1412,6 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 }
 
 - (void)resetBeautySettings {
-    [_vBeauty resetAndApplyValues];
     [[[TXUGCRecord shareInstance] getBeautyManager] setFilter:nil];
     [[[TXUGCRecord shareInstance] getBeautyManager] setGreenScreenFile:nil];
 }
@@ -1420,8 +1613,9 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
     // FIXME: 目前complete回调的触发，只有在调用 [[TXUGCRecord shareInstance] stopRecord] 时会触发。
     // 当前页面的结束录制，用 [[TXUGCRecord shareInstance].partsManager 的 joinAllParts 来控制，这里的回调不会触发。
     // 在当前页面Uinit的时候，会调用 stopRecord。
-    [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
-
+    if (_captureMode != CaptureModePress) {
+        [_controlView setRecordButtonStyle:UGCKitRecordButtonStyleRecord];
+    }
     if (_appForeground)
     {
         if (_currentRecordTime >= _config.minDuration)
@@ -1671,81 +1865,7 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 
 - (void)onPanSlideFilter:(UIPanGestureRecognizer*)recognizer
 {
-    CGPoint translation = [recognizer translationInView:self.view.superview];
-    [recognizer velocityInView:self.view];
-    CGPoint speed = [recognizer velocityInView:self.view];
-    
-//    NSLog(@"pan center:(%.2f)", translation.x);
-//    NSLog(@"pan speed:(%.2f)", speed.x);
-    
-    float ratio = translation.x / self.view.frame.size.width;
-    float leftRatio = ratio;
-    NSInteger index = [_vBeauty currentFilterIndex];
-    UIImage* curFilterImage = [_vBeauty filterImageByMenuOptionIndex:index];
-    UIImage* filterImage1 = nil;
-    UIImage* filterImage2 = nil;
-    CGFloat filter1Level = 0.f;
-    CGFloat filter2Level = 0.f;
-    if (leftRatio > 0) {
-        filterImage1 = [_vBeauty filterImageByMenuOptionIndex:index - 1];
-        filter1Level = [_vBeauty filterMixLevelByIndex:index - 1] / 10;
-        filterImage2 = curFilterImage;
-        filter2Level = [_vBeauty filterMixLevelByIndex:index] / 10;
-    }
-    else {
-        filterImage1 = curFilterImage;
-        filter1Level = [_vBeauty filterMixLevelByIndex:index] / 10;
-        filterImage2 = [_vBeauty filterImageByMenuOptionIndex:index + 1];
-        filter2Level = [_vBeauty filterMixLevelByIndex:index + 1] / 10;
-        leftRatio = 1 + leftRatio;
-    }
-    
-    if (recognizer.state == UIGestureRecognizerStateChanged) {
-        [[TXUGCRecord shareInstance] setFilter:filterImage1 leftIntensity:filter1Level rightFilter:filterImage2 rightIntensity:filter2Level leftRatio:leftRatio];
-    }
-    else if (recognizer.state == UIGestureRecognizerStateEnded) {
-        BOOL isDependRadio = fabs(speed.x) < 500; //x方向的速度
-        [self animateFromFilter1:filterImage1 filter2:filterImage2 filter1MixLevel:filter1Level filter2MixLevel:filter2Level leftRadio:leftRatio speed:speed.x completion:^{
-            NSInteger filterIndex = 0;
-            if (!isDependRadio) {
-                if (speed.x < 0) {
-                    filterIndex = index + 1;
-                } else {
-                    filterIndex = index - 1;
-                }
-            } else {
-                if (ratio > 0.5) {   //过半或者速度>500就切换
-                    filterIndex = index - 1;
-                } else if  (ratio < -0.5) {
-                    filterIndex = index + 1;
-                }
-            }
-            self->_vBeauty.currentFilterIndex = filterIndex;
-            UILabel* filterTipLabel = [UILabel new];
-            filterTipLabel.text = [self->_vBeauty currentFilterName];
-            filterTipLabel.font = [UIFont systemFontOfSize:30];
-            filterTipLabel.textColor = UIColor.whiteColor;
-            filterTipLabel.alpha = 0.1;
-            [filterTipLabel sizeToFit];
-            CGSize viewSize = self.view.frame.size;
-            CGFloat centerX = UGCKitRecordStyleDuet != self->_config.recordStyle ? viewSize.width / 2 : viewSize.width / 4;
-            CGFloat centerY = UGCKitRecordStyleTrio != self->_config.recordStyle ? viewSize.height / 3 : viewSize.height / 2;
-            filterTipLabel.center = CGPointMake(centerX, centerY);
-            [self.view addSubview:filterTipLabel];
-
-            [UIView animateWithDuration:0.25 animations:^{
-                filterTipLabel.alpha = 1;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:0.25 delay:0.25 options:UIViewAnimationOptionCurveLinear animations:^{
-                    filterTipLabel.alpha = 0.1;
-                } completion:^(BOOL finished) {
-                    [filterTipLabel removeFromSuperview];
-                }];
-            }];
-        }];
-        
-        
-    }
+   
 }
 
 - (void)animateFromFilter1:(UIImage*)filter1Image filter2:(UIImage*)filter2Image filter1MixLevel:(CGFloat)filter1MixLevel filter2MixLevel:(CGFloat)filter2MixLevel leftRadio:(CGFloat)leftRadio speed:(CGFloat)speed completion:(void(^)(void))completion
@@ -1802,6 +1922,12 @@ UGCKitVideoRecordMusicViewDelegate, UGCKitAudioEffectPanelDelegate, BeautyLoadPi
 {
     [self uinit];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (self.xMagicKit) {
+        [self.xMagicKit clearListeners];
+        [self.xMagicKit deinit];
+        self.xMagicKit = nil;
+        _initData = FALSE;
+    }
 }
 @end
 

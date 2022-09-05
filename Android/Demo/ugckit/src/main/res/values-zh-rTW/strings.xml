@@ -428,4 +428,14 @@
     <string name="trans_squeeze">擠壓</string>
     <string name="trans_swap">立體</string>
     <string name="trans_invalid_timestamp">轉場時間點無效，請重新設置</string>
+    <string name="permission_introduction_title">存儲權限申請說明</string>
+    <string name="permission_introduction_positive">允許授權</string>
+    <string name="permission_introduction_write">用於存儲SDK配置文件、日誌文件和媒體文件，讀取本地媒體文件</string>
+    <string name="permission_introduction_camera">用於采集攝像頭畫面，拍攝照片和錄製視頻</string>
+    <string name="permission_introduction_audio">用於采集用戶聲音，錄製聲音</string>
+    <string name="permission_introduction_write_title">存儲權限</string>
+    <string name="permission_introduction_camera_title">相機權限</string>
+    <string name="permission_introduction_audio_title">麥克風權限</string>
+    <string name="btn_forbit">禁止</string>
+    <string name="permission_always_allow">始终允许</string>
 </resources>

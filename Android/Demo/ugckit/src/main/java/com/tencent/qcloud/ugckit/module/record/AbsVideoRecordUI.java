@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
-import com.tencent.liteav.demo.beauty.model.BeautyInfo;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
@@ -21,7 +18,7 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
     private ScrollFilterView   mScrollFilterView;
     private RecordRightLayout  mRecordRightLayout;
     private RecordBottomLayout mRecordBottomLayout;
-    private BeautyPanel        mBeautyPanel;
+    private RelativeLayout     mBeautyPanel;
     private RecordMusicPannel  mRecordMusicPannel;
     private SoundEffectsPannel mSoundEffectsPannel;
     private ImageSnapShotView  mImageSnapShotView;
@@ -51,10 +48,10 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mRecordRightLayout = (RecordRightLayout) findViewById(R.id.record_right_layout);
         mRecordBottomLayout = (RecordBottomLayout) findViewById(R.id.record_bottom_layout);
 
-        mBeautyPanel = (BeautyPanel) findViewById(R.id.beauty_pannel);
-        BeautyInfo defaultBeauty = mBeautyPanel.getDefaultBeautyInfo();
-        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
-        mBeautyPanel.setBeautyInfo(defaultBeauty);
+        mBeautyPanel = (RelativeLayout) findViewById(R.id.beauty_pannel);
+//        BeautyInfo defaultBeauty = mBeautyPanel.getDefaultBeautyInfo();
+//        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
+//        mBeautyPanel.setBeautyInfo(defaultBeauty);
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
         mScrollFilterView.setBeautyPannel(mBeautyPanel);
 
@@ -90,7 +87,7 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         return mRecordBottomLayout;
     }
 
-    public BeautyPanel getBeautyPanel() {
+    public RelativeLayout getBeautyPanel() {
         return mBeautyPanel;
     }
 

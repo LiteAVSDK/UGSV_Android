@@ -2,6 +2,8 @@ package com.tencent.qcloud.ugckit;
 
 import android.content.Context;
 
+import com.tencent.xmagic.XMagicImpl;
+
 public class UGCKit {
     private static Context sAppContext;
 
@@ -12,6 +14,8 @@ public class UGCKit {
      */
     public static void init(Context context) {
         sAppContext = context;
+        XMagicImpl.init(sAppContext);
+        XMagicImpl.checkAuth(null);
     }
 
     /**

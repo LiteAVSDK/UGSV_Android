@@ -13,12 +13,14 @@
 #import "TXAudioRawDataDelegate.h"
 
 #ifndef TRTC
+#ifndef DISABLE_VOD
 #import "TXBitrateItem.h"
 #import "TXImageSprite.h"
 #import "TXPlayerAuthParams.h"
 #import "TXVodPlayConfig.h"
 #import "TXVodPlayListener.h"
 #import "TXVodPlayer.h"
+#endif
 #endif
 #endif
 #endif

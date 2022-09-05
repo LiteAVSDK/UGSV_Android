@@ -301,4 +301,41 @@
 "给公众号发送“小视频”" = "Send \"小视频\"";
 "获取技术支持服务" = "Tech support";
 "如何获取技术支持服务？" = "How to get tech support?";
+"ugckit_about_tip1" = "XiaoShiPin is a prototype-level App developed by Tencent Video Cloud Team. It helps demonstrate a portfolio of Tencent Cloud video features, such as recording and editing video clips through video cloud SDK, uploading and publishing videos through COS service, and distributing videos by using VOD service.";
+"TCLogin.agreement" = "I have read and agree to the Privacy Policy and User Agreement";
+"TCLogin.PleaseAgree" = "Please agree to the Privacy Policy and User Agreement first";
+"TCAccountInfo.setting" = "Setting";
+"TCAccountInfo.privacyPolicy" = "Privacy Policy";
+"TCAccountInfo.userAgreement" = "User Agreement";
+"TCAccountInfo.infolist" = "List of collected personal information";
+"TCAccountInfo.sharelist" = "List of Personal Information Shared by Third Parties";
+"TCAccountInfo.about" = "About";
+"TCAccountInfo.setAvatar" = "Set Avatar";
+"TCAccountInfo.confirm" = "Confirm";
+"TCAccountInfo.modifyUserNickname" = "Modify User Nickname";
+"TCAccountInfo.pleaseEnterUserNickname" = "Please enter user nickname";
+"TCAccountInfo.nickNameTips" = "Chinese, letters, numbers and underscores only, 2-20 characters";
+"TCSetting.cancelAccount" = "Cancel Account";
+"TCDeleteAccount.detail" = "After logging out, you will not be able to use your current account, and the relevant data will be deleted and cannot be retrieved";
+"TCDeleteAccount.title" = "Tencent Cloud XiaoShiPin";
+"TCDeleteAccount.currentAccount" = "current account";
+"TCDeleteAccount.notLogged" = "You are not logged in";
+"TCDeleteAccount.alertMsg" = "Are you sure you want to cancel your account?";
+"TCDeleteAccount.confirm" = "I confirm";
+"TCDeleteAccount.holdOn" = "hold on";
+"TCAbount.sdkVersion" = "sdk version";
+"TCAbount.appVersion" = "app version";
+"TCAbount.support" = "Get technical support services";
+"TCAbount.download" = "Download SDK";
+"TCAbount.product" = "product description";
+"TCLogin.agree" = "agree";
+"TCLogin.disagree" = "disagree";
+"TCLogin.detail" = "
+You are welcome to use Tencent Cloud XiaoShiPin. We will help you understand our collection, use, and storage of personal information through the Privacy Regulations and User Agreement. In addition, you can also learn about your relevant rights and implementation methods. If you agree, please click the button below to start accepting our services.";
+"TCLogin.welcome" = "welcome to use Tencent Cloud XiaoShiPin";
 
+
+
+
+"TCLogin.privacyDetail" = "XiaoShiPin product is a short video playback and production function product provided by Tencent Cloud Computing (Beijing) Co., Ltd. (registered at the 35th floor of Tencent Building, Science and Technology Zhongyi Road, Maling Community, Yuehai Street, Nanshan District, Shenzhen). If you need a quick and concise understanding of how we collect your information, you can refer to the XiaoShiPin Privacy Policy Summary.\n1、When you register and log in to XiaoShiPin account, we will collect your login account, login password and other information; when you use video recording, sharing, beauty, editing and other functions, we will collect your network type, equipment manufacturer , device model, face information, operating system version number and other information; when you report an abnormal situation during use, we will collect your package name, version, process name and other information. We will only collect necessary user information based on your specific functional requirements for using our products and services. You can refer to the List of Collected Personal Information for a quick overview of how we collect and use your personal information.\n2、When you use functions such as video recording, editing, and playback, we may invoke your storage, camera, microphone, network, audio and other permissions. We will ask you for permission to use the permission on the first call, you have the right to deny or cancel the authorization.\n3、Some of our services may need to be provided by third parties. You can refer to XiaoShiPin Third-Party Information Sharing List to quickly understand the third-party shared information and third-party SDK.\n4、You can inquire, copy, correct, supplement, delete or withdraw your personal information, and we also provide you with a channel to cancel your account. You can quickly learn about your other rights as the subject of personal information rights through the channels and methods listed in Article 6 of the Guidelines for Privacy Protection of XiaoShiPin. \n5、If you have any questions about the above content, you can contact us by sending an email to Dataprivacy@tencent.com or other methods listed in XiaoShiPin Privacy Protection Guidelines.";
+"TCLogin.privacyBottom" = "If you agree to the XiaoShiPin User Agreement, XiaoShiPin Privacy Protection Guidelines, XiaoShiPin Collection Personal Information Express List, XiaoShiPin Third Party Information Sharing List and Children's Privacy Protection Statement, please click Agree , start using our products and services.";

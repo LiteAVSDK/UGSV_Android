@@ -10,6 +10,15 @@
         <item name="android:listDivider">@drawable/shape_list_divider</item>
     </style>
 
+    <style name="LoginShowTipTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <!-- Login and register Activity theme. -->
     <style name="BaseWhiteTransparentTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -34,48 +43,13 @@
         <item name="android:windowBackground">@drawable/splash_pic</item>
     </style>
 
-    <style name="PlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowAnimationStyle">@style/PlayerAnimation</item>
-    </style>
-
     <style name="PlayerAnimation" parent="android:Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/anim_slice_in_right</item>
         <item name="android:activityCloseExitAnimation">@anim/anim_slice_out_right</item>
     </style>
 
-    <style name="tencent_tls_ui_theme" parent="android:Theme.Holo.Light.NoActionBar"/>
-
-    <style name="tencent_tls_ui_transparent">
-        <item name="android:windowBackground">@color/tencent_tls_ui_transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-    </style>
-
 
     <!-- Input dialog theme. -->
-    <style name="InputDialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:background">#00000000</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="android:textColorHint">@color/c9</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-    </style>
-
-    <style name="NormalDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-
-    </style>
 
     <style name="BottomDialog" parent="AppTheme">
         <item name="android:layout_width">match_parent</item>
@@ -84,15 +58,27 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowFrame">@null</item>
+    <style name="LoginBottomDialog" parent="@android:style/Theme.Holo.Dialog">
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
-        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@color/login_color_bg_dialog</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
+    <style name="DialogFragment" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@color/app_dialog_bg</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+
+    <style name="AppThemeMain" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColor">@color/app_color_white</item>
+    </style>
+
 
     <!-- 定制UGCkit -->
     <style name="RecordActivityTheme" parent="UGCKitRecordStyle">

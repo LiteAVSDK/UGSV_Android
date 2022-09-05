@@ -2,14 +2,17 @@ package com.tencent.qcloud.xiaoshipin;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.multidex.MultiDexApplication;
 
+import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
-import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXUGCBase;
+import com.tencent.xmagic.XMagicImpl;
 
 //import com.squareup.leakcanary.LeakCanary;
 //import com.squareup.leakcanary.RefWatcher;
@@ -24,24 +27,31 @@ public class TCApplication extends MultiDexApplication {
 //    private RefWatcher mRefWatcher;
 
     private static TCApplication instance;
+
     private String ugcKey = "请替换成您的licenseKey";
+
     private String ugcLicenceUrl = "请替换成您的licenseUrl";
+
+
+    private String xmagicAuthKey = "请替换成您的licenseKey";
+    private String xmagicAuthLicenceUrl = "请替换成您的licenseUrl";
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         TCConfigManager.init(this);
-        initSDK();
-
-//        mRefWatcher = LeakCanary.install(this);
-
         // 短视频licence设置
         TXUGCBase.getInstance().setLicence(this, ugcLicenceUrl, ugcKey);
+        TCUserMgr.getInstance().initContext(getApplicationContext());
+        Log.w(TAG, "app init sdk");
+//        mRefWatcher = LeakCanary.install(this);
+
+
+        XMagicImpl.setXmagicAuthKeyAndUrl(xmagicAuthLicenceUrl, xmagicAuthKey);
         UGCKit.init(this);
 
-        // ELK数据上报：启动次数
-        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_START_UP, 0, "");
+
 
         registerActivityLifecycleCallbacks(new MyActivityLifecycleCallbacks(this));
     }
@@ -55,14 +65,6 @@ public class TCApplication extends MultiDexApplication {
 //        return application.mRefWatcher;
 //    }
 
-    /**
-     * 初始化SDK，包括Bugly，LiteAVSDK等
-     */
-    public void initSDK() {
-        TCUserMgr.getInstance().initContext(getApplicationContext());
-        TXLog.w(TAG, "app init sdk");
-
-    }
 
     private class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
 

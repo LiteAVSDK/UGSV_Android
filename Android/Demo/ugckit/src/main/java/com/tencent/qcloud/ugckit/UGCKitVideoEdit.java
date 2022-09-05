@@ -5,9 +5,11 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.tencent.qcloud.ugckit.component.dialog.ActionSheetDialog;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.Config;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoInfoReader;
@@ -36,8 +39,9 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
 
     private ProgressFragmentUtil mProgressFragmentUtil;
     @Nullable
-    private OnEditListener       mOnEditListener;
-    private boolean              mIsPublish;
+    private OnEditListener mOnEditListener;
+    private boolean mIsPublish;
+    private boolean mIsGranted = false;
 
     public UGCKitVideoEdit(Context context) {
         super(context);
@@ -53,6 +57,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         super(context, attrs, defStyleAttr);
         initDefault();
     }
+
 
     private void initDefault() {
         mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext());
@@ -186,8 +191,12 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                 ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                     @Override
                     public void onClick(int which) {
-                        VideoEditerSDK.getInstance().setPublishFlag(false);
-                        startGenerate();
+                        if (!mIsGranted) {
+                            ToastUtil.toastLongMessage(getResources().getString(R.string.need_storage_permission));
+                        } else {
+                            VideoEditerSDK.getInstance().setPublishFlag(false);
+                            startGenerate();
+                        }
                     }
                 });
 
@@ -199,7 +208,6 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                             VideoEditerSDK.getInstance().setPublishFlag(true);
                             startGenerate();
                         }
-
                     });
         }
         actionSheetDialog.show();
@@ -285,7 +293,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         });
     }
 
-    private void startGenerate() {
+    public void startGenerate() {
         mProgressFragmentUtil.showLoadingProgress(new ProgressFragmentUtil.IProgressListener() {
             @Override
             public void onStop() {
@@ -305,4 +313,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         mProgressFragmentUtil.dismissLoadingProgress();
     }
 
+    public void setIsGranted(Boolean isGranted) {
+        mIsGranted = isGranted;
+    }
 }

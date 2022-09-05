@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/power_text"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/seekBar"
+        android:layout_alignBottom="@id/seekBar"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:text="强度"
+        android:textSize="15sp" />
+
+    <com.tencent.xmagic.widget.XmagicSeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/currentValue"
+        android:layout_toRightOf="@id/power_text"
+        android:background="@null"
+        android:progressDrawable="@drawable/seek_bar_progress"
+        android:splitTrack="false"
+        android:thumb="@mipmap/seekbar_btn" />
+
+    <TextView
+        android:id="@+id/currentValue"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/seekBar"
+        android:layout_alignBottom="@id/seekBar"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:text="-100"
+        android:textSize="15sp" />
+</RelativeLayout>

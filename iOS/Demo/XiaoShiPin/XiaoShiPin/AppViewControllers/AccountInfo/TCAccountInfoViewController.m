@@ -22,21 +22,50 @@
 #import "SDKHeader.h"
 #import "ColorMacro.h"
 #import "UIView+Additions.h"
+#import "UIImageView+WebCache.h"
+#import "AboutViewController.h"
+#import "SettingViewController.h"
+#import "TCAvatarListCell.h"
+#import "HUDHelper.h"
+#import "TCLoginViewController.h"
 static NSString * const HomePageURL = @"https://cloud.tencent.com/product/ugsv";
 #define L(X) NSLocalizedString((X), nil)
 
 
 extern BOOL g_bNeedEnterPushSettingView;
 
-@interface TCAccountInfoViewController () < UIPickerViewDataSource, UIPickerViewDelegate >
-
-@property (nonatomic, strong) NSMutableArray *logFilesArray;
-
-@property (nonatomic, strong) UIView *logUploadView;
-
-@property (nonatomic, strong) UIPickerView *logPickerView;
-
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
+@interface TCAccountInfoViewController () < UIPickerViewDataSource,
+UIPickerViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,
+UITextFieldDelegate>
+/*
+ * TCAccountInfoViewController 类说明 : 该类显示用户信息的界面
+ */
+@property (nonatomic, strong) UIView      *userInfoView; //用户信息
+@property (nonatomic, strong) UIImageView *faceImage;  //头像
+@property (nonatomic, strong) UILabel     *nickText;  //昵称
+@property (nonatomic, strong) UILabel     *identifierText;  //ID
+@property (nonatomic, strong) NSString    *nickName; //昵称
+@property (nonatomic, strong) NSString    *identifier;  //ID
+@property (nonatomic, strong) UIView      *coverView;  //coverView
+@property (nonatomic, strong) UIView      *nameCoverView; //nameCoverView
+@property (nonatomic, strong) UIView      *contentView; //contentView
+@property (nonatomic, strong) UIView      *nameContentView; //nameContentView
+@property (nonatomic, strong) UILabel     *avatarLabel; //头像Label
+@property (nonatomic, strong) UILabel     *nickNameLabel; //昵称lable
+@property (nonatomic, strong) UILabel     *nickNameTipsLabel;  //昵称tipsLable
+@property (nonatomic, strong) UIButton    *avatarBtn;  //头像btn
+@property (nonatomic, strong) UIButton    *nickNameBtn;  //昵称btn
+@property (nonatomic, strong) UITextField *textField;  //输入昵称
+@property(nonatomic, strong) UICollectionView *collectionView;//头像collectionView
+@property(nonatomic, strong) NSArray      *avatarList; //头像list
+@property NSInteger                       selectedIndex; //被选择的index
+@property CGFloat                         position; //position
+@property CGFloat                         endPosition; //endPosition
+@property(nonatomic, strong) UIAlertController *alertController; //alertController
+//
+//@property (nonatomic, strong) UIPickerView *logPickerView;
+//
+//@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
 
 @end
 
@@ -48,6 +77,8 @@ extern BOOL g_bNeedEnterPushSettingView;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KReloadUserInfoNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KClearUserInfoNotification object:nil];
 }
 
 /**
@@ -59,11 +90,23 @@ extern BOOL g_bNeedEnterPushSettingView;
 {
     [[TCLoginModel sharedInstance] logout:^{
         [[TCLoginParam shareInstance] clearLocal];
-        if (self.onLogout) {
-            self.onLogout(self);
-        }
-        [self.dataTable reloadData];
+        [self checkOpen];
+        [_loginBtn setTitle:NSLocalizedString(@"TCLoginView.Login", nil) forState: UIControlStateNormal];
+        _nickText.text  = @"";
+        _identifierText.text  = @"";
+        [_faceImage sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"default_user"]];
     }];
+}
+
+-(void)clearData{
+    [[TCLoginParam shareInstance] clearLocal];
+    [_loginBtn setTitle:NSLocalizedString(@"TCLoginView.Login", nil) forState: UIControlStateNormal];
+    _nickText.text  = @"";
+    _identifierText.text  = @"";
+    [_faceImage sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"default_user"]];
+    TCLoginViewController *next = [[TCLoginViewController alloc] init];
+    next.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:next animated:YES];
 }
 
 - (void)viewDidLoad
@@ -72,13 +115,27 @@ extern BOOL g_bNeedEnterPushSettingView;
     // 设置通知消息,接受到通知后重绘cell,确保更改后的用户资料能同步到用户信息界面
     [[NSNotificationCenter defaultCenter] removeObserver:self name:KReloadUserInfoNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserInfoOnController:) name:KReloadUserInfoNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KClearUserInfoNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(clearUserInfoOnController:)
+    name:KClearUserInfoNotification object:nil];
+    //设置两个通知
+    [[NSNotificationCenter defaultCenter]addObserver:self
+    selector:@selector(keyHiden:)
+    name: UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self
+    selector:@selector(keyWillAppear:)
+    name:UIKeyboardWillChangeFrameNotification object:nil];
     
     [self initUI];
+    [self initAvatarList];
+    [self checkOpen];
     return;
 }
 
 -(void)initUI
 {
+    _selectedIndex = -1;
     UIView *viewBack=[[UIView alloc] init];
     viewBack.frame = self.view.frame;
     viewBack.backgroundColor= RGB(0x18, 0x1D, 0x27);
@@ -86,25 +143,53 @@ extern BOOL g_bNeedEnterPushSettingView;
     
     // 初始化需要绘制在tableview上的数据
     __weak typeof(self) ws = self;
-    TCUserInfoCellItem *backFaceItem = [[TCUserInfoCellItem alloc] initWith:@"" value:@"" type:TCUserInfo_View action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
-         [ws onEditUserInfo:menu cell:cell];
-        nil; }];
+    TCUserInfoCellItem *backFaceItem = [[TCUserInfoCellItem alloc] initWith:
+    @"" value:@"" type:TCUserInfo_View rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws onEditUserInfo:menu cell:cell];nil; }];
     
-    //    TCUserInfoCellItem *setItem = [[TCUserInfoCellItem alloc] initWith:@"编辑个人信息" value:nil type:TCUserInfo_Edit action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
-    //        [ws onEditUserInfo:menu cell:cell]; } ];
+    TCUserInfoCellItem *settingItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCAccountInfo.setting", nil) value:nil
+    type:TCUserInfo_About rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws onClickSetting:menu cell:cell]; } ];
     
-    TCUserInfoCellItem *aboutItem = [[TCUserInfoCellItem alloc] initWith:NSLocalizedString(@"TCUserInfoView.HintAboutApp", nil) value:nil type:TCUserInfo_About action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) { [ws onShowAppVersion:menu cell:cell]; } ];
+    TCUserInfoCellItem *privacyItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCAccountInfo.privacyPolicy", nil) value:nil
+    type:TCUserInfo_About rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws gotoprivace:menu cell:cell]; } ];
     
-    TCUserInfoCellItem *getSupportItem = [[TCUserInfoCellItem alloc] initWith:NSLocalizedString(@"获取技术支持服务", nil) value:nil type:TCUserInfo_About action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) { [ws onShowAppSupport:menu cell:cell]; } ];
+    TCUserInfoCellItem *agreementItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCAccountInfo.userAgreement", nil) value:nil
+    type:TCUserInfo_About rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws gotoWeb:menu cell:cell]; } ];
     
-    TCUserInfoCellItem *aboutSDKItem = [[TCUserInfoCellItem alloc] initWith:NSLocalizedString(@"TCUserInfoView.ProductIntroduction", nil) value:nil type:TCUserInfo_About action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) { [ws onShowSDKInfo:menu cell:cell]; } ];
+    TCUserInfoCellItem *infolistItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCAccountInfo.infolist", nil) value:nil
+    type:TCUserInfo_About rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws gotoInfolist:menu cell:cell]; } ];
+    
+    TCUserInfoCellItem *sharelistItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCAccountInfo.sharelist", nil) value:nil
+    type:TCUserInfo_About rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws gotoSharelist:menu cell:cell]; } ];
+    
+    TCUserInfoCellItem *aboutItem = [[TCUserInfoCellItem alloc] initWith:
+    NSLocalizedString(@"TCAccountInfo.about", nil) value:nil
+    type:TCUserInfo_About rightText:nil
+    action:^(TCUserInfoCellItem *menu, TCUserInfoTableViewCell *cell) {
+    [ws gotoAbout:menu cell:cell]; } ];
 
     
     CGFloat tableHeight = CGRectGetHeight(self.view.bounds);
     CGFloat quitBtnYSpace = tableHeight + 20;
     //    _userInfoUISetArry = [NSMutableArray arrayWithArray:@[backFaceItem,setItem, aboutItem]];
     
-    _userInfoUISetArry = [NSMutableArray arrayWithArray:@[backFaceItem,aboutItem,getSupportItem,aboutSDKItem]];
+    _userInfoUISetArry = [NSMutableArray arrayWithArray:@[backFaceItem,settingItem,privacyItem,agreementItem,infolistItem,sharelistItem,aboutItem]];
     
     //设置tableview属性
     CGRect frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, tableHeight);
@@ -132,35 +217,318 @@ extern BOOL g_bNeedEnterPushSettingView;
     _loginBtn.bottom = wrapper.height;
     _dataTable.tableFooterView = wrapper;
     
-    _logUploadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
-    _logUploadView.backgroundColor = RGBA(0, 0, 0, 0.6);
-    _logUploadView.hidden = YES;
+    _userInfoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 275)];
+    _userInfoView.backgroundColor = RGB(239,100,85);
+    _userInfoView.userInteractionEnabled = YES;
+    [self.view addSubview:_userInfoView];
     
-    CGFloat yPosition = CGRectGetHeight(_logUploadView.frame) * 0.3;
-    UIView *logUploadPanel = [[UIView alloc] initWithFrame:CGRectMake(0, yPosition, CGRectGetWidth(_logUploadView.frame), CGRectGetHeight(_logUploadView.frame) - yPosition)];
-    logUploadPanel.backgroundColor = [UIColor whiteColor];
-    [_logUploadView addSubview:logUploadPanel];
+    UIColor *uiBorderColor = RGB(239,100,85);
+    _faceImage = [[UIImageView alloc ] init];
+    _faceImage.layer.masksToBounds = YES;
+    _faceImage.layer.borderWidth   = 2;
+    _faceImage.layer.borderColor   = uiBorderColor.CGColor;
+    _faceImage.userInteractionEnabled = YES;
     
-    _logPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(logUploadPanel.frame), 200)];
-    _logPickerView.dataSource = self;
-    _logPickerView.delegate = self;
-    [logUploadPanel addSubview:_logPickerView];
+    _nickText = [[UILabel alloc] init];
+    _nickText.textAlignment = NSTextAlignmentCenter;
+    _nickText.textColor     = [UIColor whiteColor];
+    _nickText.font          = [UIFont systemFontOfSize:18];
+    _nickText.lineBreakMode = NSLineBreakByWordWrapping;
+    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openNickName)];
+    [_nickText addGestureRecognizer:tapGesture];
+    _nickText.userInteractionEnabled = YES;
     
-    UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    uploadButton.frame = CGRectMake(0, CGRectGetMaxY(_logPickerView.frame), CGRectGetWidth(logUploadPanel.frame), 40);
-    [uploadButton setTitle:@"分享上传日志" forState:UIControlStateNormal];
-    [uploadButton addTarget:self action:@selector(onSharedUploadLog:) forControlEvents:UIControlEventTouchUpInside];
-    [logUploadPanel addSubview:uploadButton];
+    _identifierText = [[UILabel alloc] init];
+    _identifierText.textColor     = [UIColor whiteColor];
+    _identifierText.font          = [UIFont systemFontOfSize:14];
+    _identifierText.textAlignment = NSTextAlignmentCenter;
+    _identifierText.lineBreakMode = NSLineBreakByWordWrapping;
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onLogUploadViewTapped:)];
-    tapGesture.enabled = YES;
-    _logUploadView.userInteractionEnabled = YES;
-    [_logUploadView addGestureRecognizer:tapGesture];
+    _nickName =  [[TCUserInfoModel sharedInstance] getUserProfile].nickName;
+    _identifier = [TCLoginParam shareInstance].identifier;
     
-    [self.view addSubview:_logUploadView];
     
-    _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    _longPressGesture.enabled = YES;
+    CGRect mainScreenSize = [ UIScreen mainScreen ].bounds;
+    
+    _faceImage.frame = CGRectMake((mainScreenSize.size.width-100)/2, 50,100, 100);
+    _faceImage.layer.cornerRadius = 50;
+    if ((NSNull *)[[TCUserInfoModel sharedInstance] getUserProfile].faceURL  == [NSNull null]) {
+        [[TCUserInfoModel sharedInstance] getUserProfile].faceURL = nil;
+    }
+    [_faceImage sd_setImageWithURL:[NSURL URLWithString:[[TCUserInfoModel sharedInstance] getUserProfile].faceURL]
+    placeholderImage:[UIImage imageNamed:@"default_user"]];
+    [_faceImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openPopView)]];
+    
+    if(_identifier != nil && (NSNull *)_identifier != [NSNull null]){
+        CGSize titleTextSize  = [_identifier sizeWithAttributes:@{NSFontAttributeName:_identifierText.font}];
+        _identifierText.text  = [NSString stringWithFormat:@"ID:%@",_identifier];
+        _identifierText.frame = CGRectMake(0, 175+10+titleTextSize.height,mainScreenSize.size.width, titleTextSize.height);
+        
+        if(_nickName != nil && (NSNull *)_nickName != [NSNull null]){
+            _nickText.attributedText = [self getNickNameAttrStr:_nickName];
+            CGSize titleTextSize  = [_nickName sizeWithAttributes:@{NSFontAttributeName:_nickText.font}];
+            _nickText.frame = CGRectMake(0, 175,mainScreenSize.size.width,titleTextSize.height);
+        }else{
+            _nickName = @"null";
+            _nickText.attributedText = [self getNickNameAttrStr:_nickName];
+            CGSize titleTextSize  = [_nickName sizeWithAttributes:@{NSFontAttributeName:_nickText.font}];
+            _nickText.frame = CGRectMake(0, 175,mainScreenSize.size.width,titleTextSize.height);
+        }
+        [_faceImage sd_setImageWithURL:[NSURL URLWithString:
+        [[TCUserInfoModel sharedInstance] getUserProfile].faceURL]
+        placeholderImage:[UIImage imageNamed:@"default_user"]];
+    }else{
+        [_faceImage sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"default_user"]];
+    }
+    
+    [self.view addSubview:_nickText];
+    [self.view addSubview:_identifierText];
+    [self.view addSubview:_faceImage];
+
+}
+
+-(void)openPopView{
+    if([TCLoginParam shareInstance].isExpired){
+        return;
+    }
+    self.tabBarController.tabBar.hidden = YES;
+    _coverView = [UIView new];
+    _coverView.frame = self.view.bounds;
+    _coverView.backgroundColor = [UIColor blackColor];
+    _coverView.alpha = 0.5;
+    _coverView.userInteractionEnabled = YES;
+    [_coverView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closePopView)]];
+    [self.view addSubview:_coverView];
+    
+    _contentView = [UIView new];
+    _contentView.backgroundColor = [UIColor blackColor];
+    _contentView.frame = CGRectMake(0, 173, [UIScreen mainScreen].bounds.size.width,
+                                   [UIScreen mainScreen].bounds.size.height);
+    
+    UIBezierPath *cornerRadiusPath = [UIBezierPath
+    bezierPathWithRoundedRect:_contentView.bounds
+    byRoundingCorners:UIRectCornerTopRight | UIRectCornerTopLeft
+    cornerRadii:CGSizeMake(15, 15)];
+    CAShapeLayer *cornerRadiusLayer = [ [CAShapeLayer alloc ] init];
+    cornerRadiusLayer.frame = _contentView.bounds;
+    cornerRadiusLayer.path = cornerRadiusPath.CGPath;
+    _contentView.layer.mask = cornerRadiusLayer;
+    _contentView.userInteractionEnabled = YES;
+    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    [_contentView addGestureRecognizer:panGes];
+    [self.view addSubview:_contentView];
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    [layout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    layout.itemSize = CGSizeMake(70, 70);
+    _collectionView= [[UICollectionView alloc] initWithFrame:
+    CGRectMake(10, 100, [UIScreen mainScreen].bounds.size.width - 20,[UIScreen mainScreen].bounds.size.height)
+    collectionViewLayout:layout];
+    _collectionView.backgroundColor = [UIColor blackColor];
+    [_collectionView registerClass:[TCAvatarListCell class] forCellWithReuseIdentifier:@"TCAvatarListCell"];
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    [self.contentView addSubview:_collectionView];
+    
+    _avatarLabel = [[UILabel alloc] init];
+    _avatarLabel.textColor     = [UIColor whiteColor];
+    _avatarLabel.font          = [UIFont systemFontOfSize:24];
+    _avatarLabel.frame = CGRectMake(20,20,160,50);
+    _avatarLabel.text = NSLocalizedString(@"TCAccountInfo.setAvatar", nil);
+    [self.contentView addSubview:_avatarLabel];
+    
+    _avatarBtn = [[UIButton alloc] init];
+    _avatarBtn.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width - 90, 20, 90, 50);
+    [_avatarBtn setTitle:NSLocalizedString(@"TCAccountInfo.confirm", nil) forState:UIControlStateNormal];
+    [_avatarBtn setTitleColor:[UIColor redColor]forState:UIControlStateNormal];
+    _avatarBtn.titleLabel.font = [UIFont systemFontOfSize:20];
+    [_avatarBtn addTarget:self action:@selector(changeAvatar) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:_avatarBtn];
+    
+}
+
+
+-(void) openNickName{
+    if([TCLoginParam shareInstance].isExpired){
+        return;
+    }
+    self.tabBarController.tabBar.hidden = YES;
+    _nameCoverView = [UIView new];
+    _nameCoverView.frame = self.view.bounds;
+    _nameCoverView.backgroundColor = [UIColor blackColor];
+    _nameCoverView.alpha = 0.5;
+    _nameCoverView.userInteractionEnabled = YES;
+    [_nameCoverView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeNickNameView)]];
+    [self.view addSubview:_nameCoverView];
+    
+    _nameContentView = [UIView new];
+    _nameContentView.backgroundColor = [UIColor blackColor];
+    _nameContentView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 260,
+                                        [UIScreen mainScreen].bounds.size.width,260);
+    
+    UIBezierPath *cornerRadiusPath = [UIBezierPath
+    bezierPathWithRoundedRect:_nameContentView.bounds
+    byRoundingCorners:UIRectCornerTopRight | UIRectCornerTopLeft
+    cornerRadii:CGSizeMake(15, 15)];
+    CAShapeLayer *cornerRadiusLayer = [ [CAShapeLayer alloc ] init];
+    cornerRadiusLayer.frame = _nameContentView.bounds;
+    cornerRadiusLayer.path = cornerRadiusPath.CGPath;
+    _nameContentView.layer.mask = cornerRadiusLayer;
+    _nameContentView.userInteractionEnabled = YES;
+    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyWindow)];
+    [_nameContentView addGestureRecognizer:tapGesture];
+    [self.view addSubview:_nameContentView];
+    
+    _nickNameLabel = [[UILabel alloc] init];
+    _nickNameLabel.textColor     = [UIColor whiteColor];
+    _nickNameLabel.font          = [UIFont systemFontOfSize:24];
+    _nickNameLabel.frame = CGRectMake(20,20,240,50);
+    _nickNameLabel.text = NSLocalizedString(@"TCAccountInfo.modifyUserNickname", nil);
+    [self.nameContentView addSubview:_nickNameLabel];
+    
+    _nickNameBtn = [[UIButton alloc] init];
+    _nickNameBtn.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width - 90, 20, 90, 50);
+    [_nickNameBtn setTitle:NSLocalizedString(@"TCAccountInfo.confirm", nil) forState:UIControlStateNormal];
+    [_nickNameBtn setTitleColor:[UIColor redColor]forState:UIControlStateNormal];
+    _nickNameBtn.titleLabel.font = [UIFont systemFontOfSize:20];
+    [_nickNameBtn addTarget:self action:@selector(changeNickName) forControlEvents:UIControlEventTouchUpInside];
+    [self.nameContentView addSubview:_nickNameBtn];
+    
+    _textField = [[UITextField alloc] init];
+    _textField.frame = CGRectMake(30, 90, [[UIScreen mainScreen] bounds].size.width - 60, 70);
+    _textField.backgroundColor = [UIColor whiteColor];
+    _textField.placeholder = NSLocalizedString(@"TCAccountInfo.pleaseEnterUserNickname", nil);
+    _textField.borderStyle = UITextBorderStyleRoundedRect;
+    _textField.text = _nickName;
+    _textField.layer.cornerRadius = 30;
+    _textField.layer.masksToBounds = YES;
+    _textField.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 12, 0)];
+    _textField.rightView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 12, 0)];    _textField.leftViewMode = UITextFieldViewModeAlways;
+    [self.nameContentView addSubview:_textField];
+    
+    _nickNameTipsLabel = [[UILabel alloc] init];
+    _nickNameTipsLabel.textColor     = [UIColor grayColor];
+    _nickNameTipsLabel.font          = [UIFont systemFontOfSize:18];
+    _nickNameTipsLabel.frame = CGRectMake(20,175,[[UIScreen mainScreen] bounds].size.width - 40,60);
+    _nickNameTipsLabel.text = NSLocalizedString(@"TCAccountInfo.nickNameTips", nil);
+    _nickNameTipsLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _nickNameTipsLabel.numberOfLines = 0;
+    [self.nameContentView addSubview:_nickNameTipsLabel];
+}
+
+-(void)closeKeyWindow{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+-(void)closeNickNameView{
+    [self.nameCoverView removeFromSuperview];
+    [self.nameContentView removeFromSuperview];
+    self.tabBarController.tabBar.hidden = NO;
+}
+
+-(void)changeNickName{
+    if (_textField.text.length < 2 || _textField.text.length > 20) {
+        return;
+    }
+    [[TCUserInfoModel sharedInstance] saveUserNickName:_textField.text
+                                           handler:^(int code, NSString *msg)
+     {
+         if (ERROR_SUCESS != code){
+             [[HUDHelper sharedInstance] tipMessage:NSLocalizedString(@"TCEditUserInfoView.ErrorUploadingFace", nil)];
+         }else{
+             _nickName = _textField.text;
+             _nickText.attributedText = [self getNickNameAttrStr:_nickName];
+             [self closeNickNameView];
+         }
+     }];
+}
+
+-(void)changeAvatar{
+    if (_selectedIndex > -1 && ![_avatarList[_selectedIndex]
+        isEqualToString:[[TCUserInfoModel sharedInstance] getUserProfile].faceURL]) {
+        [[TCUserInfoModel sharedInstance] saveUserFace:_avatarList[_selectedIndex]
+                                               handler:^(int code, NSString *msg)
+         {
+             if (ERROR_SUCESS != code){
+                 [[HUDHelper sharedInstance] tipMessage:NSLocalizedString(@"TCEditUserInfoView.ErrorUploadingFace", nil)];
+             }else{
+                 [_faceImage sd_setImageWithURL:[NSURL URLWithString:_avatarList[_selectedIndex]] placeholderImage:[UIImage imageNamed:@"default_user"]];
+                 [self closePopView];
+             }
+         }];
+    }
+
+}
+
+- (void)move:(UIPanGestureRecognizer *)sender {
+    CGPoint pt = [sender translationInView:_contentView];
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        if (_position > 173) {
+            [self closePopView];
+        }else{
+            if (_endPosition > 0) {
+                _contentView.frame = CGRectMake(0, 173, [UIScreen mainScreen].bounds.size.width,
+                                               [UIScreen mainScreen].bounds.size.height);
+            }else{
+                _contentView.frame = CGRectMake(0, 72, [UIScreen mainScreen].bounds.size.width,
+                                               [UIScreen mainScreen].bounds.size.height);
+            }
+        }
+    
+    }else if(sender.state == UIGestureRecognizerStateChanged){
+        _position = _contentView.frame.origin.y;
+        _endPosition = pt.y;
+        if(_position > 84 || pt.y > 0){
+            sender.view.center = CGPointMake(sender.view.center.x , sender.view.center.y+pt.y);
+            //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
+            [sender setTranslation:CGPointMake(0, 0) inView:self.view];
+        }
+    }
+   
+}
+
+
+#pragma mark-键盘出现隐藏事件
+-(void)keyHiden:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.1 animations:^{
+        //恢复原样
+        _nameContentView.transform = CGAffineTransformIdentity;
+    }];
+    
+    
+}
+-(void)keyWillAppear:(NSNotification *)notification
+{
+    //获得通知中的info字典
+    NSDictionary *userInfo = [notification userInfo];
+    CGRect rect= [[userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+    // self.tooBar.frame = rect;
+    [UIView animateWithDuration:0.1 animations:^{
+        _nameContentView.transform = CGAffineTransformMakeTranslation(0, -([UIScreen mainScreen].bounds.size.height-rect.origin.y));
+    }];
+}
+
+-(void)closePopView{
+    [self.coverView removeFromSuperview];
+    [self.contentView removeFromSuperview];
+    [self.collectionView removeFromSuperview];
+    _selectedIndex = -1;
+    self.tabBarController.tabBar.hidden = NO;
+}
+
+-(NSMutableAttributedString *) getNickNameAttrStr:(NSString *)text{
+    NSMutableAttributedString * attrStr = [[NSMutableAttributedString alloc] initWithString:text];
+    // 创建一个文字附件对象
+    NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+    textAttachment.image = [UIImage imageNamed:@"type.png"];  //设置图片源
+    textAttachment.bounds = CGRectMake(3, 0, 15, 15);  //设置图片位置和大小
+    // 将文字附件转换成属性字符串
+    NSAttributedString *attachmentAttrStr = [NSAttributedString attributedStringWithAttachment:textAttachment];
+    // 将转换成属性字符串插入到目标字符串
+    [attrStr insertAttributedString:attachmentAttrStr atIndex:text.length];
+    return attrStr;
 }
 
 #pragma mark 与view界面相关
@@ -178,7 +546,6 @@ extern BOOL g_bNeedEnterPushSettingView;
     }else{
         [_loginBtn setTitle:NSLocalizedString(@"TCUserInfoView.Logout", nil) forState: UIControlStateNormal];
     }
-    [_dataTable reloadData];
 }
 /**
  *  用于接受头像下载成功后通知,因为用户可能因为网络情况下载头像很慢甚至失败数次,导致用户信息页面显示默认头像
@@ -189,7 +556,44 @@ extern BOOL g_bNeedEnterPushSettingView;
  */
 -(void)updateUserInfoOnController:(NSNotification *)notification
 {
+    CGRect mainScreenSize = [ UIScreen mainScreen ].bounds;
+    
+    _nickName =  [[TCUserInfoModel sharedInstance] getUserProfile].nickName;
+    _identifier = [[TCUserInfoModel sharedInstance] getUserProfile].identifier;
+    
+    if(_nickName != nil && (NSNull *)_nickName != [NSNull null]){
+        _nickText.attributedText = [self getNickNameAttrStr:_nickName];
+        CGSize titleTextSize  = [_nickName sizeWithAttributes:@{NSFontAttributeName:_nickText.font}];
+        _nickText.frame = CGRectMake(0, 175,mainScreenSize.size.width,titleTextSize.height);
+    }else{
+        if (_identifier != nil && (NSNull *)_identifier != [NSNull null]) {
+            _nickName = @"null";
+            _nickText.attributedText = [self getNickNameAttrStr:_nickName];
+            CGSize titleTextSize  = [_nickName sizeWithAttributes:@{NSFontAttributeName:_nickText.font}];
+            _nickText.frame = CGRectMake(0, 175,mainScreenSize.size.width,titleTextSize.height);
+        }else{
+            _nickText.text  = @"";
+        }
+    }
+    
+    CGSize titleTextSize  = [_identifier sizeWithAttributes:@{NSFontAttributeName:_identifierText.font}];
+    _identifierText.text  = [NSString stringWithFormat:@"ID:%@",_identifier];
+    _identifierText.frame = CGRectMake(0, 175+10+titleTextSize.height,mainScreenSize.size.width, titleTextSize.height);
+    if ((NSNull *)[[TCUserInfoModel sharedInstance] getUserProfile].faceURL  == [NSNull null]) {
+        [[TCUserInfoModel sharedInstance] getUserProfile].faceURL = nil;
+    }
+    [_faceImage sd_setImageWithURL:[NSURL URLWithString:[[TCUserInfoModel sharedInstance] getUserProfile].faceURL]
+    placeholderImage:[UIImage imageNamed:@"default_user"]];
+    if([TCLoginParam shareInstance].isExpired){
+        [_loginBtn setTitle:NSLocalizedString(@"TCLoginView.Login", nil) forState: UIControlStateNormal];
+    }else{
+        [_loginBtn setTitle:NSLocalizedString(@"TCUserInfoView.Logout", nil) forState: UIControlStateNormal];
+    }
     [_dataTable reloadData];
+}
+
+-(void)clearUserInfoOnController:(NSNotification *)notification{
+    [self clearData];
 }
 
 #pragma mark 绘制用户信息页面上的tableview
@@ -215,9 +619,6 @@ extern BOOL g_bNeedEnterPushSettingView;
         if (cell == nil) {
             cell = [[TCUserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell_userInfo"];
             [cell initUserinfoViewCellData:item];
-            if (NO == [cell.gestureRecognizers containsObject:_longPressGesture]) {
-                [cell addGestureRecognizer:_longPressGesture];
-            }
         }
         [cell drawRichCell:item];
         return cell;
@@ -229,6 +630,14 @@ extern BOOL g_bNeedEnterPushSettingView;
             [cell initUserinfoViewCellData:item];
         }
         [cell drawRichCell:item];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UIImageView *accessoryImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow.png"]];
+        cell.accessoryView = accessoryImgView;
+        tableView.separatorInset = UIEdgeInsetsMake(0,0, 0, 0);
+        tableView.separatorStyle =
+        UITableViewCellSeparatorStyleSingleLine;
+        
+        tableView.separatorColor = [UIColor clearColor];
         return cell;
     }
 }
@@ -263,15 +672,33 @@ extern BOOL g_bNeedEnterPushSettingView;
 //    [self.navigationController pushViewController:vc animated:true];
 }
 
-/// 获取技术支持按钮事件
-- (void)onShowAppSupport:(id)menu cell:(id)cell
+
+- (void)gotoWeb:(id)menu cell:(id)cell
 {
-    NSString *message = [@[L(@"关注公众号“腾讯云视频”"), L(@"给公众号发送“小视频”")] componentsJoinedByString:@"\n"];
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"获取技术支持服务", nil)
-                                                                        message:message
-                                                                 preferredStyle:UIAlertControllerStyleAlert];
-    [controller addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Common.OK", nil) style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:controller animated:YES completion:nil];
+    TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://web.sdk.qcloud.com/document/Tencent-UGSV-User-Agreement.html"];
+    next.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:next animated:YES];
+}
+
+- (void)gotoprivace:(id)menu cell:(id)cell
+{
+    TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ea00e5256ad442c483cd685d27b2e49f"];
+    next.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:next animated:YES];
+}
+
+- (void)gotoInfolist:(id)menu cell:(id)cell
+{
+    TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ac0e6b4500c442839d632828a35083da"];
+    next.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:next animated:YES];
+}
+
+- (void)gotoSharelist:(id)menu cell:(id)cell
+{
+    TCWebViewController *next = [[TCWebViewController alloc] initWithURL:@"https://privacy.qq.com/document/preview/ac99514d96824473aff08e88dba7ee92"];
+    next.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:next animated:YES];
 }
 
 /**
@@ -295,92 +722,112 @@ extern BOOL g_bNeedEnterPushSettingView;
 
 }
 
+-(void)onClickSetting:(TCUserInfoCellItem *)menu cell:(TCUserInfoTableViewCell *)cell{
+    SettingViewController *next = [[SettingViewController alloc] init];
+    next.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:next animated:YES];
+}
+
 /**
  *  用户显示SDK信息
  *
  *  @param menu 无意义
  *  @param cell 无意义
  */
-- (void)onShowSDKInfo:(TCUserInfoCellItem *)menu cell:(TCUserInfoTableViewCell *)cell
+- (void)gotoAbout:(TCUserInfoCellItem *)menu cell:(TCUserInfoTableViewCell *)cell
 {
-    [TCUtil report:xiaoshipin_about_sdk userName:nil code:0 msg:@"点击关于SDK"];
-    TCWebViewController *next = [[TCWebViewController alloc] initWithURL:HomePageURL];
+    AboutViewController *next = [[AboutViewController alloc] init];
     next.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:next animated:YES];
-//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://cloud.tencent.com/product/UGSV"]];
 }
 
-- (void)handleLongPress:(UILongPressGestureRecognizer *)longPressGesture
+/**
+ 判断当前语言是否是简体中文
+ */
+- (BOOL)isCurrentLanguageHans
 {
-    if (longPressGesture.state == UIGestureRecognizerStateBegan) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *logDoc = [NSString stringWithFormat:@"%@%@", paths[0], @"/log"];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSArray* fileArray = [fileManager contentsOfDirectoryAtPath:logDoc error:nil];
-        fileArray = [fileArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-            NSString* file1 = (NSString*)obj1;
-            NSString* file2 = (NSString*)obj2;
-            return [file1 compare:file2] == NSOrderedDescending;
-        }];
-        self.logFilesArray = [NSMutableArray new];
-        for (NSString* logName in fileArray) {
-            if ([logName hasSuffix:@"xlog"]) {
-                [self.logFilesArray addObject:logName];
-            }
-        }
-        
-        _logUploadView.alpha = 0.1;
-        [UIView animateWithDuration:0.5 animations:^{
-            _logUploadView.hidden = NO;
-            _logUploadView.alpha = 1;
-        }];
-        [_logPickerView reloadAllComponents];
+    NSArray *languages = [NSLocale preferredLanguages];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    if ([currentLanguage isEqualToString:@"zh-Hans-CN"])
+    {
+        return YES;
     }
+    
+    return NO;
 }
 
-- (void)onLogUploadViewTapped:(UITapGestureRecognizer *)tapGesture
-{
-    if (!_logUploadView.hidden) {
-        _logUploadView.hidden = YES;
-    }
-}
+#pragma mark - UICollectionView datasource
 
-- (void)onSharedUploadLog:(UIButton*)sender
-{
-    NSInteger row = [_logPickerView selectedRowInComponent:0];
-    if (row < self.logFilesArray.count) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *logDoc = [NSString stringWithFormat:@"%@%@", paths[0], @"/log"];
-        NSString* logPath = [logDoc stringByAppendingPathComponent:self.logFilesArray[row]];
-        NSURL *shareobj = [NSURL fileURLWithPath:logPath];
-        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:@[shareobj] applicationActivities:nil];
-        [self presentViewController:activityView animated:YES completion:^{
-            _logUploadView.hidden = YES;
-        }];
-    }
-}
-
-#pragma mark - UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-// returns the # of rows in each component..
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return self.logFilesArray.count;
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _avatarList.count;
 }
 
-#pragma mark - UIPickerViewDelegate
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    if (row < self.logFilesArray.count) {
-        return (NSString*)self.logFilesArray[row];
+    TCAvatarListCell *cell = (TCAvatarListCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"TCAvatarListCell" forIndexPath:indexPath];
+    if (cell == nil) {
+        cell = [[TCAvatarListCell alloc] initWithFrame:CGRectZero];
     }
-    return @"";
+
+    NSInteger index = indexPath.row;
+    NSString *imageUrl = _avatarList[index];
+    cell.userInteractionEnabled = YES;
+    if (_selectedIndex > -1) {
+        cell.avatarUrlSelected = _avatarList[_selectedIndex];
+    }
+    cell.avatarUrl = imageUrl;
+
+    return cell;
+}
+
+#pragma mark - UICollectionView delegate
+
+//点击item方法
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    _selectedIndex = indexPath.row;
+    [_collectionView reloadData];
+    
+}
+
+-(void)initAvatarList{
+    _avatarList = @[
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar1.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar2.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar3.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar4.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar5.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar6.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar7.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar8.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar9.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar10.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar11.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar12.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar13.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar14.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar15.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar16.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar17.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar18.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar19.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar20.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar21.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar22.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar23.png",
+        @"https://liteav.sdk.qcloud.com/app/res/picture/voiceroom/avatar/user_avatar24.png",
+    ];
+}
+
+-(void)checkOpen{
+    if([TCLoginParam shareInstance].isExpired){
+        TCLoginViewController *next = [[TCLoginViewController alloc] init];
+        next.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:next animated:YES];
+    }
 }
 
 @end

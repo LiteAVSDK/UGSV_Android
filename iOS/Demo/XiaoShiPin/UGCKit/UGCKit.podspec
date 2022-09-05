@@ -29,30 +29,19 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
   s.ios.deployment_target = '9.0'
   s.static_framework = true
-  s.default_subspec = 'Enterprise'
+  s.default_subspec = 'Professional'
   s.ios.framework    = ['SystemConfiguration','CoreTelephony', 'VideoToolbox', 'CoreGraphics', 'AVFoundation', 'Accelerate','AssetsLibrary']
   s.ios.library = 'z', 'resolv', 'iconv', 'stdc++', 'c++', 'sqlite3'
-
-
-
-  s.subspec "Enterprise" do |ss|
-    ss.resources      = 'UGCKit/Assets/**/*'
-    ss.source_files = 'UGCKit/Classes/**/*.{h,m}'
-    framework_path  = "../../../SDK/TXLiteAVSDK_Enterprise.framework"
-    ss.pod_target_xcconfig = {
-        'HEADER_SEARCH_PATHS' => ["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]
-    }
-    ss.resource_bundles = {
-      'UGCKitResources' => ['UGCKit/Localizable/**/*','UGCKit/Assets/**/*.{png,xcassets,bundle,storyboard,xib}']
-    }
-  end
 
   s.subspec "Professional" do |ss|
     ss.resources      = 'UGCKit/Assets/**/*'
     ss.source_files = 'UGCKit/Classes/**/*.{h,m}'
     framework_path="../../../SDK/TXLiteAVSDK_Professional.framework"
     ss.pod_target_xcconfig={
-        'HEADER_SEARCH_PATHS'=> ["$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers"]
+        'HEADER_SEARCH_PATHS'=> [
+          "$(PODS_TARGET_SRCROOT)/#{framework_path}/Headers",
+          "$(PODS_TARGET_SRCROOT)/../../../SDK/TXLiteAVSDK_UGC.framework/Headers"
+        ]
     }
     ss.resource_bundles = {
       'UGCKitResources' => ['UGCKit/Localizable/**/*','UGCKit/Assets/**/*.{png,xcassets,bundle,storyboard,xib}']
@@ -71,4 +60,5 @@ TODO: Add long description of the pod here.
     }
   end
   s.dependency 'BeautySettingKit'
+  s.dependency 'xmagickit'
 end
