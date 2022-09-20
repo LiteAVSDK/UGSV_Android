@@ -299,7 +299,7 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
             playerInfo.vodPlayer.setPlayerView(playView);
 
             if (playerInfo.reviewstatus == TCVideoInfo.REVIEW_STATUS_NORMAL) {
-                playerInfo.vodPlayer.startPlay(playerInfo.playURL);
+                playerInfo.vodPlayer.startVodPlay(playerInfo.playURL);
             } else if (playerInfo.reviewstatus == TCVideoInfo.REVIEW_STATUS_NOT_REVIEW) { // 审核中
             } else if (playerInfo.reviewstatus == TCVideoInfo.REVIEW_STATUS_PORN) {       // 涉黄
 

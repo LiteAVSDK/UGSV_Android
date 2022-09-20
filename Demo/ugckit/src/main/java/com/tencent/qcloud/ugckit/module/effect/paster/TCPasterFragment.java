@@ -200,11 +200,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         }
 
         mTXVideoEditer = VideoEditerSDK.getInstance().getEditer();
-
-        long startTime = VideoEditerSDK.getInstance().getCutterStartTime();
-        long endTime = VideoEditerSDK.getInstance().getCutterEndTime();
-
-        mDuration = endTime - startTime;
+        mDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
         updateDefaultTime();
     }
 

@@ -196,7 +196,7 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
         if (mPlayerState == PlayerState.STATE_STOPED) {
             initInner();
         }
-        int result = mVodPlayer.startPlay(mVideoPath); // result返回值：0 success;  -1 empty url; -2 invalid url; -3 invalid playType;
+        int result = mVodPlayer.startVodPlay(mVideoPath);
         if (result != 0) {
             return false;
         }

@@ -147,7 +147,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
         if (TextUtils.isEmpty(ugcKitResult.outputPath)) {
             return;
         }
-        long duration = VideoEditerSDK.getInstance().getVideoDuration();
+        long duration = VideoEditerSDK.getInstance().getVideoPlayDuration();
         if (ugcKitResult.isPublish) {
             Intent intent = new Intent(getApplicationContext(), TCVideoPublisherActivity.class);
             intent.putExtra(UGCKitConstants.VIDEO_PATH, ugcKitResult.outputPath);
