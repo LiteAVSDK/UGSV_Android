@@ -367,6 +367,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         // 开始录制后不能切换屏比
         getRecordRightLayout().setAspectIconEnable(false);
 
+        // 对齐抖音，有BGM时候，录制为静音
+        if (RecordMusicManager.getInstance().isChooseMusic()) {
+            VideoRecordSDK.getInstance().getRecorder().setMicVolume(0);
+        } else {
+            VideoRecordSDK.getInstance().getRecorder().setMicVolume(mMicVolume);
+        }
+
         // 开始/继续录制
         int retCode = VideoRecordSDK.getInstance().startRecord();
         if (retCode == VideoRecordSDK.START_RECORD_FAIL) { //点击开始录制失败，录制按钮状态变为暂停
@@ -476,6 +483,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     }
 
     /************************************   音效Pannel回调接口 Begin  ********************************************/
+    private float mMicVolume = 1.0f;
     @Override
     public void onMicVolumeChanged(float volume) {
         TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
@@ -601,6 +609,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         if (record != null) {
             record.setFocusPosition(x, y);
         }
+        // 停止音乐试听，否者开启录制会录制到一点点杂音
+        RecordMusicManager.getInstance().stopPreviewMusic();
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.ugc.TXVideoEditer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +28,6 @@ public class VideoProgressController {
     private int                            mThumbnailNum;
     private int                            mScrollState;
     private long                           mCurrentTimeMs;
-    private long                           mTotalDurationMs; // us
     private float                          mCurrentScroll;
     private float                          mThumbnailPicListDisplayWidth; // 视频缩略图列表的宽度
     private float                          mVideoProgressDisplayWidth; // 视频进度条可显示宽度
@@ -35,8 +36,7 @@ public class VideoProgressController {
     private List<RangeSliderViewContainer> mRangeSliderViewContainerList; // 所有的范围块view
     private List<SliderViewContainer>      mSliderViewContainerList;
 
-    public VideoProgressController(long durationMs) {
-        mTotalDurationMs = durationMs;
+    public VideoProgressController() {
     }
 
     public void setVideoProgressDisplayWidth(int width) {
@@ -233,8 +233,6 @@ public class VideoProgressController {
         mSliderViewContainerList.add(sliderViewContainer);
         sliderViewContainer.setVideoProgressControlloer(this);
         mVideoProgressView.getParentView().addView(sliderViewContainer);
-
-        mTotalDurationMs += sliderViewContainer.getSliderDuration();
         sliderViewContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -248,7 +246,6 @@ public class VideoProgressController {
             Log.e(TAG, "removeSliderView, mVideoProgressView is null");
             return false;
         }
-        mTotalDurationMs -= sliderViewContainer.getSliderDuration();
         mVideoProgressView.getParentView().removeView(sliderViewContainer);
         if (mSliderViewContainerList == null || mSliderViewContainerList.size() == 0) {
             Log.e(TAG, "removeSliderView, mSliderViewContainerList is empty");
@@ -272,11 +269,9 @@ public class VideoProgressController {
             return null;
         }
         SliderViewContainer sliderViewContainer = mSliderViewContainerList.get(index);
-        mTotalDurationMs -= sliderViewContainer.getSliderDuration();
         mVideoProgressView.getParentView().removeView(sliderViewContainer);
         return sliderViewContainer;
     }
-
 
     int calculateStartViewPosition(@NonNull RangeSliderViewContainer rangeSliderView) {
         return (int) (mVideoProgressDisplayWidth / 2 - rangeSliderView.getStartView().getMeasuredWidth()
@@ -292,7 +287,7 @@ public class VideoProgressController {
     }
 
     public int duration2Distance(long durationMs) {
-        float rate = durationMs * 1.0f / mTotalDurationMs;
+        float rate = durationMs * 1.0f / VideoEditerSDK.getInstance().getVideoPlayDuration();
         return (int) (getThumbnailPicListDisplayWidth() * rate);
     }
 
@@ -301,25 +296,25 @@ public class VideoProgressController {
         float thumbnailPicDisplayWidth = getThumbnailPicListDisplayWidth();
         //最小宽度不能低于0.1秒宽度
         float durationSec = durationMs < 100 ? 0.1F : durationMs / 1000F;
-
+        long totalDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
         int durationMinWidth;
-        if(mTotalDurationMs > 1) {
-            durationMinWidth = (int) (thumbnailPicDisplayWidth / (mTotalDurationMs / 1000));
+        if (totalDuration > 1) {
+            durationMinWidth = (int) (thumbnailPicDisplayWidth / (totalDuration / 1000));
         } else {
             durationMinWidth = (int) (mVideoProgressDisplayWidth / 16);
         }
-
         resultWidth = (int) (durationMinWidth * durationSec);
         //如果最终计算出来的宽度大于整个视频时间轴上的宽度，那么将宽度置为视频轴的宽度
-        if(resultWidth > thumbnailPicDisplayWidth) {
+        if (resultWidth > thumbnailPicDisplayWidth) {
             resultWidth = (int) thumbnailPicDisplayWidth;
         }
         return resultWidth;
     }
 
     long distance2Duration(float distance) {
+        long totalDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
         float rate = distance / getThumbnailPicListDisplayWidth();
-        return (long) (mTotalDurationMs * rate);
+        return (long) (totalDuration * rate);
     }
 
     public void setVideoProgressSeekListener(VideoProgressSeekListener videoProgressSeekListener) {
@@ -389,7 +384,8 @@ public class VideoProgressController {
                 super.onScrolled(recyclerView, dx, dy);
                 mCurrentScroll = mCurrentScroll + dx;
                 float rate = mCurrentScroll / getThumbnailPicListDisplayWidth();
-                long currentTimeUs = (long) (rate * mTotalDurationMs);
+                long totalDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
+                long currentTimeUs = (long) (rate * totalDuration);
 
                 if (mIsTouching || mIsRangeSliderChanged || mScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
                     mIsRangeSliderChanged = false; // 由于范围改变引起的，回调给界面后保证能单帧预览，之后马上重置
@@ -424,17 +420,14 @@ public class VideoProgressController {
      */
     public void setCurrentTimeMs(long currentTimeMs) {
         mCurrentTimeMs = currentTimeMs;
-        float rate = (float) mCurrentTimeMs / mTotalDurationMs;
+        long totalDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
+        float rate = (float) mCurrentTimeMs / totalDuration;
         float scrollBy = rate * getThumbnailPicListDisplayWidth() - mCurrentScroll;
         mRecyclerView.scrollBy((int) scrollBy, 0);
     }
 
     public long getCurrentTimeMs() {
         return mCurrentTimeMs;
-    }
-
-    public long getTotalDurationMs() {
-        return mTotalDurationMs;
     }
 
     public void setIsRangeSliderChanged(boolean isRangeSliderChanged) {

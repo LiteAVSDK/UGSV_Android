@@ -280,8 +280,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
     public void onPreviewFinish() {
         if (mIsOnTouch && mEffectType >= 0) {
             mColorfulProgress.endMark(mVideoProgressController.getThumbnailPicListDisplayWidth());
-            mTXVideoEditer.stopEffect(mEffectType, mVideoProgressController.getTotalDurationMs());
-
+            mTXVideoEditer.stopEffect(mEffectType, VideoEditerSDK.getInstance().getVideoDuration());
             mTXVideoEditer.startEffect(mEffectType, 0);
             switch (mEffectType) {
                 case TXVideoEditConstants.TXEffectType_SOUL_OUT:

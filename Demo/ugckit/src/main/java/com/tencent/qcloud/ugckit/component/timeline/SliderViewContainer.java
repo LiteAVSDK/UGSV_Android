@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.time.TCTimeFragment;
 
 public class SliderViewContainer extends LinearLayout {
@@ -65,17 +66,18 @@ public class SliderViewContainer extends LinearLayout {
             @Override
             public void onPostionChanged(float distance) {
                 long dtime = mVideoProgressController.distance2Duration(distance);
-
-                if (dtime > 0 && (mVideoProgressController.getTotalDurationMs() - mStartTimeMs) - dtime < 0) {
-                    dtime = mVideoProgressController.getTotalDurationMs() - mStartTimeMs;
+                long duration = VideoEditerSDK.getInstance().getVideoDuration() - mStartTimeMs;
+                if (dtime > 0 && (duration - dtime < 0)) {
+                    dtime = duration - mStartTimeMs;
                 } else if (dtime < 0 && (mStartTimeMs + dtime < 0)) {
                     dtime = -mStartTimeMs;
                 }
                 if (dtime == 0) {
                     return;
                 }
-
                 mStartTimeMs = mStartTimeMs + dtime;
+                mStartTimeMs = Math
+                        .min(mStartTimeMs, (VideoEditerSDK.getInstance().getVideoDuration() - mSliderDuration));
                 changeLayoutParams();
             }
 

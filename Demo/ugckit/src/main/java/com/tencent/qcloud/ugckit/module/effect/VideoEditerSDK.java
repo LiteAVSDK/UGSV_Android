@@ -38,7 +38,7 @@ public class VideoEditerSDK {
     private              boolean                             mPublishFlag;
     private              TXVideoEditConstants.TXVideoInfo    mTXVideoInfo;
     private final        List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
-
+    private long mEffectDuration = 0;
 
     public static VideoEditerSDK getInstance() {
         if (sInstance == null) {
@@ -93,6 +93,7 @@ public class VideoEditerSDK {
         mCutterDuration = 0;
         mCutterStartTime = 0;
         mCutterEndTime = 0;
+        mEffectDuration = 0;
 
         mThumbnailList.clear();
         DraftEditer.getInstance().clear();
@@ -252,6 +253,14 @@ public class VideoEditerSDK {
 
     public long getVideoDuration() {
         return mCutterDuration;
+    }
+
+    public long getVideoPlayDuration() {
+        return mCutterDuration + mEffectDuration;
+    }
+
+    public void addEffectDuration(long plus) {
+        mEffectDuration += plus;
     }
 
     /**

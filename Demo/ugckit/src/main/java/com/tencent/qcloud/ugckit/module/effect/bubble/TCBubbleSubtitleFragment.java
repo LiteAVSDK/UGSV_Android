@@ -120,10 +120,7 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
 
     private void initData() {
         mTXVideoEditer = VideoEditerSDK.getInstance().getEditer();
-
-        long endTime = VideoEditerSDK.getInstance().getCutterEndTime();
-        long startTime = VideoEditerSDK.getInstance().getCutterStartTime();
-        mDuration = endTime - startTime;
+        mDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
         updateDefaultTime();
     }
 

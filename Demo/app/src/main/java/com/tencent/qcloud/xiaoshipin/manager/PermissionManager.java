@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -31,6 +33,7 @@ public class PermissionManager {
     public static final String SHARED_PREFERENCE_FIRST_START = "FIRST_START";
     private OnStoragePermissionGrantedListener onStoragePermissionGrantedListener;
     private OnCameraPermissionGrantedListener onCameraPermissionGrantedListener;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public enum PermissionType {
         STORAGE,
@@ -63,6 +66,10 @@ public class PermissionManager {
     }
 
     public void checkoutIfShowPermissionIntroductionDialog() {
+        mHandler.post(() -> checkOrShowPermissionIntroductionDialog());
+    }
+
+    private void checkOrShowPermissionIntroductionDialog() {
         long now = System.currentTimeMillis();
         long oldTime = 0L;
         if (mPermissionType.equals(PermissionType.STORAGE)) {
@@ -146,7 +153,7 @@ public class PermissionManager {
                         long begin = System.currentTimeMillis();
                         sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_AUDIO, begin);
                     }
-                    mDialog.dismiss();
+                    dismissDialog();
                 } else if (requestCode == REQUEST_CODE_CAMERA) {
                     if ((grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                         onCameraPermissionGrantedListener.onCameraPermissionGranted();
@@ -155,10 +162,26 @@ public class PermissionManager {
                         sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_CAMERA, begin);
                     }
                 }
-                mDialog.dismiss();
+                dismissDialog();
             }
         }
     }
+
+    /**
+     * 由于此dialog其实是一个DialogFragment，
+     * 所以dismiss需要再resume之后才能操作
+     */
+    private void dismissDialog() {
+        if (mDialog == null) {
+            return;
+        }
+        if (mDialog.isStateSaved()) {
+            mHandler.post(() -> mDialog.dismiss());
+        } else {
+            mDialog.dismiss();
+        }
+    }
+
 
     public interface OnStoragePermissionGrantedListener {
         void onStoragePermissionGranted();

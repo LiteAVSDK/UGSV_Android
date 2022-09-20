@@ -54,7 +54,8 @@ public class TCVideoPreviewActivity extends Activity implements ITXVodPlayListen
         mTXVodPlayer.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION);
         mTXVodPlayer.setConfig(mTXPlayConfig);
 
-        int result = mTXVodPlayer.startPlay(mVideoPath); // result返回值：0 success;  -1 empty url; -2 invalid url; -3 invalid playType;
+        // result返回值：0 success;  -1 empty url; -2 invalid url; -3 invalid playType;
+        int result = mTXVodPlayer.startVodPlay(mVideoPath);
         if (result != 0) {
             return false;
         }
