@@ -11,6 +11,7 @@ import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.xiaoshipin.config.TCConfigManager;
+import com.tencent.qcloud.xiaoshipin.manager.LicenseManager;
 import com.tencent.ugc.TXUGCBase;
 import com.tencent.xmagic.XMagicImpl;
 
@@ -28,27 +29,16 @@ public class TCApplication extends MultiDexApplication {
 
     private static TCApplication instance;
 
-    private String ugcKey = "请替换成您的licenseKey";
-
-    private String ugcLicenceUrl = "请替换成您的licenseUrl";
-
-
-    private String xmagicAuthKey = "请替换成您的licenseKey";
-    private String xmagicAuthLicenceUrl = "请替换成您的licenseUrl";
-
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         TCConfigManager.init(this);
         // 短视频licence设置
-        TXUGCBase.getInstance().setLicence(this, ugcLicenceUrl, ugcKey);
         TCUserMgr.getInstance().initContext(getApplicationContext());
         Log.w(TAG, "app init sdk");
 //        mRefWatcher = LeakCanary.install(this);
 
-
-        XMagicImpl.setXmagicAuthKeyAndUrl(xmagicAuthLicenceUrl, xmagicAuthKey);
         UGCKit.init(this);
 
 

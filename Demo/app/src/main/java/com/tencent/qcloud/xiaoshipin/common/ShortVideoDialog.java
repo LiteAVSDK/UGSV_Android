@@ -136,7 +136,8 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
         if (mDownloadProgressDialog != null) {
             mDownloadProgressDialog.show();
         }
-        DownloadUtil.get(getActivity()).download(UGCKitConstants.CHORUS_URL, UGCKitConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
+        DownloadUtil.getInstance().download(UGCKitConstants.CHORUS_URL, UGCKitConstants.OUTPUT_DIR_NAME,
+                new DownloadUtil.DownloadListener() {
             @Override
             public void onDownloadSuccess(final String path) {
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {

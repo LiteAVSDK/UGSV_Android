@@ -27,7 +27,7 @@
     <!-- TCVideoRecordActivity -->
 
     <!--ShortVideoDialog.java-->
-    <string name="video_record_title">拍摄</string>
+    <string name="video_record_title">录制</string>
     <string name="video_editer_title">编辑</string>
     <string name="picture_editer_title">图片</string>
 

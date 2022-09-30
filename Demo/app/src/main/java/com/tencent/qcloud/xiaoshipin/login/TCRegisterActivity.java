@@ -27,6 +27,7 @@ import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
+import com.tencent.qcloud.xiaoshipin.manager.LicenseManager;
 import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
 import com.tencent.ugc.TXUGCBase;
 
@@ -275,6 +276,7 @@ public class TCRegisterActivity extends Activity {
                         Log.d(TAG, "uploadLogs onResponse");
                     }
                 });
+                LicenseManager.setLicense(TCRegisterActivity.this);
                 // ELK数据上报：启动次数
                 LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_START_UP, 0, "");
                 tcLoginMgr.login(username, password, new TCUserMgr.Callback() {

@@ -4,19 +4,21 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
+import android.util.AttributeSet;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import android.util.AttributeSet;
 
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
 import com.tencent.qcloud.ugckit.module.picker.data.PickerManagerKit;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 import com.tencent.qcloud.ugckit.module.picker.view.AbsPickerUI;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
+import com.tencent.qcloud.xiaoshipin.R;
 
 import java.util.ArrayList;
 
@@ -65,7 +67,8 @@ public class TripleRecordVideoPicker extends AbsPickerUI implements ActivityComp
 
     private void loadVideoList() {
         mActivity = (Activity) getContext();
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
             mHandlder.post(new Runnable() {
                 @Override
                 public void run() {
@@ -74,9 +77,7 @@ public class TripleRecordVideoPicker extends AbsPickerUI implements ActivityComp
                 }
             });
         } else {
-            if (Build.VERSION.SDK_INT >= 23) {
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            }
+            ToastUtil.toastLongMessage(getResources().getString(R.string.need_storage_permission));
         }
     }
 

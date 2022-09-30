@@ -31,8 +31,10 @@ import com.tencent.ugc.TXRecordCommon;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.PERMISSION_STORAGE;
 import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_AUDIO;
 import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_CAMERA;
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_STORAGE;
 import static com.tencent.qcloud.xiaoshipin.videorecord.TCVideoTripleScreenActivity.REQUEST_CODE;
 
 /**
@@ -40,7 +42,9 @@ import static com.tencent.qcloud.xiaoshipin.videorecord.TCVideoTripleScreenActiv
  */
 public class TCVideoFollowRecordActivity extends FragmentActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback,
-        PermissionManager.OnCameraPermissionGrantedListener {
+        PermissionManager.OnCameraPermissionGrantedListener,
+        PermissionManager.OnAudioPermissionGrantedListener,
+        PermissionManager.OnStoragePermissionGrantedListener {
 
     private static final String TAG = "TCVideoFollowRecordActivity";
     // 视频合唱组件
@@ -51,6 +55,8 @@ public class TCVideoFollowRecordActivity extends FragmentActivity
     private PermissionManager mAudioPermissionManager;
 
     private PermissionManager mCameraPermissionManager;
+
+    private PermissionManager mStoragePermissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +105,11 @@ public class TCVideoFollowRecordActivity extends FragmentActivity
         });
         mAudioPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.AUDIO);
         mCameraPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.CAMERA);
+        mStoragePermissionManager = new PermissionManager(this, PermissionManager.PermissionType.STORAGE);
 
         mCameraPermissionManager.setOnCameraPermissionGrantedListener(this);
-
+        mAudioPermissionManager.setOnAudioPermissionGrantedListener(this);
+        mStoragePermissionManager.setOnStoragePermissionGrantedListener(this);
         mCameraPermissionManager.checkoutIfShowPermissionIntroductionDialog();
     }
 
@@ -182,6 +190,8 @@ public class TCVideoFollowRecordActivity extends FragmentActivity
                 mCameraPermissionManager.onRequestPermissionsResult(requestCode, grantResults);
             } else if (requestCode == REQUEST_CODE_AUDIO) {
                 mAudioPermissionManager.onRequestPermissionsResult(requestCode,grantResults);
+            } else if (requestCode == REQUEST_CODE_STORAGE) {
+                mStoragePermissionManager.onRequestPermissionsResult(requestCode,grantResults);
             }
         }
     }
@@ -190,5 +200,15 @@ public class TCVideoFollowRecordActivity extends FragmentActivity
     public void onCameraPermissionGranted() {
         mAudioPermissionManager.checkoutIfShowPermissionIntroductionDialog();
         mUGCKitVideoFollowRecord.start();
+    }
+
+    @Override
+    public void onAudioPermissionGranted() {
+        mStoragePermissionManager.checkoutIfShowPermissionIntroductionDialog();
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+
     }
 }

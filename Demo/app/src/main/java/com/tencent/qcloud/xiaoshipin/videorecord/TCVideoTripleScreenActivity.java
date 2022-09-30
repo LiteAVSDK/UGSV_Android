@@ -31,12 +31,16 @@ import com.tencent.ugc.TXRecordCommon;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.PERMISSION_STORAGE;
 import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_AUDIO;
 import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_CAMERA;
+import static com.tencent.qcloud.xiaoshipin.manager.PermissionManager.REQUEST_CODE_STORAGE;
 
 public class TCVideoTripleScreenActivity
         extends FragmentActivity implements ActivityCompat.OnRequestPermissionsResultCallback,
-        PermissionManager.OnCameraPermissionGrantedListener {
+        PermissionManager.OnCameraPermissionGrantedListener,
+        PermissionManager.OnAudioPermissionGrantedListener,
+        PermissionManager.OnStoragePermissionGrantedListener {
 
     private static final String TAG = "TCVideoTripleScreenActivity";
     public static int REQUEST_CODE = 100;
@@ -47,6 +51,9 @@ public class TCVideoTripleScreenActivity
     private PermissionManager mAudioPermissionManager;
 
     private PermissionManager mCameraPermissionManager;
+
+    private PermissionManager mStoragePermissionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +103,11 @@ public class TCVideoTripleScreenActivity
         });
         mAudioPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.AUDIO);
         mCameraPermissionManager = new PermissionManager(this, PermissionManager.PermissionType.CAMERA);
+        mStoragePermissionManager = new PermissionManager(this, PermissionManager.PermissionType.STORAGE);
 
         mCameraPermissionManager.setOnCameraPermissionGrantedListener(this);
-
+        mAudioPermissionManager.setOnAudioPermissionGrantedListener(this);
+        mStoragePermissionManager.setOnStoragePermissionGrantedListener(this);
         mCameraPermissionManager.checkoutIfShowPermissionIntroductionDialog();
     }
 
@@ -181,6 +190,8 @@ public class TCVideoTripleScreenActivity
                 mCameraPermissionManager.onRequestPermissionsResult(requestCode, grantResults);
             } else if (requestCode == REQUEST_CODE_AUDIO) {
                 mAudioPermissionManager.onRequestPermissionsResult(requestCode,grantResults);
+            } else if (requestCode == REQUEST_CODE_STORAGE) {
+                mStoragePermissionManager.onRequestPermissionsResult(requestCode,grantResults);
             }
         }
     }
@@ -189,5 +200,15 @@ public class TCVideoTripleScreenActivity
     public void onCameraPermissionGranted() {
         mUGCKitVideoMixRecord.start();
         mAudioPermissionManager.checkoutIfShowPermissionIntroductionDialog();
+    }
+
+    @Override
+    public void onAudioPermissionGranted() {
+        mStoragePermissionManager.checkoutIfShowPermissionIntroductionDialog();
+    }
+
+    @Override
+    public void onStoragePermissionGranted() {
+
     }
 }

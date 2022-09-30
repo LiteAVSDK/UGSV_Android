@@ -60,7 +60,8 @@ public class FollowRecordDownloader {
         }
         mProgressDialogUtil.setProgressDialogMessage(mContext.getResources().getString(R.string.tc_vod_player_activity_download_video_is_downloading));
 
-        DownloadUtil.get(mContext).download(tcVideoInfo.playurl, UGCKitConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
+        DownloadUtil.getInstance().download(tcVideoInfo.playurl, UGCKitConstants.OUTPUT_DIR_NAME,
+                new DownloadUtil.DownloadListener() {
 
             @Override
             public void onDownloadSuccess(final String path) {

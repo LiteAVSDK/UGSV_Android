@@ -9,13 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.NoCopySpan;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -37,7 +37,9 @@ import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
+import com.tencent.qcloud.xiaoshipin.TCApplication;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
+import com.tencent.qcloud.xiaoshipin.manager.LicenseManager;
 import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
 import com.tencent.ugc.TXUGCBase;
 
@@ -154,7 +156,7 @@ public class TCLoginActivity extends Activity {
         } else {
             tempProtocolArray = chineseDownProtocol;
         }
-        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+        ClickableSpan privacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -168,7 +170,7 @@ public class TCLoginActivity extends Activity {
         };
         builder.setSpan(privacyClickableSpan, tempProtocolArray[0][0], tempProtocolArray[0][1],
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ClickableSpan protocolPrivacyProtectionClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolPrivacyProtectionClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -184,7 +186,7 @@ public class TCLoginActivity extends Activity {
                 tempProtocolArray[1][1], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
-        ClickableSpan protocolPersonalInformationClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolPersonalInformationClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -199,7 +201,7 @@ public class TCLoginActivity extends Activity {
         builder.setSpan(protocolPersonalInformationClickableSpan, tempProtocolArray[2][0], tempProtocolArray[2][1],
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        ClickableSpan protocolThirdPartEndClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolThirdPartEndClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -214,7 +216,7 @@ public class TCLoginActivity extends Activity {
         builder.setSpan(protocolThirdPartEndClickableSpan, tempProtocolArray[3][0], tempProtocolArray[3][1],
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        ClickableSpan protocolChildrenPrivacyClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolChildrenPrivacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -284,7 +286,7 @@ public class TCLoginActivity extends Activity {
         } else {
             tempProtocolArray = chineseScrollProtocol;
         }
-        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+        ClickableSpan privacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -298,7 +300,7 @@ public class TCLoginActivity extends Activity {
         };
         builder.setSpan(privacyClickableSpan, tempProtocolArray[0][0], tempProtocolArray[0][1],
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ClickableSpan protocolPrivacyProtectionClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolPrivacyProtectionClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -314,7 +316,7 @@ public class TCLoginActivity extends Activity {
                 tempProtocolArray[1][1], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
-        ClickableSpan protocolPersonalInformationClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolPersonalInformationClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -329,7 +331,7 @@ public class TCLoginActivity extends Activity {
         builder.setSpan(protocolPersonalInformationClickableSpan, tempProtocolArray[2][0], tempProtocolArray[2][1],
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        ClickableSpan protocolThirdPartEndClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolThirdPartEndClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -344,7 +346,7 @@ public class TCLoginActivity extends Activity {
         builder.setSpan(protocolThirdPartEndClickableSpan, tempProtocolArray[3][0], tempProtocolArray[3][1],
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        ClickableSpan protocolChildrenPrivacyClickableSpan = new ClickableSpan() {
+        ClickableSpan protocolChildrenPrivacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -485,6 +487,7 @@ public class TCLoginActivity extends Activity {
             @Override
             public void onSuccess(JSONObject data) {
                 showToast(getResources().getString(R.string.tc_login_activity_login_successfully));
+                LicenseManager.setLicense(TCLoginActivity.this);
                 jumpToHomeActivity();
             }
 
@@ -552,7 +555,7 @@ public class TCLoginActivity extends Activity {
 
         int privacyStartIndex = protocolStart.length();
         int privacyEndIndex = privacyStartIndex + privacyProtocol.length();
-        ClickableSpan privacyClickableSpan = new ClickableSpan() {
+        ClickableSpan privacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -569,7 +572,7 @@ public class TCLoginActivity extends Activity {
 
         int userAgreementStartIndex = privacyEndIndex + protocolAnd.length();
         int userAgreementEndIndex = userAgreementStartIndex + userAgreement.length();
-        ClickableSpan userAgreementClickableSpan = new ClickableSpan() {
+        ClickableSpan userAgreementClickableSpan = new NoRefCopyClickableSpan() {
             @Override
             public void updateDrawState(@NonNull TextPaint ds) {
                 super.updateDrawState(ds);
@@ -598,5 +601,20 @@ public class TCLoginActivity extends Activity {
         intent.putExtra("title", title);
         intent.putExtra("url", url);
         context.startActivity(intent);
+    }
+
+
+    public static class NoRefCopyClickableSpan extends ClickableSpan implements NoCopySpan {
+
+        @Override
+        public void onClick(@NonNull View widget) {
+
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+        }
+
     }
 }

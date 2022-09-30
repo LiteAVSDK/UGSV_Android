@@ -28,7 +28,7 @@
     <!-- TCVideoRecordActivity -->
 
     <!--ShortVideoDialog.java-->
-    <string name="video_record_title">Shoot</string>
+    <string name="video_record_title">Record</string>
     <string name="video_editer_title">Edit Video</string>
     <string name="picture_editer_title">Edit Image</string>
 
