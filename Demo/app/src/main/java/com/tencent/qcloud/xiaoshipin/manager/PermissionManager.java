@@ -33,7 +33,11 @@ public class PermissionManager {
     public static final String SHARED_PREFERENCE_FIRST_START = "FIRST_START";
     private OnStoragePermissionGrantedListener onStoragePermissionGrantedListener;
     private OnCameraPermissionGrantedListener onCameraPermissionGrantedListener;
+
     private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private OnAudioPermissionGrantedListener onAudioPermissionGrantedListener;
+
 
     public enum PermissionType {
         STORAGE,
@@ -148,10 +152,13 @@ public class PermissionManager {
                         long begin = System.currentTimeMillis();
                         sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_STORAGE, begin);
                     }
+                    dismissDialog();
                 } else if (requestCode == REQUEST_CODE_AUDIO) {
                     if ((grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
                         long begin = System.currentTimeMillis();
                         sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_AUDIO, begin);
+                    } else {
+                        onAudioPermissionGrantedListener.onAudioPermissionGranted();
                     }
                     dismissDialog();
                 } else if (requestCode == REQUEST_CODE_CAMERA) {
@@ -161,8 +168,8 @@ public class PermissionManager {
                         long begin = System.currentTimeMillis();
                         sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_CAMERA, begin);
                     }
+                    dismissDialog();
                 }
-                dismissDialog();
             }
         }
     }
@@ -198,5 +205,14 @@ public class PermissionManager {
 
     public void setOnCameraPermissionGrantedListener(OnCameraPermissionGrantedListener listener) {
         onCameraPermissionGrantedListener = listener;
+    }
+
+    public interface OnAudioPermissionGrantedListener {
+        void onAudioPermissionGranted();
+    }
+
+
+    public void setOnAudioPermissionGrantedListener(OnAudioPermissionGrantedListener listener) {
+        onAudioPermissionGrantedListener = listener;
     }
 }

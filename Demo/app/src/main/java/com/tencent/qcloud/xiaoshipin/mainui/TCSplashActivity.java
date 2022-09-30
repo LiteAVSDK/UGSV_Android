@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
+import com.tencent.qcloud.xiaoshipin.manager.LicenseManager;
 
 import java.lang.ref.WeakReference;
 
@@ -82,6 +83,7 @@ public class TCSplashActivity extends Activity {
         Intent intent = null;
         if (TCUserMgr.getInstance().hasUser()) {
             intent = new Intent(this, TCMainActivity.class);
+            LicenseManager.setLicense(TCSplashActivity.this);
         } else {
             intent = new Intent(this, TCLoginActivity.class);
         }

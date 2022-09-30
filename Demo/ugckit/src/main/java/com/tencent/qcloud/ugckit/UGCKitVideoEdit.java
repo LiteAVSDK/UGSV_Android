@@ -1,13 +1,16 @@
 package com.tencent.qcloud.ugckit;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.util.AttributeSet;
@@ -41,7 +44,6 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     @Nullable
     private OnEditListener mOnEditListener;
     private boolean mIsPublish;
-    private boolean mIsGranted = false;
 
     public UGCKitVideoEdit(Context context) {
         super(context);
@@ -191,7 +193,8 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                 ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                     @Override
                     public void onClick(int which) {
-                        if (!mIsGranted) {
+                        if (ContextCompat.checkSelfPermission(getContext(),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             ToastUtil.toastLongMessage(getResources().getString(R.string.need_storage_permission));
                         } else {
                             VideoEditerSDK.getInstance().setPublishFlag(false);
@@ -313,7 +316,4 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         mProgressFragmentUtil.dismissLoadingProgress();
     }
 
-    public void setIsGranted(Boolean isGranted) {
-        mIsGranted = isGranted;
-    }
 }

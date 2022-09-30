@@ -1,6 +1,5 @@
 package com.tencent.qcloud.ugckit.utils;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -18,23 +17,21 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class DownloadUtil {
-    private        Context      mContext;
     private static DownloadUtil instance;
     private        OkHttpClient okHttpClient;
 
-    public static DownloadUtil get(Context context) {
+    public static DownloadUtil getInstance() {
         if (instance == null) {
             synchronized (DownloadUtil.class) {
                 if (instance == null) {
-                    instance = new DownloadUtil(context);
+                    instance = new DownloadUtil();
                 }
             }
         }
         return instance;
     }
 
-    private DownloadUtil(Context context) {
-        mContext = context;
+    private DownloadUtil() {
         okHttpClient = new OkHttpClient();
     }
 

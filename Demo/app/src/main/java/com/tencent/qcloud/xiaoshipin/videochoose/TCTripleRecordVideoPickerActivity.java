@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class TCTripleRecordVideoPickerActivity extends Activity {
     private TripleRecordVideoPicker mTripleRecordVideoPicker;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);

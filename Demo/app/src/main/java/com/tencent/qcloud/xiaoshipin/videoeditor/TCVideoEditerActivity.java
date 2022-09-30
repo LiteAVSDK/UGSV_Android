@@ -214,6 +214,6 @@ public class TCVideoEditerActivity extends FragmentActivity implements View.OnCl
 
     @Override
     public void onStoragePermissionGranted() {
-        mUGCKitVideoEdit.setIsGranted(true);
+
     }
 }
