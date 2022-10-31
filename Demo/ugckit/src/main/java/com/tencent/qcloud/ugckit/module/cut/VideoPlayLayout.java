@@ -18,37 +18,26 @@ import com.tencent.ugc.TXVideoEditer;
  */
 public class VideoPlayLayout extends FrameLayout {
 
-    private FragmentActivity mActivity;
-    private FrameLayout      mLayoutPlayer;
 
     public VideoPlayLayout(@NonNull Context context) {
         super(context);
-        initViews();
     }
 
     public VideoPlayLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initViews();
     }
 
     public VideoPlayLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initViews();
     }
 
-    private void initViews() {
-        mActivity = (FragmentActivity) getContext();
-        inflate(mActivity, R.layout.ugckit_video_play_layout, this);
-
-        mLayoutPlayer = (FrameLayout) findViewById(R.id.layout_player);
-    }
 
     /**
      * 初始化预览播放器
      */
     public void initPlayerLayout() {
         TXVideoEditConstants.TXPreviewParam param = new TXVideoEditConstants.TXPreviewParam();
-        param.videoView = mLayoutPlayer;
+        param.videoView = this;
         param.renderMode = TXVideoEditConstants.PREVIEW_RENDER_MODE_FILL_EDGE;
         TXVideoEditer videoEditer = VideoEditerSDK.getInstance().getEditer();
         if (videoEditer != null) {

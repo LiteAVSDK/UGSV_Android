@@ -54,6 +54,9 @@ public class TCPicturePickerActivity extends FragmentActivity
         mUGCKitPicturePicker.setOnPickerListener(new IPickerLayout.OnPickerListener() {
             @Override
             public void onPickedList(ArrayList<TCVideoFileInfo> list) {
+                if (list == null) {
+                    return;
+                }
                 startPictureJoinActivity(list);
             }
         });

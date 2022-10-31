@@ -1,5 +1,6 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -19,13 +21,29 @@ import okhttp3.Response;
  */
 
 public class TVCDnsCache {
+    private final Pattern patternIpV4 = Pattern.compile("^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])"
+            + "(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}$");
+    private final Pattern patternIpV6 = Pattern.compile("^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]"
+            + "{1,4}:){1,7}:)|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}(:[0-9A-Fa-f]{1,4})"
+            + "{1,2})|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4}){1,3})|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4})"
+            + "{1,4})|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){1,5})|([0-9A-Fa-f]{1,4}:(:[0-9A-Fa-f]{1,4}){1,6})"
+            + "|(:(:[0-9A-Fa-f]{1,4}){1,7})|(([0-9A-Fa-f]{1,4}:){6}(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|"
+            + "[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3})|(([0-9A-Fa-f]{1,4}:){5}:(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d"
+            + "|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3})|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4})"
+            + "{0,1}:(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3})|"
+            + "(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}){0,2}:(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|"
+            + "[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3})|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){0,3}:(\\d|[1-9]\\d"
+            + "|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3})|([0-9A-Fa-f]{1,4}:"
+            + "(:[0-9A-Fa-f]{1,4}){0,4}:(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d"
+            + "|25[0-5])){3})|(:(:[0-9A-Fa-f]{1,4}){0,5}:(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d"
+            + "|1\\d{2}|2[0-4]\\d|25[0-5])){3}))$");
     private static final String TAG = "TVC-TVCDnsCache";
 
-    private        OkHttpClient                            okHttpClient;
-    private static String                                  HTTPDNS_SERVER = "https://119.29.29.99/d?dn=";      //httpdns服务器请求ip
-    private        ConcurrentHashMap<String, List<String>> cacheMap;
-    private        ConcurrentHashMap<String, List<String>> fixCacheMap;    //固定的dns缓存，从后台获取，认为这个是可信的
-    private static String                                  HTTPDNS_TOKEN  = "800654663"; //该token用于https加密标志，可明文保存
+    private OkHttpClient okHttpClient;
+    private static String HTTPDNS_SERVER = "https://119.29.29.99/d?dn=";      //httpdns服务器请求ip
+    private ConcurrentHashMap<String, List<String>> cacheMap;
+    private ConcurrentHashMap<String, List<String>> fixCacheMap;    //固定的dns缓存，从后台获取，认为这个是可信的
+    private static String HTTPDNS_TOKEN = "800654663"; //该token用于https加密标志，可明文保存
 
     public TVCDnsCache() {
         okHttpClient = new OkHttpClient().newBuilder()
@@ -60,15 +78,18 @@ public class TVCDnsCache {
                 if (response != null && response.isSuccessful()) {
                     String ips = response.body().string();
                     Log.i(TAG, "freshDNS succ :" + ips);
-
                     if (ips != null && ips.length() != 0) {
                         ArrayList<String> ipLists = new ArrayList<String>();
                         if (ips.contains(";")) {
                             String[] ipArray = ips.split(";");
-                            for (int i = 0; i < ipArray.length; ++i) {
-                                ipLists.add(ipArray[i]);
+                            for (String ipStr : ipArray) {
+                                if (checkIpValid(ipStr)) {
+                                    Log.i(TAG, "freshDNS add ip :" + ipStr);
+                                    ipLists.add(ipStr);
+                                }
                             }
-                        } else {
+                        } else if (checkIpValid(ips)) {
+                            Log.i(TAG, "freshDNS add ip :" + ips);
                             ipLists.add(ips);
                         }
                         cacheMap.put(domain, ipLists);
@@ -87,6 +108,12 @@ public class TVCDnsCache {
         return true;
     }
 
+    private boolean checkIpValid(String content) {
+        if (TextUtils.isEmpty(content)) {
+            return false;
+        }
+        return patternIpV4.matcher(content).find() || patternIpV6.matcher(content).find();
+    }
 
     // 添加指定域名的ip列表，ip列表是后台返回的
     public void addDomainDNS(String domain, ArrayList<String> ipLists) {

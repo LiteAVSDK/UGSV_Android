@@ -496,7 +496,6 @@ public class XmagicPanelView extends RelativeLayout {
     private void startDownload(final XmagicUIProperty<?> uiProperty, final PanelMenu menu) {
         showProgressDialog();
         MotionDLModel dlModel = uiProperty.dlModel;
-        Log.e("打印日志信息", "sdfsdfs");
         final String TAG = "startDownloadResource " + dlModel.getName();
         ResDownloadUtil.checkOrDownloadMotions(getContext(), dlModel, new OnDownloadListener() {
             @Override

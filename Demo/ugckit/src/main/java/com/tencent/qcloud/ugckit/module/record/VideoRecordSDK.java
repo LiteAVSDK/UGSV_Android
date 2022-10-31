@@ -386,7 +386,6 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordSDK.resumeRecord();
         }
         RecordMusicManager.getInstance().resumeMusic();
-        AudioFocusManager.getInstance().requestAudioFocus();
 
         mCurrentState = STATE_RESUME;
     }
@@ -406,7 +405,6 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
         }
         mPreviewFlag = false;
 
-        AudioFocusManager.getInstance().abandonAudioFocus();
     }
 
     /**
@@ -426,7 +424,6 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordSDK.stopBGM();
             mRecordSDK.stopRecord();
         }
-        AudioFocusManager.getInstance().abandonAudioFocus();
 
         mCurrentState = STATE_STOP;
     }
@@ -452,7 +449,7 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordDraftManager.deleteLastRecordDraft();
         }
 
-        AudioFocusManager.getInstance().abandonAudioFocus();
+//        AudioFocusManager.getInstance().abandonAudioFocus();
     }
 
     public void setFilter(Bitmap leftBmp, float leftSpecialRatio, Bitmap rightBmp,

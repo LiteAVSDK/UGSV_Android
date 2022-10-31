@@ -1,7 +1,9 @@
 package com.tencent.qcloud.xiaoshipin.videojoiner;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+
 import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +15,7 @@ import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.module.picturetransition.IPictureJoinKit;
 import com.tencent.qcloud.ugckit.UGCKitPictureJoin;
+import com.tencent.qcloud.xiaoshipin.common.URIConvert;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerActivity;
 
 import java.util.ArrayList;
@@ -58,6 +61,14 @@ public class TCPictureJoinActivity extends FragmentActivity {
          *  获取从图片路径集合，并设置给TUIKit {@link UGCKitPictureJoin#setInputPictureList(ArrayList)}
          */
         mPicPathList = getIntent().getStringArrayListExtra(UGCKitConstants.INTENT_KEY_MULTI_PIC_LIST);
+        ArrayList<String> picPathList = null;
+        if (Build.VERSION.SDK_INT >= 29 && mPicPathList != null) {
+            picPathList = new ArrayList<>();
+            for (String picUri : mPicPathList) {
+                picPathList.add(URIConvert.getFilePathByUri(picUri));
+            }
+            mPicPathList = picPathList;
+        }
         mPictureTransition.setInputPictureList(mPicPathList);
         mPictureTransition.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override

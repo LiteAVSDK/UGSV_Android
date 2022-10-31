@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.media.AudioManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -26,8 +27,8 @@ import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.VideoGenerateKit;
 import com.tencent.qcloud.ugckit.module.editer.AbsVideoEditUI;
 import com.tencent.qcloud.ugckit.module.editer.UGCKitEditConfig;
+import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.utils.LogReport;
-import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.qcloud.ugckit.component.dialog.ActionSheetDialog;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.Config;
@@ -44,6 +45,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     @Nullable
     private OnEditListener mOnEditListener;
     private boolean mIsPublish;
+    private AudioFocusManager mAudioFocusManager = null;
 
     public UGCKitVideoEdit(Context context) {
         super(context);
@@ -78,10 +80,9 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                 showPublishDialog();
             }
         });
-        // 监听电话
-        TelephonyUtil.getInstance().setOnTelephoneListener(new TelephonyUtil.OnTelephoneListener() {
+        mAudioFocusManager = new AudioFocusManager(getContext(), new AudioFocusManager.OnAudioFocusChangeListener() {
             @Override
-            public void onRinging() {
+            public void onLossFocus() {
                 // 生成状态 取消生成
                 stopGenerate();
                 // 直接停止播放
@@ -89,20 +90,11 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
             }
 
             @Override
-            public void onOffhook() {
-                stopGenerate();
-                // 直接停止播放
-                PlayerManagerKit.getInstance().stopPlay();
-            }
-
-            @Override
-            public void onIdle() {
+            public void onGain(boolean lossTransient, boolean lossTransientCanDuck) {
                 // 重新开始播放
                 PlayerManagerKit.getInstance().restartPlay();
             }
         });
-        TelephonyUtil.getInstance().initPhoneListener();
-
         // 设置默认为全功能导入视频方式
         JumpActivityMgr.getInstance().setQuickImport(false);
     }
@@ -236,6 +228,9 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
 
     @Override
     public void start() {
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.requestAudioFocus(AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        }
         KeyguardManager manager = (KeyguardManager) UGCKit.getAppContext().getSystemService(Context.KEYGUARD_SERVICE);
         if (!manager.inKeyguardRestrictedInputMode()) {
             PlayerManagerKit.getInstance().restartPlay();
@@ -244,6 +239,9 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
 
     @Override
     public void stop() {
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.abandonAudioFocus();
+        }
         Log.i(TAG, "[UGCKit][VideoEdit]onStop call stopPlay");
         PlayerManagerKit.getInstance().stopPlay();
 
@@ -253,8 +251,6 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     @Override
     public void release() {
         Config.getInstance().clearConfig();
-        TelephonyUtil.getInstance().uninitPhoneListener();
-        TelephonyUtil.getInstance().setOnTelephoneListener(null);
     }
 
     @Override
