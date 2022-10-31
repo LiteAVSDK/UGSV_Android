@@ -380,7 +380,7 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
 
     public void release() {
         NetworkUtil.getInstance(UGCKit.getAppContext()).unregisterNetChangeReceiver();
-
+        NetworkUtil.getInstance(UGCKit.getAppContext()).setNetchangeListener(null);
         deleteCache();
     }
 

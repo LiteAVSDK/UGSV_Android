@@ -18,6 +18,7 @@ import com.tencent.qcloud.ugckit.basic.UGCKitResult;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.module.cut.IVideoCutKit;
 import com.tencent.qcloud.ugckit.UGCKitVideoCut;
+import com.tencent.qcloud.xiaoshipin.common.URIConvert;
 
 /**
  * 裁剪视频Activity
@@ -61,8 +62,10 @@ public class TCVideoCutActivity extends FragmentActivity {
         String inVideoUri = getIntent().getStringExtra(UGCKitConstants.VIDEO_URI);
 
         String path;
+        //由于Android 10上在使用ContentResolver.openFileDescriptor的时候会卡主，系统问题（https://issuetracker.google.com/issues/141496793）
+        //所以修改为在Android 10以及之后通过uri转为绝对路径，并且在manifest文件中配置 android:requestLegacyExternalStorage="true"
         if (Build.VERSION.SDK_INT >= 29) {
-            path = TextUtils.isEmpty(inVideoUri) ? inVideoPath : inVideoUri;
+            path = TextUtils.isEmpty(inVideoUri) ? inVideoPath : URIConvert.getFilePathByUri(inVideoUri);
         } else {
             path = inVideoPath;
         }
@@ -70,7 +73,7 @@ public class TCVideoCutActivity extends FragmentActivity {
         mUGCKitVideoCut.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
     }
@@ -102,8 +105,8 @@ public class TCVideoCutActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
+        mUGCKitVideoCut.onBackPressed();
         super.onBackPressed();
-        finish();
     }
 
     private void startEditActivity(UGCKitResult ugcKitResult) {

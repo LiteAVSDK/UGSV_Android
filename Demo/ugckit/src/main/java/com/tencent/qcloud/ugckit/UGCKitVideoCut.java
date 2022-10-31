@@ -19,7 +19,6 @@ import com.tencent.qcloud.ugckit.module.cut.AbsVideoCutUI;
 import com.tencent.qcloud.ugckit.module.cut.IVideoCutLayout;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.DialogUtil;
-import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.component.dialog.ProgressDialogUtil;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
@@ -100,8 +99,6 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
                 }
             }
         });
-        // 监听电话
-        TelephonyUtil.getInstance().initPhoneListener();
     }
 
     @Override
@@ -268,7 +265,6 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
 
     @Override
     public void release() {
-        TelephonyUtil.getInstance().uninitPhoneListener();
     }
 
     @Override
@@ -296,5 +292,10 @@ public class UGCKitVideoCut extends AbsVideoCutUI implements PlayerManagerKit.On
     public void onPreviewFinish() {
         // 循环播放
         PlayerManagerKit.getInstance().startPlay();
+    }
+
+    public void onBackPressed() {
+        VideoEditerSDK.getInstance().releaseSDK();
+        VideoEditerSDK.getInstance().clear();
     }
 }

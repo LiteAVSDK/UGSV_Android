@@ -51,22 +51,6 @@ public class PermissionManager {
         mContext = context;
         mPermissionType = type;
         sharedPreferenceUtils = new SharedPreferenceUtils(mContext, SHARED_PREFERENCE_FILE_NAME_PERMISSION);
-        if (type.equals(PermissionType.STORAGE)) {
-            mDialog = new PermissionIntroductionDialog(mContext.getString(R.string.permission_introduction_write_title),
-                    mContext.getString(R.string.permission_introduction_write),
-                    PermissionIntroductionDialog.DialogPosition.TOP);
-        } else if (mPermissionType.equals(PermissionType.AUDIO)) {
-            mDialog = new PermissionIntroductionDialog(mContext
-                    .getString(R.string.permission_introduction_audio_title),
-                    mContext.getString(R.string.permission_introduction_audio),
-                    PermissionIntroductionDialog.DialogPosition.TOP);
-        } else if (mPermissionType.equals(PermissionType.CAMERA)) {
-            mDialog = new PermissionIntroductionDialog(mContext
-                    .getString(R.string.permission_introduction_camera_title),
-                    mContext.getString(R.string.permission_introduction_camera),
-                    PermissionIntroductionDialog.DialogPosition.TOP);
-        }
-        mDialog.setCancelable(false);
     }
 
     public void checkoutIfShowPermissionIntroductionDialog() {
@@ -83,6 +67,7 @@ public class PermissionManager {
                     if ((now - oldTime) >= FORTY_EIGHT_HOURS) {
                         checkAndRequestPermission(PERMISSION_STORAGE, REQUEST_CODE_STORAGE);
                         FragmentActivity temp = (FragmentActivity) mContext;
+                        mDialog = createDialog();
                         mDialog.show(temp.getSupportFragmentManager(), DIALOG_NAME);
                     }
                 } else {
@@ -98,6 +83,7 @@ public class PermissionManager {
                     if ((now - oldTime) >= FORTY_EIGHT_HOURS) {
                         checkAndRequestPermission(PERMISSION_AUDIO, REQUEST_CODE_AUDIO);
                         FragmentActivity temp = (FragmentActivity) mContext;
+                        mDialog = createDialog();
                         mDialog.show(temp.getSupportFragmentManager(), DIALOG_NAME);
                     }
                 }
@@ -109,6 +95,7 @@ public class PermissionManager {
                     if ((now - oldTime) >= FORTY_EIGHT_HOURS) {
                         checkAndRequestPermission(PERMISSION_CAMERA, REQUEST_CODE_CAMERA);
                         FragmentActivity temp = (FragmentActivity) mContext;
+                        mDialog = createDialog();
                         mDialog.show(temp.getSupportFragmentManager(), DIALOG_NAME);
                     }
                 } else {
@@ -183,12 +170,37 @@ public class PermissionManager {
             return;
         }
         if (mDialog.isStateSaved()) {
-            mHandler.post(() -> mDialog.dismiss());
+            mHandler.post(() -> {
+                mDialog.dismiss();
+                mDialog = null;
+            });
         } else {
             mDialog.dismiss();
+            mDialog = null;
         }
     }
 
+
+    private PermissionIntroductionDialog createDialog() {
+        PermissionIntroductionDialog mDialog = null;
+        if (mPermissionType.equals(PermissionType.STORAGE)) {
+            mDialog = new PermissionIntroductionDialog(mContext.getString(R.string.permission_introduction_write_title),
+                    mContext.getString(R.string.permission_introduction_write),
+                    PermissionIntroductionDialog.DialogPosition.TOP);
+        } else if (mPermissionType.equals(PermissionType.AUDIO)) {
+            mDialog = new PermissionIntroductionDialog(mContext
+                    .getString(R.string.permission_introduction_audio_title),
+                    mContext.getString(R.string.permission_introduction_audio),
+                    PermissionIntroductionDialog.DialogPosition.TOP);
+        } else if (mPermissionType.equals(PermissionType.CAMERA)) {
+            mDialog = new PermissionIntroductionDialog(mContext
+                    .getString(R.string.permission_introduction_camera_title),
+                    mContext.getString(R.string.permission_introduction_camera),
+                    PermissionIntroductionDialog.DialogPosition.TOP);
+        }
+        mDialog.setCancelable(false);
+        return mDialog;
+    }
 
     public interface OnStoragePermissionGrantedListener {
         void onStoragePermissionGranted();

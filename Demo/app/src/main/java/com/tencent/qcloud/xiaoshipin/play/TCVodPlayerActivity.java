@@ -2,6 +2,7 @@ package com.tencent.qcloud.xiaoshipin.play;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,13 +20,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCVideoInfo;
 import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.BitmapUtils;
 import com.tencent.qcloud.ugckit.utils.LogReport;
-import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.userinfo.UserInfoUtil;
 import com.tencent.qcloud.xiaoshipin.videorecord.FollowRecordDownloader;
@@ -42,7 +43,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
-public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener, TelephonyUtil.OnTelephoneListener {
+public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
+        AudioFocusManager.OnAudioFocusChangeListener {
     private static final String TAG = "TCVodPlayerActivity";
     private VerticalViewPager mVerticalViewPager;
     private MyPagerAdapter mPagerAdapter;
@@ -61,6 +63,9 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
      */
     private TXVodPlayer mTXVodPlayer;
 
+    private AudioFocusManager mAudioFocusManager = null;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +74,7 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
         initViews();
         initPlayerSDK();
 
-        TelephonyUtil.getInstance().setOnTelephoneListener(this);
-        TelephonyUtil.getInstance().initPhoneListener();
+        mAudioFocusManager = new AudioFocusManager(this, this);
 
         //在这里停留，让列表界面卡住几百毫秒，给sdk一点预加载的时间，形成秒开的视觉效果
         try {
@@ -195,6 +199,7 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
             config.setMaxCacheItems(5);
             vodPlayer.setConfig(config);
             vodPlayer.setAutoPlay(false);
+            vodPlayer.setRequestAudioFocus(false);
 
             TCVideoInfo tcLiveInfo = mTCLiveInfoList.get(position);
             playerInfo.playURL = TextUtils.isEmpty(tcLiveInfo.hlsPlayUrl) ? tcLiveInfo.playurl : tcLiveInfo.hlsPlayUrl;
@@ -337,11 +342,17 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
         if (mTXVodPlayer != null) {
             mTXVodPlayer.resume();
         }
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.requestAudioFocus(AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.abandonAudioFocus();
+        }
         if (mTXCloudVideoView != null) {
             mTXCloudVideoView.onPause();
         }
@@ -363,7 +374,6 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
         stopPlay(true);
         mTXVodPlayer = null;
 
-        TelephonyUtil.getInstance().uninitPhoneListener();
     }
 
     protected void stopPlay(boolean clearLastFrame) {
@@ -420,21 +430,15 @@ public class TCVodPlayerActivity extends Activity implements ITXVodPlayListener,
     }
 
     @Override
-    public void onRinging() {
+    public void onLossFocus() {
         if (mTXVodPlayer != null) {
             mTXVodPlayer.setMute(true);
         }
     }
 
-    @Override
-    public void onOffhook() {
-        if (mTXVodPlayer != null) {
-            mTXVodPlayer.setMute(true);
-        }
-    }
 
     @Override
-    public void onIdle() {
+    public void onGain(boolean lossTransient, boolean lossTransientCanDuck) {
         if (mTXVodPlayer != null) {
             mTXVodPlayer.setMute(false);
         }

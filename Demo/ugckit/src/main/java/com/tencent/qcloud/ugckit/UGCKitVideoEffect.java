@@ -15,7 +15,6 @@ import com.tencent.qcloud.ugckit.module.effect.AbsVideoEffectUI;
 import com.tencent.qcloud.ugckit.module.effect.ConfigureLoader;
 import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
@@ -48,7 +47,6 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
         // 加载草稿配置
         ConfigureLoader.getInstance().loadConfigToDraft();
 
-        TelephonyUtil.getInstance().initPhoneListener();
 
         initTitlebar();
 
@@ -118,7 +116,6 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
     public void release() {
         PlayerManagerKit.getInstance().removeAllPreviewListener();
         PlayerManagerKit.getInstance().removeAllPlayStateListener();
-        TelephonyUtil.getInstance().uninitPhoneListener();
         TimelineViewUtil.getInstance().release();
     }
 

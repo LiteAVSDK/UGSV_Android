@@ -47,10 +47,10 @@ public class TCVideoPickerActivity extends FragmentActivity
         mUGCKitVideoPicker.setOnPickerListener(new IPickerLayout.OnPickerListener() {
             @Override
             public void onPickedList(ArrayList list) {
-                int size = list.size();
-                if (size == 0) {
+                if (list == null || list.size() == 0) {
                     return;
-                } else if (size == 1) {
+                }
+                if (list.size() == 1) {
                     TCVideoFileInfo fileInfo = (TCVideoFileInfo) list.get(0);
                     startVideoCutActivity(fileInfo);
                 } else {
