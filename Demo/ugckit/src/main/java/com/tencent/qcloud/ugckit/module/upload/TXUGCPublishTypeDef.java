@@ -24,7 +24,7 @@ public class TXUGCPublishTypeDef {
         public boolean enableHttps          = false;                                   //上传是否使用https。默认关闭，走http
         public String  fileName;                                               //视频名称
         public boolean enablePreparePublish = true;                           //是否开启预上传机制，默认开启，备注：预上传机制可以大幅提升文件的上传质量
-        public long    sliceSize            = 1024 * 1024 * 10;                  // 分片大小,支持最小为1M
+        public long    sliceSize            = 0;                               // 分片大小,支持最小为1M,最大10M，默认0，代表上传文件大小除以10
         public int     concurrentCount      = -1;                              // 分片上传并发数量，<=0 则表示SDK内部默认为2个
     }
 
@@ -44,7 +44,7 @@ public class TXUGCPublishTypeDef {
         public boolean enableHttps          = false;                                   //上传是否使用https。默认关闭，走http
         public String  fileName;                                               //媒体名称
         public boolean enablePreparePublish = true;                           //是否开启预上传机制，默认开启，备注：预上传机制可以大幅提升文件的上传质量
-        public long    sliceSize            = 1024 * 1024 * 10;                  // 分片大小,支持最小为1M
+        public long    sliceSize            = 0;                               // 分片大小,支持最小为1M,最大10M，默认0，代表上传文件大小除以10
         public int     concurrentCount      = -1;                              // 分片上传并发数量，<=0 则表示SDK内部默认为2个
     }
 

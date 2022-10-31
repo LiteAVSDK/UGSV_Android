@@ -274,7 +274,7 @@ public class XMagicImpl implements SensorEventListener {
 
 
     public enum XmagicState {
-        STARTED, STOPPED, DESTROYED
+        IDLE, STARTED, STOPPED
     }
 
 

@@ -69,7 +69,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private View mRootView;
     private View mProgressLayer;
     private ProgressBar mProgressBar;
-    private final int REPEAT_TIMES = 3;
+    private static final int REPEAT_TIMES = 3;
     private long mSpeedDurationPlus = 0;
     private long mRepeatDurationPlus = 0;
 

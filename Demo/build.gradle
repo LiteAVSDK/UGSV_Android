@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        jcenter()
         google()
         mavenCentral()
     }
@@ -24,7 +23,6 @@ allprojects {
                 dirs project(':liteav_leb_player').file('src/main/libs')
             }
         }
-        jcenter()
         google()
         mavenCentral()
     }

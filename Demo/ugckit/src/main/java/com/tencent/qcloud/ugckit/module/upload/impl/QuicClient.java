@@ -93,7 +93,7 @@ public class QuicClient {
      */
     public void detectQuic(final String domain, final QuicDetectListener listener) {
         List<String> ipList = TXUGCPublishOptCenter.getInstance().query(domain);
-        if (!ipList.isEmpty()) {
+        if (null != ipList && !ipList.isEmpty()) {
             this.mQuicDetectListener = listener;
             String reqUrl = "http://" + domain;
             Uri originUri = Uri.parse(reqUrl);

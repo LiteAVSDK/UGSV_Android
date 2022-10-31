@@ -50,61 +50,65 @@ import okhttp3.Response;
  * 视频上传客户端
  */
 public class TVCClient {
-    private static final String                   TAG                   = "TVC-Client";
-    private              Context                  context;
-    private              Handler                  mainHandler;
-    private              boolean                  busyFlag              = false;
-    private              boolean                  cancleFlag            = false;
-    private              TVCUploadInfo            uploadInfo;
-    private              UGCClient                ugcClient;
-    private              TVCUploadListener        tvcListener;
-    private              int                      cosAppId;   //点播上传用到的COS appid
-    private              int                      userAppId;  //客户自己的appid，数据上报需要
-    private              String                   uploadRegion          = "";
-    private              String                   cosBucket;
-    private              String                   cosTmpSecretId        = "";
-    private              String                   cosTmpSecretKey       = "";
-    private              String                   cosToken              = "";
-    private              long                     cosExpiredTime;
-    private              long                     localTimeAdvance      = 0;        //本地时间相对unix时间戳提前间隔
-    private              String                   cosVideoPath;
-    private              String                   videoFileId;
-    private              String                   cosCoverPath;
-    private              boolean                  isOpenCosAcc          = false;   //是否使用cos动态加速
-    private              String                   cosAccDomain          = "";       //动态加速域名
-    private              String                   cosHost               = "";
-    private              String                   domain;
-    private              String                   cosIP                 = "";
-    private              String                   vodSessionKey         = null;
-    private              long                     reqTime               = 0;            //各阶段开始请求时间
-    private              long                     initReqTime           = 0;        //上传请求时间，用于拼接reqKey。串联请求
-    private              String                   customKey             = "";       //用于数据上报
-    private              CosXmlService            mCosXmlService;
-    private              COSXMLUploadTask         mCOSXMLUploadTask;
-    private              TransferConfig           mTransferConfig;
-    private              TransferManager          mTransferManager;
-    private static final String                   LOCALFILENAME         = "TVCSession";
-    private              SharedPreferences        mSharedPreferences;
-    private              SharedPreferences.Editor mShareEditor;
-    private              String                   uploadId              = null;
-    private              long                     fileLastModTime       = 0;     //视频文件最后修改时间
-    private              boolean                  enableResume          = true;
-    private              boolean                  enableHttps           = false;
-    private              UGCReport.ReportInfo     reportInfo;
-    private static final int                      VIRTUAL_TOTAL_PERCENT = 10;    //前后的虚拟进度占的百分比
-    private              TimerTask                virtualProgress       = null;   //虚拟进度任务
-    private              Timer                    mTimer;                       //定时器
-    private              int                      virtualPercent        = 0;             //虚拟进度
-    private              boolean                  realProgressFired     = false;
-    private              int                      vodCmdRequestCount    = 0;           //vod信令重试次数
-    private              long                     mSliceSize            = 1024 * 1024 * 10; // 默认分片10M
-    private              int                      mConcurrentCount;                 // 并发数量
+    private static final String TAG = "TVC-Client";
+    private static final long SLICE_SIZE_MIN = 1024 * 1024;
+    private static final long SLICE_SIZE_MAX = 1024 * 1024 * 10;
+    private static final long SLICE_SIZE_ADAPTATION = 0;
+
+    private Context context;
+    private Handler mainHandler;
+    private boolean busyFlag = false;
+    private boolean cancleFlag = false;
+    private TVCUploadInfo uploadInfo;
+    private UGCClient ugcClient;
+    private TVCUploadListener tvcListener;
+    private int cosAppId;   //点播上传用到的COS appid
+    private int userAppId;  //客户自己的appid，数据上报需要
+    private String uploadRegion = "";
+    private String cosBucket;
+    private String cosTmpSecretId = "";
+    private String cosTmpSecretKey = "";
+    private String cosToken = "";
+    private long cosExpiredTime;
+    private long localTimeAdvance = 0;        //本地时间相对unix时间戳提前间隔
+    private String cosVideoPath;
+    private String videoFileId;
+    private String cosCoverPath;
+    private boolean isOpenCosAcc = false;   //是否使用cos动态加速
+    private String cosAccDomain = "";       //动态加速域名
+    private String cosHost = "";
+    private String domain;
+    private String cosIP = "";
+    private String vodSessionKey = null;
+    private long reqTime = 0;            //各阶段开始请求时间
+    private long initReqTime = 0;        //上传请求时间，用于拼接reqKey。串联请求
+    private String customKey = "";       //用于数据上报
+    private CosXmlService mCosXmlService;
+    private COSXMLUploadTask mCOSXMLUploadTask;
+    private TransferConfig mTransferConfig;
+    private TransferManager mTransferManager;
+    private static final String LOCALFILENAME = "TVCSession";
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mShareEditor;
+    private String uploadId = null;
+    private long fileLastModTime = 0;     //视频文件最后修改时间
+    private boolean enableResume = true;
+    private boolean enableHttps = false;
+    private UGCReport.ReportInfo reportInfo;
+    private static final int VIRTUAL_TOTAL_PERCENT = 10;    //前后的虚拟进度占的百分比
+    private TimerTask virtualProgress = null;   //虚拟进度任务
+    private Timer mTimer;                       //定时器
+    private int virtualPercent = 0;             //虚拟进度
+    private boolean realProgressFired = false;
+    private int vodCmdRequestCount = 0;           //vod信令重试次数
+    private long mSliceSize = 1024 * 1024 * 10; // 默认分片10M
+    private int mConcurrentCount;                 // 并发数量
 
     /**
      * 初始化上传实例
      *
      * @param signature 签名
-     * @param iTimeOut 超时时间
+     * @param iTimeOut  超时时间
      */
     public TVCClient(Context context, String customKey, String signature, boolean enableResume, boolean enableHttps,
                      int iTimeOut, long sliceSize, int concurrenceSize) {
@@ -117,12 +121,14 @@ public class TVCClient {
         this.enableHttps = enableHttps;
         this.customKey = customKey;
         this.mConcurrentCount = concurrenceSize;
-        // sdk最小支持1M
-        if (sliceSize < 1024 * 1024) {
-            sliceSize = 1024 * 1024;
-        }
         reportInfo = new UGCReport.ReportInfo();
         clearLocalCache();
+        // sdk最小1M,最大10M，如果不设置，置为0，则为文件大小的十分之一
+        if (sliceSize == 0) {
+            mSliceSize = SLICE_SIZE_ADAPTATION;
+        } else {
+            mSliceSize = fixSliceSize(sliceSize);
+        }
     }
 
     /**
@@ -154,6 +160,15 @@ public class TVCClient {
                 e.printStackTrace();
             }
         }
+    }
+
+    private long fixSliceSize(long sliceSize) {
+        if (sliceSize < SLICE_SIZE_MIN) {
+            sliceSize = SLICE_SIZE_MIN;
+        } else if (sliceSize > SLICE_SIZE_MAX) {
+            sliceSize = SLICE_SIZE_MAX;
+        }
+        return sliceSize;
     }
 
     private void startTimer() {
@@ -252,7 +267,7 @@ public class TVCClient {
     /**
      * 上传视频文件
      *
-     * @param info 视频文件信息
+     * @param info     视频文件信息
      * @param listener 上传回调
      * @return
      */
@@ -611,12 +626,13 @@ public class TVCClient {
                         + "path " + uploadInfo.getFilePath());
                 long tcpConnectionTimeCost = 0;
                 long recvRspTimeCost = 0;
+                long sliceSize = getSliceSize();
                 try {
                     TXUGCPublishTypeDef.TXPublishResumeData resumeData = new TXUGCPublishTypeDef.TXPublishResumeData();
                     resumeData.bucket = cosBucket;
                     resumeData.cosPath = cosVideoPath;
                     resumeData.srcPath = uploadInfo.getFilePath();
-                    resumeData.sliceSize = 1024 * 1024;
+                    resumeData.sliceSize = sliceSize;
 
                     boolean hasComputeTimeCost = false;
 
@@ -641,7 +657,7 @@ public class TVCClient {
                     }
 
                     // 此处可以进行定制，我们使用默认设置即可；
-                    mTransferConfig = new TransferConfig.Builder().setSliceSizeForUpload(mSliceSize).build();
+                    mTransferConfig = new TransferConfig.Builder().setSliceSizeForUpload(sliceSize).build();
                     mTransferManager = new TransferManager(mCosXmlService, mTransferConfig);
                     Log.d(TAG, "resumeData.srcPath: " + resumeData.srcPath);
                     if (resumeData.srcPath.startsWith("content://")) {
@@ -728,6 +744,19 @@ public class TVCClient {
         Log.e(TAG, "quic request failed,switch to http");
         TXUGCPublishOptCenter.getInstance().disableQuicIfNeed();
         applyUploadUGC(uploadInfo, vodSessionKey);
+    }
+
+    private long getSliceSize() {
+        long sliceSize = mSliceSize;
+        if (sliceSize == SLICE_SIZE_ADAPTATION) {
+            if (uploadInfo.getFileSize() > 0) {
+                sliceSize = fixSliceSize(uploadInfo.getFileSize() / 10);
+            } else {
+                Log.w(TAG, "file size invalid,set sliceSize to SLICE_SIZE_MIN");
+                sliceSize = SLICE_SIZE_MIN;
+            }
+        }
+        return sliceSize;
     }
 
     // 解析cos上传视频返回信息
@@ -850,9 +879,9 @@ public class TVCClient {
      * @param errMsg：错误详细信息，COS的错误把requestId拼在错误信息里带回
      * @param reqTime：请求时间
      * @param reqTimeCost：耗时，单位ms
-     * @param fileSize :文件大小
-     * @param fileType :文件类型
-     * @param fileId :上传完成后点播返回的fileid
+     * @param fileSize                                :文件大小
+     * @param fileType                                :文件类型
+     * @param fileId                                  :上传完成后点播返回的fileid
      */
     void txReport(int reqType, int errCode, int vodErrCode, String cosErrCode, String errMsg, long reqTime,
                   long reqTimeCost, long fileSize, String fileType, String fileName, String fileId,

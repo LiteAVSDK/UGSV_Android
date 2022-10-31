@@ -8,13 +8,12 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import android.os.Handler;
+import android.media.AudioManager;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -24,7 +23,6 @@ import com.tencent.qcloud.ugckit.module.ProcessKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.module.record.AbsVideoRecordUI;
-import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 import com.tencent.qcloud.ugckit.module.record.PhotoSoundPlayer;
 import com.tencent.qcloud.ugckit.module.record.RecordBottomLayout;
@@ -36,10 +34,10 @@ import com.tencent.qcloud.ugckit.module.record.VideoRecordSDK;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordButton;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordMusicPannel;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordRightLayout;
+import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.DialogUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
-import com.tencent.qcloud.ugckit.utils.TelephonyUtil;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
@@ -49,7 +47,6 @@ import com.tencent.xmagic.module.XmagicResParser;
 import com.tencent.xmagic.panel.XmagicPanelDataManager;
 import com.tencent.xmagic.telicense.TELicenseCheck;
 
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -71,7 +68,10 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     private ExecutorService videoProcessExecutor;
 
     private XMagicImpl             mXMagic;
-    private XMagicImpl.XmagicState xmagicState = XMagicImpl.XmagicState.STARTED;
+    private XMagicImpl.XmagicState mXmagicState = XMagicImpl.XmagicState.IDLE;
+    private volatile boolean       mIsTextureDestroyed = false;
+    private boolean                mIsReleased = false;
+    private AudioFocusManager mAudioFocusManager = null;
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -94,6 +94,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         VideoRecordSDK.getInstance().initSDK();
         // 初始化视频草稿箱
         VideoRecordSDK.getInstance().initRecordDraft(context);
+        VideoRecordSDK.getInstance().deleteAllParts();
         VideoRecordSDK.getInstance().setOnRestoreDraftListener(new VideoRecordSDK.OnRestoreDraftListener() {
             @Override
             public void onDraftProgress(long duration) {
@@ -158,56 +159,37 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
         getScrollFilterView().setOnRecordFilterListener(this);
 
-        TelephonyUtil.getInstance().initPhoneListener();
         mProgressDialogUtil = new ProgressDialogUtil(mActivity);
 
         UGCKitRecordConfig config = UGCKitRecordConfig.getInstance();
         // 初始化默认配置
         VideoRecordSDK.getInstance().initConfig(config);
-        initBeauty();
-    }
+        mAudioFocusManager = new AudioFocusManager(getContext(), new AudioFocusManager.OnAudioFocusChangeListener() {
 
-    private void initBeauty() {
-        TXUGCRecord instance = TXUGCRecord.getInstance(UGCKit.getAppContext());
-        instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
             @Override
-            public int onTextureCustomProcess(int textureId, int width, int height) {
-                if (xmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
-                    return mXMagic.process(textureId, width, height);
-                }
-                return textureId;
+            public void onLossFocus() {
+                VideoRecordSDK.getInstance().pauseRecord();
             }
 
             @Override
-            public void onDetectFacePoints(float[] floats) {
-            }
+            public void onGain(boolean lossTransient, boolean lossTransientCanDuck) {
 
-            @Override
-            public void onTextureDestroyed() {
-                if (Looper.getMainLooper() != Looper.myLooper()) {  //非主线程
-                    boolean stopped = xmagicState == XMagicImpl.XmagicState.STOPPED;
-                    if (stopped || xmagicState == XMagicImpl.XmagicState.DESTROYED) {
-                        if (mXMagic != null) {
-                            mXMagic.onDestroy();
-                        }
-                    }
-                    if (xmagicState == XMagicImpl.XmagicState.DESTROYED) {
-                        TXUGCRecord.getInstance(UGCKit.getAppContext()).setVideoProcessListener(null);
-                    }
-                }
             }
         });
+
+        registerVideoProcessListener();
         XMagicImpl.checkAuth(new TELicenseCheck.TELicenseCheckListener() {
             @Override
             public void onLicenseCheckFinish(int errorCode, String msg) {
                 if (errorCode == TELicenseCheck.ERROR_OK) {
                     loadXmagicRes();
                 } else {
-                    Log.e("TAG", "auth fail ，please check auth url and key" + errorCode + " " + msg);
+                    Log.e(TAG, "auth fail ，please check auth url and key" + errorCode + " " + msg);
                 }
             }
         });
     }
+
 
     @Override
     public void setOnRecordListener(OnRecordListener listener) {
@@ -221,11 +203,11 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
     @Override
     public void start() {
+        mIsTextureDestroyed = false;
         // 打开录制预览界面
         VideoRecordSDK.getInstance().startCameraPreview(getRecordVideoView());
-        if (xmagicState == XMagicImpl.XmagicState.STOPPED) {
+        if (mXmagicState == XMagicImpl.XmagicState.STOPPED) {
             initXMagic();
-            xmagicState = XMagicImpl.XmagicState.STARTED;
         }
     }
 
@@ -234,10 +216,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         Log.d(TAG, "stop");
         isInStopProcessing = false;
         if (mXMagic != null) {
-            xmagicState = XMagicImpl.XmagicState.STOPPED;
             mXMagic.onPause();
+            mXmagicState = XMagicImpl.XmagicState.STOPPED;
         }
-        TelephonyUtil.getInstance().uninitPhoneListener();
 
         getRecordBottomLayout().getRecordButton().pauseRecordAnim();
         getRecordBottomLayout().closeTorch();
@@ -250,7 +231,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     @Override
     public void release() {
         Log.d(TAG, "release");
-        xmagicState = XMagicImpl.XmagicState.DESTROYED;
         XmagicPanelDataManager.getInstance().clearData();
         getRecordBottomLayout().getRecordProgressView().release();
         // 停止录制
@@ -259,11 +239,12 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         UGCKitRecordConfig.getInstance().clear();
         // 录制TXUGCRecord是单例，需要释放时还原配置
 //        getBeautyPanel().clear();
-        AudioFocusManager.getInstance().setAudioFocusListener(null);
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
 //        getBeautyPanel().setOnFilterChangeListener(null);
         ProcessKit.getInstance().setOnUpdateUIListener(null);
         VideoRecordSDK.getInstance().setOnRestoreDraftListener(null);
+        mIsReleased = true;
+        unRegisterVideoProcessListener();
     }
 
     @Override
@@ -380,14 +361,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
             getRecordBottomLayout().getRecordButton().pauseRecordAnim();
             return;
         }
-
-        AudioFocusManager.getInstance().setAudioFocusListener(new AudioFocusManager.OnAudioFocusListener() {
-            @Override
-            public void onAudioFocusChange() {
-                VideoRecordSDK.getInstance().pauseRecord();
-            }
-        });
-        AudioFocusManager.getInstance().requestAudioFocus();
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.requestAudioFocus(AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        }
         getRecordPauseSnapView().clearBitmap();
     }
 
@@ -408,7 +384,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         VideoRecordSDK.getInstance().pauseRecord();
         RecordMusicManager.getInstance().pauseMusic();
 
-        AudioFocusManager.getInstance().abandonAudioFocus();
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.abandonAudioFocus();
+        }
     }
 
     /**
@@ -768,12 +746,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                 XmagicResParser.copyRes(mActivity.getApplicationContext());
                 XmagicResParser.parseRes(mActivity.getApplicationContext());
                 XMagicImpl.isLoadedRes = true;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        initXMagic();
-                    }
-                });
+                initXMagic();
             }
         }).start();
     }
@@ -782,13 +755,21 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     /**
      * 初始化美颜SDK
      */
-
     private void initXMagic() {
-        if (mXMagic == null) {
-            mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
-        } else {
-            mXMagic.onResume();
-        }
+        // 此处做延迟是因为在stop方法中会触发registerVideoProcessListener方法中设置的onTextureDestroyed方法执行，
+        // 但是onTextureDestroyed方法是在GL线程执行，并且执行的时机可能比较晚。
+        // 场景复现：快速的切换切后台，会导致start()方法已经执行，但onTextureDestroyed后执行，这样就会导致新创建的xmagic对象被销毁
+       BackgroundTasks.getInstance().postDelayed(new Runnable() {
+           @Override
+           public void run() {
+               if (mXMagic == null) {
+                   mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
+               } else {
+                   mXMagic.onResume();
+               }
+               mXmagicState = XMagicImpl.XmagicState.STARTED;
+           }
+       },500);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -796,4 +777,48 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
             mXMagic.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+
+    private void registerVideoProcessListener() {
+        TXUGCRecord instance = TXUGCRecord.getInstance(UGCKit.getAppContext());
+        instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
+            @Override
+            public int onTextureCustomProcess(int textureId, int width, int height) {
+                if (mXmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
+                    return mXMagic.process(textureId, width, height);
+                }
+                return textureId;
+            }
+
+            @Override
+            public void onDetectFacePoints(float[] floats) {
+            }
+
+            @Override
+            public void onTextureDestroyed() {
+                if (Looper.getMainLooper() != Looper.myLooper()) {  //非主线程
+                    if (mXMagic != null) {
+                        mXMagic.onDestroy();
+                    }
+                    Log.e(TAG, "XMagicImpl.XmagicState = " + mXmagicState.name());
+                    mIsTextureDestroyed = true;
+                    unRegisterVideoProcessListener();
+                }
+            }
+        });
+    }
+
+
+    private synchronized void unRegisterVideoProcessListener() {
+        BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mIsTextureDestroyed && mIsReleased) {
+                    Log.e(TAG, "setVideoProcessListener(null)");
+                    TXUGCRecord.getInstance(UGCKit.getAppContext()).setVideoProcessListener(null);
+                }
+            }
+        });
+    }
+
 }

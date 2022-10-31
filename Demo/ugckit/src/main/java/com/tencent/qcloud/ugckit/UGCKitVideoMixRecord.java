@@ -5,13 +5,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.media.AudioManager;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfigBuildInfo;
+import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
@@ -29,7 +30,6 @@ import com.tencent.qcloud.ugckit.module.mixrecord.IMixRecordJoinListener;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordActionData;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfig;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordJoiner;
-import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
 import com.tencent.qcloud.ugckit.module.record.RecordButton;
 import com.tencent.qcloud.ugckit.module.record.ScrollFilterView;
 import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
@@ -45,7 +45,6 @@ import com.tencent.xmagic.module.XmagicResParser;
 import com.tencent.xmagic.panel.XmagicPanelDataManager;
 import com.tencent.xmagic.telicense.TELicenseCheck;
 
-import java.io.File;
 import java.util.List;
 
 public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements IMixRecordRightLayout.OnItemClickListener, RecordButton.OnRecordButtonListener,
@@ -61,8 +60,10 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
 
     private              XMagicImpl              mXMagic;
-    private              XMagicImpl.XmagicState  xmagicState = XMagicImpl.XmagicState.STARTED;
-
+    private              XMagicImpl.XmagicState  mXmagicState = XMagicImpl.XmagicState.IDLE;
+    private  volatile    boolean                 mIsTextureDestroyed = false;
+    private              boolean                 mIsReleased = false;
+    private AudioFocusManager mAudioFocusManager = null;
     public UGCKitVideoMixRecord(Context context) {
         super(context);
         initDefault();
@@ -106,64 +107,43 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             }
         });
 
-        initBeauty();
-    }
+        mAudioFocusManager = new AudioFocusManager(getContext(), new AudioFocusManager.OnAudioFocusChangeListener() {
 
-    private void initBeauty() {
-        TXUGCRecord instance = TXUGCRecord.getInstance(UGCKit.getAppContext());
-        instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
             @Override
-            public int onTextureCustomProcess(int textureId, int width, int height) {
-                if (xmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
-                    return mXMagic.process(textureId, width, height);
-                }
-                return textureId;
+            public void onLossFocus() {
+                getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
             }
 
             @Override
-            public void onDetectFacePoints(float[] floats) {
-            }
+            public void onGain(boolean lossTransient, boolean lossTransientCanDuck) {
 
-            @Override
-            public void onTextureDestroyed() {
-                if (Looper.getMainLooper() != Looper.myLooper()) {  //非主线程
-                    boolean stopped = xmagicState == XMagicImpl.XmagicState.STOPPED;
-                    if (stopped || xmagicState == XMagicImpl.XmagicState.DESTROYED) {
-                        if (mXMagic != null) {
-                            mXMagic.onDestroy();
-                        }
-                    }
-                    if (xmagicState == XMagicImpl.XmagicState.DESTROYED) {
-                        if (mXMagic != null) {
-                            mXMagic.onDestroy();
-                            TXUGCRecord.getInstance(UGCKit.getAppContext()).setVideoProcessListener(null);
-                        }
-                    }
-                }
             }
         });
+
+        registerVideoProcessListener();
         XMagicImpl.checkAuth(new TELicenseCheck.TELicenseCheckListener() {
             @Override
             public void onLicenseCheckFinish(int errorCode, String msg) {
                 if (errorCode == TELicenseCheck.ERROR_OK) {
                     loadXmagicRes();
                 } else {
-                    Log.e("TAG", "鉴权失败，请检查鉴权url和key" + errorCode + " " + msg);
+                    Log.e(TAG, "auth fail ，please check auth url and key" + errorCode + " " + msg);
                 }
             }
         });
     }
 
+
     @Override
     public void start() {
+        mIsTextureDestroyed = false;
         // 打开合唱预览界面
         VideoRecordSDK.getInstance().startCameraPreview(getPlayViews().getVideoView());
         // 播放跟拍视频
         getPlayViews().startVideo();
 
-        if (xmagicState == XMagicImpl.XmagicState.STOPPED) {
+        if (mXmagicState == XMagicImpl.XmagicState.STOPPED) {
             initXMagic();
-            xmagicState = XMagicImpl.XmagicState.STARTED;
         }
     }
 
@@ -171,8 +151,8 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     public void stop() {
         Log.d(TAG, "stop");
         if (mXMagic != null) {
-            xmagicState = XMagicImpl.XmagicState.STOPPED;
             mXMagic.onPause();
+            mXmagicState = XMagicImpl.XmagicState.STOPPED;
         }
         getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
         getFollowRecordBottomLayout().closeTorch();
@@ -186,7 +166,6 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
     @Override
     public void release() {
-        xmagicState = XMagicImpl.XmagicState.DESTROYED;
         XmagicPanelDataManager.getInstance().clearData();
         getFollowRecordBottomLayout().getRecordProgressView().release();
         // 停止录制
@@ -195,8 +174,10 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
         // 录制TXUGCRecord是单例，需要释放时还原配置
 //        getBeautyPanel().clear();
-        AudioFocusManager.getInstance().setAudioFocusListener(null);
+
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
+        mIsReleased = true;
+        unRegisterVideoProcessListener();
     }
 
     @Override
@@ -287,13 +268,9 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         }
         getPlayViews().startVideo();
 
-        AudioFocusManager.getInstance().setAudioFocusListener(new AudioFocusManager.OnAudioFocusListener() {
-            @Override
-            public void onAudioFocusChange() {
-                getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
-            }
-        });
-        AudioFocusManager.getInstance().requestAudioFocus();
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.requestAudioFocus(AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        }
     }
 
     /**
@@ -307,8 +284,9 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
         VideoRecordSDK.getInstance().pauseRecord();
         getPlayViews().pauseVideo();
-
-        AudioFocusManager.getInstance().abandonAudioFocus();
+        if (mAudioFocusManager != null) {
+            mAudioFocusManager.abandonAudioFocus();
+        }
     }
 
     @Override
@@ -492,6 +470,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
                         ugcKitResult.errorCode = 0;
                         mOnMixRecordListener.onMixRecordCompleted(ugcKitResult);
                     }
+                    ProcessKit.getInstance().setOnUpdateUIListener(null);
                 }
 
                 @Override
@@ -500,6 +479,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
                     if (mOnMixRecordListener != null) {
                         mOnMixRecordListener.onMixRecordCanceled();
                     }
+                    ProcessKit.getInstance().setOnUpdateUIListener(null);
                 }
             });
         }
@@ -526,12 +506,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
                 XmagicResParser.copyRes(mActivity.getApplicationContext());
                 XmagicResParser.parseRes(mActivity.getApplicationContext());
                 XMagicImpl.isLoadedRes = true;
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        initXMagic();
-                    }
-                });
+                initXMagic();
             }
         }).start();
     }
@@ -542,11 +517,20 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
      */
 
     private void initXMagic() {
-        if (mXMagic == null) {
-            mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
-        } else {
-            mXMagic.onResume();
-        }
+        // 此处做延迟是因为在stop方法中会触发registerVideoProcessListener方法中设置的onTextureDestroyed方法执行，
+        // 但是onTextureDestroyed方法是在GL线程执行，并且执行的时机可能比较晚。
+        // 场景复现：快速的切换切后台，会导致start()方法已经执行，但onTextureDestroyed后执行，这样就会导致新创建的xmagic对象被销毁
+        BackgroundTasks.getInstance().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mXMagic == null) {
+                    mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
+                } else {
+                    mXMagic.onResume();
+                }
+                mXmagicState = XMagicImpl.XmagicState.STARTED;
+            }
+        },500);
     }
 
 
@@ -556,4 +540,46 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         }
     }
 
+
+    private void registerVideoProcessListener() {
+        TXUGCRecord instance = TXUGCRecord.getInstance(UGCKit.getAppContext());
+        instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
+            @Override
+            public int onTextureCustomProcess(int textureId, int width, int height) {
+                if (mXmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
+                    return mXMagic.process(textureId, width, height);
+                }
+                return textureId;
+            }
+
+            @Override
+            public void onDetectFacePoints(float[] floats) {
+            }
+
+            @Override
+            public void onTextureDestroyed() {
+                if (Looper.getMainLooper() != Looper.myLooper()) {  //非主线程
+                    if (mXMagic != null) {
+                        mXMagic.onDestroy();
+                    }
+                    Log.e(TAG, "XMagicImpl.XmagicState = " + mXmagicState.name());
+                    mIsTextureDestroyed = true;
+                    unRegisterVideoProcessListener();
+                }
+            }
+        });
+    }
+
+
+    private synchronized void unRegisterVideoProcessListener() {
+        BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mIsTextureDestroyed && mIsReleased) {
+                    Log.e(TAG, "setVideoProcessListener(null)");
+                    TXUGCRecord.getInstance(UGCKit.getAppContext()).setVideoProcessListener(null);
+                }
+            }
+        });
+    }
 }
