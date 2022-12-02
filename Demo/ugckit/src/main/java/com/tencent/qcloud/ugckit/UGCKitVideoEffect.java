@@ -48,7 +48,7 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
         ConfigureLoader.getInstance().loadConfigToDraft();
 
 
-        initTitlebar();
+        initTitleBar();
 
         preivewVideo();
     }
@@ -62,7 +62,7 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
         PlayerManagerKit.getInstance().startPlay();
     }
 
-    private void initTitlebar() {
+    private void initTitleBar() {
         mConfirmIcon = UIAttributeUtil.getResResources(mActivity, R.attr.editerConfirmIcon, R.drawable.ugckit_ic_edit_effect_confirm_selector);
         getTitleBar().getRightButton().setBackgroundResource(mConfirmIcon);
         getTitleBar().getRightButton().setText("");

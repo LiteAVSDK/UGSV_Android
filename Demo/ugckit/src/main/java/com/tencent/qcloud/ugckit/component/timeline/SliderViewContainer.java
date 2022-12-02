@@ -108,20 +108,13 @@ public class SliderViewContainer extends LinearLayout {
         mVideoProgressController = videoProgressControlloer;
     }
 
-    public void setStartTimeMs(long timeMs) {
-        mStartTimeMs = timeMs;
+    public void setStartTimeMs(long startTimeMs, long duration) {
+        mStartTimeMs = startTimeMs;
+        mSliderDuration = duration;
         changeLayoutParams();
     }
 
     public long getStartTimeMs() {
         return mStartTimeMs;
-    }
-    
-    public void setSliderDuration(long duration) {
-        this.mSliderDuration = duration;
-    }
-    
-    public long getSliderDuration() {
-        return mSliderDuration;
     }
 }

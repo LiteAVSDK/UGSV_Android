@@ -508,8 +508,8 @@ public class XmagicResParser {
                 context.getString(R.string.item_none_label), XmagicProperty.ID_NONE, "", R.mipmap.naught, null, null));
 
         LutData[] lutDatas = {
-                new LutData(context.getString(R.string.lut_item1_label), "n_baixi.png", R.mipmap.filter_baizhi),
-                new LutData(context.getString(R.string.lut_item2_label), "n_ziran.png", R.mipmap.filter_ziran),
+                new LutData(context.getString(R.string.lut_item1_label), "baixi_lf.png", R.mipmap.filter_baizhi),
+                new LutData(context.getString(R.string.lut_item2_label), "ziran_lf.png", R.mipmap.filter_ziran),
                 new LutData(context.getString(R.string.lut_item3_label), "moren_lf.png", R.mipmap.filter_chulian),
                 new LutData(context.getString(R.string.lut_item4_label), "xindong_lf.png", R.mipmap.filter_xindong),
                 new LutData(context.getString(R.string.lut_item5_label), "dongjing_lf.png", R.mipmap.filter_dongjing)

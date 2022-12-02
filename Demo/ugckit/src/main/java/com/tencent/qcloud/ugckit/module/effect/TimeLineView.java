@@ -140,8 +140,7 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
         if (mSpeedSlider == null) {
             mSpeedSlider = new SliderViewContainer(getContext());
             mSpeedSlider.setSliderIcon(startProgressIcon);
-            mSpeedSlider.setStartTimeMs(startEffectTime);
-            mSpeedSlider.setSliderDuration(TCTimeFragment.DEAULT_SPEED_DURATION_MS);
+            mSpeedSlider.setStartTimeMs(startEffectTime, VideoEditerSDK.getInstance().getEffectDrawWidth());
             mSpeedSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
                 @Override
                 public void onStartTimeMsChanged(long timeMs) {
@@ -159,8 +158,7 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
         if (mRepeatSlider == null) {
             mRepeatSlider = new SliderViewContainer(getContext());
             mRepeatSlider.setSliderIcon(startProgressIcon);
-            mRepeatSlider.setStartTimeMs(startEffectTime);
-            mRepeatSlider.setSliderDuration(TCTimeFragment.DEAULT_REPEAT_DURATION_MS);
+            mRepeatSlider.setStartTimeMs(startEffectTime, VideoEditerSDK.getInstance().getEffectDrawWidth());
             mRepeatSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
                 @Override
                 public void onStartTimeMsChanged(long timeMs) {

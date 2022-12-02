@@ -24,6 +24,7 @@ import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.R;
 
@@ -171,7 +172,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         long currentTime = 0;
         if (mListener != null) {
             currentTime = mListener.getCurrentTime();
-            mListener.onAddSlider(TimeEffect.REPEAT_EFFECT, currentTime);
+
         }
         setRepeatList(currentTime);
         PlayerManagerKit.getInstance().previewAtTime(currentTime);
@@ -179,6 +180,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
 
         if (mListener != null) {
             mListener.setCurrentTime(currentTime);
+            mListener.onAddSlider(TimeEffect.REPEAT_EFFECT, currentTime);
         }
     }
 
@@ -187,6 +189,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         TXVideoEditConstants.TXRepeat repeat = new TXVideoEditConstants.TXRepeat();
         repeat.startTime = currentPts;
         repeat.endTime = currentPts + DEAULT_REPEAT_DURATION_MS;
+        repeat.endTime = Math.min(repeat.endTime, VideoEditerSDK.getInstance().getVideoDuration());
         repeat.repeatTimes = REPEAT_TIMES;
         repeatList.add(repeat);
         mTXVideoEditer.setRepeatPlay(repeatList);
@@ -194,15 +197,16 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         if (mRepeatDurationPlus > 0) {
             VideoEditerSDK.getInstance().addEffectDuration(-mRepeatDurationPlus);
         }
-        mRepeatDurationPlus = DEAULT_REPEAT_DURATION_MS * (REPEAT_TIMES - 1);
+        mRepeatDurationPlus = (repeat.endTime - repeat.startTime) * (REPEAT_TIMES - 1);
         VideoEditerSDK.getInstance().addEffectDuration(mRepeatDurationPlus);
+        VideoEditerSDK.getInstance().setEffectDrawWidth(mRepeatDurationPlus + ((repeat.endTime - repeat.startTime)));
     }
 
     private void initSpeedLayout() {
         long currentTime = 0;
         if (mListener != null) {
             currentTime = mListener.getCurrentTime();
-            mListener.onAddSlider(TimeEffect.SPEED_EFFECT, currentTime);
+
         }
         setSpeed(currentTime);
         PlayerManagerKit.getInstance().previewAtTime(currentTime);
@@ -210,6 +214,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
 
         if (mListener != null) {
             mListener.setCurrentTime(currentTime);
+            mListener.onAddSlider(TimeEffect.SPEED_EFFECT, currentTime);
         }
     }
 
@@ -218,36 +223,62 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
      *
      * @param startTime
      */
-    private void setSpeed(long startTime) {
-        List<TXVideoEditConstants.TXSpeed> list = new ArrayList<>();
-        TXVideoEditConstants.TXSpeed speed1 = new TXVideoEditConstants.TXSpeed();
-        speed1.startTime = startTime;                                                    // 开始时间
-        speed1.endTime = startTime + 500;
-        speed1.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 慢速
-        list.add(speed1);
-
-        TXVideoEditConstants.TXSpeed speed2 = new TXVideoEditConstants.TXSpeed();
-        speed2.startTime = startTime + 500;                                              // 开始时间
-        speed2.endTime = startTime + 1000;
-        speed2.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOWEST;                    // 极慢速
-        list.add(speed2);
-
-        TXVideoEditConstants.TXSpeed speed3 = new TXVideoEditConstants.TXSpeed();
-        speed3.startTime = startTime + 1000;                                             // 开始时间
-        speed3.endTime = startTime + 1500;
-        speed3.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 极速
-        list.add(speed3);
-        // 设入SDK
-        mTXVideoEditer.setSpeedList(list);
-
+    private void setSpeed(final long startTime) {
+        long timeline = startTime;
+        long duration = VideoEditerSDK.getInstance().getVideoDuration();
+        if (timeline >= duration) {
+            return;
+        }
         //更新变速之后的视频时长
         if (mSpeedDurationPlus > 0) {
             VideoEditerSDK.getInstance().addEffectDuration(-mSpeedDurationPlus);
         }
+
+        final long speedDefaultDuration = 500;
+        List<TXVideoEditConstants.TXSpeed> list = new ArrayList<>();
+        TXVideoEditConstants.TXSpeed speed1 = new TXVideoEditConstants.TXSpeed();
+        speed1.startTime = timeline;                                                    // 开始时间
+        timeline += speedDefaultDuration;
+        timeline = Math.min(timeline, duration);
+        speed1.endTime = timeline;
+        speed1.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 慢速
+        list.add(speed1);
+        mSpeedDurationPlus += (speed1.endTime - speed1.startTime) / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
+        Log.i(TAG, "add speed: " + speed1.startTime + "   " + speed1.endTime + " SPEED_LEVEL_SLOW");
+
+        TXVideoEditConstants.TXSpeed speed2 = new TXVideoEditConstants.TXSpeed();
+        speed2.startTime = timeline;                                              // 开始时间
+        timeline += speedDefaultDuration;
+        timeline = Math.min(timeline, duration);
+        speed2.endTime = timeline;
+
+        long speedDuration = speed2.endTime - speed2.startTime;
+        if (speedDuration > 0) {
+            speed2.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOWEST;                    // 极慢速
+            list.add(speed2);
+            mSpeedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOWEST);
+            Log.i(TAG, "add speed: " + speed2.startTime + "   " + speed2.endTime + " SPEED_LEVEL_SLOWEST");
+        }
+
+        TXVideoEditConstants.TXSpeed speed3 = new TXVideoEditConstants.TXSpeed();
+        speed3.startTime = timeline;                                             // 开始时间
+        timeline += speedDefaultDuration;
+        timeline = Math.min(timeline, duration);
+        speed3.endTime = timeline;
+        speedDuration = speed3.endTime - speed3.startTime;
+        if (speedDuration > 0) {
+            speed3.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 极速
+            list.add(speed3);
+            mSpeedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
+            Log.i(TAG, "add speed: " + speed3.startTime + "   " + speed3.endTime + " SPEED_LEVEL_SLOW");
+        }
+        // 设入SDK
+        mTXVideoEditer.setSpeedList(list);
         //每段变速后的播放时长 - 正常的播放时长
-        mSpeedDurationPlus = (int) (
-                (500 / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW) + 500 / getSpeed(SPEED_LEVEL_SLOWEST)
-                        + 500 / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW)) - 1500);
+        mSpeedDurationPlus -= (timeline - startTime);
+        Log.i(TAG, "mSpeedDurationPlus: " + mSpeedDurationPlus
+                + "  duraiton:" + VideoEditerSDK.getInstance().getVideoDuration());
+        VideoEditerSDK.getInstance().setEffectDrawWidth(mSpeedDurationPlus);
         VideoEditerSDK.getInstance().addEffectDuration(mSpeedDurationPlus);
     }
 
@@ -285,6 +316,10 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
             if (mCurrentEffect == TimeEffect.SPEED_EFFECT) {
                 return;
             }
+            if (mListener.getCurrentTime() > VideoEditerSDK.getInstance().getVideoDuration()) {
+                ToastUtil.toastLongMessage("设置失败，特效时间超过视频时长");
+                return;
+            }
             cancelSetEffect();
             mCurrentEffect = TimeEffect.SPEED_EFFECT;
             cancleLoadding();
@@ -306,6 +341,10 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
             setReverse();
         } else if (i == R.id.time_tv_repeat) {
             if (mCurrentEffect == TimeEffect.REPEAT_EFFECT) {
+                return;
+            }
+            if (mListener.getCurrentTime() > VideoEditerSDK.getInstance().getVideoDuration()) {
+                ToastUtil.toastLongMessage("设置失败，特效时间超过视频时长");
                 return;
             }
             cancelSetEffect();
@@ -355,8 +394,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         return false;
     }
 
-
-    private void showLoadding(){
+    private void showLoadding() {
         PlayerManagerKit.getInstance().stopPlay();
         mProgressLayer = mRootView.findViewById(R.id.progressbar_layer);
         mProgressLayer.setVisibility(View.VISIBLE);

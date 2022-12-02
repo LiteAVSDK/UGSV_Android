@@ -6,8 +6,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
+import com.tencent.liteav.demo.beauty.model.BeautyInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
@@ -19,8 +23,10 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
     private ScrollFilterView      mScrollFilterView;
     private MixRecordRightLayout  mFollowRecordRightLayout;
     private MixRecordBottomLayout mMixRecordBottomLayout;
-    private RelativeLayout        mBeautyPannel;
+    private RelativeLayout        mTencentEffectPanel;
+    private BeautyPanel           mBeautyPanel;
     private CountDownTimerView    mCountDownTimerView;
+    private ImageView             mTEInfoImg;
 
     public AbsVideoTripleMixRecordUI(Context context) {
         this(context, null);
@@ -42,12 +48,15 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
         mCountDownTimerView = (CountDownTimerView) findViewById(R.id.countdown_timer_view);
         mFollowRecordRightLayout = (MixRecordRightLayout) findViewById(R.id.record_right_layout);
         mMixRecordBottomLayout = (MixRecordBottomLayout) findViewById(R.id.record_bottom_layout);
-        mBeautyPannel = (RelativeLayout) findViewById(R.id.beauty_pannel);
+        mTencentEffectPanel = findViewById(R.id.tencent_effect_panel);
+        mBeautyPanel = (BeautyPanel) findViewById(R.id.beauty_panel);
+        mTEInfoImg = findViewById(R.id.record_right_te_info_img);
+
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
-//        BeautyInfo defaultBeauty = mBeautyPannel.getDefaultBeautyInfo();
-//        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
-//        mBeautyPannel.setBeautyInfo(defaultBeauty);
-//        mScrollFilterView.setBeautyPannel(mBeautyPannel);
+        BeautyInfo defaultBeauty = mBeautyPanel.getDefaultBeautyInfo();
+        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
+        mBeautyPanel.setBeautyInfo(defaultBeauty);
+        mScrollFilterView.setBeautyPanel(mBeautyPanel);
 
         mTitleBar.setVisible(true, ITitleBarLayout.POSITION.RIGHT);
         mTitleBar.setTitle(getResources().getString(R.string.ugckit_triple_replace_file), ITitleBarLayout.POSITION.RIGHT);//
@@ -98,11 +107,22 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
         return mFollowRecordRightLayout;
     }
 
+    public ImageView getTEInfoImg() {
+        return mTEInfoImg;
+    }
+
+    /**
+     * 获取"腾讯特效"面板
+     */
+    public RelativeLayout getTEPanel() {
+        return mTencentEffectPanel;
+    }
+
     /**
      * 获取"美颜"面板
      */
-    public RelativeLayout getBeautyPanel() {
-        return mBeautyPannel;
+    public BeautyPanel getBeautyPanel() {
+        return mBeautyPanel;
     }
 
     public CountDownTimerView getCountDownTimerView() {

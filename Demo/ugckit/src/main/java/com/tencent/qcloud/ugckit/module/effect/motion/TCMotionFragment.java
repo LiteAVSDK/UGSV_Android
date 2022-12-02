@@ -206,6 +206,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         mStartMark = true;
 
         PlayerManagerKit.getInstance().playVideo(true);
+        PlayerManagerKit.getInstance().setOnAddingMotion(true);
 
         mTXVideoEditer.startEffect(type, currentTime);
 
@@ -261,6 +262,7 @@ public class TCMotionFragment extends AbsMotionFragment implements View.OnClickL
         mTXVideoEditer.stopEffect(type, currentTime);
         // 显示撤销的按钮
         updateUndoImageView();
+        PlayerManagerKit.getInstance().setOnAddingMotion(false);
     }
 
     private void updateUndoImageView() {

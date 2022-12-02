@@ -122,6 +122,7 @@ public class RangeSliderViewContainer extends LinearLayout {
 
                 layoutParams = (MarginLayoutParams) mMiddleView.getLayoutParams();
                 layoutParams.width -= dx;
+                layoutParams.width = Math.max(layoutParams.width, 0);
             }
 
             @Override

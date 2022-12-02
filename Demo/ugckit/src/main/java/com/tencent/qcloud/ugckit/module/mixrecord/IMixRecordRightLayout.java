@@ -16,10 +16,16 @@ public interface IMixRecordRightLayout {
     void setOnItemClickListener(OnItemClickListener listener);
 
     interface OnItemClickListener {
+
         /**
-         * 显示美颜面板
+         * 显示基础美颜面板
          */
         void onShowBeautyPanel();
+
+        /**
+         * 显示高级美颜面板
+         */
+        void onShowTEBeautyPanel();
 
         /**
          * 显示倒计时动画

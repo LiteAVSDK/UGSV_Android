@@ -2,8 +2,12 @@ package com.tencent.qcloud.ugckit.module.record;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
+import com.tencent.liteav.demo.beauty.model.BeautyInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
@@ -13,16 +17,18 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 
 public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoRecordKit {
 
-    private TitleBarLayout     mTitleBar;
-    private TXCloudVideoView   mVideoView;
-    private ScrollFilterView   mScrollFilterView;
-    private RecordRightLayout  mRecordRightLayout;
-    private RecordBottomLayout mRecordBottomLayout;
-    private RelativeLayout     mBeautyPanel;
-    private RecordMusicPannel  mRecordMusicPannel;
-    private SoundEffectsPannel mSoundEffectsPannel;
-    private ImageSnapShotView  mImageSnapShotView;
-    private RecordPauseSnapView mRecordPauseSnapView;
+    private TitleBarLayout        mTitleBar;
+    private TXCloudVideoView      mVideoView;
+    private ScrollFilterView      mScrollFilterView;
+    private RecordRightLayout     mRecordRightLayout;
+    private RecordBottomLayout    mRecordBottomLayout;
+    private RelativeLayout        mTencentEffectPanel;
+    private BeautyPanel           mBeautyPanel;
+    private RecordMusicPannel     mRecordMusicPannel;
+    private SoundEffectsPannel    mSoundEffectsPannel;
+    private ImageSnapShotView     mImageSnapShotView;
+    private RecordPauseSnapView   mRecordPauseSnapView;
+    private ImageView             mTEInfoImg;
 
     public AbsVideoRecordUI(Context context) {
         super(context);
@@ -48,12 +54,13 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mRecordRightLayout = (RecordRightLayout) findViewById(R.id.record_right_layout);
         mRecordBottomLayout = (RecordBottomLayout) findViewById(R.id.record_bottom_layout);
 
-        mBeautyPanel = (RelativeLayout) findViewById(R.id.beauty_pannel);
-//        BeautyInfo defaultBeauty = mBeautyPanel.getDefaultBeautyInfo();
-//        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
-//        mBeautyPanel.setBeautyInfo(defaultBeauty);
+        mTencentEffectPanel = findViewById(R.id.tencent_effect_panel);
+        mBeautyPanel = (BeautyPanel) findViewById(R.id.beauty_panel);
+        BeautyInfo defaultBeauty = mBeautyPanel.getDefaultBeautyInfo();
+        defaultBeauty.setBeautyBg(BeautyConstants.BEAUTY_BG_GRAY);
+        mBeautyPanel.setBeautyInfo(defaultBeauty);
         mScrollFilterView = (ScrollFilterView) findViewById(R.id.scrollFilterView);
-        mScrollFilterView.setBeautyPannel(mBeautyPanel);
+        mScrollFilterView.setBeautyPanel(mBeautyPanel);
 
         mRecordMusicPannel = (RecordMusicPannel) findViewById(R.id.record_music_pannel);
         mSoundEffectsPannel = (SoundEffectsPannel) findViewById(R.id.sound_effect_pannel);
@@ -61,6 +68,9 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mImageSnapShotView = (ImageSnapShotView) findViewById(R.id.image_snapshot_view);
 
         mRecordPauseSnapView = (RecordPauseSnapView) findViewById(R.id.record_pause_snap_view);
+
+        mTEInfoImg = findViewById(R.id.record_right_te_info_img);
+
     }
 
     public TitleBarLayout getTitleBar() {
@@ -83,12 +93,20 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         return mRecordRightLayout;
     }
 
+    public ImageView getTEInfoImg() {
+        return mTEInfoImg;
+    }
+
     public RecordBottomLayout getRecordBottomLayout() {
         return mRecordBottomLayout;
     }
 
-    public RelativeLayout getBeautyPanel() {
+    public BeautyPanel getBeautyPanel() {
         return mBeautyPanel;
+    }
+
+    public RelativeLayout getTEPanel() {
+        return mTencentEffectPanel;
     }
 
     public RecordMusicPannel getRecordMusicPannel() {

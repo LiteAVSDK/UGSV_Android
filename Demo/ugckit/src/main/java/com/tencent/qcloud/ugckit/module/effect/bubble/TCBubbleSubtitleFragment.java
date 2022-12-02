@@ -500,6 +500,9 @@ public class TCBubbleSubtitleFragment extends Fragment implements BaseRecyclerAd
 
         addSubtitlesIntoVideo();
         saveIntoManager();
+        if (mTXVideoEditer != null) {
+            mTXVideoEditer.refreshOneFrame();
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@ include ':app'
 
 
 include ':ugckit'
-
+include ':beautysettingkit'
 // 引入xmagic美颜模块
 include ':xmagickit'
 

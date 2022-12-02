@@ -303,12 +303,16 @@ public class VideoProgressController {
         } else {
             durationMinWidth = (int) (mVideoProgressDisplayWidth / 16);
         }
+        float scale = durationMs / (totalDuration * 1f);
+        int resultWidth2 = (int) (scale * thumbnailPicDisplayWidth);
+
         resultWidth = (int) (durationMinWidth * durationSec);
         //如果最终计算出来的宽度大于整个视频时间轴上的宽度，那么将宽度置为视频轴的宽度
         if (resultWidth > thumbnailPicDisplayWidth) {
             resultWidth = (int) thumbnailPicDisplayWidth;
         }
-        return resultWidth;
+        resultWidth2 = (int) Math.min(resultWidth2, thumbnailPicDisplayWidth);
+        return resultWidth2;
     }
 
     long distance2Duration(float distance) {

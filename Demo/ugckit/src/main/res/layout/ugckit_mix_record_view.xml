@@ -32,6 +32,16 @@
         android:layout_below="@+id/titleBar_layout"
         android:layout_alignParentRight="true" />
 
+    <ImageView
+        android:id="@+id/record_right_te_info_img"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:src="@drawable/ugckit_record_te_info_icon" />
+
     <com.tencent.qcloud.ugckit.module.mixrecord.MixRecordBottomLayout
         android:id="@+id/record_bottom_layout"
         android:layout_width="match_parent"
@@ -39,7 +49,15 @@
         android:layout_alignParentBottom="true" />
 
     <RelativeLayout
-        android:id="@+id/beauty_pannel"
+        android:id="@+id/tencent_effect_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:visibility="gone" />
+
+    <com.tencent.liteav.demo.beauty.view.BeautyPanel
+        android:id="@+id/beauty_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

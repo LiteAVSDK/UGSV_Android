@@ -29,6 +29,8 @@
         <item name="recordAspect916Icon">@drawable/ugckit_ic_aspect_916</item>
         <!-- 美颜icon-->
         <item name="recordBeautyIcon">@drawable/ugckit_record_beauty_selector</item>
+        <!-- 美颜icon-->
+        <item name="recordBeautyTEIcon">@drawable/ugckit_record_te_beauty_selector</item>
         <!-- 音效icon-->
         <item name="recordAudioEffectIcon">@drawable/ugckit_record_soundeffect</item>
         <!-- 回删icon-->
