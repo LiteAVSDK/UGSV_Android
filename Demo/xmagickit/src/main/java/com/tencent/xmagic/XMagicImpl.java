@@ -53,6 +53,8 @@ public class XMagicImpl implements SensorEventListener {
      */
     private boolean userBeauty = false;
 
+    private boolean mMute = false;
+
     /**
      * 使用美颜之前必须先调用此方法
      *
@@ -111,7 +113,12 @@ public class XMagicImpl implements SensorEventListener {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        xmagicPanelView.showErrorMsg(code + ":" + errorMsg);
+                        if (xmagicPanelView != null) {
+                            xmagicPanelView.showErrorMsg(code + ":" + errorMsg);
+                        } else {
+                            Toast.makeText(activity.getApplicationContext(),
+                                    code + ":" + errorMsg, Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -152,6 +159,13 @@ public class XMagicImpl implements SensorEventListener {
             @Override
             public void onBeautySwitchCheckedChanged(boolean isChecked) {
                 isOpenXmagic = isChecked;
+                if (mXmagicApi != null) {
+                    if (isOpenXmagic) {
+                        mXmagicApi.onResume();
+                    } else {
+                        mXmagicApi.onPause();
+                    }
+                }
             }
 
             @Override
@@ -224,6 +238,7 @@ public class XMagicImpl implements SensorEventListener {
             if (mXmagicApi != null && updateList != null && updateList.size() > 0) {
                 mXmagicApi.updateProperties(updateList);
             }
+            mXmagicApi.setAudioMute(mMute);
         } else {
             mXmagicApi.onResume();
         }
@@ -250,6 +265,15 @@ public class XMagicImpl implements SensorEventListener {
         if (mXmagicApi != null) {
             mXmagicApi.onDestroy();
             mXmagicApi = null;
+        }
+    }
+
+
+
+    public void setAudioMute(boolean isMute) {
+        mMute = isMute;
+        if (mXmagicApi != null) {
+            mXmagicApi.setAudioMute(isMute);
         }
     }
 

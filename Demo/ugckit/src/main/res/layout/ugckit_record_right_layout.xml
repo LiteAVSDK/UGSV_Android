@@ -51,36 +51,6 @@
         android:layout_marginTop="10dp" />
 
     <RelativeLayout
-        android:id="@+id/layout_beauty"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/aspect_view"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
-
-        <ImageView
-            android:id="@+id/iv_beauty"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:src="?attr/recordBeautyIcon" />
-
-        <TextView
-            android:id="@+id/tv_beauty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_beauty"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="@string/ugckit_beauty"
-            android:textColor="@color/ugckit_white"
-            android:textSize="12sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/layout_sound_effect"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
@@ -117,5 +87,66 @@
             android:textColor="@color/ugckit_white"
             android:textSize="12sp" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_beauty"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aspect_view"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/iv_beauty"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:src="?attr/recordBeautyIcon" />
+
+        <TextView
+            android:id="@+id/tv_beauty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_beauty"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/ugckit_beauty"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_te_beauty"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/iv_te_beauty"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClick"
+            android:src="?attr/recordBeautyTEIcon" />
+
+        <TextView
+            android:id="@+id/tv_te_beauty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_te_beauty"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@string/ugckit_te_beauty"
+            android:textColor="@color/ugckit_white"
+            android:textSize="12sp" />
     </RelativeLayout>
 </LinearLayout>

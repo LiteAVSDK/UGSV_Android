@@ -14,8 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 
+import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
+
 
 public class PermissionIntroductionDialog extends DialogFragment {
+
+    public static final String DIALOG_NAME = "PermissionIntroductionDialog";
+    private static final String SHARED_PREFERENCE_FILE_NAME_PERMISSION = "permission";
+    private static final String SHARED_PREFERENCE_KEY_BEAUTY = "beauty";
+
 
     private PositiveClickListener mPositiveButtonClickListener;
     private Button mButtonNegative;
@@ -70,6 +77,7 @@ public class PermissionIntroductionDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mPositiveButtonClickListener != null) {
+                    grantPermission();
                     mPositiveButtonClickListener.onClickPositive();
                     mDialog.dismiss();
                 }
@@ -98,4 +106,16 @@ public class PermissionIntroductionDialog extends DialogFragment {
         TOP,
         BOTTOM
     }
+
+
+    public static boolean isGrantPermission() {
+        return (Boolean) new SharedPreferenceUtils(UGCKit.getAppContext(), SHARED_PREFERENCE_FILE_NAME_PERMISSION)
+                .getSharedPreference(SHARED_PREFERENCE_KEY_BEAUTY, false);
+    }
+
+    public static void grantPermission() {
+        new SharedPreferenceUtils(UGCKit.getAppContext(), SHARED_PREFERENCE_FILE_NAME_PERMISSION)
+                .put(SHARED_PREFERENCE_KEY_BEAUTY, true);
+    }
+
 }

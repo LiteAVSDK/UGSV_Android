@@ -24,6 +24,12 @@ public interface IRecordRightLayout {
          */
         void onShowBeautyPanel();
 
+
+        /**
+         * 显示美颜面板
+         */
+        void onShowTEBeautyPanel();
+
         /**
          * 显示调整音量面板
          */

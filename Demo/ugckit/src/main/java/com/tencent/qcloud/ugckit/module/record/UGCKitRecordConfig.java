@@ -3,6 +3,7 @@ package com.tencent.qcloud.ugckit.module.record;
 import androidx.annotation.NonNull;
 
 import com.tencent.liteav.audio.TXEAudioDef;
+import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.ugc.TXRecordCommon;
@@ -83,6 +84,12 @@ public class UGCKitRecordConfig {
      */
     public int mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_ADJUST_RESOLUTION;
 
+    /*
+     * 美颜参数
+     */
+    @NonNull
+    public BeautyParams mBeautyParams;
+
     /**
      * 背景音乐信息
      */
@@ -120,7 +127,7 @@ public class UGCKitRecordConfig {
         mAspectRatio = TXRecordCommon.VIDEO_ASPECT_RATIO_9_16;
         mRecordMode = RecordModeView.RECORD_MODE_CLICK;
         mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_ADJUST_RESOLUTION;
-//        mBeautyParams = null;
+        mBeautyParams = null;
         musicInfo = new MusicInfo();
         mAECType = TXEAudioDef.TXE_AEC_NONE;
         mPauseSnapOpacity = UGCKitConstants.DEFAULT_PAUSE_SNAP_OPACITY;

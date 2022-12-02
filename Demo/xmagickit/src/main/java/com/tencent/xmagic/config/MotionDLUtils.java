@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.tencent.xmagic.download.MotionDLModel;
-import com.tencent.xmagic.license.FileUtil;
+import com.tencent.xmagic.util.FileUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

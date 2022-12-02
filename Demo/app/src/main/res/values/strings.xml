@@ -161,6 +161,6 @@
     <string name="app_tencent_cloud_xiaoshipin">腾讯云小视频</string>
     <string name="app_collection">已收集个人信息清单</string>
     <string name="app_share">第三方共享个人信息清单</string>
-    <string name="app_personal_information_collection">个人信息收集说明</string>
-    <string name="beauty_cam_introduction">在您使用美颜功能时，我们会对您实时拍摄的面部像素信息进行实时智能识别，在美颜过程中会实时收集您的面部像素信息，以为您提供更好的美颜效果，我们不会以任何形式存储或关联您的面部像素信息。该信息为敏感个人信息，请谨慎提供。如您不授权，将无法使用此功能；您也可以随时关闭美颜来禁用此功能。</string>
+<!--    <string name="app_personal_information_collection">个人信息收集说明</string>-->
+<!--    <string name="beauty_cam_introduction">在您使用美颜功能时，我们会对您实时拍摄的面部像素信息进行实时智能识别，在美颜过程中会实时收集您的面部像素信息，以为您提供更好的美颜效果，我们不会以任何形式存储或关联您的面部像素信息。该信息为敏感个人信息，请谨慎提供。如您不授权，将无法使用此功能；您也可以随时关闭美颜来禁用此功能。</string>-->
 </resources>

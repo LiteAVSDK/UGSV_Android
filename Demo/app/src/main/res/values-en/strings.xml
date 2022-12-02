@@ -160,6 +160,6 @@
     <string name="app_tencent_cloud_xiaoshipin">Tencent Cloud XiaoShiPin</string>
     <string name="app_collection">Collected personal information list</string>
     <string name="app_share">List of personal information shared by third parties</string>
-    <string name="app_personal_information_collection">Personal Information Collection Instructions</string>
-    <string name="beauty_cam_introduction">When you use the beauty function, we will perform real-time intelligent recognition on your facial pixel information captured in real time, and collect your facial pixel information in real time during the beautification process to provide you with better beauty effects. We will not Store or associate your facial pixel information in any form. This information is sensitive personal information, please provide it with caution. If you do not authorize, you will not be able to use this function; you can also disable this function by turning off Beauty at any time.</string>
+<!--    <string name="app_personal_information_collection">Personal Information Collection Instructions</string>-->
+<!--    <string name="beauty_cam_introduction">When you use the beauty function, we will perform real-time intelligent recognition on your facial pixel information captured in real time, and collect your facial pixel information in real time during the beautification process to provide you with better beauty effects. We will not Store or associate your facial pixel information in any form. This information is sensitive personal information, please provide it with caution. If you do not authorize, you will not be able to use this function; you can also disable this function by turning off Beauty at any time.</string>-->
 </resources>

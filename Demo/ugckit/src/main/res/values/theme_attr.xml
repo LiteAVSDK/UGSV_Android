@@ -28,6 +28,8 @@
 
         <!-- 美颜icon-->
         <attr name="recordBeautyIcon" format="reference" />
+        <!-- 美颜TE icon-->
+        <attr name="recordBeautyTEIcon" format="reference" />
         <!-- 音效icon-->
         <attr name="recordAudioEffectIcon" format="reference" />
         <!-- 回删icon-->

@@ -60,6 +60,11 @@ public class PictureTransitionKit {
     }
 
     public int setPictureList(ArrayList<Bitmap> bitmapList) {
+        for (Bitmap bitmap : bitmapList) {
+            if (bitmap == null) {
+                return TXVideoEditConstants.PICTURE_TRANSITION_FAILED;
+            }
+        }
         return VideoEditerSDK.getInstance().getEditer().setPictureList(bitmapList, DEFAULT_FPS);
     }
 }

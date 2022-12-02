@@ -259,6 +259,20 @@ public class VideoEditerSDK {
         return mCutterDuration + mEffectDuration;
     }
 
+    public long getEffectDuration() {
+        return mEffectDuration;
+    }
+
+    private long mEffectDrawWidth = 0;
+
+    public void setEffectDrawWidth(long width) {
+        mEffectDrawWidth = width;
+    }
+
+    public long getEffectDrawWidth() {
+        return mEffectDrawWidth;
+    }
+
     public void addEffectDuration(long plus) {
         mEffectDuration += plus;
     }

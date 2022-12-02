@@ -41,7 +41,8 @@
     <string name="ugckit_speed_fast">快速</string>
     <string name="ugckit_speed_very_fast">極快</string>
     <string name="ugckit_aspect">屏比</string>
-    <string name="ugckit_beauty">美顏</string>
+    <string name="ugckit_beauty">基礎美顏</string>
+    <string name="ugckit_te_beauty">高階美顏</string>
     <string name="ugckit_music">音樂</string>
     <string name="ugckit_motion">動作</string>
     <string name="ugckit_speed">速度</string>

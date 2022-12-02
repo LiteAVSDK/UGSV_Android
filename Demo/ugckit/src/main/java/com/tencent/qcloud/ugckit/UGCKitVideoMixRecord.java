@@ -5,14 +5,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.tencent.liteav.demo.beauty.Beauty;
+import com.tencent.liteav.demo.beauty.BeautyParams;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordConfigBuildInfo;
 import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
+import com.tencent.qcloud.ugckit.module.record.TEChargePromptDialog;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
@@ -63,7 +67,9 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     private              XMagicImpl.XmagicState  mXmagicState = XMagicImpl.XmagicState.IDLE;
     private  volatile    boolean                 mIsTextureDestroyed = false;
     private              boolean                 mIsReleased = false;
-    private AudioFocusManager mAudioFocusManager = null;
+    private              AudioFocusManager       mAudioFocusManager = null;
+    private              int                     mBeautyType = -1;  //0 表示基础美颜 1、表示高级美颜
+
     public UGCKitVideoMixRecord(Context context) {
         super(context);
         initDefault();
@@ -120,6 +126,24 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             }
         });
 
+        getBeautyPanel().setOnFilterChangeListener(new Beauty.OnFilterChangeListener() {
+
+            @Override
+            public void onChanged(Bitmap filterImage, int index) {
+                if (mBeautyType == 0) {
+                    getScrollFilterView().doTextAnimator(index);
+                }
+            }
+        });
+        getScrollFilterView().setScrollable(false);
+
+        getTEInfoImg().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TEChargePromptDialog.showTEConfirmDialog(mActivity);
+            }
+        });
+
         registerVideoProcessListener();
         XMagicImpl.checkAuth(new TELicenseCheck.TELicenseCheckListener() {
             @Override
@@ -168,12 +192,13 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     public void release() {
         XmagicPanelDataManager.getInstance().clearData();
         getFollowRecordBottomLayout().getRecordProgressView().release();
+        cleanBaseBeauty();
         // 停止录制
         VideoRecordSDK.getInstance().releaseRecord();
         getPlayViews().releaseVideo();
 
         // 录制TXUGCRecord是单例，需要释放时还原配置
-//        getBeautyPanel().clear();
+        UGCKitRecordConfig.getInstance().clear();
 
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
         mIsReleased = true;
@@ -185,7 +210,13 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         MixRecordConfig info = new MixRecordConfig();
         info.setInfo(buildInfo.getVideoPaths(), buildInfo.getRecordIndex(), buildInfo.getWidth(), buildInfo.getHeight(), buildInfo.getRecordRatio());
         mConfig = info;
+        mConfig.mBeautyParams = new BeautyParams();
         mConfig.mIsMute = buildInfo.isMute();
+        // 设置默认美颜
+        mConfig.mBeautyParams.mBeautyStyle = 0;
+        mConfig.mBeautyParams.mBeautyLevel = 0;
+        mConfig.mBeautyParams.mWhiteLevel = 0;
+        mConfig.mRenderMode = TXRecordCommon.VIDEO_RENDER_MODE_FULL_FILL_SCREEN;
         mConfig.mAECType = buildInfo.getAecType();
 
         List<String> paths = mConfig.getPaths();
@@ -196,6 +227,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         getFollowRecordBottomLayout().setDuration(mConfig.mMinDuration, mConfig.mMaxDuration);
         // 初始化默认配置
         VideoRecordSDK.getInstance().initConfig(mConfig);
+
     }
 
     @Override
@@ -309,11 +341,52 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         getFollowRecordBottomLayout().setVisibility(View.GONE);
         // 隐藏右侧工具栏
         getFollowRecordRightLayout().setVisibility(View.GONE);
-        // 显示美颜Pannel
+        // 显示基础美颜Panel
         getBeautyPanel().setVisibility(View.VISIBLE);
+        if (getBeautyPanel().getmTxBeautyManager() == null) {
+            TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
+            getBeautyPanel().setBeautyManager(txugcRecord.getBeautyManager());
+            //设置默认美颜项
+            VideoRecordSDK.getInstance().updateBeautyParam(new BeautyParams());
+        }
+        //恢复基础美颜属性
+        getBeautyPanel().restoreBeauty();
+        mBeautyType = 0;
+        if (mXMagic != null) {
+            mXMagic.setAudioMute(true);
+        }
+        getScrollFilterView().setScrollable(true);
+
+    }
+
+    @Override
+    public void onShowTEBeautyPanel() {
+        // 隐藏底部工具栏
+        getFollowRecordBottomLayout().setVisibility(View.GONE);
+        // 隐藏右侧工具栏
+        getFollowRecordRightLayout().setVisibility(View.GONE);
+        // 显示高级美颜Panel
+        getTEPanel().setVisibility(View.VISIBLE);
+        getTEInfoImg().setVisibility(View.VISIBLE);
         if (mXMagic != null) {
             mXMagic.setBeautyStateOpen();
+            mXMagic.setAudioMute(false);
         }
+        mBeautyType = 1;
+        cleanBaseBeauty();
+        getScrollFilterView().setScrollable(false);
+        TEChargePromptDialog.showTETipDialog(mActivity);
+    }
+
+
+    private void cleanBaseBeauty() {
+        //清空基础美颜效果
+        BeautyParams baseBeautyParams = new BeautyParams();
+        baseBeautyParams.mBeautyStyle = 0;
+        baseBeautyParams.mBeautyLevel = 0;
+        baseBeautyParams.mWhiteLevel = 0;
+        baseBeautyParams.mFilterBmp = null;
+        VideoRecordSDK.getInstance().updateBeautyParam(baseBeautyParams);
     }
 
     @Override
@@ -325,7 +398,6 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             @Override
             public void onCountDownComplete() {
                 getFollowRecordBottomLayout().getRecordButton().startRecordAnim();
-                getFollowRecordRightLayout().setVisibility(View.VISIBLE);
                 getFollowRecordBottomLayout().setVisibility(View.VISIBLE);
             }
         });
@@ -335,6 +407,8 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
     @Override
     public void onSingleClick(float x, float y) {
         getBeautyPanel().setVisibility(View.GONE);
+        getTEPanel().setVisibility(View.GONE);
+        getTEInfoImg().setVisibility(View.GONE);
         getFollowRecordBottomLayout().setVisibility(View.VISIBLE);
         getFollowRecordRightLayout().setVisibility(View.VISIBLE);
 
@@ -524,7 +598,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
             @Override
             public void run() {
                 if (mXMagic == null) {
-                    mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
+                    mXMagic = new XMagicImpl(mActivity, getTEPanel());
                 } else {
                     mXMagic.onResume();
                 }
@@ -546,7 +620,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
             @Override
             public int onTextureCustomProcess(int textureId, int width, int height) {
-                if (mXmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
+                if (mBeautyType == 1 && mXmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
                     return mXMagic.process(textureId, width, height);
                 }
                 return textureId;

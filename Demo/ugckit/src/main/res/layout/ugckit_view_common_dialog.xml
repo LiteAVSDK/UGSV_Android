@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/app_bg_confirm_dialog"
+    android:orientation="vertical"
+
+    android:paddingTop="10dp"
+
+    >
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="45dp"
+        android:paddingLeft="25dp"
+        android:paddingTop="10dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/ugckit_color_text_black"
+        android:textSize="18sp" />
+
+    <ScrollView
+        android:id="@+id/sLayout_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdge="none">
+
+        <TextView
+            android:id="@+id/content_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:textColor="@color/ugckit_color_gray4"
+            android:textSize="16sp" />
+    </ScrollView>
+
+    <View
+        android:id="@+id/horizontal_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/ugckit_color_text_g1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/left_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/ugckit_color_text_black"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/vertical_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0"
+            android:background="@color/ugckit_color_text_g1" />
+
+        <TextView
+            android:id="@+id/right_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/ugckit_record_button_click_shotInner_color"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

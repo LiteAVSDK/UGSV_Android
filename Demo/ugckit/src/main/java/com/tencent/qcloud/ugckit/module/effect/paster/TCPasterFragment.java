@@ -532,6 +532,9 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
         addPasterListVideo();
         saveIntoManager();
+        if (mTXVideoEditer != null) {
+            mTXVideoEditer.refreshOneFrame();
+        }
     }
 
     /**

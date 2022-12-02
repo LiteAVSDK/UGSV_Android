@@ -14,6 +14,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.tencent.liteav.demo.beauty.Beauty;
+import com.tencent.liteav.demo.beauty.BeautyParams;
+import com.tencent.liteav.demo.beauty.model.ItemInfo;
+import com.tencent.liteav.demo.beauty.model.TabInfo;
+import com.tencent.liteav.demo.beauty.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
@@ -29,6 +34,7 @@ import com.tencent.qcloud.ugckit.module.record.RecordBottomLayout;
 import com.tencent.qcloud.ugckit.module.record.RecordModeView;
 import com.tencent.qcloud.ugckit.module.record.RecordMusicManager;
 import com.tencent.qcloud.ugckit.module.record.ScrollFilterView;
+import com.tencent.qcloud.ugckit.module.record.TEChargePromptDialog;
 import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
 import com.tencent.qcloud.ugckit.module.record.VideoRecordSDK;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordButton;
@@ -64,14 +70,16 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     private FragmentActivity      mActivity;
     private ProgressFragmentUtil  mProgressFragmentUtil;
     private ProgressDialogUtil    mProgressDialogUtil;
-    private boolean isInStopProcessing = false;
-    private ExecutorService videoProcessExecutor;
+    private boolean               isInStopProcessing = false;
+    private ExecutorService       videoProcessExecutor;
 
     private XMagicImpl             mXMagic;
     private XMagicImpl.XmagicState mXmagicState = XMagicImpl.XmagicState.IDLE;
     private volatile boolean       mIsTextureDestroyed = false;
     private boolean                mIsReleased = false;
-    private AudioFocusManager mAudioFocusManager = null;
+    private AudioFocusManager      mAudioFocusManager = null;
+
+    private int                    mBeautyType = -1;  //0 表示基础美颜 1、表示高级美颜
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -135,6 +143,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
         // 点击"右侧工具栏"（包括"美颜"，"音乐"，"音效"）
         getRecordRightLayout().setOnItemClickListener(this);
+        getTEInfoImg().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TEChargePromptDialog.showTEConfirmDialog(mActivity);
+            }
+        });
+
 
         // 点击"录制按钮"（包括"拍照"，"单击拍"，"按住拍"）
         getRecordBottomLayout().setOnRecordButtonListener(this);
@@ -164,6 +179,44 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         UGCKitRecordConfig config = UGCKitRecordConfig.getInstance();
         // 初始化默认配置
         VideoRecordSDK.getInstance().initConfig(config);
+        getBeautyPanel().setOnFilterChangeListener(new Beauty.OnFilterChangeListener() {
+
+            @Override
+            public void onChanged(Bitmap filterImage, int index) {
+                if (mBeautyType == 0) {
+                    getScrollFilterView().doTextAnimator(index);
+                }
+            }
+        });
+        getBeautyPanel().setOnBeautyListener(new BeautyPanel.OnBeautyListener() {
+            public void onTabChange(TabInfo tabInfo, int position) {
+
+            }
+
+            @Override
+            public boolean onClose() {
+                getBeautyPanel().setVisibility(View.GONE);
+                getRecordMusicPannel().setVisibility(View.GONE);
+                getSoundEffectPannel().setVisibility(View.GONE);
+
+                getRecordBottomLayout().setVisibility(View.VISIBLE);
+                getRecordRightLayout().setVisibility(View.VISIBLE);
+                return true;
+            }
+
+            @Override
+            public boolean onClick(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo, int itemPosition) {
+                return false;
+            }
+
+            @Override
+            public boolean onLevelChanged(TabInfo tabInfo, int tabPosition, ItemInfo itemInfo,
+                                          int itemPosition, int beautyLevel) {
+                return false;
+            }
+        });
+        getScrollFilterView().setScrollable(false);
+
         mAudioFocusManager = new AudioFocusManager(getContext(), new AudioFocusManager.OnAudioFocusChangeListener() {
 
             @Override
@@ -233,14 +286,13 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         Log.d(TAG, "release");
         XmagicPanelDataManager.getInstance().clearData();
         getRecordBottomLayout().getRecordProgressView().release();
+        cleanBaseBeauty();
         // 停止录制
         VideoRecordSDK.getInstance().releaseRecord();
 
         UGCKitRecordConfig.getInstance().clear();
-        // 录制TXUGCRecord是单例，需要释放时还原配置
-//        getBeautyPanel().clear();
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
-//        getBeautyPanel().setOnFilterChangeListener(null);
+        getBeautyPanel().setOnFilterChangeListener(null);
         ProcessKit.getInstance().setOnUpdateUIListener(null);
         VideoRecordSDK.getInstance().setOnRestoreDraftListener(null);
         mIsReleased = true;
@@ -273,6 +325,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         }
         // 设置音乐信息
         RecordMusicManager.getInstance().setRecordMusicInfo(musicInfo);
+        mXMagic.setAudioMute(true);
         // 更新音乐Pannel
         getRecordMusicPannel().setMusicInfo(musicInfo);
         getRecordMusicPannel().setVisibility(View.VISIBLE);
@@ -415,11 +468,53 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         getRecordBottomLayout().setVisibility(View.GONE);
         // 隐藏右侧工具栏
         getRecordRightLayout().setVisibility(View.GONE);
-        // 显示美颜Pannel
+        // 显示美颜Panel
         getBeautyPanel().setVisibility(View.VISIBLE);
+        if (getBeautyPanel().getmTxBeautyManager() == null) {
+            TXUGCRecord txugcRecord = VideoRecordSDK.getInstance().getRecorder();
+            getBeautyPanel().setBeautyManager(txugcRecord.getBeautyManager());
+            //设置默认美颜项
+            VideoRecordSDK.getInstance().updateBeautyParam(new BeautyParams());
+        }
+        //恢复基础美颜属性
+        getBeautyPanel().restoreBeauty();
+        mBeautyType = 0;
+        if (mXMagic != null) {
+            mXMagic.setAudioMute(true);
+        }
+        getScrollFilterView().setScrollable(true);
+    }
+
+    @Override
+    public void onShowTEBeautyPanel() {
+        // 隐藏底部工具栏
+        getRecordBottomLayout().setVisibility(View.GONE);
+        // 隐藏右侧工具栏
+        getRecordRightLayout().setVisibility(View.GONE);
+        // 显示美颜Panel
+        getTEPanel().setVisibility(View.VISIBLE);
+        getTEInfoImg().setVisibility(VISIBLE);
         if (mXMagic != null) {
             mXMagic.setBeautyStateOpen();
+            //如果设置了BGM,在打开高级美颜的动效时进行静音处理
+            mXMagic.setAudioMute(RecordMusicManager.getInstance().isChooseMusic());
         }
+        mBeautyType = 1;
+        cleanBaseBeauty();
+        getScrollFilterView().setScrollable(false);
+        TEChargePromptDialog.showTETipDialog(mActivity);
+
+    }
+
+
+    private void cleanBaseBeauty() {
+        //清空基础美颜效果
+        BeautyParams baseBeautyParams = new BeautyParams();
+        baseBeautyParams.mBeautyStyle = 0;
+        baseBeautyParams.mBeautyLevel = 0;
+        baseBeautyParams.mWhiteLevel = 0;
+        baseBeautyParams.mFilterBmp = null;
+        VideoRecordSDK.getInstance().updateBeautyParam(baseBeautyParams);
     }
 
     /**
@@ -557,6 +652,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                         dialog.dismiss();
 
                         RecordMusicManager.getInstance().deleteMusic();
+                        if (mXMagic != null && mBeautyType == 1) {  //当删除背景音乐的时候进行判断，如果当前是在高级美颜中，则消除静音
+                            mXMagic.setAudioMute(false);
+                        }
                         // 录制添加BGM后是录制不了人声的，而音效是针对人声有效的
                         getRecordRightLayout().setSoundEffectIconEnable(true);
 
@@ -578,6 +676,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     @Override
     public void onSingleClick(float x, float y) {
         getBeautyPanel().setVisibility(View.GONE);
+        getTEPanel().setVisibility(View.GONE);
+        getTEInfoImg().setVisibility(View.GONE);
         getRecordMusicPannel().setVisibility(View.GONE);
         getSoundEffectPannel().setVisibility(View.GONE);
 
@@ -763,7 +863,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
            @Override
            public void run() {
                if (mXMagic == null) {
-                   mXMagic = new XMagicImpl(mActivity, getBeautyPanel());
+                   mXMagic = new XMagicImpl(mActivity, getTEPanel());
                } else {
                    mXMagic.onResume();
                }
@@ -784,7 +884,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
             @Override
             public int onTextureCustomProcess(int textureId, int width, int height) {
-                if (mXmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
+                if (mBeautyType == 1 && mXmagicState == XMagicImpl.XmagicState.STARTED && mXMagic != null) {
                     return mXMagic.process(textureId, width, height);
                 }
                 return textureId;

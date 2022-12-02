@@ -23,6 +23,8 @@ public class TCVideoJoinerActivity extends FragmentActivity {
 
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
     private UGCKitVideoJoin mUGCKitVideoJoin;
+    private UGCKitResult mUgcKitResult = null;
+    private boolean mResumed = false;
     private IVideoJoinKit.OnVideoJoinListener mOnPictureListener = new IVideoJoinKit.OnVideoJoinListener() {
         @Override
         public void onJoinCanceled() {
@@ -37,10 +39,16 @@ public class TCVideoJoinerActivity extends FragmentActivity {
             /**
              * 视频合成完成，返回合成后的视频地址，跳转到视频裁剪页面
              */
-            if (ugcKitResult.errorCode == 0) {
-                startCutActivity(ugcKitResult);
+            if (mResumed) {
+                if (ugcKitResult.errorCode == 0) {
+                    startCutActivity(ugcKitResult);
+                } else {
+                    ToastUtil.toastShortMessage("join video failed. error code:"
+                            + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+                    finish();
+                }
             } else {
-                ToastUtil.toastShortMessage("join video failed. error code:" + ugcKitResult.errorCode + ",desc msg:" + ugcKitResult.descMsg);
+                mUgcKitResult = ugcKitResult;
             }
         }
     };
@@ -52,6 +60,10 @@ public class TCVideoJoinerActivity extends FragmentActivity {
         mTCVideoFileInfoList = (ArrayList<TCVideoFileInfo>) getIntent().getSerializableExtra(UGCKitConstants.INTENT_KEY_MULTI_CHOOSE);
 
         mUGCKitVideoJoin = new UGCKitVideoJoin(this);
+        /**
+         * 设置合成视频的监听器
+         */
+        mUGCKitVideoJoin.setVideoJoinListener(mOnPictureListener);
         /**
          * 设置合成的视频源
          */
@@ -78,15 +90,21 @@ public class TCVideoJoinerActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        /**
-         * 设置合成视频的监听器
-         */
-        mUGCKitVideoJoin.setVideoJoinListener(mOnPictureListener);
+        mResumed = true;
+        if (mUgcKitResult != null) {
+            mOnPictureListener.onJoinCompleted(mUgcKitResult);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mResumed = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mUGCKitVideoJoin.setVideoJoinListener(null);
     }
 }

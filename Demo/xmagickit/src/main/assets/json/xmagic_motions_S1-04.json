@@ -1,0 +1,27 @@
+{
+	"motionsBaseUrl":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/",
+	"motionIconBaseUrl":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/image/",
+    "motion2d":[
+        "video_keaituya",
+        "video_tutujiang"
+    ],
+    "motion3d":[
+        "video_zhixingmeigui"
+    ],
+    "motionhand":[
+        "video_sakuragirl"
+    ],
+    "motiongan":[
+        "video_bubblegum"
+    ],
+    "motionmakeup":[
+        "video_nvtuanzhuang",
+        "video_shaishangzhuang"
+    ],
+    "motionseg":[
+        "video_empty_segmentation",
+        "video_segmentation_blur_45",
+        "video_segmentation_blur_75",
+        "video_segmentation_transparent_bg"
+    ]
+}
