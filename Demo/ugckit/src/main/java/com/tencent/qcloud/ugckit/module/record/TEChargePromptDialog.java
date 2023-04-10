@@ -1,9 +1,12 @@
 package com.tencent.qcloud.ugckit.module.record;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.text.NoCopySpan;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -17,6 +20,8 @@ import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.component.dialog.CommonDialog;
 import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
+
+import java.util.List;
 
 /**
  * 用于显示高级美颜收费提示框
@@ -107,9 +112,24 @@ public class TEChargePromptDialog {
         intent.setPackage(context.getPackageName());
         intent.putExtra("title", title);
         intent.putExtra("url", url);
-        context.startActivity(intent);
+        if (isIntentAvailable(context, intent)) {
+            context.startActivity(intent);
+        } else {
+            Intent newIntent = new Intent(Intent.ACTION_VIEW);
+            newIntent.setData(Uri.parse(url));
+            if (isIntentAvailable(context, newIntent)) {
+                context.startActivity(newIntent);
+            }
+        }
     }
 
+
+    private static boolean isIntentAvailable(Context context, Intent intent) {
+        final PackageManager packageManager = context.getPackageManager();
+        @SuppressLint("WrongConstant")
+        List list = packageManager.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
+        return list.size() > 0;
+    }
 
     private static boolean isEnglish() {
         return UGCKit.getAppContext().getResources().getConfiguration().locale.getCountry().toLowerCase().equals("us");

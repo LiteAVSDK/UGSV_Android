@@ -1,8 +1,6 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,7 +35,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -50,6 +47,7 @@ import okhttp3.Response;
  * 视频上传客户端
  */
 public class TVCClient {
+
     private static final String TAG = "TVC-Client";
     private static final long SLICE_SIZE_MIN = 1024 * 1024;
     private static final long SLICE_SIZE_MAX = 1024 * 1024 * 10;
@@ -87,11 +85,9 @@ public class TVCClient {
     private COSXMLUploadTask mCOSXMLUploadTask;
     private TransferConfig mTransferConfig;
     private TransferManager mTransferManager;
-    private static final String LOCALFILENAME = "TVCSession";
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences.Editor mShareEditor;
     private String uploadId = null;
-    private long fileLastModTime = 0;     //视频文件最后修改时间
+    private long fileLastModTime = 0;           //视频文件最后修改时间
+    private long coverFileLastModTime = 0;      //封面文件最后修改时间
     private boolean enableResume = true;
     private boolean enableHttps = false;
     private UGCReport.ReportInfo reportInfo;
@@ -101,8 +97,9 @@ public class TVCClient {
     private int virtualPercent = 0;             //虚拟进度
     private boolean realProgressFired = false;
     private int vodCmdRequestCount = 0;           //vod信令重试次数
-    private long mSliceSize = 1024 * 1024 * 10; // 默认分片10M
+    private long mSliceSize = SLICE_SIZE_MIN; // 默认分片1M
     private int mConcurrentCount;                 // 并发数量
+    private IUploadResumeController mUploadResumeController; // 续点控制器
 
     /**
      * 初始化上传实例
@@ -111,17 +108,40 @@ public class TVCClient {
      * @param iTimeOut  超时时间
      */
     public TVCClient(Context context, String customKey, String signature, boolean enableResume, boolean enableHttps,
-                     int iTimeOut, long sliceSize, int concurrenceSize) {
-        this.context = context.getApplicationContext();
-        ugcClient = UGCClient.getInstance(signature, iTimeOut);
+            int iTimeOut, long sliceSize, int concurrenceSize, IUploadResumeController resumeController) {
         mainHandler = new Handler(context.getMainLooper());
-        mSharedPreferences = context.getSharedPreferences(LOCALFILENAME, Activity.MODE_PRIVATE);
-        mShareEditor = mSharedPreferences.edit();
+        this.context = context.getApplicationContext();
+        reportInfo = new UGCReport.ReportInfo();
+        updateConfig(customKey, signature, enableResume, enableHttps, iTimeOut, sliceSize, concurrenceSize,
+                resumeController);
+    }
+
+    /**
+     * 初始化上传实例
+     *
+     * @param ugcSignature 签名
+     */
+    public TVCClient(Context context, String customKey, String ugcSignature, boolean resumeUpload,
+            boolean enableHttps, long sliceSize, int concurrenceSize,
+            IUploadResumeController resumeController) {
+        this(context, customKey, ugcSignature, resumeUpload, enableHttps, 8, sliceSize,
+                concurrenceSize, resumeController);
+    }
+
+    /**
+     * 更新配置
+     */
+    public void updateConfig(String customKey, String signature, boolean enableResume, boolean enableHttps,
+            int iTimeOut, long sliceSize, int concurrenceSize, IUploadResumeController resumeController) {
         this.enableResume = enableResume;
         this.enableHttps = enableHttps;
         this.customKey = customKey;
         this.mConcurrentCount = concurrenceSize;
-        reportInfo = new UGCReport.ReportInfo();
+        ugcClient = UGCClient.getInstance(signature, iTimeOut);
+        mUploadResumeController = resumeController;
+        if (null == mUploadResumeController) {
+            mUploadResumeController = new UploadResumeDefaultController(context);
+        }
         clearLocalCache();
         // sdk最小1M,最大10M，如果不设置，置为0，则为文件大小的十分之一
         if (sliceSize == 0) {
@@ -131,35 +151,9 @@ public class TVCClient {
         }
     }
 
-    /**
-     * 初始化上传实例
-     *
-     * @param ugcSignature 签名
-     */
-    public TVCClient(Context context, String customKey, String ugcSignature, boolean resumeUpload,
-                     boolean enableHttps, long sliceSize, int concurrenceSize) {
-        this(context, customKey, ugcSignature, resumeUpload, enableHttps, 8, sliceSize, concurrenceSize);
-    }
-
     // 清理一下本地缓存，过期的删掉
     private void clearLocalCache() {
-        if (mSharedPreferences != null) {
-            try {
-                Map<String, ?> allContent = mSharedPreferences.getAll();
-                //注意遍历map的方法
-                for (Map.Entry<String, ?> entry : allContent.entrySet()) {
-                    JSONObject json = new JSONObject((String) entry.getValue());
-                    long expiredTime = json.optLong("expiredTime", 0);
-                    // 过期了清空key
-                    if (expiredTime < System.currentTimeMillis() / 1000) {
-                        mShareEditor.remove(entry.getKey());
-                        mShareEditor.commit();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        mUploadResumeController.clearLocalCache();
     }
 
     private long fixSliceSize(long sliceSize) {
@@ -276,6 +270,9 @@ public class TVCClient {
             return TVCConstants.ERR_CLIENT_BUSY;
         }
         busyFlag = true;
+        // reset
+        cosVideoPath = null;
+        cancleFlag = false;
         this.uploadInfo = info;
         this.tvcListener = listener;
 
@@ -301,8 +298,9 @@ public class TVCClient {
             return TVCConstants.ERR_UGC_FILE_NAME;
         }
 
-        if (!TXUGCPublishOptCenter.getInstance().isPublishing(info.getFilePath()) && enableResume)
+        if (!TXUGCPublishOptCenter.getInstance().isPublishing(info.getFilePath()) && enableResume) {
             getResumeData(info.getFilePath());
+        }
         TXUGCPublishOptCenter.getInstance().addPublishing(info.getFilePath());
         applyUploadUGC(info, vodSessionKey);
         return TVCConstants.NO_ERROR;
@@ -714,6 +712,7 @@ public class TVCClient {
                             if (cancleFlag && state == TransferState.PAUSED) {
                                 busyFlag = false;
                                 cancleFlag = false;
+                                setResumeData(uploadInfo.getFilePath(), vodSessionKey, uploadId);
                                 notifyUploadFailed(TVCConstants.ERR_USER_CANCEL, "request is cancelled by manual "
                                         + "pause");
                             }
@@ -742,6 +741,7 @@ public class TVCClient {
     private void quicTransToHttpRetry() {
         // quic失败，使用http重新上传 quic request failed,switch to http
         Log.e(TAG, "quic request failed,switch to http");
+        stopTimer();
         TXUGCPublishOptCenter.getInstance().disableQuicIfNeed();
         applyUploadUGC(uploadInfo, vodSessionKey);
     }
@@ -917,6 +917,7 @@ public class TVCClient {
         reportInfo.reportId = customKey;
         reportInfo.reqKey = String.valueOf(uploadInfo.getFileLastModifyTime()) + ";" + String.valueOf(initReqTime);
         reportInfo.vodSessionKey = vodSessionKey;
+        reportInfo.cosVideoPath = cosVideoPath;
         UGCReport.getInstance(context).addReportInfo(reportInfo);
 
         if ((errCode == 0 && reqType == TVCConstants.UPLOAD_EVENT_ID_UPLOAD_RESULT) || errCode != 0) {
@@ -933,61 +934,30 @@ public class TVCClient {
         vodSessionKey = null;
         uploadId = null;
         fileLastModTime = 0;
-        if (TextUtils.isEmpty(filePath) || enableResume == false) {
-            return;
-        }
-
-        if (mSharedPreferences != null && mSharedPreferences.contains(filePath)) {
-            try {
-                JSONObject json = new JSONObject(mSharedPreferences.getString(filePath, ""));
-                long expiredTime = json.optLong("expiredTime", 0);
-                if (expiredTime > System.currentTimeMillis() / 1000) {
-                    vodSessionKey = json.optString("session", "");
-                    uploadId = json.optString("uploadId", "");
-                    fileLastModTime = json.optLong("fileLastModTime", 0);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        coverFileLastModTime = 0;
+        if (enableResume) {
+            ResumeCacheData resumeCacheData = mUploadResumeController.getResumeData(filePath);
+            if (null != resumeCacheData) {
+                vodSessionKey = resumeCacheData.getVodSessionKey();
+                uploadId = resumeCacheData.getUploadId();
+                fileLastModTime = resumeCacheData.getFileLastModTime();
+                coverFileLastModTime = resumeCacheData.getCoverFileLastModTime();
             }
         }
-
-        return;
     }
 
     private void setResumeData(String filePath, String vodSessionKey, String uploadId) {
         if (filePath == null || filePath.isEmpty()) {
             return;
         }
-        if (mSharedPreferences != null) {
-            try {
-                // vodSessionKey、uploadId为空就表示删掉该记录
-                String itemPath = filePath;
-                if (TextUtils.isEmpty(vodSessionKey) || TextUtils.isEmpty(uploadId)) {
-                    mShareEditor.remove(itemPath);
-                    mShareEditor.commit();
-                } else {
-                    String comment = "";
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("session", vodSessionKey);
-                    jsonObject.put("uploadId", uploadId);
-                    jsonObject.put("expiredTime", System.currentTimeMillis() / 1000 + 24 * 60 * 60);
-                    jsonObject.put("fileLastModTime", uploadInfo.getFileLastModifyTime());
-                    comment = jsonObject.toString();
-                    mShareEditor.putString(itemPath, comment);
-                    mShareEditor.commit();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        mUploadResumeController.saveSession(filePath, vodSessionKey, uploadId, uploadInfo);
     }
 
     // 视频是否走断点续传
     public boolean isResumeUploadVideo() {
-        if (enableResume
-                && !TextUtils.isEmpty(uploadId)
-                && uploadInfo != null && fileLastModTime != 0 && fileLastModTime == uploadInfo.getFileLastModifyTime()) {
-            return true;
+        if (enableResume) {
+            return mUploadResumeController.isResumeUploadVideo(uploadId, uploadInfo, vodSessionKey,
+                    fileLastModTime, coverFileLastModTime);
         }
         return false;
     }
@@ -1012,6 +982,7 @@ public class TVCClient {
         b.putString("appId", String.valueOf(reportInfo.appId));
         b.putString("reqServerIp", reportInfo.reqServerIp);
         b.putString("reportId", reportInfo.reportId);
+        b.putString("cosVideoPath", reportInfo.cosVideoPath);
         b.putString("reqKey", reportInfo.reqKey);
         b.putString("vodSessionKey", reportInfo.vodSessionKey);
 
@@ -1058,49 +1029,60 @@ public class TVCClient {
 
         @Override
         public void onFail(CosXmlRequest cosXmlRequest, CosXmlClientException qcloudException,
-                           CosXmlServiceException qcloudServiceException) {
+                CosXmlServiceException qcloudServiceException) {
+            boolean isQuic = mCosXmlService.getConfig().isEnableQuic();
             if (qcloudException != null) {
+                int errorReportCode = TVCConstants.ERR_UPLOAD_VIDEO_FAILED;
                 Log.w(TAG, "CosXmlClientException = " + qcloudException.getMessage());
                 //网络中断导致的
                 if (!TVCUtils.isNetworkAvailable(context)) {
+                    Log.w(TAG, "network interruption");
+                    setResumeData(uploadInfo.getFilePath(), vodSessionKey, uploadId);
                     notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
                             "cos upload video error: network unreachable");
+                } else if (isQuic) {
+                    // quic失败，使用http重新上传
+                    quicTransToHttpRetry();
+                    errorReportCode = TVCConstants.ERR_UPLOAD_QUIC_FAILED;
                 } else if (!cancleFlag) { //其他错误，非主动取消
+                    Log.w(TAG, "exception interruption");
                     notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
                             "cos upload video error:" + qcloudException.getMessage());
                     setResumeData(uploadInfo.getFilePath(), "", "");
                 }
-                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0,
+                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, errorReportCode, 0,
                         String.valueOf(qcloudException.errorCode),
-                        "CosXmlClientException:" + qcloudException.getMessage(), reqTime,
+                        "CosXmlClientException:" + qcloudException.getMessage()
+                                + ",isQuic:" + isQuic, reqTime,
                         System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
                         uploadInfo.getFileType(), uploadInfo.getFileName(), "", "",
                         0, 0);
             }
 
             if (qcloudServiceException != null) {
+                int errorReportCode = TVCConstants.ERR_UPLOAD_VIDEO_FAILED;
                 Log.w(TAG, "CosXmlServiceException =" + qcloudServiceException.toString());
-                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0,
-                        qcloudServiceException.getErrorCode() == null ? "" : qcloudServiceException.getErrorCode(),
-                        "CosXmlServiceException:" + qcloudServiceException.getMessage(), reqTime,
-                        System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
-                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", qcloudServiceException.getRequestId(),
-                        mFinalTcpConnectionTimeCost, mFinalRecvRspTimeCost);
                 // 临时密钥过期，重新申请一次临时密钥，不中断上传
                 if (qcloudServiceException.getErrorCode() != null
                         && qcloudServiceException.getErrorCode().equalsIgnoreCase("RequestTimeTooSkewed")) {
+                    Log.w(TAG, "key expire,retry");
                     applyUploadUGC(uploadInfo, vodSessionKey);
-                } else if (mCosXmlService.getConfig().isEnableQuic()) {
+                } else if (isQuic) {
                     // quic失败，使用http重新上传
                     quicTransToHttpRetry();
+                    errorReportCode = TVCConstants.ERR_UPLOAD_QUIC_FAILED;
                 } else {
                     notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
                             "cos upload video error:" + qcloudServiceException.getMessage());
                     setResumeData(uploadInfo.getFilePath(), "", "");
                 }
-            } else if (mCosXmlService.getConfig().isEnableQuic()) {
-                // quic失败，使用http重新上传
-                quicTransToHttpRetry();
+                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, errorReportCode, 0,
+                        qcloudServiceException.getErrorCode() == null ? "" : qcloudServiceException.getErrorCode(),
+                        "CosXmlServiceException:" + qcloudServiceException.getMessage()
+                                + ",isQuic:" + isQuic, reqTime,
+                        System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", qcloudServiceException.getRequestId(),
+                        mFinalTcpConnectionTimeCost, mFinalRecvRspTimeCost);
             }
         }
     }

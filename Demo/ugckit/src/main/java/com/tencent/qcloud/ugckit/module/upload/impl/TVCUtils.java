@@ -17,17 +17,23 @@ import android.os.SystemClock;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class TVCUtils {
-    private static final String TAG             = "TVCUtils";
-    private static       String g_simulate_idfa = "";
+    private static final String TAG = "TVCUtils";
+    private static String g_simulate_idfa = "";
+    private static final long MD5_REGION_SIZE = 2000;
 
     private static String byteArrayToHexString(byte[] data) {
         char[] out = new char[data.length << 1];
@@ -59,10 +65,9 @@ public class TVCUtils {
         return MD5;
     }
 
-
     // SimulateIDFA
     public static String getSimulateIDFA(Context context) {
-        if (g_simulate_idfa != null && g_simulate_idfa.length() > 0) {
+        if (!TextUtils.isEmpty(g_simulate_idfa)) {
             return g_simulate_idfa;
         }
 
@@ -96,13 +101,13 @@ public class TVCUtils {
             Log.e(TAG, "read UUID from file failed! reason: " + e.getMessage());
         }
 
-        if (idfaInSP != null && idfaInSP.length() > 0) {
+        if (!TextUtils.isEmpty(idfaInSP)) {
             idfa = idfaInSP;
-        } else if (idfaInFile != null && idfaInFile.length() > 0) {
+        } else if (!TextUtils.isEmpty(idfaInFile)) {
             idfa = idfaInFile;
         }
 
-        if (idfa == null || idfa.length() == 0) {
+        if (TextUtils.isEmpty(idfa)) {
             //UUID：16进制字符串(UTC毫秒时间(6字节) + 以开机到现在的时间戳为种子的随机数(4字节) + MD5(应用包名 + 系统生成UUID)(16字节)
             idfa = "";
             long utcTimeMS = System.currentTimeMillis();
@@ -412,5 +417,82 @@ public class TVCUtils {
             e.printStackTrace();
         }
         return bVideoFileExist;
+    }
+
+    /**
+     * 获取单个文件的MD5值！
+     */
+    public static String getFileMD5(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return null;
+        }
+        StringBuilder stringBuilder = null;
+        try {
+            File file = new File(filePath);
+            char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+            FileInputStream in = new FileInputStream(file);
+            FileChannel ch = in.getChannel();
+
+            long fileSize = ch.size();
+            int bufferCount = (int) Math.ceil((double) fileSize / MD5_REGION_SIZE);
+            MappedByteBuffer[] mappedByteBuffers;
+            if (bufferCount <= 1) {
+                mappedByteBuffers = new MappedByteBuffer[1];
+                mappedByteBuffers[0] = getMD5FileStart(ch);
+            } else if (bufferCount == 2) {
+                mappedByteBuffers = new MappedByteBuffer[2];
+                mappedByteBuffers[0] = getMD5FileStart(ch);
+                mappedByteBuffers[1] = getMD5FileEnd(ch);
+            } else {
+                bufferCount = 3;
+                mappedByteBuffers = new MappedByteBuffer[3];
+                mappedByteBuffers[0] = getMD5FileStart(ch);
+                mappedByteBuffers[1] = getMD5FileMid(ch);
+                mappedByteBuffers[2] = getMD5FileEnd(ch);
+            }
+
+            MessageDigest messagedigest = MessageDigest.getInstance("MD5");
+
+            for (int i = 0; i < bufferCount; i++) {
+                messagedigest.update(mappedByteBuffers[i]);
+            }
+            byte[] bytes = messagedigest.digest();
+            int n = bytes.length;
+            stringBuilder = new StringBuilder(2 * n);
+            for (byte bt : bytes) {
+                char c0 = hexDigits[(bt & 0xf0) >> 4];
+                char c1 = hexDigits[bt & 0xf];
+                stringBuilder.append(c0);
+                stringBuilder.append(c1);
+            }
+        } catch (IOException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return stringBuilder.toString();
+    }
+
+    private static MappedByteBuffer getMD5FileStart(FileChannel ch) throws IOException {
+        return ch.map(FileChannel.MapMode.READ_ONLY, 0, MD5_REGION_SIZE);
+    }
+
+    private static MappedByteBuffer getMD5FileMid(FileChannel ch) throws IOException {
+        long fileSize = ch.size();
+        // 总长度减去范围长度，除以2，就是文件中间MD5_REGION_SIZE个数据的开始索引
+        long start = (long) Math.floor((fileSize - MD5_REGION_SIZE) / 2D);
+        return ch.map(FileChannel.MapMode.READ_ONLY, start, MD5_REGION_SIZE);
+    }
+
+    private static MappedByteBuffer getMD5FileEnd(FileChannel ch) throws IOException {
+        long fileSize = ch.size();
+        long prePos = fileSize - MD5_REGION_SIZE;
+        long regionSize;
+        if (prePos >= 0) {
+            regionSize = MD5_REGION_SIZE;
+        } else {
+            prePos = 0;
+            regionSize = fileSize;
+        }
+        return ch.map(FileChannel.MapMode.READ_ONLY, prePos, regionSize);
     }
 }

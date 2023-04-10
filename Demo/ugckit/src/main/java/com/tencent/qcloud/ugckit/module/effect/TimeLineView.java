@@ -73,6 +73,18 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
         List<Bitmap> thumbnailList = VideoEditerSDK.getInstance().getAllThumbnails();
         mVideoProgressView.setViewWidth(screenWidth);
         mVideoProgressView.setThumbnailData(thumbnailList);
+        VideoEditerSDK.getInstance().setThumbnailListener(new VideoEditerSDK.ThumbnailsListener() {
+            @Override
+            public void onThumbnailGot(long time, final Bitmap bitmap) {
+                mVideoProgressView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mVideoProgressView.addThumbnailDate(bitmap);
+                    }
+                });
+
+            }
+        });
 
         mVideoProgressController = new VideoProgressController();
         mVideoProgressController.setVideoProgressView(mVideoProgressView);

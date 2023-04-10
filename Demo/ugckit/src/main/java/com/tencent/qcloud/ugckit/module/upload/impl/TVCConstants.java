@@ -4,15 +4,19 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "10.8.0.13065";
+    public static final String TVCVERSION = "11.1.0.13111";
     public static       String VOD_SERVER_HOST     = "vod2.qcloud.com";
     public static       String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
-    public static       int    MAX_REQUEST_COUNT   = 2;    // 最大重试次数
-    public static final int    NETTYPE_NONE        = 0;
-    public static final int    NETTYPE_WIFI        = 1;
-    public static final int    NETTYPE_4G          = 2;
-    public static final int    NETTYPE_3G          = 3;
-    public static final int    NETTYPE_2G          = 4;
+
+    // 最大重试次数
+    public static int MAX_REQUEST_COUNT = 2;
+
+    //网络类型
+    public static final int NETTYPE_NONE = 0;
+    public static final int NETTYPE_WIFI = 1;
+    public static final int NETTYPE_4G   = 2;
+    public static final int NETTYPE_3G   = 3;
+    public static final int NETTYPE_2G   = 4;
 
 
     /************************************************ 客户端错误码 **********************************/
@@ -25,7 +29,6 @@ public class TVCConstants {
      * 失败
      */
     public static final int ERROR = 1;
-
 
     /**
      * UGC请求上传失败
@@ -109,6 +112,11 @@ public class TVCConstants {
      * [已废弃]直接上传失败
      */
     public static final int ERR_UPLOAD_VOD = 1018;
+
+    /**
+     * COS使用quic上传视频失败，转http上传
+     */
+    public static final int ERR_UPLOAD_QUIC_FAILED = 1019;
 
 
     /************************************************ 数据上报定义 **********************************/

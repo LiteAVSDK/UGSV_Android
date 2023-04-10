@@ -8,8 +8,12 @@ import android.util.Log;
 
 import com.tencent.qcloud.quic.QuicNative;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import okhttp3.Dns;
 
 /**
  * quic处理类
@@ -19,16 +23,17 @@ public class QuicClient {
     private static final String TAG = "QuicClient";
 
     private static final long QUIC_DETECT_TIME_OUT_TIME = 2000;
-    public static final  int  ERROR_CODE_QUIC_TIME_OUT  = -1;
-    public static final  int  PORT                      = 443;
+    public static final int ERROR_CODE_QUIC_TIME_OUT = -1;
+    public static final int ERROR_CODE_QUIC_FAILED = -2;
+    public static final int PORT = 443;
 
-    private final    Handler            mHandler;
-    private          QuicNative         mQuicNative;
-    private          QuicDetectListener mQuicDetectListener;
-    private          String             mParams;
-    private          String             mHost;
-    private volatile boolean            isCallback = false;
-    private          long               reqStartTime;
+    private final Handler mHandler;
+    private QuicNative mQuicNative;
+    private QuicDetectListener mQuicDetectListener;
+    private String mParams;
+    private String mHost;
+    private volatile boolean isCallback = false;
+    private long reqStartTime;
 
     public QuicClient(Context context) {
         mHandler = new Handler(context.getMainLooper());
@@ -92,24 +97,46 @@ public class QuicClient {
      * <h1>3、需要在子线程运行</h1>
      */
     public void detectQuic(final String domain, final QuicDetectListener listener) {
+        this.mQuicDetectListener = listener;
+        String reqUrl = "http://" + domain;
+        Uri originUri = Uri.parse(reqUrl);
+        this.mHost = originUri.getHost();
+        String domainIp;
         List<String> ipList = TXUGCPublishOptCenter.getInstance().query(domain);
         if (null != ipList && !ipList.isEmpty()) {
-            this.mQuicDetectListener = listener;
-            String reqUrl = "http://" + domain;
-            Uri originUri = Uri.parse(reqUrl);
-            this.mHost = originUri.getHost();
-            if (null != originUri.getQuery()) {
-                this.mParams = originUri.getPath() + "?" + originUri.getQuery();
-            } else {
-                this.mParams = originUri.getPath();
-            }
+            domainIp = ipList.get(0);
+        } else {
+            domainIp = getIpBySysDns(mHost);
+        }
+        if (null != originUri.getQuery()) {
+            this.mParams = originUri.getPath() + "?" + originUri.getQuery();
+        } else {
+            this.mParams = originUri.getPath();
+        }
 
+        if (!TextUtils.isEmpty(domainIp)) {
             mQuicNative = new QuicNative();
             mQuicNative.setCallback(networkCallback);
             reqStartTime = System.currentTimeMillis();
-            mQuicNative.connect(mHost, ipList.get(0), PORT, PORT);
+            mQuicNative.connect(mHost, domainIp, PORT, PORT);
             mHandler.postDelayed(timeOutRunnable, QUIC_DETECT_TIME_OUT_TIME);
+        } else {
+            notifyCallback(false, ERROR_CODE_QUIC_FAILED);
         }
+    }
+
+    private String getIpBySysDns(String host) {
+        try {
+            List<InetAddress> inetAddressList = Dns.SYSTEM.lookup(host);
+            for (InetAddress address : inetAddressList) {
+                if (!TextUtils.isEmpty(address.getHostAddress())) {
+                    return address.getHostAddress();
+                }
+            }
+        } catch (UnknownHostException e) {
+            Log.e(TAG, "getIpBySysDns failed:" + e.getMessage());
+        }
+        return null;
     }
 
 

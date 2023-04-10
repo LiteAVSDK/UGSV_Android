@@ -77,9 +77,10 @@ public class TXUGCPublish {
 
         if (mTVCClient == null) {
             mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume,
-                    param.enableHttps, 10, param.sliceSize, param.concurrentCount);
+                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
         } else {
-            mTVCClient.updateSignature(param.signature);
+            mTVCClient.updateConfig(mCustomKey, param.signature, param.enableResume,
+                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
         }
 
         TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath, getFileType(coverPath),
@@ -207,9 +208,10 @@ public class TXUGCPublish {
 
         if (mTVCClient == null) {
             mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume,
-                    param.enableHttps, 10, param.sliceSize, param.concurrentCount);
+                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
         } else {
-            mTVCClient.updateSignature(param.signature);
+            mTVCClient.updateConfig(mCustomKey, param.signature, param.enableResume,
+                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
         }
 
         TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null, param.fileName);
@@ -398,7 +400,6 @@ public class TXUGCPublish {
             MediaMetadataRetriever media = new MediaMetadataRetriever();
             media.setDataSource(videoPath);
             Bitmap thumb = media.getFrameAtTime(COVER_TIME);
-
 
             String fileName = "";
             int index = videoPath.lastIndexOf(".");

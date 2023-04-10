@@ -52,6 +52,7 @@ public class UGCReport {
         public int     retryCount       = 0;
         public boolean reporting        = false;   // 正在上报
         public String  requestId        = "";
+        public String cosVideoPath      = "";
 
         public ReportInfo() {
         }
@@ -81,6 +82,7 @@ public class UGCReport {
             this.retryCount = 0;
             this.reporting = false;
             this.requestId = info.requestId;
+            this.cosVideoPath = info.cosVideoPath;
         }
 
         @Override
@@ -109,8 +111,10 @@ public class UGCReport {
                     ", reporting=" + reporting +
                     ", requestId='" + requestId + '\'' +
                     ", tcpConnTimeCost=" + tcpConnTimeCost +
-                    ", recvRespTimeCost=" + recvRespTimeCost +
-                    '}';
+                    ", recvRespTimeCost=" + recvRespTimeCost
+                    + ", cosVideoPath="
+                    + cosVideoPath
+                    + '}';
         }
     }
 
@@ -171,8 +175,9 @@ public class UGCReport {
             while (iter.hasNext()) {
                 ReportInfo info = (ReportInfo) iter.next();
                 if (info.retryCount < 4) {
-                    if (!info.reporting)
+                    if (!info.reporting) {
                         report(info);
+                    }
                 } else {
                     iter.remove();
                 }
@@ -227,6 +232,7 @@ public class UGCReport {
             jsonObject.put("packageName", TVCUtils.getPackageName(context));
             jsonObject.put("appName", TVCUtils.getAppName(context));
             jsonObject.put("requestId", info.requestId);
+            jsonObject.put("cosVideoPath", info.cosVideoPath);
 
             ++info.retryCount;
             info.reporting = true;

@@ -357,8 +357,21 @@ public class VideoEditerSDK {
         return getThumbnailList(0, mTXVideoInfo.duration);
     }
 
+    public interface ThumbnailsListener {
+        void onThumbnailGot(long time, Bitmap bitmap);
+    }
+
+    private ThumbnailsListener mThumbnailsListener;
+
+    public void setThumbnailListener(ThumbnailsListener listener) {
+        mThumbnailsListener = listener;
+    }
+
     public void addThumbnailBitmap(long timeMs, Bitmap bitmap) {
         mThumbnailList.add(new ThumbnailBitmapInfo(timeMs, bitmap));
+        if (mThumbnailsListener != null) {
+            mThumbnailsListener.onThumbnailGot(timeMs, bitmap);
+        }
     }
 
     /**
