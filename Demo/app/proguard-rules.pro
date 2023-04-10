@@ -145,3 +145,4 @@
 -keep class com.gyailib.**{ *;}
 -keep class com.tencent.youtu.**{ *;}
 -keep class com.tencent.cloud.iai.lib.** { *;}
+-keep class androidx.exifinterface.** { *;}

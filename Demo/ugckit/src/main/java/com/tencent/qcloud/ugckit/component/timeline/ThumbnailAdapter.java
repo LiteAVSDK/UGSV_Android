@@ -23,7 +23,6 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
     private static final int TYPE_THUMBNAIL = 3;
 
     private int          mViewWidth;
-    private int          mCount;
     @Nullable
     private List<Bitmap> mThumbnailList;
 
@@ -33,7 +32,11 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
             mThumbnailList = new ArrayList<>();
         }
         mThumbnailList = thumbnailList;
-        mCount = mThumbnailList.size();
+    }
+
+    public void addThumbnail(Bitmap bitmap) {
+        mThumbnailList.add(bitmap);
+        notifyDataSetChanged();
     }
 
     @Nullable
@@ -61,7 +64,7 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
 
     @Override
     public void onBindViewHolder(@NonNull ThumbnailViewHolder holder, int position) {
-        if (position != 0 && position != mCount + 1) {
+        if (mThumbnailList != null && position != 0 && position != mThumbnailList.size() + 1) {
             Bitmap thumbnailBitmap = mThumbnailList.get(position - 1);
             holder.ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
@@ -69,18 +72,17 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
 
     @Override
     public int getItemCount() {
-        if (mCount == 0) {
+        if (mThumbnailList == null || mThumbnailList.size() < 1) {
             return 0;
         }
-
-        return mCount + 2;
+        return mThumbnailList.size() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_HEADER;
-        } else if (position == mCount + 1) {
+        } else if (position == getItemCount() - 2 + 1) {
             return TYPE_FOOTER;
         } else {
             return TYPE_THUMBNAIL;
@@ -96,11 +98,11 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
     }
 
     class ThumbnailViewHolder extends RecyclerView.ViewHolder {
+
         ImageView ivThumbnail;
 
         public ThumbnailViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
-
 }

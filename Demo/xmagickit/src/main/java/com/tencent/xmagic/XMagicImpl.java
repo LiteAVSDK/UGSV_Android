@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.tencent.xmagic.module.XmagicResParser;
 import com.tencent.xmagic.panel.XmagicPanelDataManager;
 import com.tencent.xmagic.panel.XmagicPanelView;
@@ -54,6 +56,7 @@ public class XMagicImpl implements SensorEventListener {
     private boolean userBeauty = false;
 
     private boolean mMute = false;
+    private Fragment mHostFragment;
 
     /**
      * 使用美颜之前必须先调用此方法
@@ -143,7 +146,11 @@ public class XMagicImpl implements SensorEventListener {
             @Override
             public void onClickCustomSegItem() {
                 isOpenPhotoAlbum = true;
-                XmagicPanelView.openPhotoAlbum(activity);
+                if (mHostFragment != null) {
+                    XmagicPanelView.openPhotoAlbum(mHostFragment);
+                } else {
+                    XmagicPanelView.openPhotoAlbum(activity);
+                }
             }
 
             @Override
@@ -313,4 +320,8 @@ public class XMagicImpl implements SensorEventListener {
         userBeauty = sp.getBoolean("xmagic_state", false);
     }
 
+
+    public void setHostFragment(Fragment mHostFragment) {
+        this.mHostFragment = mHostFragment;
+    }
 }

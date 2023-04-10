@@ -444,10 +444,14 @@ public class VideoProgressController {
      * @return
      */
     public float getThumbnailPicListDisplayWidth() {
-        if (mThumbnailPicListDisplayWidth == 0) {
-            mThumbnailNum = mVideoProgressView.getThumbnailCount();
-            mThumbnailPicListDisplayWidth = mThumbnailNum * mVideoProgressView.getSingleThumbnailWidth();
-        }
+        mThumbnailNum = mVideoProgressView.getThumbnailCount();
+        float thumbnailWidth = mThumbnailNum * mVideoProgressView.getSingleThumbnailWidth();
+//        if (mSliderViewContainerList != null && mSliderViewContainerList.size() > 0) {
+//            for (SliderViewContainer sliderViewContainer : mSliderViewContainerList) {
+//                sliderViewContainer.changeLayoutParams();
+//            }
+//        }
+        mThumbnailPicListDisplayWidth = thumbnailWidth;
         return mThumbnailPicListDisplayWidth;
     }
 

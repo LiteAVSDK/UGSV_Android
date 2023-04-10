@@ -25,7 +25,6 @@ public class VideoProgressView extends FrameLayout {
     private RecyclerView     mRecyclerView;
     private int              mViewWidth;
     private ThumbnailAdapter mThumbnailAdapter;
-    private List<Bitmap>     mThumbnailList;
 
     public VideoProgressView(@NonNull Context context) {
         super(context);
@@ -54,10 +53,13 @@ public class VideoProgressView extends FrameLayout {
     }
 
     public void setThumbnailData(List<Bitmap> thumbnailList) {
-        mThumbnailList = thumbnailList;
-        mThumbnailAdapter = new ThumbnailAdapter(mViewWidth, mThumbnailList);
+        mThumbnailAdapter = new ThumbnailAdapter(mViewWidth, thumbnailList);
         mRecyclerView.setAdapter(mThumbnailAdapter);
         mThumbnailAdapter.notifyDataSetChanged();
+    }
+
+    public void addThumbnailDate(Bitmap thumbnail) {
+        mThumbnailAdapter.addThumbnail(thumbnail);
     }
 
     public RecyclerView getRecyclerView() {

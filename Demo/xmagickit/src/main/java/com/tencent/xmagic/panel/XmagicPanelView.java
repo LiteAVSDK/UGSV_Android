@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +49,8 @@ import com.tencent.xmagic.widget.diaolog.TipDialog;
 import com.tencent.xmagic.XmagicProperty;
 import com.tencent.xmagic.XmagicProperty.XmagicPropertyValues;
 
+import java.net.FileNameMap;
+import java.net.URLConnection;
 import java.util.List;
 
 /**
@@ -580,8 +584,14 @@ public class XmagicPanelView extends RelativeLayout {
             if (data != null) {
                 Uri uri = data.getData();
                 filePath = UriUtils.getFilePathByUri(getContext(), uri);
+                boolean checkResult = checkBitmap(filePath);
+                if (checkResult) {
+                    onActivityResult(filePath);
+                } else {
+                    Toast.makeText(getContext(), getResources().getString(com.tencent.xmagic.R.string.xamgic_5000),
+                            Toast.LENGTH_LONG).show();
+                }
             }
-            onActivityResult(filePath);
         }
         segXmagicProperty = null;
     }
@@ -604,6 +614,31 @@ public class XmagicPanelView extends RelativeLayout {
                 firstAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+
+    private boolean checkBitmap(String segmentBgFileName) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        String contentTypeFor = fileNameMap.getContentTypeFor(segmentBgFileName);
+        if (contentTypeFor.contains("image")) {
+            int maxHeight = 3840;
+            int maxWidth = 2160;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(segmentBgFileName, options);
+            int width = options.outWidth;
+            int height = options.outHeight;
+            boolean isVertical = width < height;
+            boolean isMin0 = width <= 0 || height <= 0;
+            boolean isVerticalResult =
+                    (isVertical && (width > maxWidth || height > maxHeight));
+            boolean isHorResult =
+                    (!isVertical && (width > maxHeight || height > maxWidth));
+            if (isVerticalResult || isHorResult || isMin0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -682,6 +717,12 @@ public class XmagicPanelView extends RelativeLayout {
         Intent intentToPickPic = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*|video/*");
         activity.startActivityForResult(intentToPickPic, RC_CHOOSE_PHOTO); // 打开相册，选择图片
+    }
+
+    public static void openPhotoAlbum(Fragment fragment) {
+        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*|video/*");
+        fragment.startActivityForResult(intentToPickPic, RC_CHOOSE_PHOTO); // 打开相册，选择图片
     }
 
 

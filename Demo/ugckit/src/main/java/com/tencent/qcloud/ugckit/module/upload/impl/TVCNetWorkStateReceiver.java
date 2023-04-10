@@ -8,6 +8,9 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/**
+ * 该Receiver用于上传阶段网络断开回复后的自动恢复上传，建议动态注册到Activity中，静态注册可能会涉及App过审问题
+ */
 public class TVCNetWorkStateReceiver extends BroadcastReceiver {
     private static final String TAG = "TVC-NetWorkMonitor";
 

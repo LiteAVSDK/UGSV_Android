@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.media.AudioManager;
@@ -80,6 +81,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     private AudioFocusManager      mAudioFocusManager = null;
 
     private int                    mBeautyType = -1;  //0 表示基础美颜 1、表示高级美颜
+    private Fragment               mHostFragment;
 
     public UGCKitVideoRecord(Context context) {
         super(context);
@@ -864,6 +866,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
            public void run() {
                if (mXMagic == null) {
                    mXMagic = new XMagicImpl(mActivity, getTEPanel());
+                   if (mHostFragment != null) {
+                       mXMagic.setHostFragment(mHostFragment);
+                   }
                } else {
                    mXMagic.onResume();
                }
@@ -921,4 +926,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         });
     }
 
+
+    public void setHostFragment(Fragment mHostFragment) {
+        this.mHostFragment = mHostFragment;
+    }
 }
