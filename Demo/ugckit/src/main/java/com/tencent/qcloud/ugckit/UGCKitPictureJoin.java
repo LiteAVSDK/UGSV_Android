@@ -52,7 +52,42 @@ import java.util.List;
  * 3、宽高信息sdk内部会处理成9：16比例，上层只有在加片尾水印的时候算归一化坐标用到，所以这里可以设置成720P（720 * 1280）或者540P（540 * 960）来计算。
  * 注意最终视频的分辨率是按照生成时传的参数决定的。</p>
  * 4、SDK版本更新说明：5.0以前版本是按照第一张图片的宽高来决定最终的宽高，导致的问题是如果第一张图片有一边比较短，后面的图片会以最短边等比例缩放，显示出来就小了</p>
+ *
+ * Tencent Cloud UGCKit: Image Transitions</p>
+ * <p>
+ * PictureJoinLayout capabilities: <p>
+ * 1. Set image transition effects. <p>
+ * 2. Generate a video after the transition effects are applied (each image is shown for three seconds).
+ * <p>
+ * Using PictureJoinLayout:
+ * 1. Call {@link UGCKitPictureJoin#setInputPictureList(List)} (ArrayList)} to pass in multiple images.<p>
+ * 2. Call {@link IPictureJoinKit.OnPictureJoinListener} to listen for the video generation status.<p>
+ * {@link IPictureJoinKit.OnPictureJoinListener#onPictureJoinCompleted(UGCKitResult)}
+ * indicates that the video has been generated.
+ * {@link IPictureJoinKit.OnPictureJoinListener#onPictureJoinCanceled()} ()}
+ * indicates that video generation has been canceled.
+ * <p>
+ * Directions:</p>
+ * 1. Call {@link TXVideoEditer#setPictureList(List, int)} to specify image paths.</p>
+ * 2. Call {@link TXVideoEditer#setPictureTransition(int)} to set transition effects.</p>
+ * 3. Call {@link TXVideoEditer#setVideoGenerateListener(TXVideoEditer.TXVideoGenerateListener)}
+ * to set the video generation listener.</p>
+ * 4. Call {@link TXVideoEditer#generateVideo(int, String)} to create a video from the images.</p>
+ * <p>
+ * Notes:
+ * 1. Make sure you call the APIs in the specified order.
+ * 2. Because transition effects differ in duration,
+ * the video length can be obtained only after transition effects are configured.
+ * 3. Internally, the SDK uses the aspect ratio 9:16, which the upper layer uses
+ * to normalize the coordinates of closing segment watermarks. You can set the resolution
+ * to 720p (720 x 1280) or 540p (540 x 960).
+ * The resolution of the output video is determined by the parameters passed in.</p>
+ * 4. In versions earlier than v5.0, the video resolution is determined by the first image’s aspect ratio.
+ * The problem of this is that if the first image has a particularly short dimension,
+ * the other images will be scaled to the same dimension, and the video generated will be small.</p>
  */
+
+
 public class UGCKitPictureJoin extends AbsPictureJoinUI {
     private static final String TAG = "UGCKitPictureJoin";
 

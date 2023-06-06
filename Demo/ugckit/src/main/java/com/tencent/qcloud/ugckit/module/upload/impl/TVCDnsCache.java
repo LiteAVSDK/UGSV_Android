@@ -4,6 +4,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +14,7 @@ import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Dns;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -79,7 +82,7 @@ public class TVCDnsCache {
                     String ips = response.body().string();
                     Log.i(TAG, "freshDNS succ :" + ips);
                     if (ips != null && ips.length() != 0) {
-                        ArrayList<String> ipLists = new ArrayList<String>();
+                        ArrayList<String> ipLists = new ArrayList<>();
                         if (ips.contains(";")) {
                             String[] ipArray = ips.split(";");
                             for (String ipStr : ipArray) {
@@ -92,6 +95,7 @@ public class TVCDnsCache {
                             Log.i(TAG, "freshDNS add ip :" + ips);
                             ipLists.add(ips);
                         }
+                        Log.i(TAG, domain + " add ips success, " + ipLists);
                         cacheMap.put(domain, ipLists);
                         if (callback != null) {
                             callback.onResponse(call, response);
@@ -136,7 +140,28 @@ public class TVCDnsCache {
         if (ipList != null && ipList.size() > 0) {
             return ipList;
         }
+
+        ipList = getIpBySysDns(hostname);
+        if (ipList.size() > 0) {
+            cacheMap.put(hostname, ipList);
+            return ipList;
+        }
         return null;
+    }
+
+    private List<String> getIpBySysDns(String host) {
+        List<String> ipList = new ArrayList<>();
+        try {
+            List<InetAddress> inetAddressList = Dns.SYSTEM.lookup(host);
+            for (InetAddress address : inetAddressList) {
+                if (!TextUtils.isEmpty(address.getHostAddress())) {
+                    ipList.add(address.getHostAddress());
+                }
+            }
+        } catch (UnknownHostException e) {
+            Log.e(TAG, "getIpBySysDns failed:" + e);
+        }
+        return ipList;
     }
 
     public boolean useHttpDNS(String hostname) {

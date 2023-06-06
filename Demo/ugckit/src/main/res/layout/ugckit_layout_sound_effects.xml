@@ -357,29 +357,29 @@
 
         <Button
             android:id="@+id/btn_volume"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/ugckit_ic_ugc_soundeffect"
-            android:text="音量"
+            android:text="@string/ugckit_sound_effect_pannel_volume"
             android:textColor="@color/ugckit_white" />
 
         <Button
             android:id="@+id/btn_voicechange"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@null"
-            android:text="变声"
+            android:text="@string/ugckit_sound_effect_pannel_change_voice"
             android:textColor="@color/ugckit_white" />
 
         <Button
             android:id="@+id/btn_reverb"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@null"
-            android:text="混响"
+            android:text="@string/ugckit_sound_effect_pannel_record_reverb"
             android:textColor="@color/ugckit_white" />
     </LinearLayout>
 

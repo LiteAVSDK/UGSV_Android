@@ -165,25 +165,9 @@
             android:layout_height="wrap_content"
             android:text="@string/technical_support"
             android:textColor="@color/white"
+            android:gravity="center_horizontal"
             android:textSize="18sp"/>
-        <TextView
-            android:id="@+id/tv_follow_public_number"
-            android:layout_below="@id/tv_technical_support"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/follow_public_number"
-            android:textColor="@color/white"
-            android:textSize="18sp"/>
-        <TextView
-            android:id="@+id/tv_send_msg_to_public_number"
-            android:layout_below="@id/tv_follow_public_number"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send_msg_to_public_number"
-            android:textColor="@color/white"
-            android:textSize="18sp"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

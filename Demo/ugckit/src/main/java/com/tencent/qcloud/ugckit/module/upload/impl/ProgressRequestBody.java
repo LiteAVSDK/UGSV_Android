@@ -3,6 +3,7 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
 
 import java.io.IOException;

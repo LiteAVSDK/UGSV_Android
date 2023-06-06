@@ -98,7 +98,35 @@ import java.util.List;
  * <p>
  * 视频合唱相关文档
  * <a href="https://cloud.tencent.com/document/product/584/18373">视频合唱(Android)</a>
- */
+ *
+ *Tencent Cloud UGCKit: Duet Lifecycle<br>
+ * 1. After the lifecycle callback {@code onStart()} is invoked for the activity, call {@link #start()}
+ * of UGCKit to initialize duet configurations and open the duet view.
+ * The left half of the duet view is the shooting view and the right half is the duet video view.<br>
+ * 2. After the lifecycle callback {@code onStop()} is invoked for the activity, call {@link #stop()}
+ * of UGCKit to pause duet. This means closing the shooting view, pausing shooting,
+ * and stopping the playback of the duet video.<br>
+ * 3. After the lifecycle callback {@code onDestroy()} is invoked for the activity, call {@link #release()}
+ * of UGCKit to release the resources.<br>
+ * 4. After auto rotation is enabled for the activity, the lifecycle callback {@code onConfigurationChanged()}
+ * will be invoked. Call {@link #screenOrientationChange()} of UGCKit to change the orientation.<br>
+ * 5. After the lifecycle callback {@code stopPlay()} is invoked, call {@link #backPressed()}
+ * of UGCKit to exit the duet view and return to the previous view.
+ * <p>
+ * Custom Duet Features<br>
+ * 1. Call {@link #disableCountDownTimer()} to disable the timer.<br>
+ * <p>
+ * Custom Duet UI<br>
+ * 1. Call {@link IMixRecordRightLayout} to customize the “Beauty” icon.<br>
+ * 2. Call {@link IMixRecordRightLayout} to customize the “Timer” icon.<br>
+ * 3. Call {@link ICountDownTimerView} to customize the timer animation.
+ * <p>
+ * Duet documentation
+ *  <a href="https://cloud.tencent.com/document/product/584/18373">视频合唱(Android)</a>
+ * */
+
+
+
 public interface IVideoMixRecordKit {
     /**
      * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来完成如下功能<br>

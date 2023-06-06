@@ -8,12 +8,8 @@ import android.util.Log;
 
 import com.tencent.qcloud.quic.QuicNative;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import okhttp3.Dns;
 
 /**
  * quic处理类
@@ -101,20 +97,18 @@ public class QuicClient {
         String reqUrl = "http://" + domain;
         Uri originUri = Uri.parse(reqUrl);
         this.mHost = originUri.getHost();
-        String domainIp;
+        String domainIp = null;
         List<String> ipList = TXUGCPublishOptCenter.getInstance().query(domain);
         if (null != ipList && !ipList.isEmpty()) {
             domainIp = ipList.get(0);
-        } else {
-            domainIp = getIpBySysDns(mHost);
         }
-        if (null != originUri.getQuery()) {
-            this.mParams = originUri.getPath() + "?" + originUri.getQuery();
-        } else {
-            this.mParams = originUri.getPath();
-        }
-
         if (!TextUtils.isEmpty(domainIp)) {
+            if (null != originUri.getQuery()) {
+                this.mParams = originUri.getPath() + "?" + originUri.getQuery();
+            } else {
+                this.mParams = originUri.getPath();
+            }
+
             mQuicNative = new QuicNative();
             mQuicNative.setCallback(networkCallback);
             reqStartTime = System.currentTimeMillis();
@@ -124,21 +118,6 @@ public class QuicClient {
             notifyCallback(false, ERROR_CODE_QUIC_FAILED);
         }
     }
-
-    private String getIpBySysDns(String host) {
-        try {
-            List<InetAddress> inetAddressList = Dns.SYSTEM.lookup(host);
-            for (InetAddress address : inetAddressList) {
-                if (!TextUtils.isEmpty(address.getHostAddress())) {
-                    return address.getHostAddress();
-                }
-            }
-        } catch (UnknownHostException e) {
-            Log.e(TAG, "getIpBySysDns failed:" + e.getMessage());
-        }
-        return null;
-    }
-
 
     public interface QuicDetectListener {
         void onQuicDetectDone(boolean isQuic, long requestTime, int errorCode);

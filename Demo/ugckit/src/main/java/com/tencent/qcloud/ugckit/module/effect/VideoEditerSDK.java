@@ -22,7 +22,16 @@ import java.util.List;
  * <p>
  * 需要注意：
  * 完成一次视频编辑后，请务必调用{@link VideoEditerSDK#clear()}晴空相关的一些配置
+ *
+ *
+ * The TXVideoEditer of the SDK uses the singleton mode.
+ * To edit the same video across multiple activities/fragments, you can package it as a singleton in the upper layer.
+ * <p>
+ * Notes:
+ * After each editing, make sure you call {@link VideoEditerSDK#clear()} to clear the configurations.
  */
+
+
 public class VideoEditerSDK {
     private static final String                              TAG = "VideoEditerKit";
     private static       VideoEditerSDK                      sInstance;

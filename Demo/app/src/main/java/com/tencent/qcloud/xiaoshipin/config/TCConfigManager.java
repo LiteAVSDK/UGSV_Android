@@ -3,13 +3,25 @@ package com.tencent.qcloud.xiaoshipin.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.util.Locale;
+
+
 
 public class TCConfigManager {
 
     private static Context mContext;
+    private static Locale systemLocal;
 
     public static void init(Context ctx) {
         mContext = ctx;
+    }
+
+    public static Locale getSystemLocal() {
+        return systemLocal;
+    }
+
+    public static void setSystemLocal(Locale systemLocal) {
+        TCConfigManager.systemLocal = systemLocal;
     }
 
     //到系统复杂之后，配置设置可能会有很多个模块

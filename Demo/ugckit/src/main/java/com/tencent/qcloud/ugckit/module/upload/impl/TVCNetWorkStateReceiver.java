@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 /**
- * 该Receiver用于上传阶段网络断开回复后的自动恢复上传，建议动态注册到Activity中，静态注册可能会涉及App过审问题
+ * 监听网络变化，及时刷新不同网络环境下的上传DNS
  */
 public class TVCNetWorkStateReceiver extends BroadcastReceiver {
     private static final String TAG = "TVC-NetWorkMonitor";

@@ -119,13 +119,13 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXVideoEditConstants.GENERATE_RESULT_OK:
-                desc = "视频编辑成功";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_edit_generate_result_ok);
                 break;
             case TXVideoEditConstants.GENERATE_RESULT_FAILED:
-                desc = "视频编辑失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_edit_generate_result_failed);
                 break;
             case TXVideoEditConstants.GENERATE_RESULT_LICENCE_VERIFICATION_FAILED:
-                desc = "licence校验失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_edit_licence_verification_failed);
                 break;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_EDIT, retCode, desc);
@@ -135,14 +135,16 @@ public class LogReport {
      * ELK上报：首次安装成功
      */
     public void reportInstall() {
-        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_INSTALL, 0, "首次安装成功");
+        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_INSTALL, 0,
+                UGCKit.getAppContext().getString(R.string.ugckit_first_install_failed));
     }
 
     /**
      * ELK上报：合唱
      */
     public void reportChorus() {
-        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_CHORUS, 0, "合唱事件");
+        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_CHORUS, 0,
+                UGCKit.getAppContext().getString(R.string.ugckit_chorus_event));
     }
 
     /**
@@ -152,13 +154,16 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXVideoEditConstants.JOIN_RESULT_OK:
-                desc = "视频合成成功";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_join_result_ok);
                 break;
             case TXVideoEditConstants.JOIN_RESULT_FAILED:
-                desc = "视频合成失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_join_result_failed);
                 break;
             case TXVideoEditConstants.GENERATE_RESULT_LICENCE_VERIFICATION_FAILED:
-                desc = "licence校验失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_join_licence_verification_failed);
+                break;
+            default:
+                desc = "";
                 break;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_JOINER, retCode, desc);
@@ -173,42 +178,46 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXLiveConstants.PLAY_ERR_GET_RTMP_ACC_URL_FAIL:
-                desc = "获取加速拉流地址失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_get_rtmp_acc_url);
                 break;
             case TXLiveConstants.PLAY_ERR_FILE_NOT_FOUND:
-                desc = "文件不存在";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_file_not_found);
                 break;
             case TXLiveConstants.PLAY_ERR_HEVC_DECODE_FAIL:
-                desc = "h265解码失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_hevc_decode_failed);
                 break;
             case TXLiveConstants.PLAY_ERR_HLS_KEY:
-                desc = "HLS解密key获取失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_hls_key_error);
                 break;
             case TXLiveConstants.PLAY_ERR_GET_PLAYINFO_FAIL:
-                desc = "获取点播文件信息失败";
+                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_get_play_info);
+                break;
+            default:
+                desc = "";
                 break;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VOD_PLAY, retCode, desc);
     }
 
     public void reportVodPlaySucc(int retCode) {
-        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VOD_PLAY, retCode, "点播播放成功", new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-            }
+        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VOD_PLAY, retCode,
+                UGCKit.getAppContext().getString(R.string.ugckit_video_play_success_des), new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                    }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-            }
-        });
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                    }
+                });
     }
 
     public void reportPublishVideo(@NonNull TXUGCPublishTypeDef.TXPublishResult result) {
         String desc;
         if (result.retCode == TXUGCPublishTypeDef.PUBLISH_RESULT_OK) {
-            desc = "视频发布成功";
+            desc = UGCKit.getAppContext().getString(R.string.ugckit_video_publish_success);
         } else {
-            desc = "视频发布失败onPublishComplete:" + result.descMsg;
+            desc = UGCKit.getAppContext().getString(R.string.ugckit_video_publish_failed) + result.descMsg;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_UPLOAD_VOD, result.retCode, desc);
     }

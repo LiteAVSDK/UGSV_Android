@@ -569,17 +569,11 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
 
 
     private void loadXmagicRes() {
-        if (XMagicImpl.isLoadedRes) {
-            XmagicResParser.parseRes(mActivity.getApplicationContext());
-            initXMagic();
-            return;
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 XmagicResParser.copyRes(mActivity.getApplicationContext());
                 XmagicResParser.parseRes(mActivity.getApplicationContext());
-                XMagicImpl.isLoadedRes = true;
                 initXMagic();
             }
         }).start();

@@ -73,7 +73,7 @@ public class TCLoginActivity extends Activity {
 
     private int[][] chineseDownProtocol = {{4, 13}, {14, 25}, {26, 41}, {42, 56}, {58, 68}};
 
-    private int[][] englishDownProtocol = {{19, 45}, {46, 87}, {88, 144}, {146, 193}, {198, 237}};
+    private int[][] englishDownProtocol = {{23, 40}, {42, 61}, {63, 104}, {102, 135}, {146, 172}};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,10 +151,10 @@ public class TCLoginActivity extends Activity {
     private SpannableString showDownSpan() {
         final SpannableString builder = new SpannableString(getString(R.string.login_protocol_down));
         int[][] tempProtocolArray = null;
-        if (getSystemLanguage().equals("US")) {
-            tempProtocolArray = englishDownProtocol;
-        } else {
+        if (isChina()) {
             tempProtocolArray = chineseDownProtocol;
+        } else {
+            tempProtocolArray = englishDownProtocol;
         }
         ClickableSpan privacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override
@@ -270,8 +270,9 @@ public class TCLoginActivity extends Activity {
         mDialog.show();
     }
 
-    private String getSystemLanguage() {
-        return getResources().getConfiguration().locale.getCountry();
+
+    private boolean isChina() {
+        return getResources().getConfiguration().locale.getLanguage().equals("zh");
     }
 
 
@@ -281,10 +282,10 @@ public class TCLoginActivity extends Activity {
         final SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append(getString(R.string.login_protocol_scroll));
         int[][] tempProtocolArray = null;
-        if (getSystemLanguage().equals("US")) {
-            tempProtocolArray = englishScrollProtocol;
-        } else {
+        if (isChina()) {
             tempProtocolArray = chineseScrollProtocol;
+        } else {
+            tempProtocolArray = englishScrollProtocol;
         }
         ClickableSpan privacyClickableSpan = new NoRefCopyClickableSpan() {
             @Override

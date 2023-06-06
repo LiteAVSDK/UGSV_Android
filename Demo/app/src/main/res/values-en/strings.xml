@@ -1,165 +1,130 @@
 <resources>
-    <string name="app_name">XiaoShiPin</string>
+    <string name="app_name">UGSV Demo</string>
 
     <string name="btn_cancel">Cancel</string>
     <string name="btn_ok">OK</string>
-
-
-    <!--loginActivity -->
-    <string name="activity_login_login">Log In</string>
-    <string name="activity_login_register">Sign Up</string>
-    <string name="activity_login_username">Username</string>
+    <string name="activity_login_login">Log in</string>
+    <string name="activity_login_register">Sign up</string>
+    <string name="activity_login_username">User ID</string>
     <string name="activity_login_password">Password</string>
-    <!--loginActivity -->
-
-    <!--registerActivity -->
-    <string name="activity_register_register">Sign Up</string>
-    <string name="activity_register_username">Name (4-24 chars with letters, digits &#038; underlines)</string>
-    <string name="activity_register_password">Password (8-16 chars)</string>
-    <string name="activity_register_password_verify">Confirm Password</string>
-    <!--registerActivity -->
-
-    <!-- permission check-->
-
-    <!-- userinfo fragment-->
+    <string name="activity_register_register">Sign up</string>
+    <string name="activity_register_username">User ID (4-24 characters; supports letters, numbers, and underscores)</string>
+    <string name="activity_register_password">Password (8-16 characters)</string>
+    <string name="activity_register_password_verify">Confirm password</string>
     <string name="app_about">About</string>
-    <string name="btn_login_out">Log Out</string>
-
-    <!-- TCVideoRecordActivity -->
-
-    <!--ShortVideoDialog.java-->
-    <string name="video_record_title">Record</string>
-    <string name="video_editer_title">Edit Video</string>
-    <string name="picture_editer_title">Edit Image</string>
-
-    <!--TCPictureChooseActivityvity-->
-
-    <!--TCVideoPublishActivity-->
-
-    <!--TCVideoEffectActivityvity-->
-
-    <!--TCVideoPublishActivity-->
-
-    <!--关于-->
-    <string name="about_tip1">XiaoShiPin is a prototype-level App developed by Tencent Video Cloud Team. It helps demonstrate a portfolio of Tencent Cloud video features, such as recording and editing video clips through video cloud SDK, uploading and publishing videos through COS service, and distributing videos by using VOD service.</string>
+    <string name="btn_login_out">Log out</string>
+    <string name="video_record_title">Shoot</string>
+    <string name="video_editer_title">Edit</string>
+    <string name="picture_editer_title">Photo slide</string>
+    <string name="about_tip1">The UGSV demo app is an app prototype offered by Tencent\'s Video Cloud Team. It demonstrates how different UGSV capabilities work, for example, how to use Tencent Cloud\'s media SDK to implement segment-based shooting and video editing, how to implement video upload and publishing based on Tencent Cloud COS, and how to use Tencent Cloud VOD to distribute videos.</string>
 
     <string name="language_setting_activity_language">Language</string>
-    <string name="language_setting_activity_follow_system">Auto（Restart takes effect）</string>
+    <string name="language_setting_activity_follow_system">Same as system (restart required)</string>
     <string name="language_setting_activity_save">Save</string>
 
-    <string name="user_info_fragment_setting">Setting</string>
+    <string name="user_info_fragment_setting">Settings</string>
 
     <string name="setting_activity_language">Language</string>
-    <string name="setting_activity_setting">Setting</string>
+    <string name="setting_activity_setting">Settings</string>
+
 
     <string name="fragment_user_info_please_lonin">Please log in first</string>
 
-    <string name="activity_register_register_new_user">Sign Up</string>
+    <string name="activity_register_register_new_user">Sign up</string>
 
-    <string name="tc_ugc_video_list_adapter_video_state_normal">Audited</string>
-    <string name="tc_ugc_video_list_adapter_video_state_in_audit">Auditing</string>
+    <string name="tc_ugc_video_list_adapter_video_state_normal">Reviewed</string>
+    <string name="tc_ugc_video_list_adapter_video_state_in_audit">Being reviewed</string>
     <string name="tc_ugc_video_list_adapter_video_state_pornographic">Pornographic</string>
 
     <string name="tc_ugc_video_list_adapter_just_now">Just now</string>
-    <string name="tc_ugc_video_list_adapter_mins_ago"> minutes ago</string>
-    <string name="tc_ugc_video_list_adapter_hours_ago"> hours ago</string>
-    <string name="tc_ugc_video_list_adapter_days_ago"> days ago</string>
+    <string name="tc_ugc_video_list_adapter_mins_ago">&#160;minutes ago</string>
+    <string name="tc_ugc_video_list_adapter_hours_ago">&#160;hours ago</string>
+    <string name="tc_ugc_video_list_adapter_days_ago">days ago</string>
 
-    <string name="tc_ugc_video_list_adapter_min_ago"> minute ago</string>
-    <string name="tc_ugc_video_list_adapter_hour_ago"> hour ago</string>
-    <string name="tc_ugc_video_list_adapter_day_ago"> day ago</string>
+    <string name="tc_ugc_video_list_adapter_min_ago">&#160;minute ago</string>
+    <string name="tc_ugc_video_list_adapter_hour_ago">&#160;hour ago</string>
+    <string name="tc_ugc_video_list_adapter_day_ago">&#160;day ago</string>
 
     <string name="fragment_videolist_no_content">No content yet</string>
 
+    <string name="tc_login_activity_login_successfully">Login successful</string>
+    <string name="tc_login_activity_auto_login_failed">Auto login failed</string>
+    <string name="tc_login_activity_no_network_connection">No internet connection</string>
+    <string name="tc_login_activity_password_length_tip">The password must contain 8-16 characters</string>
+    <string name="tc_login_activity_username_does_not_meet_specifications">Invalid user ID</string>
 
-    <string name="tc_login_activity_login_successfully">Logged in successfully</string>
-    <string name="tc_login_activity_auto_login_failed">Unable to log in automatically</string>
-    <string name="tc_login_activity_no_network_connection">No network access</string>
-    <string name="tc_login_activity_password_length_tip">Password should be 8-16 chars</string>
-    <string name="tc_login_activity_username_does_not_meet_specifications">Invalid username</string>
-
-    <string name="tc_register_activity_attempt_normal_regist_username_does_not_meet_specifications">Invalid username</string>
-    <string name="tc_register_activity_attempt_normal_regist_password_length_error">Password should be 8-16 chars</string>
+    <string name="tc_register_activity_attempt_normal_regist_username_does_not_meet_specifications">Invalid user ID</string>
+    <string name="tc_register_activity_attempt_normal_regist_password_length_error">The password must contain 8-16 characters</string>
     <string name="tc_register_activity_attempt_normal_regist_password_verify_error">The passwords do not match</string>
-    <string name="tc_register_activity_attempt_normal_regist_no_network_connection">No network access</string>
+    <string name="tc_register_activity_attempt_normal_regist_no_network_connection">No internet connection</string>
 
-    <string name="tc_register_activity_register_callback_register_successfully">Sign-up succeeded</string>
-    <string name="tc_register_activity_register_callback_auto_login_successfully">Auto login succeeded</string>
-    <string name="tc_register_activity_register_callback_auto_login_failed">Unable to log in automatically</string>
-    <string name="tc_register_activity_register_callback_username_format_error">Incorrect username format</string>
-    <string name="tc_register_activity_register_callback_password_format_error">Incorrect password format</string>
-    <string name="tc_register_activity_register_callback_username_already_exists">Username already exists</string>
-    <string name="tc_register_activity_register_callback_register_failed">Unable to sign up:&#160;</string>
-
-
-    <string name="tc_live_list_fragment_refresh_list_failed">Unable to refresh list</string>
+    <string name="tc_register_activity_register_callback_register_successfully">Signup successful</string>
+    <string name="tc_register_activity_register_callback_auto_login_successfully">Auto login successful</string>
+    <string name="tc_register_activity_register_callback_auto_login_failed">Auto login failed</string>
+    <string name="tc_register_activity_register_callback_username_format_error">Invalid user ID format</string>
+    <string name="tc_register_activity_register_callback_password_format_error">Invalid password format</string>
+    <string name="tc_register_activity_register_callback_username_already_exists">The user ID already exists</string>
+    <string name="tc_register_activity_register_callback_register_failed">Failed to sign up: </string>
 
 
-    <string name="tc_vod_player_activity_download_video_is_downloading">Downloading…</string>
-    <string name="tc_vod_player_activity_download_video_download_failed">Unable to download</string>
+    <string name="tc_live_list_fragment_refresh_list_failed">Failed to refresh the list</string>
 
-    //分割线 2018/7/24
-    --------------------------------------------------------------------------------------------------
 
-    <string name="chorus_title">Duet</string>
-    <string name="video_not_review">Video unaudited</string>
+    <string name="tc_vod_player_activity_download_video_is_downloading">Downloading...</string>
+    <string name="tc_vod_player_activity_download_video_download_failed">Download failed</string><string name="chorus_title">Duet</string>
+    <string name="video_not_review">Not reviewed</string>
     <string name="video_porn">Pornographic</string>
 
-    <string name="record_part_exist">There are incomplete recording tasks. Do you want to continue?</string>
+    <string name="record_part_exist">Your last shooting was interrupted. Do you want to resume it?</string>
+    <string name="technical_support">How do I get technical support?\nFollow our WeChat official account (腾讯云音视频)Type and send \"小视频\"</string>
+    <string name="get_technical_support">Technical support</string>
+    <string name="download_sdk"><a href="https://cloud.tencent.com/document/product/584/9366">SDK Download</a></string>
+    <string name="product_introduction"><a href="https://cloud.tencent.com/product/UGSV">Tencent Cloud UGSV</a></string>
 
-    <!--registerActivity  loginActivity-->
-    <string name="technical_support">How to get technical support services?</string>
-    <string name="follow_public_number">Pay attention to public number "Tencent cloud video"</string>
-    <string name="send_msg_to_public_number">Send a "Xiao Shi Pin" to the public number</string>
-
-    <!-- userinfo fragment-->
-    <string name="get_technical_support">Get technical support services</string>
-    <string name="download_sdk"><a href='https://cloud.tencent.com/document/product/584/9366'>Download SDK</a></string>
-    <string name="product_introduction"><a href='https://cloud.tencent.com/product/UGSV'>Product Introduction</a></string>
-
-    <string name="follow_and_send_msg_to_public_number">Pay attention to public number "Tencent cloud video"\nSend a "Xiao Shi Pin" to the public number</string>
+    <string name="follow_and_send_msg_to_public_number">Follow our WeChat official account (腾讯云视频)Type and send \"小视频\"</string>
 
     <string name="login_user_approve">Agree</string>
     <string name="login_user_refuse">Disagree</string>
-    <string name="login_toast_failed_to_set">Failed: %s</string>
-    <string name="login_confirm">Done</string>
-    <string name="login_set_user_avatar">Change Profile Picture</string>
-    <string name="login_toast_success_to_set_username">Successfully</string>
-    <string name="login_privacy_protocol_detail">&#160;Privacy Policy&#160;</string>
-    <string name="login_protocol_start">I have read and agree to the </string>
-    <string name="login_user_agreement_detail">&#160;Terms of Use&#160;</string>
-    <string name="login_protocol_and">and</string>
-    <string name="login_privacy_protocol">Privacy Policy</string>
-    <string name="login_user_agreement">Terms of Use</string>
-    <string name="login_protocol_tip">You must agree to the Privacy Policy and Terms of Use first.</string>
-    <string name="login_protocol_title">Welcome to Tencent Cloud XiaoShiPin</string>
-    <string name="login_protocol_tip_start">Welcome to Tencent Real-Time Communication. We will help you understand our collection, use, and storage of personal information through the</string>
-    <string name="login_protocol_tip_end">.</string>
+    <string name="login_toast_failed_to_set">Setting failed: %s</string>
+    <string name="login_confirm">Confirm</string>
+    <string name="login_set_user_avatar">Profile photo</string>
+    <string name="login_toast_success_to_set_username">Set successfully</string>
+    <string name="login_protocol_start">I have read and agree to the&#160;</string>
+    <string name="login_privacy_protocol_detail">Privacy Policy&#160;</string>
+    <string name="login_user_agreement_detail">Terms of Use&#160;</string>
+    <string name="login_protocol_and">and&#160;</string>
+    <string name="login_privacy_protocol">Privacy Policy&#160;</string>
+    <string name="login_user_agreement">Terms of Use&#160;</string>
+    <string name="login_protocol_tip">Please agree to the Privacy Policy and Terms of Use</string>
+    <string name="login_protocol_title">Thank you for using Tencent Cloud\'s UGSV demo</string>
+    <string name="login_protocol_tip_start">Thank you for using TRTC. The </string>
+    <string name="login_protocol_tip_end">detail&#160;how&#160;we&#160;collect,&#160;use,&#160;and&#160;store&#160;your&#160;information,&#160;as&#160;well&#160;as&#160;the&#160;rights&#160;you&#160;are&#160;entitled&#160;to&#160;and&#160;how&#160;to&#160;exercise&#160;them.&#160;Tap&#160;the&#160;button&#160;below to&#160;agree&#160;to&#160;the&#160;terms and start using our services.</string>
     <string name="login_protocol_scroll">XiaoShiPin product is a short video playback and production function product provided by Tencent Cloud Computing (Beijing) Co., Ltd. (registered at the 35th floor of Tencent Building, Science and Technology Zhongyi Road, Maling Community, Yuehai Street, Nanshan District, Shenzhen). If you need a quick and concise understanding of how we collect your information, you can refer to the XiaoShiPin Privacy Policy Summary.\n1、When you register and log in to XiaoShiPin account, we will collect your login account, login password and other information; when you use video recording, sharing, beauty, editing and other functions, we will collect your network type, equipment manufacturer , device model, face information, operating system version number and other information; when you report an abnormal situation during use, we will collect your package name, version, process name and other information. We will only collect necessary user information based on your specific functional requirements for using our products and services. You can refer to the List of Collected Personal Information for a quick overview of how we collect and use your personal information.\n2、When you use functions such as video recording, editing, and playback, we may invoke your storage, camera, microphone, network, audio and other permissions. We will ask you for permission to use the permission on the first call, you have the right to deny or cancel the authorization.\n3、Some of our services may need to be provided by third parties. You can refer to XiaoShiPin Third-Party Information Sharing List to quickly understand the third-party shared information and third-party SDK.\n4、You can inquire, copy, correct, supplement, delete or withdraw your personal information, and we also provide you with a channel to cancel your account. You can quickly learn about your other rights as the subject of personal information rights through the channels and methods listed in Article 6 of the Guidelines for Privacy Protection of XiaoShiPin. \n5、If you have any questions about the above content, you can contact us by sending an email to Dataprivacy@tencent.com or other methods listed in XiaoShiPin Privacy Protection Guidelines.</string>
-    <string name="login_protocol_down">If you agree to the XiaoShiPin User Agreement, XiaoShiPin Privacy Protection Guidelines, XiaoShiPin Collection Personal Information Express List, XiaoShiPin Third Party Information Sharing List and Children\'s Privacy Protection Statement, please click Agree , start using our products and services.</string>
-    <string name="app_toast_set_username">Please enter a nickname</string>
-    <string name="app_toast_success_to_set_username">Successfully</string>
-    <string name="app_toast_failed_to_set_username">Failed: %s</string>
-    <string name="app_tips_user_name">Chinese characters, letters, numbers and underscores, 2 - 20 words</string>
-    <string name="app_modify_nickname">Change Your Nickname</string>
-    <string name="app_confirm">Done</string>
-    <string name="app_input_nickname_hint">Please enter a nickname</string>
+    <string name="login_protocol_down">If you are OK with the UGSV Terms of Use, UGSV Privacy Policy, UGSV Personal Information Collection List, UGSV Third Party Sharing List, and UGSV Children\'s Privacy Policy, please tap \"Agree\" to start using our services.</string>
+
+
+    <string name="app_toast_set_username">Enter a user ID</string>
+    <string name="app_toast_success_to_set_username">Set successfully</string>
+    <string name="app_toast_failed_to_set_username">Setting failed: %s</string>
+    <string name="app_tips_user_name">2-20 characters; supports Chinese characters, letters, numbers, and underscores</string>
+    <string name="app_modify_nickname">Alias</string>
+    <string name="app_confirm">Confirm</string>
+    <string name="app_input_nickname_hint">Enter an alias</string>
     <string name="user_info_fragment_privacy">Privacy Policy</string>
     <string name="user_info_fragment_user_agreement">Terms of Use</string>
-    <string name="setting_activity_log_off">Delete Account</string>
+    <string name="setting_activity_log_off">Delete account</string>
     <string name="app_btn_confirm">Confirm</string>
-    <string name="app_btn_cancel">Wait a bit</string>
-    <string name="app_logoff_account_title">Delete Account</string>
-    <string name="app_logoff_cur_account">Account: %s</string>
+    <string name="app_btn_cancel">Not now</string>
+    <string name="app_logoff_account_title">Delete account</string>
+    <string name="app_logoff_cur_account">Current account: %s</string>
     <string name="app_logoff_confirm">Are you sure you want to delete this account?</string>
-    <string name="app_logoff_account_ok">Account deleted</string>
+    <string name="app_logoff_account_ok">Deleted successfully</string>
     <string name="app_logoff_btn_text">Delete</string>
-    <string name="app_logoff_hint">You can no longer use this account after deletion,Its data will also be deleted and cannot be retrieved.</string>
     <string name="app_sdk_version">SDK Version</string>
-    <string name="app_version">Application Version</string>
-    <string name="app_tencent_cloud_xiaoshipin">Tencent Cloud XiaoShiPin</string>
-    <string name="app_collection">Collected personal information list</string>
-    <string name="app_share">List of personal information shared by third parties</string>
-<!--    <string name="app_personal_information_collection">Personal Information Collection Instructions</string>-->
-<!--    <string name="beauty_cam_introduction">When you use the beauty function, we will perform real-time intelligent recognition on your facial pixel information captured in real time, and collect your facial pixel information in real time during the beautification process to provide you with better beauty effects. We will not Store or associate your facial pixel information in any form. This information is sensitive personal information, please provide it with caution. If you do not authorize, you will not be able to use this function; you can also disable this function by turning off Beauty at any time.</string>-->
+    <string name="app_version">App version</string>
+    <string name="app_logoff_hint">You can no longer use this account after deletion,Its data will also be deleted and cannot be retrieved.</string>
+    <string name="app_tencent_cloud_xiaoshipin">Tencent Cloud UGSV Demo</string>
+    <string name="app_collection">Personal Information Collection List</string>
+    <string name="app_share">Third Party Sharing List</string>
+
 </resources>

@@ -36,7 +36,27 @@ import java.util.List;
  * 2、调用{@link TXVideoJoiner#setVideoPathList(List)} 设置多个视频路径
  * 3、调用{@link TXVideoJoiner#setVideoJoinerListener(TXVideoJoiner.TXVideoJoinerListener)} 设置合成的监听器
  * 4、调用{@link TXVideoJoiner#joinVideo(int, String)}
+ *
+ *
+ * Tencent Cloud UGCKit: Splicing Videos</p>
+ * <p>
+ * VideoJoinKit capabilities: <p>
+ * 1. Call {@link UGCKitVideoJoin#setVideoJoinList(ArrayList)} to specify video paths.<p>
+ * 2. Call {@link UGCKitVideoJoin#setVideoJoinListener(IVideoJoinKit.OnVideoJoinListener)}
+ * to set the video splicing listener.<p>
+ * {@link IVideoJoinKit.OnVideoJoinListener#onJoinCompleted(UGCKitResult)} ()}
+ * indicates that the videos have been spliced, and the path of the splicing result is returned.<p>
+ * {@link IVideoJoinKit.OnVideoJoinListener#onJoinCanceled()} ()} indicates that the splicing has been canceled.<p>
+ * <p>
+ * Directions:<p>
+ * 1. Create TXVideoJoiner.
+ * 2. Call {@link TXVideoJoiner#setVideoPathList(List)} to specify the paths of videos to splice.
+ * 3. Call {@link TXVideoJoiner#setVideoJoinerListener(TXVideoJoiner.TXVideoJoinerListener)}
+ * to set the video splicing listener.
+ * 4. Call {@link TXVideoJoiner#joinVideo(int, String)}.
  */
+
+
 public class UGCKitVideoJoin implements IVideoJoinKit, TXVideoJoiner.TXVideoJoinerListener {
     private static final String TAG = "UGCKitVideoJoin";
 
@@ -76,18 +96,20 @@ public class UGCKitVideoJoin implements IVideoJoinKit, TXVideoJoiner.TXVideoJoin
         ArrayList<String> videoSourceList = convertJoinPathList();
         mTXVideoJoiner = new TXVideoJoiner(mContext);
         int ret = mTXVideoJoiner.setVideoPathList(videoSourceList);
-        if (ret == 0) {
-        } else if (ret == TXVideoEditConstants.ERR_UNSUPPORT_VIDEO_FORMAT) {
-            DialogUtil.showDialog(mContext, "视频合成失败", "本机型暂不支持此视频格式", null);
+        if (ret == TXVideoEditConstants.ERR_UNSUPPORT_VIDEO_FORMAT) {
+            DialogUtil.showDialog(mContext, mContext.getString(R.string.ugckit_video_join_fail_title),
+                    mContext.getString(R.string.ugckit_video_join_not_support_video_format), null);
         } else if (ret == TXVideoEditConstants.ERR_UNSUPPORT_AUDIO_FORMAT) {
-            DialogUtil.showDialog(mContext, "视频合成失败", "暂不支持非单双声道的视频格式", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnVideoJoinListener != null) {
-                        mOnVideoJoinListener.onJoinCanceled();
-                    }
-                }
-            });
+            DialogUtil.showDialog(mContext, mContext.getString(R.string.ugckit_video_join_fail_title),
+                    mContext.getString(R.string.ugckit_video_join_not_support_non_mono_format),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mOnVideoJoinListener != null) {
+                                mOnVideoJoinListener.onJoinCanceled();
+                            }
+                        }
+                    });
         }
         mTXVideoJoiner.setVideoJoinerListener(this);
         mOutputPath = VideoPathUtil.generateVideoPath();

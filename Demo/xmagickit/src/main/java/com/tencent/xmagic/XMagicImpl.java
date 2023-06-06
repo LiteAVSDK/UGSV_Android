@@ -46,7 +46,6 @@ public class XMagicImpl implements SensorEventListener {
 
     public static Context applicationContext = null;
 
-    public static boolean isLoadedRes = false;
 
     private boolean isOpenBeauty = true;
 

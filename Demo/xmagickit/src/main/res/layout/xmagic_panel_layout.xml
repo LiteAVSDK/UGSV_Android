@@ -36,7 +36,6 @@
             android:layout_marginTop="12dp"
             android:background="@color/color_f14257"
             android:gravity="center"
-            android:text="特效素材与当前设备存在兼容性问题"
             android:textColor="#ffffff"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -62,18 +61,27 @@
                 android:layout_height="wrap_content"
                 android:clickable="true">
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="wrap_content"
+                <HorizontalScrollView
+                    android:id="@+id/radioGroup_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp" />
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp" />
+                </HorizontalScrollView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/scrollViewContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/radioGroup"
+                    android:layout_below="@+id/radioGroup_layout"
                     android:layout_marginBottom="30dp"
                     android:orientation="horizontal" />
             </RelativeLayout>

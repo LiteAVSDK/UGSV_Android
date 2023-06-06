@@ -177,6 +177,15 @@
         <activity
             android:name="com.tencent.qcloud.xiaoshipin.mainui.TCLanguagaSettingActivity"
             android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".manager.LanguageChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -63,6 +63,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
+            android:gravity="center"
             android:text="@string/ugckit_beauty"
             android:textColor="@color/ugckit_white"
             android:textSize="12sp" />
@@ -94,6 +95,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
+            android:gravity="center"
             android:text="@string/ugckit_te_beauty"
             android:textColor="@color/ugckit_white"
             android:textSize="12sp" />

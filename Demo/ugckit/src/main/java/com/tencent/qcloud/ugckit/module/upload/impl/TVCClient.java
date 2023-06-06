@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -97,6 +98,7 @@ public class TVCClient {
     private int virtualPercent = 0;             //虚拟进度
     private boolean realProgressFired = false;
     private int vodCmdRequestCount = 0;           //vod信令重试次数
+    private String mainVodServerErrMsg;           //主域名请求失败的msg，用于备份域名都请求失败后，带回上报。
     private long mSliceSize = SLICE_SIZE_MIN; // 默认分片1M
     private int mConcurrentCount;                 // 并发数量
     private IUploadResumeController mUploadResumeController; // 续点控制器
@@ -108,7 +110,7 @@ public class TVCClient {
      * @param iTimeOut  超时时间
      */
     public TVCClient(Context context, String customKey, String signature, boolean enableResume, boolean enableHttps,
-            int iTimeOut, long sliceSize, int concurrenceSize, IUploadResumeController resumeController) {
+                     int iTimeOut, long sliceSize, int concurrenceSize, IUploadResumeController resumeController) {
         mainHandler = new Handler(context.getMainLooper());
         this.context = context.getApplicationContext();
         reportInfo = new UGCReport.ReportInfo();
@@ -122,8 +124,8 @@ public class TVCClient {
      * @param ugcSignature 签名
      */
     public TVCClient(Context context, String customKey, String ugcSignature, boolean resumeUpload,
-            boolean enableHttps, long sliceSize, int concurrenceSize,
-            IUploadResumeController resumeController) {
+                     boolean enableHttps, long sliceSize, int concurrenceSize,
+                     IUploadResumeController resumeController) {
         this(context, customKey, ugcSignature, resumeUpload, enableHttps, 8, sliceSize,
                 concurrenceSize, resumeController);
     }
@@ -132,7 +134,8 @@ public class TVCClient {
      * 更新配置
      */
     public void updateConfig(String customKey, String signature, boolean enableResume, boolean enableHttps,
-            int iTimeOut, long sliceSize, int concurrenceSize, IUploadResumeController resumeController) {
+                             int iTimeOut, long sliceSize, int concurrenceSize,
+                             IUploadResumeController resumeController) {
         this.enableResume = enableResume;
         this.enableHttps = enableHttps;
         this.customKey = customKey;
@@ -280,10 +283,11 @@ public class TVCClient {
         Log.d(TAG, "fileName = " + fileName);
         if (fileName != null && fileName.getBytes().length > 200) { //视频文件名太长 直接返回
             tvcListener.onFailed(TVCConstants.ERR_UGC_FILE_NAME, "file name too long");
-            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_FILE_NAME, 0, "", "file name "
-                            + "too long", System.currentTimeMillis(), 0, uploadInfo.getFileSize(),
-                    uploadInfo.getFileType(),
-                    uploadInfo.getFileName(), "", "", 0, 0);
+            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_FILE_NAME, 0,
+                    "", "file name too long",
+                    System.currentTimeMillis(), 0, uploadInfo.getFileSize(), uploadInfo.getFileType(),
+                    uploadInfo.getFileName()
+                    , "", "", 0, 0);
 
             return TVCConstants.ERR_UGC_FILE_NAME;
         }
@@ -291,8 +295,8 @@ public class TVCClient {
         if (info.isContainSpecialCharacters(fileName)) {//视频文件名包含特殊字符 直接返回
             tvcListener.onFailed(TVCConstants.ERR_UGC_FILE_NAME, "file name contains special character / : * ? \" < >");
 
-            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_FILE_NAME, 0, "", "file name "
-                            + "contains special character / : * ? \" < >", System.currentTimeMillis(), 0,
+            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_FILE_NAME, 0, "",
+                    "file name contains " + "special character / : * ? \" < >", System.currentTimeMillis(), 0,
                     uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
             return TVCConstants.ERR_UGC_FILE_NAME;
@@ -337,6 +341,7 @@ public class TVCClient {
                         getCosUploadInfo(info, vodSessionKey, TVCConstants.VOD_SERVER_HOST);
                     } else {
                         vodCmdRequestCount = 0;
+                        mainVodServerErrMsg = e.toString();
                         getCosUploadInfo(info, vodSessionKey, TVCConstants.VOD_SERVER_HOST_BAK);
                     }
                 } else if (domain.equalsIgnoreCase(TVCConstants.VOD_SERVER_HOST_BAK)) {
@@ -344,10 +349,14 @@ public class TVCClient {
                         getCosUploadInfo(info, vodSessionKey, TVCConstants.VOD_SERVER_HOST_BAK);
                     } else {
                         notifyUploadFailed(TVCConstants.ERR_UGC_REQUEST_FAILED, e.toString());
+                        String errMsg = e.toString();
+                        if (!TextUtils.isEmpty(mainVodServerErrMsg)) {
+                            errMsg += "|" + mainVodServerErrMsg;
+                        }
                         txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, 1,
-                                "", e.toString(), reqTime, System.currentTimeMillis() - reqTime,
-                                uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "",
-                                0, 0);
+                                "",
+                                errMsg, reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                                uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
                     }
                 }
             }
@@ -358,9 +367,9 @@ public class TVCClient {
                     notifyUploadFailed(TVCConstants.ERR_UGC_REQUEST_FAILED, "HTTP Code:" + response.code());
 
                     txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED,
-                            response.code(), "", "HTTP Code:" + response.code(), reqTime,
-                            System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(),
-                            uploadInfo.getFileName(), "", "", 0, 0);
+                            response.code(),
+                            "", "HTTP Code:" + response.code(), reqTime, System.currentTimeMillis() - reqTime,
+                            uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
                     setResumeData(uploadInfo.getFilePath(), "", "");
 
@@ -368,6 +377,7 @@ public class TVCClient {
                     throw new IOException("" + response);
                 } else {
                     vodCmdRequestCount = 0;
+                    mainVodServerErrMsg = "";
                     parseInitRsp(response.body().string());
                 }
             }
@@ -381,10 +391,10 @@ public class TVCClient {
             Log.e(TAG, "parseInitRsp->response is empty!");
             notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, "init response is empty");
 
-            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, 2,
-                    "", "init response is empty", reqTime, System.currentTimeMillis() - reqTime,
-                    uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "",
-                    0, 0);
+            txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, 2, "",
+                    "init response " + "is" + " empty", reqTime, System.currentTimeMillis() - reqTime,
+                    uploadInfo.getFileSize()
+                    , uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
             setResumeData(uploadInfo.getFilePath(), "", "");
 
@@ -404,15 +414,19 @@ public class TVCClient {
             }
 
             if (0 != code) {
-                notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, code + "|" + message);
+                // 签名过期不上报
+                if (code == 10010) {
+                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_SIGN_EXPIRED, code + "|" + message);
+                } else {
+                    notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, code + "|" + message);
+                    txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, code, "",
+                            code + "|" + message, reqTime, System.currentTimeMillis() - reqTime,
+                            uploadInfo.getFileSize(),
+                            uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
-                txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_REQUEST_FAILED, code, "",
-                        code + "|" + message, reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize()
-                        , uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
-
+                }
                 vodSessionKey = null;
                 setResumeData(uploadInfo.getFilePath(), "", "");
-
                 return;
             }
 
@@ -435,8 +449,8 @@ public class TVCClient {
                 cosCoverPath = coverObj.getString("storagePath");
             }
             cosAppId = dataObj.getInt("storageAppId");
-            cosBucket = dataObj.getString("storageBucket") + "-" + cosAppId; //从5.4.10升级到5.4
-            // .20之后，废除了setAppIdAndRegion接口，需要自行拼接保证costBucket格式为 bucket-appId
+            cosBucket = dataObj.getString("storageBucket") + "-" + cosAppId; //从5.4.10升级到5.4.20之后，废除了setAppIdAndRegion
+            // 接口，需要自行拼接保证costBucket格式为 bucket-appId
             uploadRegion = dataObj.getString("storageRegionV5");
             domain = dataObj.getString("domain");
             vodSessionKey = dataObj.getString("vodSessionKey");
@@ -462,14 +476,17 @@ public class TVCClient {
                     .setRegion(uploadRegion)
                     .setDebuggable(true)
                     .setAccelerate(isOpenCosAcc)
-                    .isHttps(enableHttps);
+                    .isHttps(enableHttps)
+                    .dnsCache(true);
 
             if (mConcurrentCount > 0) {
                 builder.setExecutor(Executors.newFixedThreadPool(mConcurrentCount));
             }
-            if (TXUGCPublishOptCenter.getInstance().isNeedEnableQuic(uploadRegion)) {
+            boolean isQuic = TXUGCPublishOptCenter.getInstance().isNeedEnableQuic(uploadRegion);
+            if (isQuic) {
                 builder.enableQuic(true).setPort(QuicClient.PORT);
             }
+            Log.d(TAG, "isQuic:" + isQuic);
 
             CosXmlServiceConfig cosXmlServiceConfig = builder.builder();
 
@@ -490,7 +507,11 @@ public class TVCClient {
 
             List<String> cosIps = TXUGCPublishOptCenter.getInstance().query(cosHost);
             if (cosIps != null && cosIps.size() > 0) {
-                mCosXmlService.addCustomerDNS(cosHost, cosIps.toArray(new String[cosIps.size()]));
+                // prevent data race between #size() and #toArray()
+                final int cosIpSize = cosIps.size();
+                String[] ipArray = cosIps.toArray(new String[cosIpSize]);
+                Log.d(TAG, "add cos domain " + cosHost + " ,ip:" + Arrays.toString(ipArray));
+                mCosXmlService.addCustomerDNS(cosHost, ipArray);
             }
 
             // 第二步 通过COS上传视频
@@ -499,8 +520,9 @@ public class TVCClient {
             Log.e(TAG, e.toString());
             setResumeData(uploadInfo.getFilePath(), "", "");
             txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, TVCConstants.ERR_UGC_PARSE_FAILED, 3, "",
-                    e.toString(), reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
-                    uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+                    e.toString(),
+                    reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(),
+                    uploadInfo.getFileName(), "", "", 0, 0);
             notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, e.toString());
             return;
         } catch (CosXmlClientException e) {
@@ -508,9 +530,9 @@ public class TVCClient {
             Log.e(TAG, e.toString());
         }
 
-        txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, 0, 0, "",
-                "", reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
-                uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+        txReport(TVCConstants.UPLOAD_EVENT_ID_REQUEST_UPLOAD, 0, 0, "", "", reqTime,
+                System.currentTimeMillis() - reqTime,
+                uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
     }
 
     private String getCosIP(CosXmlServiceConfig cosXmlServiceConfig) {
@@ -544,11 +566,15 @@ public class TVCClient {
                     startTimer();   //上传完成，启动结束虚拟进度
                 } else {
                     max += uploadInfo.getFileSize();
-                    notifyUploadProgress((progress + uploadInfo.getFileSize()) * (100 - 2 * VIRTUAL_TOTAL_PERCENT) / 100 + max * VIRTUAL_TOTAL_PERCENT / 100, max);
+                    notifyUploadProgress((progress + uploadInfo.getFileSize()) * (100 - 2 * VIRTUAL_TOTAL_PERCENT) / 100
+                            + max * VIRTUAL_TOTAL_PERCENT / 100, max);
                 }
             }
         });
 
+//        putObjectRequest.setSign(reqTime/1000L - localTimeAdvance, cosExpiredTime); // 5.4.10 升级到 5.4.20 该API被弃用，
+//        以key时间过期为准
+//        CosXmlService 中设置
         putObjectRequest.isSupportAccelerate(isOpenCosAcc);
         final TXHttpTaskMetrics metrics = new TXHttpTaskMetrics();
         putObjectRequest.attachMetrics(metrics);
@@ -557,8 +583,9 @@ public class TVCClient {
             public void onSuccess(CosXmlRequest cosXmlRequest, CosXmlResult cosXmlResult) {
                 String requestId = getRequestId(cosXmlResult);
                 txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, 0, 0, "", "", reqTime,
-                        System.currentTimeMillis() - reqTime, uploadInfo.getCoverFileSize(),
-                        uploadInfo.getCoverImgType(), uploadInfo.getCoverName(), "", requestId,
+                        System.currentTimeMillis() - reqTime,
+                        uploadInfo.getCoverFileSize(), uploadInfo.getCoverImgType(), uploadInfo.getCoverName(), "",
+                        requestId,
                         metrics.getTCPConnectionTimeCost(), metrics.getRecvRspTimeCost());
                 reqTime = System.currentTimeMillis();
                 startFinishUploadUGC(cosXmlResult, TVCConstants.VOD_SERVER_HOST);
@@ -578,7 +605,7 @@ public class TVCClient {
                 }
 
                 notifyUploadFailed(TVCConstants.ERR_UPLOAD_COVER_FAILED,
-                        "cos upload error:" + stringBuilder.toString());
+                        "upload cover cos code:" + cosErr + ", cos desc:" + stringBuilder.toString());
 
                 String requestId = "";
                 if (qcloudServiceException != null) {
@@ -586,8 +613,9 @@ public class TVCClient {
                 }
                 txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_COVER_FAILED, 0, cosErr,
                         stringBuilder.toString(), reqTime, System.currentTimeMillis() - reqTime,
-                        uploadInfo.getCoverFileSize(), uploadInfo.getCoverImgType(), uploadInfo.getCoverName(), "",
-                        requestId, metrics.getTCPConnectionTimeCost(), metrics.getRecvRspTimeCost());
+                        uploadInfo.getCoverFileSize(),
+                        uploadInfo.getCoverImgType(), uploadInfo.getCoverName(), "", requestId,
+                        metrics.getTCPConnectionTimeCost(), metrics.getRecvRspTimeCost());
             }
         });
     }
@@ -620,8 +648,9 @@ public class TVCClient {
             public void run() {
                 reqTime = System.currentTimeMillis();
 
-                Log.i(TAG, "uploadCosVideo begin :  cosBucket " + cosBucket + " cosVideoPath: " + cosVideoPath + "  "
-                        + "path " + uploadInfo.getFilePath());
+                Log.i(TAG,
+                        "uploadCosVideo begin :  cosBucket " + cosBucket + " cosVideoPath: " + cosVideoPath + "  path"
+                                + " " + uploadInfo.getFilePath());
                 long tcpConnectionTimeCost = 0;
                 long recvRspTimeCost = 0;
                 long sliceSize = getSliceSize();
@@ -639,7 +668,8 @@ public class TVCClient {
                     } else {
                         hasComputeTimeCost = true;
                         InitMultipartUploadRequest initMultipartUploadRequest =
-                                new InitMultipartUploadRequest(cosBucket, cosVideoPath);
+                                new InitMultipartUploadRequest(cosBucket,
+                                        cosVideoPath);
                         initMultipartUploadRequest.isSupportAccelerate(isOpenCosAcc);
                         // 用HttpTaskMetrics统计耗时
                         TXHttpTaskMetrics metrics = new TXHttpTaskMetrics();
@@ -682,7 +712,8 @@ public class TVCClient {
                                 virtualPercent = 100 - VIRTUAL_TOTAL_PERCENT;
                                 startTimer();   //上传完成，启动结束虚拟进度
                             } else {
-                                notifyUploadProgress(progress * (100 - 2 * VIRTUAL_TOTAL_PERCENT) / 100 + VIRTUAL_TOTAL_PERCENT * max / 100, max);
+                                notifyUploadProgress(progress * (100 - 2 * VIRTUAL_TOTAL_PERCENT) / 100
+                                        + VIRTUAL_TOTAL_PERCENT * max / 100, max);
                             }
                         }
                     });
@@ -703,8 +734,8 @@ public class TVCClient {
                     final long finalTcpConnectionTimeCost = tcpConnectionTimeCost;
                     final long finalRecvRspTimeCost = recvRspTimeCost;
 
-                    mCOSXMLUploadTask.setCosXmlResultListener(new MyCosXmlResultListener(finalTcpConnectionTimeCost,
-                            finalRecvRspTimeCost));
+                    mCOSXMLUploadTask.setCosXmlResultListener(new MyCosXmlResultListener(finalTcpConnectionTimeCost
+                            , finalRecvRspTimeCost));
 
                     mCOSXMLUploadTask.setTransferStateListener(new TransferStateListener() {
                         @Override
@@ -720,18 +751,25 @@ public class TVCClient {
                     });
 
                 } catch (Exception e) {
-                    Log.w(TAG, "Exception =" + e.toString());
-                    txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
-                            0, "Exception", "HTTP Code:" + e.getMessage(), reqTime,
-                            System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(),
-                            uploadInfo.getFileName(), "", "", 0, 0);
-                    notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
-                            "cos upload video error:" + e.getMessage());
+                    Log.w(TAG, "Exception =" + e);
                     if (mCosXmlService.getConfig().isEnableQuic()) {
                         // quic失败，使用http重新上传
                         quicTransToHttpRetry();
+                        txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_QUIC_FAILED, 0,
+                                "Exception",
+                                "quic upload failed, retry on http ,error:" + e.getMessage(), reqTime,
+                                System.currentTimeMillis() - reqTime,
+                                uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "",
+                                "", 0, 0);
                     } else {
                         setResumeData(uploadInfo.getFilePath(), "", "");
+                        txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, TVCConstants.ERR_UPLOAD_VIDEO_FAILED, 0,
+                                "Exception",
+                                "HTTP Code:" + e.getMessage(), reqTime, System.currentTimeMillis() - reqTime,
+                                uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "",
+                                "", 0, 0);
+                        notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
+                                "cos upload video error:" + e.getMessage());
                     }
                 }
             }
@@ -774,16 +812,21 @@ public class TVCClient {
                         startFinishUploadUGC(result, TVCConstants.VOD_SERVER_HOST);
                     } else {
                         vodCmdRequestCount = 0;
+                        mainVodServerErrMsg = e.toString();
                         startFinishUploadUGC(result, TVCConstants.VOD_SERVER_HOST_BAK);
                     }
                 } else if (domain.equalsIgnoreCase(TVCConstants.VOD_SERVER_HOST_BAK)) {
                     if (++vodCmdRequestCount < TVCConstants.MAX_REQUEST_COUNT) {
                         startFinishUploadUGC(result, TVCConstants.VOD_SERVER_HOST_BAK);
                     } else {
+                        String errMsg = e.toString();
+                        if (!TextUtils.isEmpty(mainVodServerErrMsg)) {
+                            errMsg += "|" + mainVodServerErrMsg;
+                        }
                         notifyUploadFailed(TVCConstants.ERR_UGC_FINISH_REQUEST_FAILED, e.toString());
                         txReport(TVCConstants.UPLOAD_EVENT_ID_UPLOAD_RESULT,
-                                TVCConstants.ERR_UGC_FINISH_REQUEST_FAILED, 1, "", e.toString(), reqTime,
-                                System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                                TVCConstants.ERR_UGC_FINISH_REQUEST_FAILED, 1, "",
+                                errMsg, reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
                                 uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
                     }
                 }
@@ -797,8 +840,8 @@ public class TVCClient {
 
                     txReport(TVCConstants.UPLOAD_EVENT_ID_UPLOAD_RESULT, TVCConstants.ERR_UGC_FINISH_REQUEST_FAILED,
                             response.code(), "", "HTTP Code:" + response.code(), reqTime,
-                            System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(),
-                            uploadInfo.getFileName(), "", "", 0, 0);
+                            System.currentTimeMillis() - reqTime,
+                            uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
                     throw new IOException("" + response);
                 } else {
@@ -817,8 +860,9 @@ public class TVCClient {
             notifyUploadFailed(TVCConstants.ERR_UGC_FINISH_RESPONSE_FAILED, "finish response is empty");
 
             txReport(TVCConstants.UPLOAD_EVENT_ID_UPLOAD_RESULT, TVCConstants.ERR_UGC_FINISH_RESPONSE_FAILED, 2, "",
-                    "finish response is empty", reqTime, System.currentTimeMillis() - reqTime,
-                    uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+                    "finish " + "response is empty", reqTime, System.currentTimeMillis() - reqTime,
+                    uploadInfo.getFileSize(),
+                    uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
             return;
         }
@@ -830,8 +874,9 @@ public class TVCClient {
                 notifyUploadFailed(TVCConstants.ERR_UGC_FINISH_RESPONSE_FAILED, code + "|" + message);
 
                 txReport(TVCConstants.UPLOAD_EVENT_ID_UPLOAD_RESULT, TVCConstants.ERR_UGC_FINISH_RESPONSE_FAILED,
-                        code, "", code + "|" + message, reqTime, System.currentTimeMillis() - reqTime,
-                        uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
+                        code, "",
+                        code + "|" + message, reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
 
                 return;
             }
@@ -853,8 +898,9 @@ public class TVCClient {
             notifyUploadSuccess(videoFileId, playUrl, coverUrl);
 
             txReport(TVCConstants.UPLOAD_EVENT_ID_UPLOAD_RESULT, 0, 0, "", "", reqTime,
-                    System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(), uploadInfo.getFileType(),
-                    uploadInfo.getFileName(), videoFileId, "", 0, 0);
+                    System.currentTimeMillis() - reqTime,
+                    uploadInfo.getFileSize(), uploadInfo.getFileType(), uploadInfo.getFileName(), videoFileId, "", 0,
+                    0);
 
             Log.d(TAG, "playUrl:" + playUrl);
             Log.d(TAG, "coverUrl: " + coverUrl);
@@ -884,8 +930,10 @@ public class TVCClient {
      * @param fileId                                  :上传完成后点播返回的fileid
      */
     void txReport(int reqType, int errCode, int vodErrCode, String cosErrCode, String errMsg, long reqTime,
-                  long reqTimeCost, long fileSize, String fileType, String fileName, String fileId,
-                  String cosRequestId, long cosTcpConnTimeCost, long cosRecvRespTimeCost) {
+                  long reqTimeCost,
+                  long fileSize, String fileType, String fileName, String fileId, String cosRequestId,
+                  long cosTcpConnTimeCost,
+                  long cosRecvRespTimeCost) {
         reportInfo.reqType = reqType;
         reportInfo.errCode = errCode;
         reportInfo.errMsg = errMsg;
@@ -1029,7 +1077,7 @@ public class TVCClient {
 
         @Override
         public void onFail(CosXmlRequest cosXmlRequest, CosXmlClientException qcloudException,
-                CosXmlServiceException qcloudServiceException) {
+                           CosXmlServiceException qcloudServiceException) {
             boolean isQuic = mCosXmlService.getConfig().isEnableQuic();
             if (qcloudException != null) {
                 int errorReportCode = TVCConstants.ERR_UPLOAD_VIDEO_FAILED;
@@ -1050,18 +1098,21 @@ public class TVCClient {
                             "cos upload video error:" + qcloudException.getMessage());
                     setResumeData(uploadInfo.getFilePath(), "", "");
                 }
-                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, errorReportCode, 0,
-                        String.valueOf(qcloudException.errorCode),
-                        "CosXmlClientException:" + qcloudException.getMessage()
-                                + ",isQuic:" + isQuic, reqTime,
-                        System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
-                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", "",
-                        0, 0);
+
+                String errorMsg = "CosXmlClientException:" + qcloudException.getMessage();
+                if (isQuic) {
+                    errorMsg = "quic upload failed, retry on http, " + errorMsg;
+                }
+
+                reportCosUploadException(errorReportCode, String.valueOf(qcloudException.errorCode), errorMsg, "", 0,
+                        0);
             }
 
             if (qcloudServiceException != null) {
                 int errorReportCode = TVCConstants.ERR_UPLOAD_VIDEO_FAILED;
-                Log.w(TAG, "CosXmlServiceException =" + qcloudServiceException.toString());
+                final String cosErrorCode = qcloudServiceException.getErrorCode() == null ? "" :
+                        qcloudServiceException.getErrorCode();
+                Log.w(TAG, "CosXmlServiceException =" + qcloudServiceException);
                 // 临时密钥过期，重新申请一次临时密钥，不中断上传
                 if (qcloudServiceException.getErrorCode() != null
                         && qcloudServiceException.getErrorCode().equalsIgnoreCase("RequestTimeTooSkewed")) {
@@ -1076,14 +1127,22 @@ public class TVCClient {
                             "cos upload video error:" + qcloudServiceException.getMessage());
                     setResumeData(uploadInfo.getFilePath(), "", "");
                 }
-                txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, errorReportCode, 0,
-                        qcloudServiceException.getErrorCode() == null ? "" : qcloudServiceException.getErrorCode(),
-                        "CosXmlServiceException:" + qcloudServiceException.getMessage()
-                                + ",isQuic:" + isQuic, reqTime,
-                        System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
-                        uploadInfo.getFileType(), uploadInfo.getFileName(), "", qcloudServiceException.getRequestId(),
-                        mFinalTcpConnectionTimeCost, mFinalRecvRspTimeCost);
+
+                String errorMsg = "CosXmlServiceException:" + qcloudServiceException.getMessage();
+                if (isQuic) {
+                    errorMsg = "quic upload failed, retry on http, " + errorMsg;
+                }
+                reportCosUploadException(errorReportCode, cosErrorCode, errorMsg,
+                        qcloudServiceException.getRequestId(), mFinalTcpConnectionTimeCost, mFinalRecvRspTimeCost);
             }
+        }
+
+        private void reportCosUploadException(int errorCode, String cosErrorCode, String errorMsg, String requestId,
+                                              long cosTcpConnTime, long cosRecRspTime) {
+            txReport(TVCConstants.UPLOAD_EVENT_ID_COS_UPLOAD, errorCode, 0,
+                    cosErrorCode, errorMsg, reqTime, System.currentTimeMillis() - reqTime, uploadInfo.getFileSize(),
+                    uploadInfo.getFileType(), uploadInfo.getFileName(), "", requestId,
+                    cosTcpConnTime, cosRecRspTime);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import com.tencent.qcloud.ugckit.module.upload.impl.compute.TXOkHTTPEventListener;
 
 import org.json.JSONException;

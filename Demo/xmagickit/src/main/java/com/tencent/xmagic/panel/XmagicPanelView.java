@@ -289,17 +289,18 @@ public class XmagicPanelView extends RelativeLayout {
      * 初始化美颜分类选项
      */
     private void initRootRadioGroup() {
-        UICategory[] uiCategoryList = new UICategory[]{
-                UICategory.BEAUTY, UICategory.BODY_BEAUTY,
-                UICategory.LUT, UICategory.MOTION,
-                UICategory.MAKEUP, UICategory.SEGMENTATION};
-        int firstRadioBtnId = 0;
-        float btnWidth = 0f;
-        int spanWidth = 0;
+        XmagicUIProperty.UICategory[] uiCategoryList = new XmagicUIProperty.UICategory[]{
+                XmagicUIProperty.UICategory.BEAUTY,
+                XmagicUIProperty.UICategory.BODY_BEAUTY,
+                XmagicUIProperty.UICategory.LUT,
+                XmagicUIProperty.UICategory.MOTION,
+                XmagicUIProperty.UICategory.MAKEUP,
+                XmagicUIProperty.UICategory.SEGMENTATION};
         int uiCategoryListSize = uiCategoryList.length;
-        int leftAndRightMargin = dip2px(getContext(), 40);
+        int btnWidths = 0;
+        int firstRadioBtnId = 0;
         for (int i = 0; i < uiCategoryListSize; i++) {
-            UICategory category = uiCategoryList[i];
+            XmagicUIProperty.UICategory category = uiCategoryList[i];
             List<XmagicUIProperty<?>> datas = XmagicPanelDataManager.getInstance().getXmagicUIProperty(category);
             if (datas == null || datas.size() == 0) {
                 continue;
@@ -315,27 +316,34 @@ public class XmagicPanelView extends RelativeLayout {
                 }
                 btn.setButtonDrawable(null);
                 btn.setTextSize(16);
+                btn.setLines(1);
                 btn.setTextColor(ContextCompat.getColorStateList(getContext(), R.color.color_radiobutton));
                 btn.setText(category.getDescription());
+                btnWidths += (int) (btn.getPaint().measureText(category.getDescription())
+                        + btn.getPaddingLeft() + btn.getPaddingRight());
                 radioGroup.addView(btn);
-                if (btnWidth == 0) {
-                    btnWidth = btn.getPaint().measureText(category.getDescription())
-                            + btn.getPaddingLeft() + btn.getPaddingRight();
-                    spanWidth = (int) ((getContext().getResources().getDisplayMetrics().widthPixels
-                            - leftAndRightMargin
-                            - (btnWidth * uiCategoryListSize)) / (uiCategoryListSize - 1));
-                }
-                if (i > 0) {
-                    RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) btn.getLayoutParams();
-                    layoutParams.leftMargin = spanWidth;
-                    btn.setLayoutParams(layoutParams);
-                }
             }
+        }
+
+        int count = radioGroup.getChildCount();
+        int leftAndRightMargin =
+                (getContext().getResources().getDisplayMetrics().widthPixels - btnWidths) / (count + 1);
+        leftAndRightMargin = Math.max(leftAndRightMargin, dip2px(getContext(), 30));
+        for (int index = 0; index < count; index++) {
+            RadioButton radioButton = (RadioButton) radioGroup.getChildAt(index);
+            RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) radioButton.getLayoutParams();
+            layoutParams.leftMargin = leftAndRightMargin;
+            if (index == count - 1) {
+                layoutParams.rightMargin = leftAndRightMargin;
+            }
+            radioButton.setLayoutParams(layoutParams);
         }
         CheckedListener listener = new CheckedListener();
         radioGroup.setOnCheckedChangeListener(listener);
         listener.onCheckedChanged(radioGroup, firstRadioBtnId);
     }
+
+
 
 
     class CheckedListener implements RadioGroup.OnCheckedChangeListener {

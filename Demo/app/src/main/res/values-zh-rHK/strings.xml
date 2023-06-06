@@ -107,9 +107,7 @@
     <string name="record_part_exist">妳有未錄制完成的視頻，是否繼續？</string>
 
     <!--registerActivity  loginActivity-->
-    <string name="technical_support">如何獲取技術支持服務？</string>
-    <string name="follow_public_number">關注公衆號“騰訊雲視頻”</string>
-    <string name="send_msg_to_public_number">給公衆號發送“小視頻”</string>
+    <string name="technical_support">如何獲取技術支持服務？\n關注公衆號“騰訊雲視頻”\n給公衆號發送“小視頻”</string>
 
     <!-- userinfo fragment-->
     <string name="get_technical_support">獲取技術支持服務</string>

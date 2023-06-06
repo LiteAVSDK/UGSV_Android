@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="无"
+        android:text="@string/ugckit_none"
         android:textColor="@color/ugckit_white"
         android:textSize="20sp"
         android:visibility="invisible" />
