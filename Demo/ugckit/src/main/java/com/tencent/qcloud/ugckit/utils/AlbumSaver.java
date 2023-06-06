@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 
 import android.util.Log;
 
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
 
 import java.io.File;
@@ -112,7 +113,7 @@ public class AlbumSaver {
                 if (mCoverImagePath != null) {
                     insertVideoThumb(file.getPath(), mCoverImagePath);
                 }
-                ToastUtil.toastShortMessage("视频已保存到手机相册");
+                ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_publish_save_aibum));
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -190,7 +191,7 @@ public class AlbumSaver {
             values.put(IS_PENDING, 0);
             UGCKit.getAppContext().getContentResolver().update(item, values, null, null);
 
-            ToastUtil.toastShortMessage("视频已保存到手机相册");
+            ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_publish_save_aibum));
             return true;
         } else {
             Log.d(TAG, "file :" + mVideoOutputPath + " is not exists");

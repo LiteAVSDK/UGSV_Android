@@ -30,6 +30,7 @@
             android:layout_width="50dp"
             android:layout_height="25dp"
             android:layout_marginRight="0dp"
+            android:textAllCaps="false"
             android:background="@drawable/ugckit_ic_choose_next_selector"
             android:text="@string/ugckit_next_step"
             android:textColor="@color/ugckit_white"

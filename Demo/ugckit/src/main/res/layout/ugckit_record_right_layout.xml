@@ -144,6 +144,7 @@
             android:layout_below="@id/iv_te_beauty"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:layout_marginTop="4dp"
             android:text="@string/ugckit_te_beauty"
             android:textColor="@color/ugckit_white"

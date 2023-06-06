@@ -138,6 +138,10 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
         }
         DownloadUtil.getInstance().download(UGCKitConstants.CHORUS_URL, UGCKitConstants.OUTPUT_DIR_NAME,
                 new DownloadUtil.DownloadListener() {
+        String isDownloadIngTip = getResources().getString(R.string.
+                tc_vod_player_activity_download_video_is_downloading);
+        String downloadFailedTip = getResources().getString(R.string.
+                tc_vod_player_activity_download_video_download_failed);
             @Override
             public void onDownloadSuccess(final String path) {
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
@@ -158,7 +162,7 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mDownloadProgressDialog.setMessage("正在下载..." + progress + "%");
+                        mDownloadProgressDialog.setMessage(isDownloadIngTip + progress + "%");
                     }
                 });
             }
@@ -170,7 +174,7 @@ public class ShortVideoDialog extends DialogFragment implements View.OnClickList
                     public void run() {
                         mDownloadProgressDialog.dismiss();
 
-                        ToastUtil.toastShortMessage("下载失败");
+                        ToastUtil.toastShortMessage(downloadFailedTip);
                     }
                 });
             }

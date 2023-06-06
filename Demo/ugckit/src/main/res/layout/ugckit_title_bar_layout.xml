@@ -78,6 +78,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
         android:background="?attr/nextIcon"
+        android:textAllCaps="false"
         android:text="@string/ugckit_next_step"
         android:textColor="@color/ugckit_white"
         android:textSize="@dimen/ugckit_h5" />

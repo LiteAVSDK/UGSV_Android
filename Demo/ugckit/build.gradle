@@ -65,6 +65,6 @@ dependencies {
     implementation 'com.squareup.okio:okio:1.14.0'
     api project(':xmagickit')
     implementation project(':beautysettingkit')
-    implementation 'com.qcloud.cos:cos-android-nobeacon:5.8.5'
-    implementation 'com.qcloud.cos:quic:1.5.38'
+    implementation 'com.qcloud.cos:cos-android-nobeacon:5.9.12'
+    implementation 'com.qcloud.cos:quic:1.5.39'
 }

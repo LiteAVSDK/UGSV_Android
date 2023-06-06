@@ -86,7 +86,7 @@ public class HttpFileUtil extends HttpCommon {
                     mContentLength = client.getContentLength();
                     if (!VideoDeviceUtil.isExternalStorageSpaceEnough(mContentLength)) {
                         if (mListener != null) {
-                            mListener.onSaveFailed(dstFile, new Exception("存储空间不足"));
+                            mListener.onSaveFailed(dstFile, new Exception("not enough storage space"));
                         }
                         return;
                     }

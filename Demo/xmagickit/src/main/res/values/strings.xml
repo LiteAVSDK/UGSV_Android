@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TencentEffect</string>
-    <string name="not_support">当前设备不支持该</string>
+    <string name="not_support">当前设备不支持</string>
+    <string name="not_support_beauty">当前设备不支持美颜</string>
     <string name="not_auth">权限不足</string>
     <string name="check_noauth_tip">没有权限或资源缺失，若有疑问请请联系接口人咨询</string>
 
@@ -31,7 +32,6 @@
     <string name="copying_tip">资源拷贝中...</string>
     <string name="unable_to_download_tip">空间不足，无法下载%s</string>
     <string name="download_dialog_title">提示</string>
-    <string name="download_dialog_content">1，把assets、libs、动效资源的zip包上传到云端，生成下载URL\n2,更新demo工程的ResDownloadConfig.java里的URL和MD5 \n3,如果切换了加载方式，请卸载重装demo \n4,更详细的指引，请参考SDK/文档/doc.html/Android接入指引</string>
     <string name="download_dialog_negative_btn">取消</string>
     <string name="download_dialog_positive_btn">我已完成上述操作</string>
     <string name="no_beauty_test">无美颜相机</string>
@@ -49,6 +49,7 @@
 
 
     <!--美颜面板-->
+    <string name="strength">强度</string>
     <string name="autohtin_body_strength_label">一键瘦身</string>
     <string name="body_leg_stretch_label">长腿</string>
     <string name="body_slim_leg_strength_label">瘦腿</string>
@@ -118,133 +119,26 @@
     <string name="segmentation_custom_label">自定义背景</string>
 
 
-    <string name="motion_resource_str">
-                   video_lianliancaomei:恋恋草莓,
-                   video_zuijiuweixun:醉酒微醺,
-                   video_tianxinmengniiu:甜心萌牛,
-                   video_litihuaduo:立体花朵,
-                   video_aiyimanman:爱意满满,
-                   video_keaituya:可爱涂鸦,
-                   video_naipingmianmo:奶瓶面膜,
-                   video_qiqiupaidui:气球派对,
-                   video_mengmengxiong:萌萌熊,
-                   video_aixinyanhua:爱心烟花,
-                   video_xingganxiaochou:性感小丑,
-                   video_xiaohonghua:小红花,
-                   video_qipaoshui:气泡水,
-                   video_kangnaixin:氛围康乃馨,
-                   video_xiangsuyuzhou:像素宇宙,
-                   video_shangtoule:上头了,
-                   video_xiaohongxing:小红星,
-                   video_xiaohuangmao:童趣鸭鸭帽,
-                   video_chudao:C位出道,
-                   video_fenweiqiehuan:氛围切换,
-                   video_bingjingaixin:冰晶爱心,
-                   video_biaobai:表白,
-                   video_kawayixiaoxiong:卡哇伊小熊,
-                   video_yaogunyue:摇摇乐,
-                   video_rixishaonv:日系少女,
-                   video_tutujiang:兔兔酱,
-                   video_xuancainihong:炫彩霓虹,
-                   video_kaixueqianhou:上学前后,
-                   video_nightgown:毛毡发箍,
-                   video_xuanmeizhuang:元气贴纸,
-                   video_quebanzhuang:日系雀斑妆,
-                   video_lengliebingmo:冷冽冰瞳,
-                   video_dongriliange:冬日恋歌,
-                   video_fugu_dv:复古DV,
-                   video_baozilian:包子脸,
-                   video_boom:动感墨镜,
-                   video_boys:闪动爱心,
-                   video_cherries:小樱桃,
-                   video_guifeiface:贵妃脸,
-                   video_heimaomi:可爱喵,
-                   video_liuhaifadai:刘海发带,
-                   video_otwogirl:波点女孩,
-                   video_shuangmahua:双麻花,
-                   video_egaoshuangwanzi:恶搞双丸子,
-                   video_yazi:抖抖鸭,
-                   video_tantanfagu:弹弹发箍,
-                   video_ningmengyayamao:柠檬鸭鸭帽,
-                   video_hudiejie:魔法蝴蝶结,
-                   video_maoxinvhai:猫系女孩,
-                   video_jinli:锦鲤,
-                   video_zhixingmeigui:知性玫瑰,
-                   video_tiankulamei:甜酷辣妹,
-                   video_feitianzhuzhu:飞天猪猪,
-                   video_tonghuagushi:童话故事,
-                   video_shoushiwu:手指泡泡,
-                   video_sakuragirl:樱花女孩,
-                   video_bubblegum:童年泡泡糖,
-                   video_3DFace_springflower:花仙子
-    </string>
+    <string name="motion_resource_str">video_guifeiface:贵妃脸, video_kaixueqianhou:上学前后, video_mengmengxiong:萌萌熊, video_zuijiuweixun:醉酒微醺, video_fugu_dv:复古DV, video_nightgown:毛毡发箍, video_bingjingaixin:冰晶爱心, video_rixishaonv:日系少女, video_chudao:C位出道, video_fenweiqiehuan:氛围切换, video_shangtoule:上头了, video_heimaomi:可爱喵, video_boys:闪动爱心, video_litihuaduo:立体花朵, video_baozilian:包子脸, video_lianliancaomei:恋恋草莓, video_xuanmeizhuang:元气贴纸, video_kangnaixin:氛围康乃馨, video_keaituya:可爱涂鸦, video_aixinyanhua:爱心烟花, video_xiaohuangmao:童趣鸭鸭帽, video_xiaohongxing:小红星, video_cherries:小樱桃, video_toumingyanjing:透明眼镜, video_aiyimanman:爱意满满, video_xuancainihong:炫彩霓虹, video_liuhaifadai:刘海发带, video_tianxinmengniiu:甜心萌牛, video_kawayixiaoxiong:卡哇伊小熊, video_shuangmahua:双麻花, video_xingganxiaochou:性感小丑, video_naipingmianmo:奶瓶面膜, video_qiqiupaidui:气球派对, video_biaobai:表白, video_yaogunyue:摇摇乐, video_xiangsuyuzhou:像素宇宙, video_qipaoshui:气泡水, video_otwogirl:波点女孩, video_dongriliange:冬日恋歌, video_tutujiang:兔兔酱, video_egaoshuangwanzi:恶搞双丸子, video_boom:动感墨镜, video_xiaohonghua:小红花, video_quebanzhuang:日系雀斑妆, video_lengliebingmo:冷冽冰瞳, video_feitianzhuzhu:飞天猪猪, video_ningmengyayamao:柠檬鸭鸭帽, video_jinli:锦鲤, video_diejia_makalongtoutao:马卡龙头套, video_diejia_w_watermelonmakeup:西瓜妆容, video_zhixingmeigui:知性玫瑰, video_tiankulamei:甜酷辣妹, video_diejia_tuzifajia:兔子发夹, video_diejia_w_dinosaurworld:恐龙世界, video_diejia_dogmask:小狗面具, video_diejia_xiongzhua:熊爪, video_diejia_tonghualian_twopag:童话脸, video_diejia_w_insbutterfly:蝴蝶, video_tantanfagu:弹弹发箍, video_hudiejie:魔法蝴蝶结, video_maoxinvhai:猫系女孩, video_guangban:光斑, video_diejia_butterfly:蝴蝶飞, video_3DFace_springflower:花仙子, video_weiguang:微光, video_liuxingshan:流星闪, video_liudongxg:流动效果, video_yazi:抖抖鸭, video_tonghuagushi:童话故事, video_diejia_orangecat:橘子猫, video_w_takeitaway:带走, video_diejia_dimonds:钻石, video_guoman_hua:国漫画, video_shoushiwu:手指泡泡 ,video_sakuragirl:樱花女孩 ,video_bubblegum:童年泡泡糖,video_guochaoqianxi:国潮千玺, video_guangying:光影, video_diejia_te_mogutou1:蘑菇头, video_diejia_xiaoyangtoutao:小羊头套</string>
 
-    <string name="makeup_resource_str">
-                   video_fenfenxia:桃花妆,
-                   video_guajiezhuang:元气妆,
-                   video_shuimitao:蜜桃妆,
-                   video_xiaohuazhuang:校花妆,
-                   video_shaishangzhuang:晒伤妆,
-                   video_zhiganzhuang:质感妆,
-                   video_nvtuanzhuang:女团妆,
-                   video_hongjiuzhuang:红酒妆,
-                   video_xuejiezhuang:学姐妆
-    </string>
+    <string name="makeup_resource_str">video_nvtuanzhuang:女团妆, video_makeup_xuemei:学妹妆, video_shaishangzhuang:晒伤妆, video_zhiganzhuang:质感妆, video_makeup_dongganjiche:动感机车妆, video_liangxia:凉夏, video_ruanmei:软妹妆, video_hongjiuzhuang:红酒妆, video_xiaohuazhuang:校花妆, video_makeup_xinjisuyan:心机素颜, video_beikalan:北卡蓝, video_shuimitao:蜜桃妆, video_makeup_wocan:卧蚕妆, video_fenfenxia:桃花妆, video_makeup_gangwei:港味妆, video_xuejiezhuang:学姐妆, video_guajiezhuang:元气妆, video_makeup_naibai:奶白妆, video_xuemeizhuang:学妹妆容, video_makeup_baitao:白桃妆,video_makeup_nanfa:南法, video_makeup_weishan:微闪, video_makeup_qingshuang:清爽, video_makeup_yangguang:阳光, video_makeup_feiluomeng:费洛蒙, video_makeup_naixiong:奶凶, video_makeup_xiantao:仙桃, video_makeup_chengshu:成熟, video_makeup_zhigan:质感, video_makeup_rehongjiu:热红酒, video_makeup_chaonan:潮男</string>
 
     <string name="segmentation_resource_str">
           video_empty_segmentation:分割,
           video_segmentation_blur_45:背景模糊-弱,
           video_segmentation_blur_75:背景模糊-强,
-          video_segmentation_transparent_bg:背景透明
+          video_segmentation_transparent_bg:背景透明,
+          video_guaishoutuya:怪兽涂鸦
     </string>
 
 
-    <string name="xmagic_pannel_tab1">美颜</string>
-    <string name="xmagic_pannel_tab2">美体</string>
-    <string name="xmagic_pannel_tab3">滤镜</string>
-    <string name="xmagic_pannel_tab4">动效</string>
-    <string name="xmagic_pannel_tab5">美妆</string>
-    <string name="xmagic_pannel_tab6">分割</string>
-    <string name="xmagic_pannel_tab7">键值对</string>
+    <string name="xmagic_panel_tab_beauty">美颜</string>
+    <string name="xmagic_panel_tab_body_beauty">美体</string>
+    <string name="xmagic_panel_tab_lut">滤镜</string>
+    <string name="xmagic_panel_tab_motion">动效</string>
+    <string name="xmagic_panel_tab_makeup">美妆</string>
+    <string name="xmagic_panel_tab_segmentation">分割</string>
+    <string name="xmagic_panel_tab_kv">键值对</string>
 
-    <!--授权错误码-->
-    <string name="error_0">授权成功</string>
-    <string name="error_1">无效授权, 请检查授权文件的文件名/路径是否正确，比如license和licence的拼写方式是否统一</string>
-    <string name="error_1002">网络连接失败, 请检查是否正常联网、是否ping通initAuth中的授权服务器URL:</string>
-    <string name="error_1003">网络初始化错误, 服务器URL:</string>
-    <string name="error_1045">授权设备已达上限，请申请续期后再使用</string>
-    <string name="error_16">授权文件已过期, 请检查系统时间, 或者续期</string>
-    <string name="error_2">packageName 不匹配, 请检查您的 App 使用的 packageName 和申请的是否一致, 检查是否使用了正确的授权文件</string>
-    <string name="error_2002">证书下载失败, 建议重装APP重新激活</string>
-    <string name="error_2003">证书保存失败, 建议重装APP重新激活</string>
-    <string name="error_2004">没有写权限, 检查APP读写权限</string>
-    <string name="error_3003">证书文件为空, 建议重装APP重新激活</string>
-    <string name="error_3004">授权文件解析失败，可能是授权文件损坏，或者授权文件版本不匹配, 检查授权文件是否正确，或者重新申请新版本的授权文件</string>
-    <string name="error_3005">证书解析出错, 建议重装APP重新激活</string>
-    <string name="error_3006">证书解析出错, 建议重装APP重新激活</string>
-    <string name="error_3007">序列号为空, 设备生产厂商务必填写唯一的序列号</string>
-    <string name="error_3008">序列号解析错误, 设备生产厂商务必填写唯一的序列号</string>
-    <string name="error_3013">设备信息不匹配, 确认是否在平台上添加了序列号, 重装APP重新激活</string>
-    <string name="error_3014">设备信息不匹配, 确认是否在平台上添加了序列号, 重装APP重新激活</string>
-    <string name="error_3015">package name不匹配, 检查项目的package name</string>
-    <string name="error_3016">package name为空, 建议重新申请授权</string>
-    <string name="error_3017">证书已过期（累积时间）, 请续期</string>
-    <string name="error_3018">证书已过期, 请续期</string>
-    <string name="error_3019">license版本不匹配, 请更新common库或license</string>
-    <string name="error_3022">设备信息不匹配, 建议重装APP重新激活</string>
-    <string name="error_4001">设备序列号无效, 设备生产厂商务必填写唯一的序列号</string>
-    <string name="error_4003">没有权限获取序列号, 检查READ_PHONE_STATE权限</string>
-    <string name="error_9999">授权信息错误</string>
-    <string name="error_n1">授权文件路径错误, 请检查文件名/路径</string>
-    <string name="error_n10">授权文件路径错误, 请检查文件名/路径，或检查initType参数（0或2）</string>
-    <string name="error_n1001">请求字段中参数错误, 检查APPID是否正确</string>
-    <string name="error_n1005">设备时间和服务器不符, 请确认设备时间正确</string>
-    <string name="error_n1104">设备序列号不匹配, 检查在平台登记的序列号和设备实际序列号是否一致</string>
-    <string name="error_n1301">序列号信息为空, 备生产厂商务必填写唯一的序列号</string>
-    <string name="error_n1302">没有查询到序列号记录, 确认是否在平台上添加了序列号</string>
-    <string name="error_n1401">该设备续期次数超过限制, 换一台设备重新申请授权，或申请解禁</string>
-    <string name="error_n1402">授权时间无效, 请申请续期</string>
-    <string name="error_n1405">授权数量已达上限，请申请增加数量</string>
-    <string name="error_n1407">授权已过期</string>
-    <string name="error_unknow">未收录的错误码</string>
+
 </resources>

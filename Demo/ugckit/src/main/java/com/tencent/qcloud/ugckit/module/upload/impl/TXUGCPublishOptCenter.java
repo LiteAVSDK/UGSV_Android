@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -40,26 +41,26 @@ public class TXUGCPublishOptCenter {
 
     private static final int WHAT_UPDATE_BEST_COS = 0x01;
 
-    private static final String KEY_COS_REGION   = "cosRegion";
-    private static final String KEY_COS_DOMAIN   = "cosDomain";
-    private static final String KEY_IS_QUIC      = "isQUic";
+    private static final String KEY_COS_REGION = "cosRegion";
+    private static final String KEY_COS_DOMAIN = "cosDomain";
+    private static final String KEY_IS_QUIC = "isQUic";
     private static final String KEY_REQUEST_TIME = "requestTime";
 
     private class CosRegionInfo {
-        private String  region = "";
-        private String  domain = "";
+        private String region = "";
+        private String domain = "";
         private boolean isQuic = false;
     }
 
-    private static final String                             TAG         = "TVC-OptCenter";
-    private static       TXUGCPublishOptCenter              ourInstance;
-    private              TVCDnsCache                        dnsCache    = null;
-    private              boolean                            isInited    = false;
-    private              String                             signature   = "";
-    private              CosRegionInfo                      bestCosInfo = new CosRegionInfo();
-    private              long                               minCosRespTime;
-    private              UGCClient                          ugcClient;
-    private              ConcurrentHashMap<String, Boolean> publishingList;
+    private static final String TAG = "TVC-OptCenter";
+    private static TXUGCPublishOptCenter ourInstance;
+    private TVCDnsCache dnsCache = null;
+    private boolean isInited = false;
+    private String signature = "";
+    private CosRegionInfo bestCosInfo = new CosRegionInfo();
+    private long minCosRespTime;
+    private UGCClient ugcClient;
+    private ConcurrentHashMap<String, Boolean> publishingList;
 
     private final Handler mDetectHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
         @Override
@@ -129,13 +130,15 @@ public class TXUGCPublishOptCenter {
                 // 解析预上传结果，并且发起最优园区探测
                 parsePrepareUploadResp(context, response.body().string());
             } else {
-                reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT, TVCConstants.ERROR,
+                reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
+                        TVCConstants.ERROR,
                         "HTTP Code:" + response.code(), reqTime, System.currentTimeMillis() - reqTime);
             }
         } catch (IOException e) {
             Log.i(TAG, "prepareUploadUGC failed:" + e.getMessage());
             // 获取预上传失败
-            reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT, TVCConstants.ERROR,
+            reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
+                    TVCConstants.ERROR,
                     e.toString(), reqTime, System.currentTimeMillis() - reqTime);
         }
     }
@@ -186,10 +189,12 @@ public class TXUGCPublishOptCenter {
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     // 获取vod 域名失败
-                    reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT, TVCConstants.ERROR,
+                    reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT,
+                            TVCConstants.ERROR,
                             "HTTP Code:" + response.code(), reqTime, System.currentTimeMillis() - reqTime);
                 } else {
-                    reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT, TVCConstants.NO_ERROR,
+                    reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT,
+                            TVCConstants.NO_ERROR,
                             "", reqTime, System.currentTimeMillis() - reqTime);
                 }
 
@@ -294,6 +299,7 @@ public class TXUGCPublishOptCenter {
                                 Log.i(TAG, "detectQuicNet domain = " + domain
                                         + ", region = " + region
                                         + ", timeCos = " + requestTime
+                                        + ", errorCode = " + errorCode
                                         + ", isQuic = " + isQuic);
                                 if (isQuic) {
                                     sendToCompareCos(domain, region, requestTime, true);
@@ -408,9 +414,7 @@ public class TXUGCPublishOptCenter {
             ArrayList<String> ipLists = new ArrayList<String>();
             if (ips.contains(";")) {
                 String[] ipArray = ips.split(",");
-                for (int i = 0; i < ipArray.length; ++i) {
-                    ipLists.add(ipArray[i]);
-                }
+                Collections.addAll(ipLists, ipArray);
             } else {
                 ipLists.add(ips);
             }
@@ -424,8 +428,11 @@ public class TXUGCPublishOptCenter {
 
     public List<String> query(String host) {
         if (dnsCache != null) {
-            return dnsCache.query(host);
+            List<String> ipList = dnsCache.query(host);
+            Log.d(TAG, "query domain" + host + ",result:" + ipList);
+            return ipList;
         } else {
+            Log.d(TAG, "query domain" + host + ",result null");
             return null;
         }
     }

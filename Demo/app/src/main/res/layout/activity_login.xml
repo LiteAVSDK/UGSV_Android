@@ -93,10 +93,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
-                android:layout_below="@id/til_password"
                 android:id="@+id/protocol_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/til_password">
+
                 <RelativeLayout
                     android:id="@+id/checkbox_group"
                     android:layout_width="wrap_content"
@@ -114,11 +115,11 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:layout_toRightOf="@id/checkbox_group"
                     android:id="@+id/tv_protocol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/checkbox_group"
                     android:textColor="@color/login_main_text"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -167,32 +168,17 @@
 
             <TextView
                 android:id="@+id/tv_technical_support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_register"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:text="@string/technical_support"
                 android:textColor="@color/white"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/tv_follow_public_number"
-                android:layout_below="@id/tv_technical_support"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/follow_public_number"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/tv_send_msg_to_public_number"
-                android:layout_below="@id/tv_follow_public_number"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/send_msg_to_public_number"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
+
+
 
         </RelativeLayout>
     </LinearLayout>

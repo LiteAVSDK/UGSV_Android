@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
-import android.text.NoCopySpan;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -42,8 +42,8 @@ public class TEChargePromptDialog {
         }
         SpannableString spannableString = new SpannableString(
                 activity.getString(R.string.ugckit_tencent_effect_tip_dialog_content));
-        spannableString.setSpan(new NoRefCopyClickableSpan(), isEnglish() ? en_StartPosition : startPosition,
-                isEnglish() ? en_EndPosition : endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new NoRefCopyClickableSpan(), isChina() ? startPosition : en_StartPosition,
+                isChina() ? endPosition : en_EndPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         new CommonDialog(activity).setCancelable(true)
                 .setTitle(activity.getString(R.string.ugckit_tencent_effect_tip_dialog_title))
                 .setContent(spannableString)
@@ -66,8 +66,8 @@ public class TEChargePromptDialog {
     public static void showTEConfirmDialog(final Activity activity) {
         SpannableString spannableString = new SpannableString(
                 activity.getString(R.string.ugckit_tencent_effect_tip_dialog_content));
-        spannableString.setSpan(new NoRefCopyClickableSpan(), isEnglish() ? en_StartPosition : startPosition,
-                isEnglish() ? en_EndPosition : endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new NoRefCopyClickableSpan(), isChina() ? startPosition : en_StartPosition,
+                isChina() ? endPosition : en_EndPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         new CommonDialog(activity).setCancelable(true)
                 .setTitle(activity.getString(R.string.ugckit_tencent_effect_tip_dialog_title))
                 .setContent(spannableString)
@@ -90,7 +90,7 @@ public class TEChargePromptDialog {
     }
 
 
-    public static class NoRefCopyClickableSpan extends ClickableSpan implements NoCopySpan {
+    public static class NoRefCopyClickableSpan extends ClickableSpan {
 
         @Override
         public void onClick(@NonNull View widget) {
@@ -131,7 +131,7 @@ public class TEChargePromptDialog {
         return list.size() > 0;
     }
 
-    private static boolean isEnglish() {
-        return UGCKit.getAppContext().getResources().getConfiguration().locale.getCountry().toLowerCase().equals("us");
+    private static boolean isChina() {
+        return UGCKit.getAppContext().getResources().getConfiguration().locale.getLanguage().toLowerCase().equals("zh");
     }
 }

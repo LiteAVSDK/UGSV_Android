@@ -1,135 +1,115 @@
 <resources>
-    <string name="app_name">XiaoShiPin</string>
+    <string name="app_name">UGSV Demo</string>
 
     <string name="ugckit_btn_back">Back</string>
     <string name="ugckit_btn_cancel">Cancel</string>
     <string name="ugckit_btn_ok">OK</string>
-    <string name="ugckit_btn_confirm">OK</string>
-
-
-    <!--loginActivity -->
-    <string name="ugckit_activity_login_login">Log In</string>
-    <string name="ugckit_activity_login_register">Sign Up</string>
-    <string name="ugckit_activity_login_username">Username</string>
+    <string name="ugckit_btn_confirm">Confirm</string>
+    <string name="ugckit_activity_login_login">Log in</string>
+    <string name="ugckit_activity_login_register">Sign up</string>
+    <string name="ugckit_activity_login_username">User ID</string>
     <string name="ugckit_activity_login_password">Password</string>
-    <!--loginActivity -->
-
-    <!--registerActivity -->
-    <string name="ugckit_activity_register_register">Sign Up</string>
-    <string name="ugckit_activity_register_username">Name (4-24 chars with letters, digits &#038; underlines)</string>
-    <string name="ugckit_activity_register_password">Password (8-16 chars)</string>
-    <string name="ugckit_activity_register_password_verify">Confirm Password</string>
-    <!--registerActivity -->
-
-    <!-- permission check-->
-    <string name="ugckit_float_window_not_allow">Float window not allowed. Please enable in Application-Permissions.</string>
-
-    <!-- userinfo fragment-->
+    <string name="ugckit_activity_register_register">Sign up</string>
+    <string name="ugckit_activity_register_username">User ID (4-24 characters; supports letters, numbers, and underscores)</string>
+    <string name="ugckit_activity_register_password">Password (8-16 characters)</string>
+    <string name="ugckit_activity_register_password_verify">Confirm password</string>
+    <string name="ugckit_float_window_not_allow">The floating window permission is not granted. Please grant it in Apps - Permissions.</string>
     <string name="ugckit_app_about">About</string>
-    <string name="ugckit_btn_login_out">Log Out</string>
+    <string name="ugckit_btn_login_out">Log out</string>
 
-    <string name="ugckit_video_edit_segment">Set your clip segment</string>
+    <string name="ugckit_video_edit_segment">Set the segment to clip</string>
     <string name="ugckit_music_empty">No content yet</string>
-    <string name="ugckit_music_loading">Loading local music file…</string>
-    <string name="ugckit_follow_shot">Imitate</string>
-
-    <!-- TCVideoRecordActivity -->
+    <string name="ugckit_music_loading">Loading local music...</string>
+    <string name="ugckit_follow_shot">Split screens</string>
     <string name="ugckit_next_step">Next</string>
 
-    <string name="ugckit_speed_very_slow">Slower</string>
+    <string name="ugckit_speed_very_slow">Very slow</string>
     <string name="ugckit_speed_slow">Slow</string>
-    <string name="ugckit_speed_normal">Normal</string>
+    <string name="ugckit_speed_normal">Standard</string>
     <string name="ugckit_speed_fast">Fast</string>
-    <string name="ugckit_speed_very_fast">Faster</string>
+    <string name="ugckit_speed_very_fast">Very fast</string>
     <string name="ugckit_aspect">Aspect ratio</string>
-    <string name="ugckit_beauty">Base Beauty</string>
-    <string name="ugckit_te_beauty">TE Beauty</string>
+    <string name="ugckit_beauty">Basic Beauty</string>
+    <string name="ugckit_te_beauty">Advanced Beauty</string>
     <string name="ugckit_music">Music</string>
-    <string name="ugckit_motion">Effect</string>
+    <string name="ugckit_motion">Effects</string>
     <string name="ugckit_speed">Speed</string>
-    <string name="ugckit_filter">Filter</string>
-    <string name="ugckit_paster">Sticker</string>
-    <string name="ugckit_subtitle">Subtitle</string>
+    <string name="ugckit_filter">Filters</string>
+    <string name="ugckit_paster">Stickers</string>
+    <string name="ugckit_subtitle">Text</string>
     <string name="ugckit_transition">Transition</string>
 
-    <string name="ugckit_cancel_record">Cancel Shooting</string>
-    <string name="ugckit_confirm_cancel_edit_content">Discard the current editing?</string>
-    <string name="ugckit_confirm_cancel_record_content">Discard the current shooting?</string>
-    <string name="ugckit_wrong_click">Cancel</string>
+    <string name="ugckit_cancel_record">Cancel</string>
+    <string name="ugckit_confirm_cancel_edit_content">Are you sure you want to discard the edits?</string>
+    <string name="ugckit_confirm_cancel_record_content">Are you sure you want to discard the video already shot?</string>
+    <string name="ugckit_wrong_click">Resume</string>
     <string name="ugckit_give_up">Discard</string>
-
-    <!--ShortVideoDialog.java-->
     <string name="ugckit_video_record_title">Shoot</string>
-    <string name="ugckit_video_editer_title">Edit Video</string>
-    <string name="ugckit_picture_editer_title">Edit Image</string>
+    <string name="ugckit_video_editer_title">Edit</string>
+    <string name="ugckit_picture_editer_title">Photo slide</string>
+    <string name="ugckit_picture_choose">Select photo</string>
+    <string name="ugckit_video_long_drag">Hold and drag to change the video order</string>
 
-    <!--TCPictureChooseActivityvity-->
-    <string name="ugckit_picture_choose">Select Image</string>
-    <string name="ugckit_video_long_drag">Hold and drag videos to change their order</string>
-
-    <string name="ugckit_select_bgm">Select a background music</string>
-    <string name="ugckit_mic_volume">Rec Vol</string>
-    <string name="ugckit_bgm_volume">BGM Vol</string>
+    <string name="ugckit_select_bgm">Background music</string>
+    <string name="ugckit_mic_volume">Shooting volume</string>
+    <string name="ugckit_bgm_volume">Music volume</string>
     <string name="ugckit_tips">Note</string>
-    <string name="ugckit_delete_bgm_or_not">Discard the added background music?</string>
-    <string name="ugckit_confirm_delete">Delete</string>
+    <string name="ugckit_delete_bgm_or_not">Are you sure you want to remove the music added?</string>
+    <string name="ugckit_confirm_delete">Remove</string>
 
-    <string name="ugckit_bgm_start_position">Start from %1$s</string>
+    <string name="ugckit_bgm_start_position">Starting from %1$s</string>
 
     <string name="ugckit_no_content">No content yet</string>
     <string name="ugckit_none">None</string>
 
-    <string name="ugckit_reverse">Back in Time</string>
-    <string name="ugckit_slow_motion">Slo-Mo</string>
-    <string name="ugckit_repeate">Repeat</string>
-    <string name="ugckit_add">Add</string>
+    <string name="ugckit_reverse">Backwards</string>
+    <string name="ugckit_slow_motion">Slow</string>
+    <string name="ugckit_repeate">Loop</string>
+    <string name="ugckit_add">New</string>
 
-    <string name="ugckit_motion_soul_out">Soul Out</string>
-    <string name="ugckit_motion_split">Screen Split</string>
-    <string name="ugckit_motion_rock_light">Dynamic Light Wave</string>
-    <string name="ugckit_motion_dark_dream">Dark Fantasy</string>
-    <string name="ugckit_motion_win_shadow">Shutter</string>
-    <string name="ugckit_motion_ghost_shadow">Ghost Shadow</string>
+    <string name="ugckit_motion_soul_out">Soul out</string>
+    <string name="ugckit_motion_split">Split screen</string>
+    <string name="ugckit_motion_rock_light">Rock light</string>
+    <string name="ugckit_motion_dark_dream">Dark dream</string>
+    <string name="ugckit_motion_win_shadow">Blinds</string>
+    <string name="ugckit_motion_ghost_shadow">Shadow</string>
     <string name="ugckit_motion_phantom_shadow">Phantom</string>
     <string name="ugckit_motion_ghost">Ghost</string>
     <string name="ugckit_motion_lightning">Lightning</string>
     <string name="ugckit_motion_mirror">Mirror</string>
     <string name="ugckit_motion_illusion">Illusion</string>
-
-    <!--TCVideoPublishActivity-->
-    <string name="ugckit_cancel_publish_title">Cancel Uploading</string>
-    <string name="ugckit_cancel_publish_msg">Video uploading will be completed soon. Cancel now?</string>
-
-    <!--TCVideoEffectActivityvity-->
-    <string name="ugckit_revert">Back</string>
-    <string name="ugckit_complete">Complete</string>
+    <string name="ugckit_cancel_publish_title">Cancel</string>
+    <string name="ugckit_cancel_publish_msg">The video is being uploaded. Are you sure you want to cancel it?</string>
+    <string name="ugckit_revert">Undo</string>
+    <string name="ugckit_complete">Done</string>
     <string name="ugckit_state_pause">Pause</string>
-    <string name="ugckit_save_success">Saved video successfully</string>
+    <string name="ugckit_save_success">Saved successfully</string>
     <string name="ugckit_download">Download</string>
     <string name="ugckit_downloaded">Downloaded</string>
     <string name="ugckit_use">Apply</string>
     <string name="ugckit_downloading">Downloading</string>
-    <string name="ugckit_dynamic_paster">Dynamic sticker</string>
-    <string name="ugckit_static_paster">Static sticker</string>
+    <string name="ugckit_dynamic_paster">Animated</string>
+    <string name="ugckit_static_paster">Static</string>
     <string name="ugckit_bublle_style">Bubble style</string>
-    <string name="ugckit_text_color">Font color</string>
-    <string name="ugckit_video_joining">Stitching video…</string>
-    <string name="ugckit_cancel_joining">Cancel video stitching</string>
-
-    <!--TCVideoPublishActivity-->
-    <string name="ugckit_publish_success">Posted successfully</string>
-
-    <!--关于-->
-    <string name="ugckit_about_tip1">XiaoShiPin is a prototype-level App developed by Tencent Video Cloud Team. It helps demonstrate a portfolio of Tencent Cloud video features, such as recording and editing video clips through video cloud SDK, uploading and publishing videos through COS service, and distributing videos by using VOD service.</string>
+    <string name="ugckit_text_color">Text color</string>
+    <string name="ugckit_video_joining">Splicing videos...</string>
+    <string name="ugckit_cancel_joining">Cancel</string>
+    <string name="ugckit_video_cutting">Clipping the video...</string>
+    <string name="ugckit_video_join_fail_title">Failed to generate the video</string>
+    <string name="ugckit_video_join_not_support_video_format">This format is not supported by the current device</string>
+    <string name="ugckit_video_join_not_support_non_mono_format">This video format is not supported currently</string>
+    <string name="ugckit_publish_success">Published successfully</string>
+    <string name="ugckit_publish_save_aibum">Saved to your phone\'s library</string>
+    <string name="ugckit_about_tip1">The UGSV demo app is an app prototype offered by Tencent\'s Video Cloud Team. It demonstrates how different UGSV capabilities work, for example, how to use Tencent Cloud\'s media SDK to implement segment-based shooting and video editing, how to implement video upload and publishing based on Tencent Cloud COS, and how to use Tencent Cloud VOD to distribute videos.</string>
 
     <string name="ugckit_language_setting_activity_language">Language</string>
-    <string name="ugckit_language_setting_activity_follow_system">Auto（Restart takes effect）</string>
+    <string name="ugckit_language_setting_activity_follow_system">Same as system (restart required)</string>
     <string name="ugckit_language_setting_activity_save">Save</string>
 
-    <string name="ugckit_user_info_fragment_setting">Setting</string>
+    <string name="ugckit_user_info_fragment_setting">Settings</string>
 
     <string name="ugckit_setting_activity_language">Language</string>
-    <string name="ugckit_setting_activity_setting">Setting</string>
+    <string name="ugckit_setting_activity_setting">Settings</string>
 
     <string name="ugckit_fragment_user_info_please_lonin">Please log in first</string>
 
@@ -137,261 +117,270 @@
 
     <string name="ugckit_dialog_ugc_tip_already_known">OK</string>
 
-    <string name="ugckit_unit_second">sec</string>
+    <string name="ugckit_unit_second">s</string>
 
-    <string name="ugckit_fragment_confirm_confirm">OK</string>
+    <string name="ugckit_fragment_confirm_confirm">Confirm</string>
     <string name="ugckit_fragment_confirm_cancel">Cancel</string>
     <string name="ugckit_fragment_confirm_ok">OK</string>
-    <string name="ugckit_fragment_confirm_input_tip">Enter content</string>
+    <string name="ugckit_fragment_confirm_input_tip">Please enter</string>
 
-    <string name="ugckit_activity_register_register_new_user">Sign Up</string>
+    <string name="ugckit_activity_register_register_new_user">Sign up</string>
 
-    <string name="ugckit_video_list_adapter_video_state_normal">Audited</string>
-    <string name="ugckit_video_list_adapter_video_state_in_audit">Auditing</string>
+    <string name="ugckit_video_list_adapter_video_state_normal">Reviewed</string>
+    <string name="ugckit_video_list_adapter_video_state_in_audit">Being reviewed</string>
     <string name="ugckit_video_list_adapter_video_state_pornographic">Pornographic</string>
 
     <string name="ugckit_tc_ugc_video_list_adapter_just_now">Just now</string>
-    <string name="ugckit_tc_ugc_video_list_adapter_mins_ago"> minutes ago</string>
-    <string name="ugckit_tc_ugc_video_list_adapter_hours_ago"> hours ago</string>
-    <string name="ugckit_tc_ugc_video_list_adapter_days_ago"> days ago</string>
+    <string name="ugckit_tc_ugc_video_list_adapter_mins_ago">&#160;minutes ago</string>
+    <string name="ugckit_tc_ugc_video_list_adapter_hours_ago">&#160;hours ago</string>
+    <string name="ugckit_tc_ugc_video_list_adapter_days_ago">days ago</string>
 
-    <string name="ugckit_video_list_adapter_min_ago"> minute ago</string>
-    <string name="ugckit_video_list_adapter_hour_ago"> hour ago</string>
-    <string name="ugckit_video_list_adapter_day_ago"> day ago</string>
+    <string name="ugckit_video_list_adapter_min_ago">&#160;minute ago</string>
+    <string name="ugckit_video_list_adapter_hour_ago">&#160;hour ago</string>
+    <string name="ugckit_video_list_adapter_day_ago">&#160;day ago</string>
 
     <string name="ugckit_fragment_videolist_no_content">No content yet</string>
 
-    <string name="ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing">Image editing ends due to exception</string>
-    <string name="ugckit_tc_picture_join_activity_toast_cancel_video_generation">Cancel video creating</string>
+    <string name="ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing">The editing ended due to an image error.</string>
+    <string name="ugckit_tc_picture_join_activity_toast_cancel_video_generation">The video was canceled</string>
 
-
-    <string name="ugckit_picture_join_left_right">Right/Left</string>
-    <string name="ugckit_picture_join_up_down">Up/Down</string>
-    <string name="ugckit_picture_join_zoom_in">Zoom In</string>
-    <string name="ugckit_picture_join_zoom_out">Zoom Out</string>
+    <string name="ugckit_picture_join_left_right">Wipe</string>
+    <string name="ugckit_picture_join_up_down">Push</string>
+    <string name="ugckit_picture_join_zoom_in">Zoom in</string>
+    <string name="ugckit_picture_join_zoom_out">Zoom out</string>
     <string name="ugckit_picture_join_rotate">Rotate</string>
-    <string name="ugckit_picture_join_fade_in_and_fade_out">Fade In/Out</string>
+    <string name="ugckit_picture_join_fade_in_and_fade_out">Fade</string>
 
-
-    <string name="ugckit_fragment_input_word_input_tip">Enter content</string>
+    <string name="ugckit_fragment_input_word_input_tip">Please enter</string>
     <string name="ugckit_fragment_input_word_cancel">Cancel</string>
     <string name="ugckit_fragment_input_word_ok">OK</string>
 
-    <string name="ugckit_layout_joiner_progress_video_is_generating">Creating video…</string>
+    <string name="ugckit_layout_joiner_progress_video_is_generating">Generating video...</string>
 
     <string name="ugckit_audio_ctrl_accompaniment">Music</string>
     <string name="ugckit_audio_ctrl_finish">Finish</string>
-    <string name="ugckit_audio_ctrl_voice">Vocal</string>
+    <string name="ugckit_audio_ctrl_voice">Voice</string>
     <string name="ugckit_audio_ctrl_vol">Volume</string>
 
-    <string name="ugckit_login_activity_login_successfully">Logged in successfully</string>
-    <string name="ugckit_login_activity_auto_login_failed">Unable to log in automatically</string>
-    <string name="ugckit_login_activity_no_network_connection">No network access</string>
-    <string name="ugckit_login_activity_password_length_tip">Password should be 8-16 chars</string>
-    <string name="ugckit_login_activity_username_does_not_meet_specifications">Invalid username</string>
+    <string name="ugckit_login_activity_login_successfully">Login successful</string>
+    <string name="ugckit_login_activity_auto_login_failed">Auto login failed</string>
+    <string name="ugckit_login_activity_no_network_connection">No internet connection</string>
+    <string name="ugckit_login_activity_password_length_tip">The password must contain 8-16 characters</string>
+    <string name="ugckit_login_activity_username_does_not_meet_specifications">Invalid user ID</string>
 
-    <string name="ugckit_register_activity_attempt_normal_regist_username_does_not_meet_specifications">Invalid username</string>
-    <string name="ugckit_register_activity_attempt_normal_regist_password_length_error">Password should be 8-16 chars</string>
+    <string name="ugckit_register_activity_attempt_normal_regist_username_does_not_meet_specifications">Invalid user ID</string>
+    <string name="ugckit_register_activity_attempt_normal_regist_password_length_error">The password must contain 8-16 characters</string>
     <string name="ugckit_register_activity_attempt_normal_regist_password_verify_error">The passwords do not match</string>
-    <string name="ugckit_register_activity_attempt_normal_regist_no_network_connection">No network access</string>
+    <string name="ugckit_register_activity_attempt_normal_regist_no_network_connection">No internet connection</string>
 
-    <string name="ugckit_register_activity_register_callback_register_successfully">Sign-up succeeded</string>
-    <string name="ugckit_register_activity_register_callback_auto_login_successfully">Auto login succeeded</string>
-    <string name="ugckit_register_activity_register_callback_auto_login_failed">Unable to log in automatically</string>
-    <string name="ugckit_register_activity_register_callback_username_format_error">Incorrect username format</string>
-    <string name="ugckit_register_activity_register_callback_password_format_error">Incorrect password format</string>
-    <string name="ugckit_register_activity_register_callback_username_already_exists">Username already exists</string>
-    <string name="ugckit_register_activity_register_callback_register_failed">Unable to sign up:&#160;</string>
+    <string name="ugckit_register_activity_register_callback_register_successfully">Signup successful</string>
+    <string name="ugckit_register_activity_register_callback_auto_login_successfully">Auto login successful</string>
+    <string name="ugckit_register_activity_register_callback_auto_login_failed">Auto login failed</string>
+    <string name="ugckit_register_activity_register_callback_username_format_error">Invalid user ID format</string>
+    <string name="ugckit_register_activity_register_callback_password_format_error">Invalid password format</string>
+    <string name="ugckit_register_activity_register_callback_username_already_exists">The user ID already exists</string>
+    <string name="ugckit_register_activity_register_callback_register_failed">Failed to sign up: </string>
 
-    <string name="ugckit_video_record_activity_start_record_start_record_ok">Started recording successfully</string>
-    <string name="ugckit_video_record_activity_start_record_start_record_err_is_in_recording">You have unfinished recording</string>
-    <string name="ugckit_video_record_activity_start_record_start_record_err_video_path_is_empty">The path of video file is empty</string>
-    <string name="ugckit_video_record_activity_start_record_start_record_err_api_is_lower_than_18">App version is lower than 18</string>
-    <string name="ugckit_video_record_activity_start_record_start_record_err_not_init">Initializing…</string>
-    <string name="ugckit_video_record_activity_start_record_start_record_err_licence_verification_failed">Unable to verify license</string>
-    <string name="ugckit_video_record_activity_start_record_record_failed_tip">Unable to record. Error code:&#160;</string>
-
-    <string name="ugckit_video_record_activity_on_record_event_evt_camera_cannot_use">Unable to access Camera. Please check the permissions.</string>
-    <string name="ugckit_video_record_activity_on_record_event_evt_mic_cannot_use">Unable to access Microphone. Please check the permissions.</string>
-
-    <string name="ugckit_video_record_activity_on_record_complete_fail_tip">Unable to record. Cause:&#160;</string>
-    <string name="ugckit_video_record_activity_on_record_complete_synthesizing">Creating…</string>
-
-    <string name="ugckit_video_record_activity_on_join_progress_synthesizing">Creating…</string>
-
-    <string name="ugckit_video_record_activity_on_join_complete_synthesis_failed">Unable to create</string>
+    <string name="ugckit_video_record_activity_start_record_start_record_ok">Shooting started</string>
+    <string name="ugckit_video_record_activity_start_record_start_record_err_is_in_recording">You have unfinished shooting tasks</string>
+    <string name="ugckit_video_record_activity_start_record_start_record_err_video_path_is_empty">The path specified is empty</string>
+    <string name="ugckit_video_record_activity_start_record_start_record_err_api_is_lower_than_18">Version earlier than v18</string>
+    <string name="ugckit_video_record_activity_start_record_start_record_err_not_init">Initialization is not completed yet</string>
+    <string name="ugckit_video_record_activity_start_record_start_record_err_licence_verification_failed">License verification failed</string>
+    <string name="ugckit_video_record_activity_start_record_record_failed_tip">Shooting failed. Error code: </string>
 
 
-    <string name="ugckit_video_record_activity_on_request_permissions_result_failed_to_get_permission">Unable to obtain permissions</string>
 
-    <string name="ugckit_dialog_title_confirm">OK</string>
+    <string name="ugckit_video_edit_generate_result_ok">Video edited successfully</string>
+    <string name="ugckit_video_edit_generate_result_failed">Failed to edit the video</string>
+    <string name="ugckit_video_edit_licence_verification_failed">License verification failed</string>
+
+    <string name="ugckit_first_install_failed">First installation successful</string>
+    <string name="ugckit_chorus_event">Report event</string>
+    <string name="ugckit_video_join_result_ok">Video generated successfully</string>
+    <string name="ugckit_video_join_result_failed">Failed to generate the video</string>
+    <string name="ugckit_video_join_licence_verification_failed">License verification failed</string>
+
+    <string name="ugckit_video_play_failed_code_get_rtmp_acc_url">Failed to get the accelerated playback URL</string>
+    <string name="ugckit_video_play_failed_code_file_not_found">The file does not exist</string>
+    <string name="ugckit_video_play_failed_code_hevc_decode_failed">H.265 decoding failed</string>
+    <string name="ugckit_video_play_failed_code_hls_key_error">Failed to obtain the HLS decryption key</string>
+    <string name="ugckit_video_play_failed_code_get_play_info">Failed to obtain the VOD file information</string>
+    <string name="ugckit_video_play_success_des">VOD playback successful</string>
+    <string name="ugckit_video_publish_success">Published successfully</string>
+    <string name="ugckit_video_publish_failed">Failed to publish the video (onPublishComplete)</string>
+
+    <string name="ugckit_video_record_activity_on_record_event_evt_camera_cannot_use">Failed to open the camera. Check the permission.</string>
+    <string name="ugckit_video_record_activity_on_record_event_evt_mic_cannot_use">Failed to open the mic. Check the permission.</string>
+
+    <string name="ugckit_video_record_activity_on_record_complete_fail_tip">The shooting failed. Reason: </string>
+    <string name="ugckit_video_record_activity_on_record_complete_synthesizing">Generating...</string>
+
+    <string name="ugckit_video_record_activity_on_join_progress_synthesizing">Generating</string>
+
+    <string name="ugckit_video_record_activity_on_join_complete_synthesis_failed">Failed to generate the video</string>
+
+
+    <string name="ugckit_video_record_activity_on_request_permissions_result_failed_to_get_permission">Failed to obtain the permission</string>
+
+    <string name="ugckit_dialog_title_confirm">Confirm</string>
     <string name="ugckit_dialog_title_error">Error</string>
 
-    <string name="ugckit_constants_error_msg_net_disconnecte">Network error. Please check and try again.</string>
+    <string name="ugckit_constants_error_msg_net_disconnecte">Please check your network</string>
 
-    <string name="ugckit_http_engine_get_error_message_connect_server_failed">Unable to connect to server</string>
-    <string name="ugckit_http_engine_get_error_message_no_network_connection">No network access</string>
+    <string name="ugckit_http_engine_get_error_message_connect_server_failed">Failed to connect to the server</string>
+    <string name="ugckit_http_engine_get_error_message_no_network_connection">No internet connection</string>
     <string name="ugckit_http_engine_get_error_message_network_anomaly">Network error. Please try again later.</string>
 
 
-    <string name="ugckit_http_engine_handle_server_error_connect_server_fail">Unable to connect to server</string>
+    <string name="ugckit_http_engine_handle_server_error_connect_server_fail">Failed to connect to the server</string>
     <string name="ugckit_http_engine_handle_server_error_network_anomaly">Network error. Please try again later.</string>
 
-    <string name="ugckit_utils_check_float_window_permission_yes">Enable</string>
-    <string name="ugckit_utils_check_float_window_permission_no">No</string>
-
+    <string name="ugckit_utils_check_float_window_permission_yes">Allow</string>
+    <string name="ugckit_utils_check_float_window_permission_no">Deny</string>
 
     <string name="ugckit_static_filter_fragment_original">Original</string>
     <string name="ugckit_static_filter_fragment_standard">Standard</string>
-    <string name="ugckit_static_filter_fragment_cheery">Cheery</string>
-    <string name="ugckit_static_filter_fragment_cloud">Cloud</string>
+    <string name="ugckit_static_filter_fragment_cheery">Cherry red</string>
+    <string name="ugckit_static_filter_fragment_cloud">Cloudy</string>
     <string name="ugckit_static_filter_fragment_pure">Pure</string>
     <string name="ugckit_static_filter_fragment_orchid">Orchid</string>
-    <string name="ugckit_static_filter_fragment_vitality">Vitality</string>
-    <string name="ugckit_static_filter_fragment_super">Super</string>
+    <string name="ugckit_static_filter_fragment_vitality">Energetic</string>
+    <string name="ugckit_static_filter_fragment_super">Ethereal</string>
     <string name="ugckit_static_filter_fragment_fragrance">Fragrance</string>
     <string name="ugckit_static_filter_fragment_romantic">Romantic</string>
     <string name="ugckit_static_filter_fragment_fresh">Fresh</string>
     <string name="ugckit_static_filter_fragment_beautiful">Aesthetic</string>
-    <string name="ugckit_static_filter_fragment_pink">Rosy</string>
+    <string name="ugckit_static_filter_fragment_pink">Pink</string>
     <string name="ugckit_static_filter_fragment_reminiscence">Nostalgic</string>
     <string name="ugckit_static_filter_fragment_blues">Blues</string>
     <string name="ugckit_static_filter_fragment_cool">Cool</string>
-    <string name="ugckit_static_filter_fragment_Japanese">Sweet</string>
+    <string name="ugckit_static_filter_fragment_Japanese">Japanese</string>
 
-    <string name="ugckit_video_cutter_activity_oncreate_an_unknown_error_occurred_the_path_cannot_be_empty">Unknown error occurred. The path cannot be empty.</string>
+    <string name="ugckit_video_cutter_activity_oncreate_an_unknown_error_occurred_the_path_cannot_be_empty">Unknown error. The path cannot be empty.</string>
 
-    <string name="ugckit_video_cutter_activity_init_work_loading_progress_video_preprocessing">Preprocessing…</string>
+    <string name="ugckit_video_cutter_activity_init_work_loading_progress_video_preprocessing">Preprocessing the video...</string>
 
-    <string name="ugckit_video_cutter_activity_load_video_success_already_picked">Selected&#160;</string>
+    <string name="ugckit_video_cutter_activity_load_video_success_already_picked">Selected duration: </string>
 
-    <string name="ugckit_video_cutter_activity_video_main_handler_edit_failed">Unable to edit</string>
-    <string name="ugckit_does_not_support_android_version_below_4_3">Android 4.3 or below is not supported</string>
+    <string name="ugckit_video_cutter_activity_video_main_handler_edit_failed">Editing failed</string>
+    <string name="ugckit_does_not_support_android_version_below_4_3">Android systems earlier than v4.3 and empty video files are not supported</string>
 
-    <string name="ugckit_live_list_fragment_refresh_list_failed">Unable to refresh list</string>
+    <string name="ugckit_live_list_fragment_refresh_list_failed">Failed to refresh the list</string>
 
 
-    <string name="ugckit_video_editer_activity_oncreate_status_is_abnormal_finish_editing">Editing ends due to exception</string>
+    <string name="ugckit_video_editer_activity_oncreate_status_is_abnormal_finish_editing">The editing ended due to abnormal status.</string>
 
     <string name="ugckit_video_editer_activity_show_publish_dialog_save">Save</string>
-    <string name="ugckit_video_editer_activity_show_publish_dialog_publish">Post</string>
+    <string name="ugckit_video_editer_activity_show_publish_dialog_publish">Publish</string>
 
-    <string name="ugckit_video_editer_activity_cancel_video_generation">Cancel video creating</string>
+    <string name="ugckit_video_editer_activity_cancel_video_generation">Video canceled</string>
 
-    <string name="ugckit_video_material_download_progress_material_unzip_failed">Unable to decompress materials</string>
-    <string name="ugckit_video_material_download_progress_download_failed">Unable to download</string>
-    <string name="ugckit_video_material_download_progress_no_enough_storage_space">Insufficient storage</string>
+    <string name="ugckit_video_material_download_progress_material_unzip_failed">Failed to decompress the materials</string>
+    <string name="ugckit_video_material_download_progress_download_failed">Download failed</string>
+    <string name="ugckit_video_material_download_progress_no_enough_storage_space">Insufficient storage space</string>
 
-    <string name="ugckit_user_mgr_user_does_not_exist">Username does not exist</string>
+    <string name="ugckit_user_mgr_user_does_not_exist">The user ID does not exist</string>
     <string name="ugckit_user_mgr_wrong_password">Incorrect password</string>
 
-    <string name="ugckit_vod_player_activity_download_video_is_downloading">Downloading…</string>
-    <string name="ugckit_vod_player_activity_download_video_download_failed">Unable to download</string>
+    <string name="ugckit_vod_player_activity_download_video_is_downloading">Downloading...</string>
+    <string name="ugckit_vod_player_activity_download_video_download_failed">Download failed</string>
 
     <string name="ugckit_picture_choose_activity_the_selected_file_does_not_exist">The selected file does not exist</string>
-    <string name="ugckit_picture_choose_activity_please_select_multiple_images">Select multiple images</string>
+    <string name="ugckit_picture_choose_activity_please_select_multiple_images">Please select more than one image</string>
     <string name="ugckit_picture_choose_activity_got_it">OK</string>
 
-    <string name="ugckit_video_choose_activity_contains_corrupted_video_files">The items you selected contain corrupted video file</string>
+    <string name="ugckit_video_choose_activity_contains_corrupted_video_files">Corrupted video files detected</string>
     <string name="ugckit_video_choose_activity_the_selected_file_does_not_exist">The selected file does not exist</string>
     <string name="ugckit_video_choose_activity_got_it">OK</string>
 
-    <string name="ugckit_video_effect_activity_status_is_abnormal_finish_editing">Editing ends due to exception</string>
+    <string name="ugckit_video_effect_activity_status_is_abnormal_finish_editing">The editing ended due to abnormal status.</string>
 
-    <string name="ugckit_video_preprocess_activity_an_unknown_error_occurred_the_path_cannot_be_empty">Unknown error occurred. The path cannot be empty.</string>
-    <string name="ugckit_video_preprocess_activity_video_preprocessing">Preprocessing…</string>
+    <string name="ugckit_video_preprocess_activity_an_unknown_error_occurred_the_path_cannot_be_empty">Unknown error. The path cannot be empty.</string>
+    <string name="ugckit_video_preprocess_activity_video_preprocessing">Preprocessing the video...</string>
     <string name="ugckit_video_preprocess_activity_cancel_preprocessing">Cancel preprocessing</string>
-    <string name="ugckit_video_preprocess_activity_edit_failed">Unable to edit</string>
-    <string name="ugckit_video_preprocess_activity_does_not_support_android_version_below_4.3">Android 4.3 or below is not supported</string>
+    <string name="ugckit_video_preprocess_activity_edit_failed">Editing failed</string>
+    <string name="ugckit_video_preprocess_activity_does_not_support_android_version_below_4.3">Android systems earlier than v4.3 are not supported</string>
 
-    <string name="ugckit_bgm_setting_fragment_video_edit_failed">Unable to edit video</string>
-    <string name="ugckit_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format">Only MP3 and M4A format are supported now</string>
+    <string name="ugckit_bgm_setting_fragment_video_edit_failed">Failed to edit the video</string>
+    <string name="ugckit_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format">Only MP3 and M4A files are supported</string>
 
-    <string name="ugckit_bgm_download_progress_download_failed">Unable to download</string>
-    <string name="ugckit_bgm_download_progress_no_enough_storage_space">Insufficient storage</string>
+    <string name="ugckit_bgm_download_progress_download_failed">Download failed</string>
+    <string name="ugckit_bgm_download_progress_no_enough_storage_space">Insufficient storage space</string>
 
-    <string name="ugckit_bubble_fragment_double_click_to_edit_text">Double tap to edit text</string>
+    <string name="ugckit_bubble_fragment_double_click_to_edit_text">Double-tap to modify the text</string>
 
-    <string name="ugckit_word_input_dialog_please_enter_subtitles">Enter subtitle</string>
+    <string name="ugckit_word_input_dialog_please_enter_subtitles">Enter the text</string>
 
-    <string name="ugckit_cutter_fragment_left">Left:</string>
-    <string name="ugckit_cutter_fragment_right">Right:</string>
+    <string name="ugckit_cutter_fragment_left">Left: </string>
+    <string name="ugckit_cutter_fragment_right">Right: </string>
 
-    <string name="ugckit_add_paster_adapter_paster">Sticker</string>
+    <string name="ugckit_add_paster_adapter_paster">Stickers</string>
 
-    <string name="ugckit_time_fragment_video_preprocessing">Preprocessing…</string>
+    <string name="ugckit_time_fragment_video_preprocessing">Preprocessing the video...</string>
 
     <string name="ugckit_touch_seekbar_low">Low</string>
     <string name="ugckit_touch_seekbar_mid">Mid</string>
     <string name="ugckit_touch_seekbar_high">High</string>
 
-    <string name="ugckit_video_repeat_view_tip2">Repetition time: Left: %1$s, Right: %1$s</string>
-    <string name="ugckit_video_repeat_view_tip1">Range Left: %1$s, Right: %1$s</string>
+    <string name="ugckit_video_repeat_view_tip2">Range: Left: %1$s, Right: %1$s</string>
+    <string name="ugckit_video_repeat_view_tip1">Repetition time: Left: %1$s, Right: %1$s</string>
 
-    <string name="ugckit_video_publisher_activity_no_network_connection">No network access</string>
+    <string name="ugckit_video_publisher_activity_no_network_connection">No internet connection</string>
     <string name="ugckit_video_publisher_activity_is_uploading">Uploading</string>
-    <string name="ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed">Unable to upload video due to network disconnection</string>
+    <string name="ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed">Failed to upload the video due to a disconnection</string><string name="ugckit_video_choose">Select video</string>
 
-    //分割线 2018/7/24
-    --------------------------------------------------------------------------------------------------
-    <string name="ugckit_video_choose">Select Video</string>
+    <string name="ugckit_activity_video_record_take_photo">Photo</string>
+    <string name="ugckit_activity_video_record_click_start">Tap</string>
+    <string name="ugckit_activity_video_record_long_touch">Hold</string>
 
-    <string name="ugckit_activity_video_record_take_photo">Camera</string>
-    <string name="ugckit_activity_video_record_click_start">Tap to shoot</string>
-    <string name="ugckit_activity_video_record_long_touch">Hold to shoot</string>
+    <string name="ugckit_activity_video_record_timer">Timer</string>
+    <string name="ugckit_activity_video_record_sound_effect">Audio effect</string>
 
-    <string name="ugckit_activity_video_record_timer">Count\nDown</string>
-    <string name="ugckit_activity_video_record_sound_effect">Mix</string>
+    <string name="ugckit_activity_video_record_take_photo_success">The photo was taken successfully and saved to your library</string>
+    <string name="ugckit_activity_video_record_take_photo_fail">Failed to take the photo</string>
 
-    <string name="ugckit_activity_video_record_take_photo_success">take photo successfully, already saved to the system album</string>
-    <string name="ugckit_activity_video_record_take_photo_fail">take photo failed</string>
+    <string name="ugckit_sound_effect_pannel_volume">Volume</string>
+    <string name="ugckit_sound_effect_pannel_change_voice">Voice</string>
+    <string name="ugckit_sound_effect_pannel_record_reverb">Reverb</string>
 
-    <string name="ugckit_sound_effect_pannel_change_voice">Voice Effects</string>
-    <string name="ugckit_sound_effect_pannel_record_reverb">Mix</string>
-
-    <string name="ugckit_layout_sound_effect_ktv">KTV</string>
+    <string name="ugckit_layout_sound_effect_ktv">Karaoke</string>
     <string name="ugckit_layout_sound_effect_original_sound">Original</string>
     <string name="ugckit_layout_sound_effect_room">Room</string>
     <string name="ugckit_layout_sound_effect_hall">Hall</string>
-    <string name="ugckit_layout_sound_effect_deep">Low</string>
-    <string name="ugckit_layout_sound_effect_loud">Sonorous</string>
-    <string name="ugckit_layout_sound_effect_magnetic">Magnetic</string>
+    <string name="ugckit_layout_sound_effect_deep">Deep</string>
+    <string name="ugckit_layout_sound_effect_loud">Resonant</string>
+    <string name="ugckit_layout_sound_effect_magnetic">Husky</string>
 
     <string name="ugckit_layout_sound_effect_original_sound2">Original</string>
     <string name="ugckit_layout_sound_effect_wild_kid">Child</string>
-    <string name="ugckit_layout_sound_effect_lolita">Loli</string>
-    <string name="ugckit_layout_sound_effect_uncle">Uncle</string>
-    <string name="ugckit_layout_sound_effect_heavy_metal">Heavy Metal</string>
-    <string name="ugckit_layout_sound_effect_foreigner">Foreigner</string>
+    <string name="ugckit_layout_sound_effect_lolita">Girl</string>
+    <string name="ugckit_layout_sound_effect_uncle">Man</string>
+    <string name="ugckit_layout_sound_effect_heavy_metal">Heavy metal</string>
+    <string name="ugckit_layout_sound_effect_foreigner">Punk</string>
     <string name="ugckit_layout_sound_effect_beast">Beast</string>
-    <string name="ugckit_layout_sound_effect_fat_boy">Fatty</string>
-    <string name="ugckit_layout_sound_effect_heavy_current">Current</string>
-    <string name="ugckit_layout_sound_effect_heavy_machine">Heavy Machinery</string>
-    <string name="ugckit_layout_sound_effect_vacant">Vacant</string>
+    <string name="ugckit_layout_sound_effect_fat_boy">Otaku</string>
+    <string name="ugckit_layout_sound_effect_heavy_current">Electronic</string>
+    <string name="ugckit_layout_sound_effect_heavy_machine">Robot</string>
+    <string name="ugckit_layout_sound_effect_vacant">Ethereal</string>
 
-    <string name="ugckit_bgm_select_activity_downloading">Downloading</string>
-    <string name="ugckit_bgm_select_activity_download_failed">download failed</string>
+    <string name="ugckit_bgm_select_activity_downloading">Downloading...</string>
+    <string name="ugckit_bgm_select_activity_download_failed">Download failed</string>
 
     <string name="ugckit_chorus_title">Duet</string>
-    <string name="ugckit_triple_title">Three-screen chorus</string>
-    <string name="ugckit_video_not_review">Video unaudited</string>
+    <string name="ugckit_triple_title">Triple screens</string>
+    <string name="ugckit_video_not_review">Not reviewed</string>
     <string name="ugckit_video_porn">Pornographic</string>
 
-    <string name="ugckit_record_part_exist">There are incomplete recording tasks. Do you want to continue?</string>
+    <string name="ugckit_record_part_exist">Your last shooting was interrupted. Do you want to resume it?</string>
+    <string name="ugckit_technical_support">How do I get technical support?</string>
+    <string name="ugckit_follow_public_number">Follow our WeChat official account (腾讯云音视频)</string>
+    <string name="ugckit_send_msg_to_public_number">Type and send \"小视频\"</string>
+    <string name="ugckit_get_technical_support">Technical support</string>
+    <string name="ugckit_download_sdk"><a href="https://cloud.tencent.com/document/product/584/9366">SDK Download</a></string>
+    <string name="ugckit_product_introduction"><a href="https://cloud.tencent.com/product/UGSV">Tencent Cloud UGSV</a></string>
 
-    <!--registerActivity  loginActivity-->
-    <string name="ugckit_technical_support">How to get technical support services?</string>
-    <string name="ugckit_follow_public_number">Pay attention to public number "Tencent cloud video"</string>
-    <string name="ugckit_send_msg_to_public_number">Send a "Xiao Shi Pin" to the public number</string>
 
-    <!-- userinfo fragment-->
-    <string name="ugckit_get_technical_support">Get technical support services</string>
-    <string name="ugckit_download_sdk"><a href='https://cloud.tencent.com/document/product/584/9366'>Download SDK</a></string>
-    <string name="ugckit_product_introduction"><a href='https://cloud.tencent.com/product/UGSV'>Product Introduction</a></string>
-
-    <string name="ugckit_follow_and_send_msg_to_public_number">Pay attention to public number "Tencent cloud video"\nSend a "Xiao Shi Pin" to the public number</string>
-
-    <string name="ugckit_triple_volume">Volume</string>
     <string name="ugckit_triple_replace_file">Replace Video</string>
 
     <string name="ugckit_start_record_not_init">"Don't worry, the picture hasn't come out yet"</string>
@@ -399,59 +388,59 @@
     <string name="ugckit_start_record_path_empty">Incoming video path is empty</string>
     <string name="ugckit_start_record_version_below">Version is too low</string>
 
-    <!-- transition fragment -->
+
+
     <string name="trans_none">None</string>
-    <string name="trans_wipeLeft">Wipe Left</string>
-    <string name="trans_wipeRight">Wipe Right</string>
-    <string name="trans_wipeUp">Wipe Up</string>
-    <string name="trans_wipeDown">Wipe Down</string>
-    <string name="trans_fadecolor">Fade Color</string>
-    <string name="trans_SimpleZoom">Simple Zoom</string>
-    <string name="trans_LinearBlur">Linear Blur</string>
-    <string name="trans_WaterDrop">Water Drop</string>
-    <string name="trans_InvertedPageCurl">Inverted Page Curl</string>
-    <string name="trans_GlitchMemories">Glitch Memories</string>
-    <string name="trans_StereoViewer">Stereo Viewer</string>
-    <string name="trans_directionalwarp">Directional Warp</string>
+    <string name="trans_wipeLeft">Wipe left</string>
+    <string name="trans_wipeRight">Wipe right</string>
+    <string name="trans_wipeUp">Push up</string>
+    <string name="trans_wipeDown">Push down</string>
+    <string name="trans_fadecolor">Fade</string>
+    <string name="trans_SimpleZoom">Zoom</string>
+    <string name="trans_LinearBlur">Blur</string>
+    <string name="trans_WaterDrop">Ripple</string>
+    <string name="trans_InvertedPageCurl">Page turn</string>
+    <string name="trans_GlitchMemories">Vibrate</string>
+    <string name="trans_StereoViewer">Split</string>
+    <string name="trans_directionalwarp">Roll</string>
     <string name="trans_Bounce">Bounce</string>
-    <string name="trans_CircleCrop">Circle Crop</string>
+    <string name="trans_CircleCrop">Circle</string>
     <string name="trans_Swirl">Swirl</string>
-    <string name="trans_CrossZoom">Cross Zoom</string>
-    <string name="trans_GridFlip">Grid Flip</string>
+    <string name="trans_CrossZoom">Reveal</string>
+    <string name="trans_GridFlip">Checkerboard</string>
     <string name="trans_Mosaic">Mosaic</string>
-    <string name="trans_kaleidoscope">Kaleido Scope</string>
-    <string name="trans_hexagonalize">Hexagonalize</string>
-    <string name="trans_GlitchDisplace">Glitch Displace</string>
-    <string name="trans_DreamyZoom">Dreamy Zoom</string>
+    <string name="trans_kaleidoscope">Kaleidoscope</string>
+    <string name="trans_hexagonalize">Honeycomb</string>
+    <string name="trans_GlitchDisplace">Phantom</string>
+    <string name="trans_DreamyZoom">Flash</string>
     <string name="trans_burn">Burn</string>
-    <string name="trans_circle">Circle</string>
-    <string name="trans_crosswarp">Cross Warp</string>
+    <string name="trans_circle">Oval</string>
+    <string name="trans_crosswarp">Cross &amp; roll</string>
     <string name="trans_cube">Cube</string>
-    <string name="trans_doorway">Doorway</string>
-    <string name="trans_fadegrayscale">Fade Gray Scale</string>
-    <string name="trans_flyeye">Fly Eye</string>
-    <string name="trans_pixelize">Pixelize</string>
+    <string name="trans_doorway">Door</string>
+    <string name="trans_fadegrayscale">Grey</string>
+    <string name="trans_flyeye">Brick</string>
+    <string name="trans_pixelize">Pixelate</string>
     <string name="trans_squeeze">Squeeze</string>
-    <string name="trans_swap">Swap</string>
-    <string name="trans_invalid_timestamp">invalid transition timestamp,please set again</string>
-    <string name="permission_introduction_title">Description of storage permission application</string>
-    <string name="permission_introduction_positive">allow authorization</string>
-    <string name="permission_introduction_write">Used to store SDK configuration files, log files and media files, read local media files</string>
-    <string name="permission_introduction_camera">Used to capture camera images, take photos and record videos</string>
-    <string name="permission_introduction_audio">Used to collect user voice and record voice</string>
-    <string name="permission_introduction_write_title">storage permission</string>
-    <string name="permission_introduction_camera_title">camera permission</string>
-    <string name="permission_introduction_audio_title">Microphone permissions</string>
+    <string name="trans_swap">Box</string>
+    <string name="trans_invalid_timestamp">Invalid transition segment. Please try again.</string>
+    <string name="permission_introduction_title">Storage permission</string>
+    <string name="permission_introduction_positive">Allow</string>
+    <string name="permission_introduction_write">Needed to save the SDK configuration files, log files, and media files, as well as to read local media files.</string>
+    <string name="permission_introduction_camera">Needed to capture videos and photos</string>
+    <string name="permission_introduction_audio">Needed to capture audio</string>
+    <string name="permission_introduction_write_title">Storage permission</string>
+    <string name="permission_introduction_camera_title">Camera permission</string>
+    <string name="permission_introduction_audio_title">Mic permission</string>
     <string name="btn_cancel">Cancel</string>
-    <string name="app_personal_information_collection">Personal Information Collection Instructions</string>
-    <string name="beauty_cam_introduction">When you use the beauty (Including basic beauty and advanced beauty) function, we will perform real-time intelligent recognition on your facial pixel information captured in real time, and collect your facial pixel information in real time during the beautification process to provide you with better beauty effects. We will not Store or associate your facial pixel information in any form. This information is sensitive personal information, please provide it with caution. If you do not authorize, you will not be able to use this function; you can also disable this function by turning off Beauty at any time.</string>
-    <string name="btn_forbit">Forbit</string>
-    <string name="permission_always_allow">Always Allow</string>
-    <string name="need_storage_permission">Need Storage Permission</string>
+    <string name="app_personal_information_collection">Personal Information Collection</string>
+    <string name="beauty_cam_introduction">For beauty filters to work, we need to collect the facial information captured by your camera in real time to detect your facial features. We will not retain or use your facial information for any other purpose. Facial information is sensitive personal information which you should share with caution. If you do not agree to us collecting the information, you will be unable to use beauty filters. You can disable beauty filters any time.</string>
+    <string name="btn_forbit">Don\'t allow</string>
+    <string name="permission_always_allow">Always allow</string>
+    <string name="need_storage_permission">Storage permission required</string>
 
-
-    <string name="ugckit_tencent_effect_tip_dialog_title">Advanced beauty function description</string>
-    <string name="ugckit_tencent_effect_tip_dialog_content">Advanced beautification is provided by Tencent Effects SDK, which requires additional payment. If you do not need advanced beautifying effects, you can use the basic beautifying functions.</string>
-    <string name="ugckit_tencent_effect_tip_dialog_lefttxt">No more reminders</string>
-    <string name="ugckit_tencent_effect_tip_dialog_righttxt">Confirm</string>
+    <string name="ugckit_tencent_effect_tip_dialog_title">About advanced beauty filters</string>
+    <string name="ugckit_tencent_effect_tip_dialog_content">Advanced beauty filters are provided by Tencent Effect SDK. Using them will incur additional fees. However, you can use basic beauty filters for free.</string>
+    <string name="ugckit_tencent_effect_tip_dialog_lefttxt">Do not show again</string>
+    <string name="ugckit_tencent_effect_tip_dialog_righttxt">OK</string>
 </resources>

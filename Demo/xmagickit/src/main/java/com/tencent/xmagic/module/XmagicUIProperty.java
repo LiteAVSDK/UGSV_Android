@@ -86,24 +86,37 @@ public class XmagicUIProperty<V> {
     }
 
     public enum UICategory {
-        BEAUTY(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab1), true),
-        BODY_BEAUTY(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab2), true),
-        LUT(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab3), true),
-        MOTION(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab4), true),
-        MAKEUP(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab5), true),
-        SEGMENTATION(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab6), true),
-        KV(XMagicImpl.applicationContext.getString(R.string.xmagic_pannel_tab7), false);
+        BEAUTY(true),
+        BODY_BEAUTY(true),
+        LUT(true),
+        MOTION(true),
+        MAKEUP(true),
+        SEGMENTATION(true),
+        KV(false);
 
-        private final String description;
         private final boolean canShowOnUI;
 
-        UICategory(String description, boolean canShowOnUI) {
-            this.description = description;
+        UICategory(boolean canShowOnUI) {
             this.canShowOnUI = canShowOnUI;
         }
 
         public String getDescription() {
-            return description;
+            switch (UICategory.this) {
+                case BEAUTY:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_beauty);
+                case BODY_BEAUTY:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_body_beauty);
+                case LUT:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_lut);
+                case SEGMENTATION:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_segmentation);
+                case MOTION:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_motion);
+                case MAKEUP:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_makeup);
+                default:
+                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_kv);
+            }
         }
 
         public boolean isCanShowOnUI() {
@@ -131,8 +144,7 @@ public class XmagicUIProperty<V> {
 
         @Override
         public String toString() {
-            return name() + "(" + description + ")";
-
+            return name();
         }
     }
 }

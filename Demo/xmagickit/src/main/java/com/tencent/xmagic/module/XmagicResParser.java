@@ -1,9 +1,13 @@
 package com.tencent.xmagic.module;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.tencent.xmagic.XmagicApi;
 import com.tencent.xmagic.config.MotionDLUtils;
 import com.tencent.xmagic.config.MotionType;
 import com.tencent.xmagic.demo.R;
@@ -13,6 +17,7 @@ import com.tencent.xmagic.panel.XmagicPanelDataManager;
 import com.tencent.xmagic.XmagicConstant.BeautyConstant;
 import com.tencent.xmagic.XmagicProperty;
 import com.tencent.xmagic.XmagicProperty.XmagicPropertyValues;
+import com.tencent.xmagic.util.FileUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -224,25 +229,42 @@ public class XmagicResParser {
      * copy xmagic resource from assets to local path
      */
     public static void copyRes(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("xmagic_settings", Context.MODE_PRIVATE);
+        String savedVersion = sharedPreferences.getString("appVersionKey", "");
+        String appVersionName = XmagicResParser.getAppVersionName(context);
+        if (appVersionName.equals(savedVersion)) {
+            return;
+        }
+        copyResource(context);
+        sharedPreferences.edit().putString("appVersionKey", appVersionName).commit();
+    }
+
+
+    /**
+     *
+     * @param context
+     * @return
+     */
+    private static boolean copyResource(Context context) {
         ensureResPathAlreadySet();
-
-        new File(sResPath, "light_assets").delete();
-        new File(sResPath, "light_material").delete();
-        new File(sResPath, "MotionRes").delete();
-
-        for (String path : new String[]{"Light3DPlugin",
-                "LightCore", "LightHandPlugin",
-                "LightBodyPlugin", "LightSegmentPlugin"}) {
-            copyAssets(context, path, sResPath + "light_assets");
-        }
-
+        int addResult = XmagicApi.addAiModeFilesFromAssets(context, sResPath);
+        Log.e(TAG, "add ai model files result = " + addResult);
         for (String path : new String[]{"lut"}) {
-            copyAssets(context, path, sResPath + "light_material" + File.separator + path);
+            boolean result = FileUtil.copyAssets(context, path, sResPath + "light_material" + File.separator + path);
+            if (!result) {
+                Log.d(TAG, "copyRes: fail,path=" + path + ",new path=" + sResPath + "light_material"
+                        + File.separator + path);
+                return false;
+            }
         }
-
         for (String path : new String[]{"MotionRes"}) {
-            copyAssets(context, path, sResPath + path);
+            boolean result = FileUtil.copyAssets(context, path, sResPath + path);
+            if (!result) {
+                Log.d(TAG, "copyRes: fail,path=" + path + ",new path=" + sResPath + path);
+                return false;
+            }
         }
+        return true;
     }
 
     /**
@@ -860,5 +882,22 @@ public class XmagicResParser {
         if (TextUtils.isEmpty(sResPath)) {
             throw new IllegalStateException("resource path not set, call XmagicResParser.setResPath() first.");
         }
+    }
+
+
+
+    private static String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionName = pi.versionName;
+            if (TextUtils.isEmpty(versionName)) {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionName;
     }
 }

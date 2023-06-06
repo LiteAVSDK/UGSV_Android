@@ -4,7 +4,7 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "11.1.0.13111";
+    public static final String TVCVERSION = "11.2.0.13154";
     public static       String VOD_SERVER_HOST     = "vod2.qcloud.com";
     public static       String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
 
@@ -117,6 +117,11 @@ public class TVCConstants {
      * COS使用quic上传视频失败，转http上传
      */
     public static final int ERR_UPLOAD_QUIC_FAILED = 1019;
+
+    /**
+     * 签名过期
+     */
+    public static final int ERR_UPLOAD_SIGN_EXPIRED = 1020;
 
 
     /************************************************ 数据上报定义 **********************************/

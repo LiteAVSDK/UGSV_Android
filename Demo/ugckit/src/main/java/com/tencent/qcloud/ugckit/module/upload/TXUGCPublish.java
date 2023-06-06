@@ -86,6 +86,11 @@ public class TXUGCPublish {
         TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath, getFileType(coverPath),
                 coverPath, param.fileName);
 
+        if (info.getFileSize() == 0) {
+            Log.e(TAG, "publishVideo invalid videoPath");
+            return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
+        }
+
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
             public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
@@ -214,7 +219,14 @@ public class TXUGCPublish {
                     param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
         }
 
-        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null, param.fileName);
+        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null,
+                param.fileName);
+
+        if (info.getFileSize() == 0) {
+            Log.e(TAG, "publishVideo invalid videoPath");
+            return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
+        }
+
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
             public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {

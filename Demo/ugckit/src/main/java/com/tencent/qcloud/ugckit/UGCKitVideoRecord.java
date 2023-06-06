@@ -327,7 +327,9 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         }
         // 设置音乐信息
         RecordMusicManager.getInstance().setRecordMusicInfo(musicInfo);
-        mXMagic.setAudioMute(true);
+        if (mXMagic != null) {
+            mXMagic.setAudioMute(true);
+        }
         // 更新音乐Pannel
         getRecordMusicPannel().setMusicInfo(musicInfo);
         getRecordMusicPannel().setVisibility(View.VISIBLE);
@@ -429,7 +431,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     public void onRecordPause() {
         Log.d(TAG, "onRecordPause");
 
-        if(UGCKitRecordConfig.getInstance().mPauseSnapOpacity > 0) {
+        if (UGCKitRecordConfig.getInstance().mPauseSnapOpacity > 0) {
             getRecordPauseSnapView().catchPauseImage();
         }
 
@@ -689,8 +691,11 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         if (record != null) {
             record.setFocusPosition(x, y);
         }
-        // 停止音乐试听，否者开启录制会录制到一点点杂音
-        RecordMusicManager.getInstance().stopPreviewMusic();
+        //当非录制状态的时候暂停音乐，如果是录制状态则不处理
+        if (VideoRecordSDK.getInstance().getRecordState() != VideoRecordSDK.STATE_START) {
+            // 停止音乐试听，否者开启录制会录制到一点点杂音
+            RecordMusicManager.getInstance().stopPreviewMusic();
+        }
     }
 
     @Override
@@ -837,17 +842,11 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
 
 
     private void loadXmagicRes() {
-        if (XMagicImpl.isLoadedRes) {
-            XmagicResParser.parseRes(mActivity.getApplicationContext());
-            initXMagic();
-            return;
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 XmagicResParser.copyRes(mActivity.getApplicationContext());
                 XmagicResParser.parseRes(mActivity.getApplicationContext());
-                XMagicImpl.isLoadedRes = true;
                 initXMagic();
             }
         }).start();

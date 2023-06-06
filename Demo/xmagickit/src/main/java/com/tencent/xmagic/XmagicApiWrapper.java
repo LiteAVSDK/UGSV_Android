@@ -24,34 +24,7 @@ public class XmagicApiWrapper {
         if (isAddDefaultBeauty) {
             commonXmagicApi.updateProperties(XmagicPanelDataManager.getInstance().getDefaultBeautyData());
         }
-        commonXmagicApi.setAIDataListener(new XmagicApi.XmagicAIDataListener() {
-            @Override
-            public void onBodyDataUpdated(Object bodyDataList) {
-//                Log.d(TAG, "onBodyDataUpdated");
-            }
 
-            @Override
-            public void onHandDataUpdated(Object handDataList) {
-//                Log.d(TAG, "onHandDataUpdated");
-            }
-
-            @Override
-            public void onFaceDataUpdated(Object faceDataList) {
-                //日志太多，影响性能，注释掉，需要时再打开
-//                Log.d(TAG, "onFaceDataUpdated");
-            }
-        });
-
-        commonXmagicApi.setYTDataListener(new XmagicApi.XmagicYTDataListener() {
-            @Override
-            public void onYTDataUpdate(String data) {
-//                Log.d(TAG, "onYTDataUpdate，data=" + data);
-                //log太长，需要时请打开下面的开关，写入文件，便于测试
-                if (false) {
-                    writeFaceData(data);
-                }
-            }
-        });
 
         commonXmagicApi.setTipsListener(new XmagicApi.XmagicTipsListener() {
             final XmagicToast mToast = new XmagicToast();
@@ -70,29 +43,6 @@ public class XmagicApiWrapper {
     }
 
 
-    public interface OnCheckBeautyAuthComplete {
-        void onCheckComplete();
-    }
 
-    private static void writeFaceData(String data) {
-        data += "\n";
-        String filePath = "/sdcard/onYTDataUpdate.txt";
-        Log.e(TAG, "writeFaceData: " + filePath);
-        try {
-            File file = new File(filePath);
-            if (!file.exists()) {
-                File dir = new File(file.getParent());
-                dir.mkdirs();
-                file.createNewFile();
-
-            }
-            FileOutputStream outStream = new FileOutputStream(file, true);
-            outStream.write(data.getBytes());
-            outStream.flush();
-            outStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

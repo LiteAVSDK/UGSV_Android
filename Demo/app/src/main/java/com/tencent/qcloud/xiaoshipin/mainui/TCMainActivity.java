@@ -18,11 +18,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.ugckit.PermissionIntroductionDialog;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.xiaoshipin.R;
@@ -111,27 +113,34 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         int lang = TCConfigManager.SystemConfig.getLanguage();
 
         Resources resources = getResources();
-        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         Configuration configuration = resources.getConfiguration();
+        Resources appResources = UGCKit.getAppContext().getResources();
+        Configuration appConfiguration = appResources.getConfiguration();
 
         switch (lang) {
             case TCConfigManager.SystemConfig.Languages.FOLLOW_SYSTEM:
-                configuration.locale = Locale.getDefault();
+                configuration.locale = getDefaultLocal();
+                appConfiguration.locale = getDefaultLocal();
                 break;
             case TCConfigManager.SystemConfig.Languages.SIMPLIFIED_CHINESE:
                 configuration.locale = Locale.SIMPLIFIED_CHINESE;
+                appConfiguration.locale = Locale.SIMPLIFIED_CHINESE;
                 break;
             case TCConfigManager.SystemConfig.Languages.TRADITIONAL_CHINESE:
                 configuration.locale = Locale.TRADITIONAL_CHINESE;
+                appConfiguration.locale = Locale.TRADITIONAL_CHINESE;
                 break;
             case TCConfigManager.SystemConfig.Languages.ENGLISH:
                 configuration.locale = Locale.ENGLISH;
+                appConfiguration.locale = Locale.ENGLISH;
                 break;
             default:
-                configuration.locale = Locale.getDefault();
+                configuration.locale = getDefaultLocal();
+                appConfiguration.locale = getDefaultLocal();
                 break;
         }
-        resources.updateConfiguration(configuration, displayMetrics);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        appResources.updateConfiguration(configuration, appResources.getDisplayMetrics());
     }
 
     private void initView() {
@@ -222,5 +231,10 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         }
         mCurrentFragment = fragment;
         transaction.commit();
+    }
+
+
+    private Locale getDefaultLocal() {
+        return TCConfigManager.getSystemLocal();
     }
 }
