@@ -108,7 +108,7 @@ public class TCVideoTripleScreenActivity
         mCameraPermissionManager.setOnCameraPermissionGrantedListener(this);
         mAudioPermissionManager.setOnAudioPermissionGrantedListener(this);
         mStoragePermissionManager.setOnStoragePermissionGrantedListener(this);
-        mCameraPermissionManager.checkoutIfShowPermissionIntroductionDialog();
+
     }
 
     private void startEditActivity(UGCKitResult ugcKitResult) {
@@ -149,13 +149,10 @@ public class TCVideoTripleScreenActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (PackageManager.PERMISSION_GRANTED == ActivityCompat
-                    .checkSelfPermission(this, Manifest.permission.CAMERA)) {
-                mUGCKitVideoMixRecord.start();
-            }
-        } else {
+        if (hasPermission()) {
             mUGCKitVideoMixRecord.start();
+        } else {
+            mCameraPermissionManager.checkoutIfShowPermissionIntroductionDialog();
         }
     }
 
@@ -210,5 +207,25 @@ public class TCVideoTripleScreenActivity
     @Override
     public void onStoragePermissionGranted() {
 
+    }
+
+    private boolean hasPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.CAMERA)) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                permissions.add(Manifest.permission.RECORD_AUDIO);
+            }
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            return permissions.size() == 0;
+        }
+        return true;
     }
 }

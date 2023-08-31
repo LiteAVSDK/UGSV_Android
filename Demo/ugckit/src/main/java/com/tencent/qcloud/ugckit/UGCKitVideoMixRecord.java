@@ -288,6 +288,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI implements I
         Log.d(TAG, "onRecordStart");
         getTitleBar().setVisible(false, ITitleBarLayout.POSITION.RIGHT);
         getFollowRecordBottomLayout().disableFunction();
+        getFollowRecordBottomLayout().resetSelectDeletePartFlag();
         getFollowRecordRightLayout().setVisibility(View.INVISIBLE);
 
         int retCode = VideoRecordSDK.getInstance().startRecord();

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
+import com.tencent.qcloud.ugckit.module.effect.IFloatLayerView;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
 import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
@@ -54,7 +55,9 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         IPasterPannel.OnItemClickListener,
         IPasterPannel.OnTabChangedListener,
         IPasterPannel.OnAddClickListener,
-        View.OnClickListener, PlayerManagerKit.OnPlayStateListener {
+        View.OnClickListener,
+        PlayerManagerKit.OnPlayStateListener,
+        PlayerManagerKit.OnPreviewListener {
     private final String TAG                         = "TCPasterFragment";
     private final int    MSG_COPY_PASTER_FILES       = 1;
     private final String PASTER_FOLDER_NAME          = "paster";
@@ -91,6 +94,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     private int                                               mCoverIcon;
     private int                                               pasterTextSize;
     private int                                               pasterTextColor;
+    private long                                              mCurrentPosition    = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -199,6 +203,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             }
         }
 
+        PlayerManagerKit.getInstance().addOnPreviewLitener(this);
         mTXVideoEditer = VideoEditerSDK.getInstance().getEditer();
         mDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
         updateDefaultTime();
@@ -208,8 +213,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
      * 根据当前控件数量 更新默认的一个控件开始时间和结束时间
      */
     private void updateDefaultTime() {
-        int count = mFloatLayerViewGroup != null ? mFloatLayerViewGroup.getChildCount() : 0;
-        mDefaultWordStartTime = count * 1000; // 两个之间间隔1秒
+        mDefaultWordStartTime = calculateStartTime();
         mDefaultWordEndTime = mDefaultWordStartTime + 2000;
 
         if (mDefaultWordStartTime > mDuration) {
@@ -218,6 +222,21 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         } else if (mDefaultWordEndTime > mDuration) {
             mDefaultWordEndTime = mDuration;
         }
+    }
+
+    private long calculateStartTime() {
+        long retPosition = mCurrentPosition;
+        int  count       = mFloatLayerViewGroup != null ? mFloatLayerViewGroup.getChildCount() : 0;
+        if (count > 0) {
+            //检查当前position是否存在录制起点, 如果有需要+1s间隔（和历史逻辑保持一致）。不用判断增加1s后是否还有重叠的现象
+            for (int i = 0; i < count; i++) {
+                FloatLayerView floatLayerView = mFloatLayerViewGroup.getOperationView(i);
+                if (retPosition == floatLayerView.getStartTime()) {
+                    retPosition += 1000;
+                }
+            }
+        }
+        return retPosition;
     }
 
     private void initHandler() {
@@ -747,4 +766,19 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
     }
 
+    @Override
+    public void onPreviewProgress(int time) {
+        mCurrentPosition = time;
+    }
+
+    @Override
+    public void onPreviewFinish() {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        PlayerManagerKit.getInstance().removeOnPreviewListener(this);
+    }
 }

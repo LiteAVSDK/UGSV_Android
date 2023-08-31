@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.tencent.qcloud.quic.QuicNative;
 
@@ -18,7 +17,6 @@ public class QuicClient {
 
     private static final String TAG = "QuicClient";
 
-    private static final long QUIC_DETECT_TIME_OUT_TIME = 2000;
     public static final int ERROR_CODE_QUIC_TIME_OUT = -1;
     public static final int ERROR_CODE_QUIC_FAILED = -2;
     public static final int PORT = 443;
@@ -52,7 +50,7 @@ public class QuicClient {
         @Override
         public void onDataReceive(int i, byte[] bytes, int i1) {
             String responseData = new String(bytes, StandardCharsets.ISO_8859_1);
-            Log.d(TAG, mHost + " responseData:" + responseData);
+            TVCLog.i(TAG, mHost + " responseData:" + responseData);
             notifyCallback(true, i1);
         }
 
@@ -113,7 +111,7 @@ public class QuicClient {
             mQuicNative.setCallback(networkCallback);
             reqStartTime = System.currentTimeMillis();
             mQuicNative.connect(mHost, domainIp, PORT, PORT);
-            mHandler.postDelayed(timeOutRunnable, QUIC_DETECT_TIME_OUT_TIME);
+            mHandler.postDelayed(timeOutRunnable, TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT);
         } else {
             notifyCallback(false, ERROR_CODE_QUIC_FAILED);
         }

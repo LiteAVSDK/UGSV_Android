@@ -283,7 +283,7 @@ public class VideoEditerSDK {
     }
 
     public void addEffectDuration(long plus) {
-        mEffectDuration += plus;
+        mEffectDuration = plus;
     }
 
     /**

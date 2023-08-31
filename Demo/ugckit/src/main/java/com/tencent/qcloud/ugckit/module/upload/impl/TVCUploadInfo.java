@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,7 +94,7 @@ public class TVCUploadInfo {
 
     public long getFileSize() {
         if (0 == videoFileSize) {
-            Log.i("getFileSize", "getFileSize: " + filePath);
+            TVCLog.i("getFileSize", "getFileSize: " + filePath);
             File file = new File(filePath);
             try {
                 if (file.exists()) {
@@ -103,7 +102,7 @@ public class TVCUploadInfo {
                     videoFileSize = fis.available();
                 }
             } catch (Exception e) {
-                Log.e("getFileSize", "getFileSize: " + e);
+                TVCLog.e("getFileSize", "getFileSize: " + e);
             }
         }
         return videoFileSize;
@@ -111,7 +110,7 @@ public class TVCUploadInfo {
 
     public long getCoverFileSize() {
         if (0 == coverFileSize) {
-            Log.i("getCoverFileSize", "getCoverFileSize: " + coverPath);
+            TVCLog.i("getCoverFileSize", "getCoverFileSize: " + coverPath);
             File file = new File(coverPath);
             try {
                 if (file.exists()) {
@@ -119,7 +118,7 @@ public class TVCUploadInfo {
                     coverFileSize = fis.available();
                 }
             } catch (Exception e) {
-                Log.e("getCoverFileSize", "getCoverFileSize: " + e);
+                TVCLog.e("getCoverFileSize", "getCoverFileSize: " + e);
             }
         }
         return coverFileSize;

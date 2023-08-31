@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.tencent.qcloud.ugckit.basic.TUIBuild;
 
@@ -87,8 +86,8 @@ public class UGCReport {
 
         @Override
         public String toString() {
-            return "ReportInfo{" +
-                    "reqType=" + reqType +
+            return "ReportInfo{"
+                    + "reqType=" + reqType +
                     ", errCode=" + errCode +
                     ", vodErrCode=" + vodErrCode +
                     ", cosErrCode='" + cosErrCode + '\'' +
@@ -111,8 +110,8 @@ public class UGCReport {
                     ", reporting=" + reporting +
                     ", requestId='" + requestId + '\'' +
                     ", tcpConnTimeCost=" + tcpConnTimeCost +
-                    ", recvRespTimeCost=" + recvRespTimeCost
-                    + ", cosVideoPath="
+                    ", recvRespTimeCost=" + recvRespTimeCost +
+                    ", cosVideoPath="
                     + cosVideoPath
                     + '}';
         }
@@ -198,9 +197,8 @@ public class UGCReport {
     }
 
     public void report(final ReportInfo info) {
-        Log.i(TAG, "report: info = " + info.toString());
+        TVCLog.i(TAG, "report: info = " + info.toString());
         try {
-            String body = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("version", TVCConstants.TVCVERSION);
             jsonObject.put("reqType", info.reqType);
@@ -236,9 +234,9 @@ public class UGCReport {
 
             ++info.retryCount;
             info.reporting = true;
-            body = jsonObject.toString();
+            String body = jsonObject.toString();
             String reqUrl = "https://vodreport.qcloud.com/ugcupload_new";
-            Log.i(TAG, "reportUGCEvent->request url:" + reqUrl + " body:" + body);
+            TVCLog.i(TAG, "reportUGCEvent->request url:" + reqUrl + " body:" + body);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
             Request request = new Request.Builder()
                     .url(reqUrl)
