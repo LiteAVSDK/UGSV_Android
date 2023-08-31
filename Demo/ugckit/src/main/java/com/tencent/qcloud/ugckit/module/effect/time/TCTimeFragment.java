@@ -71,8 +71,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     private View mProgressLayer;
     private ProgressBar mProgressBar;
     private static final int REPEAT_TIMES = 3;
-    private long mSpeedDurationPlus = 0;
-    private long mRepeatDurationPlus = 0;
 
     @Nullable
     @Override
@@ -185,21 +183,19 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setRepeatList(long currentPts) {
-        List<TXVideoEditConstants.TXRepeat> repeatList = new ArrayList<>();
         TXVideoEditConstants.TXRepeat repeat = new TXVideoEditConstants.TXRepeat();
         repeat.startTime = currentPts;
         repeat.endTime = currentPts + DEAULT_REPEAT_DURATION_MS;
         repeat.endTime = Math.min(repeat.endTime, VideoEditerSDK.getInstance().getVideoDuration());
         repeat.repeatTimes = REPEAT_TIMES;
+        List<TXVideoEditConstants.TXRepeat> repeatList = new ArrayList<>();
         repeatList.add(repeat);
         mTXVideoEditer.setRepeatPlay(repeatList);
         //更新设置重复之后的视频时长
-        if (mRepeatDurationPlus > 0) {
-            VideoEditerSDK.getInstance().addEffectDuration(-mRepeatDurationPlus);
-        }
-        mRepeatDurationPlus = (repeat.endTime - repeat.startTime) * (REPEAT_TIMES - 1);
-        VideoEditerSDK.getInstance().addEffectDuration(mRepeatDurationPlus);
-        VideoEditerSDK.getInstance().setEffectDrawWidth(mRepeatDurationPlus + ((repeat.endTime - repeat.startTime)));
+        VideoEditerSDK.getInstance().addEffectDuration(0);
+        long repeatDurationPlus = (repeat.endTime - repeat.startTime) * (REPEAT_TIMES - 1);
+        VideoEditerSDK.getInstance().addEffectDuration(repeatDurationPlus);
+        VideoEditerSDK.getInstance().setEffectDrawWidth(repeatDurationPlus + ((repeat.endTime - repeat.startTime)));
     }
 
     private void initSpeedLayout() {
@@ -230,9 +226,8 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
             return;
         }
         //更新变速之后的视频时长
-        if (mSpeedDurationPlus > 0) {
-            VideoEditerSDK.getInstance().addEffectDuration(-mSpeedDurationPlus);
-        }
+        long speedDurationPlus = 0;
+        VideoEditerSDK.getInstance().addEffectDuration(speedDurationPlus);
 
         final long speedDefaultDuration = 500;
         List<TXVideoEditConstants.TXSpeed> list = new ArrayList<>();
@@ -243,7 +238,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         speed1.endTime = timeline;
         speed1.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 慢速
         list.add(speed1);
-        mSpeedDurationPlus += (speed1.endTime - speed1.startTime) / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
+        speedDurationPlus += (speed1.endTime - speed1.startTime) / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
         Log.i(TAG, "add speed: " + speed1.startTime + "   " + speed1.endTime + " SPEED_LEVEL_SLOW");
 
         TXVideoEditConstants.TXSpeed speed2 = new TXVideoEditConstants.TXSpeed();
@@ -256,7 +251,7 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         if (speedDuration > 0) {
             speed2.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOWEST;                    // 极慢速
             list.add(speed2);
-            mSpeedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOWEST);
+            speedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOWEST);
             Log.i(TAG, "add speed: " + speed2.startTime + "   " + speed2.endTime + " SPEED_LEVEL_SLOWEST");
         }
 
@@ -269,17 +264,17 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         if (speedDuration > 0) {
             speed3.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 极速
             list.add(speed3);
-            mSpeedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
+            speedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
             Log.i(TAG, "add speed: " + speed3.startTime + "   " + speed3.endTime + " SPEED_LEVEL_SLOW");
         }
         // 设入SDK
         mTXVideoEditer.setSpeedList(list);
         //每段变速后的播放时长 - 正常的播放时长
-        mSpeedDurationPlus -= (timeline - startTime);
-        Log.i(TAG, "mSpeedDurationPlus: " + mSpeedDurationPlus
+        speedDurationPlus -= (timeline - startTime);
+        Log.i(TAG, "mSpeedDurationPlus: " + speedDurationPlus
                 + "  duraiton:" + VideoEditerSDK.getInstance().getVideoDuration());
-        VideoEditerSDK.getInstance().setEffectDrawWidth(mSpeedDurationPlus);
-        VideoEditerSDK.getInstance().addEffectDuration(mSpeedDurationPlus);
+        VideoEditerSDK.getInstance().setEffectDrawWidth(speedDurationPlus);
+        VideoEditerSDK.getInstance().addEffectDuration(speedDurationPlus);
     }
 
     public static float getSpeed(int speedLevel) {
@@ -461,15 +456,13 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void cancelSpeedEffect() {
-        VideoEditerSDK.getInstance().addEffectDuration(-mSpeedDurationPlus);
+        VideoEditerSDK.getInstance().addEffectDuration(0);
         mTXVideoEditer.setSpeedList(null);
-        mSpeedDurationPlus = 0;
     }
 
     private void cancelRepeatEffect() {
         mTXVideoEditer.setRepeatPlay(null);
-        VideoEditerSDK.getInstance().addEffectDuration(-mRepeatDurationPlus);
-        mRepeatDurationPlus = 0;
+        VideoEditerSDK.getInstance().addEffectDuration(0);
     }
 
     private void cancelReverseEffect() {

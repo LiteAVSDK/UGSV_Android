@@ -234,4 +234,8 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
     public RecordModeView getRecordModeView() {
         return mRecordModeView;
     }
+
+    public void resetSelectDeletePartFlag() {
+        mIsSelectDeleteLastPartFlag = false;
+    }
 }

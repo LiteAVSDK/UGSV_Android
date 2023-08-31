@@ -1,8 +1,7 @@
 package com.tencent.qcloud.ugckit.module.upload.impl.compute;
 
-import android.util.Log;
-
 import com.tencent.qcloud.core.http.HttpTaskMetrics;
+import com.tencent.qcloud.ugckit.module.upload.impl.TVCLog;
 
 /**
  * 用于统计 Initiate Multipart Upload 请求耗时
@@ -21,9 +20,9 @@ public class TXHttpTaskMetrics extends HttpTaskMetrics {
 
         tcpConnectionTimeCost = TXHttpTaskMetrics.getTCPConnectionTimeCost(this);
 
-        Log.i(TAG, "onDataReady: tcpConnectionTimeCost = " + tcpConnectionTimeCost + " recvRspTimeCost = " + recvRspTimeCost);
+        TVCLog.i(TAG, "onDataReady: tcpConnectionTimeCost = " + tcpConnectionTimeCost + " recvRspTimeCost = " + recvRspTimeCost);
 
-        Log.i(TAG, "onDataReady: " + this.toString());
+        TVCLog.i(TAG, "onDataReady: " + this.toString());
     }
 
     public long getTCPConnectionTimeCost() {

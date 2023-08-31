@@ -67,7 +67,7 @@ public class TripleRecordVideoPicker extends AbsPickerUI implements ActivityComp
 
     private void loadVideoList() {
         mActivity = (Activity) getContext();
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             mHandlder.post(new Runnable() {
                 @Override

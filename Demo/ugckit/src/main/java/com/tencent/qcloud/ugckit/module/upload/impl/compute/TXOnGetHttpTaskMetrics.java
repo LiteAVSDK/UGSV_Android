@@ -1,9 +1,8 @@
 package com.tencent.qcloud.ugckit.module.upload.impl.compute;
 
-import android.util.Log;
-
 import com.tencent.cos.xml.transfer.COSXMLUploadTask;
 import com.tencent.qcloud.core.http.HttpTaskMetrics;
+import com.tencent.qcloud.ugckit.module.upload.impl.TVCLog;
 
 /**
  * 用于统计 UploadService 第一个请求耗时
@@ -30,9 +29,9 @@ public class TXOnGetHttpTaskMetrics implements COSXMLUploadTask.OnGetHttpTaskMet
 
             tcpConnectionTimeCost = TXHttpTaskMetrics.getTCPConnectionTimeCost(httpTaskMetrics);
 
-            Log.i(TAG, "onDataReady: tcpConnectionTimeCost = " + tcpConnectionTimeCost + " recvRspTimeCost = " + recvRspTimeCost);
+            TVCLog.i(TAG, "onDataReady: tcpConnectionTimeCost = " + tcpConnectionTimeCost + " recvRspTimeCost = " + recvRspTimeCost);
 
-            Log.i(TAG, "onDataReady: " + this.toString());
+            TVCLog.i(TAG, "onDataReady: " + this.toString());
         }
     }
 }

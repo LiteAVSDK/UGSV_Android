@@ -166,11 +166,11 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
         isPreviewFinish = true;
         Log.d(TAG, "=====onPreviewFinished=====");
         mCurrentState = PlayState.STATE_NONE;
+        notifyPreviewFinish();
+
         if (!isOnAddingMotion) {
             restartPlay();
         }
-
-        notifyPreviewFinish();
     }
     
     private boolean isOnAddingMotion = false;

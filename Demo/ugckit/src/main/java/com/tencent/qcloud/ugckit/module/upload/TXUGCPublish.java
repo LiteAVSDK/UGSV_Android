@@ -8,10 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCClient;
+import com.tencent.qcloud.ugckit.module.upload.impl.TVCConfig;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCConstants;
+import com.tencent.qcloud.ugckit.module.upload.impl.TVCLog;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadInfo;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadListener;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUtils;
@@ -25,21 +26,24 @@ import java.io.FileOutputStream;
  * 短视频发布接口类
  */
 public class TXUGCPublish {
-    private static final String                                      TAG        = "TXVideoPublish";
-    private static final long                                        COVER_TIME = 500 * 1000;
-    private              Context                                     mContext;
-    private              Handler                                     mHandler;
-    private              TXUGCPublishTypeDef.ITXVideoPublishListener mListener;
-    private              TXUGCPublishTypeDef.ITXMediaPublishListener mMediaListener;
-    private              boolean                                     mPublishing;
-    private              TVCClient                                   mTVCClient = null;
-    private              String                                      mCustomKey = "";
+    private static final String TAG = "TXVideoPublish";
+    private static final long COVER_TIME = 500 * 1000;
+    private Context mContext;
+    private Handler mHandler;
+    private TXUGCPublishTypeDef.ITXVideoPublishListener mListener;
+    private TXUGCPublishTypeDef.ITXMediaPublishListener mMediaListener;
+    private boolean mPublishing;
+    private TVCClient mTVCClient = null;
+    private String mCustomKey = "";
+    private boolean mIsDebug = true;
+    private boolean mIsCancel = false;
 
     public TXUGCPublish(Context context, String customKey) {
         mCustomKey = customKey;
         if (context != null) {
             mContext = context;
             mHandler = new Handler(mContext.getMainLooper());
+            setIsDebug(true);
         }
     }
 
@@ -55,16 +59,24 @@ public class TXUGCPublish {
         mMediaListener = listener;
     }
 
+    /**
+     * 设置是否打印日志
+     */
+    public void setIsDebug(boolean isDebug) {
+        mIsDebug = isDebug;
+        TVCLog.setDebuggable(isDebug, mContext);
+    }
+
     private int publishVideoImpl(TXUGCPublishTypeDef.TXPublishParam param) {
         if (TextUtils.isEmpty(param.videoPath)) {
-            Log.e(TAG, "publishVideo invalid videoPath");
+            TVCLog.e(TAG, "publishVideo invalid videoPath");
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
         }
 
         boolean bVideoFileExist = TVCUtils.isExistsForPathOrUri(mContext, param.videoPath);
 
         if (!bVideoFileExist) {
-            //Log.e(TAG, "publishVideo invalid video file");
+            TVCLog.e(TAG, "publishVideo invalid video file");
             return TVCConstants.ERR_UGC_INVALID_VIDEO_FILE;
         }
 
@@ -72,25 +84,38 @@ public class TXUGCPublish {
         if (!TextUtils.isEmpty(param.coverPath)) {
             coverPath = param.coverPath;
             File file = new File(coverPath);
-            if (!file.exists()) return TVCConstants.ERR_UGC_INVALID_COVER_PATH;
+            if (!file.exists()) {
+                return TVCConstants.ERR_UGC_INVALID_COVER_PATH;
+            }
         }
+
+        TVCConfig tvcConfig = new TVCConfig();
+        tvcConfig.mCustomKey = mCustomKey;
+        tvcConfig.mSignature = param.signature;
+        tvcConfig.mEnableResume = param.enableResume;
+        tvcConfig.mEnableHttps = param.enableHttps;
+        tvcConfig.mVodReqTimeOutInSec = 10;
+        tvcConfig.mSliceSize = param.sliceSize;
+        tvcConfig.mConcurrentCount = param.concurrentCount;
+        tvcConfig.mUploadResumeController = param.uploadResumeController;
+        tvcConfig.mIsDebuggable = mIsDebug;
 
         if (mTVCClient == null) {
-            mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume,
-                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
+            mTVCClient = new TVCClient(mContext, tvcConfig);
         } else {
-            mTVCClient.updateConfig(mCustomKey, param.signature, param.enableResume,
-                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
+            mTVCClient.updateConfig(tvcConfig);
         }
 
-        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath, getFileType(coverPath),
+        final TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath,
+                getFileType(coverPath),
                 coverPath, param.fileName);
 
         if (info.getFileSize() == 0) {
-            Log.e(TAG, "publishVideo invalid videoPath");
+            TVCLog.e(TAG, "publishVideo invalid videoPath");
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
         }
 
+        final long upLoadStartTime = System.currentTimeMillis();
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
             public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
@@ -107,6 +132,7 @@ public class TXUGCPublish {
                                 result.coverURL = coverUrl;
                                 mListener.onPublishComplete(result);
                             }
+                            TVCLog.i(TAG, "upload cost Time:" + (System.currentTimeMillis() - upLoadStartTime));
                         }
                     });
                 }
@@ -159,26 +185,36 @@ public class TXUGCPublish {
      */
     public int publishVideo(final TXUGCPublishTypeDef.TXPublishParam param) {
         if (mPublishing) {
-            Log.e(TAG, "there is existing publish task");
+            TVCLog.e(TAG, "there is existing publish task");
             return TVCConstants.ERR_UGC_PUBLISHING;
         }
 
         if (param == null) {
-            Log.e(TAG, "publishVideo invalid param");
+            TVCLog.e(TAG, "publishVideo invalid param");
             return TVCConstants.ERR_UGC_INVALID_PARAM;
         }
         if (TextUtils.isEmpty(param.signature)) {
-            Log.e(TAG, "publishVideo invalid UGCSignature");
+            TVCLog.e(TAG, "publishVideo invalid UGCSignature");
             return TVCConstants.ERR_UGC_INVALID_SIGNATURE;
         }
         // 正在发布，包含预上传
         mPublishing = true;
+        mIsCancel = false;
         if (param.enablePreparePublish) {
             // 启动预发布初始化，预发布后再开始上传
             TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
                     new TXUGCPublishOptCenter.IPrepareUploadCallback() {
                         @Override
                         public void onFinish() {
+                            if (mIsCancel) {
+                                mIsCancel = false;
+                                TVCLog.i(TAG,"upload is cancel after prepare upload");
+                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
+                                result.retCode = TVCConstants.ERR_USER_CANCEL;
+                                result.descMsg = "request is cancelled by manual pause";
+                                mListener.onPublishComplete(result);
+                                return;
+                            }
                             int ret = publishVideoImpl(param);
                             mPublishing = (ret == TVCConstants.NO_ERROR);
                         }
@@ -194,7 +230,7 @@ public class TXUGCPublish {
 
     private int publishMediaImpl(TXUGCPublishTypeDef.TXMediaPublishParam param) {
         if (TextUtils.isEmpty(param.mediaPath)) {
-            Log.e(TAG, "publishVideo invalid videoPath");
+            TVCLog.e(TAG, "publishVideo invalid videoPath");
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
         }
 
@@ -206,27 +242,37 @@ public class TXUGCPublish {
             e.printStackTrace();
         }
 
-        if (bVideoFileExist == false) {
-            //Log.e(TAG, "publishVideo invalid video file");
+        if (!bVideoFileExist) {
+            TVCLog.e(TAG, "publishVideo invalid video file");
             return TVCConstants.ERR_UGC_INVALID_VIDEO_FILE;
         }
 
+        TVCConfig tvcConfig = new TVCConfig();
+        tvcConfig.mCustomKey = mCustomKey;
+        tvcConfig.mSignature = param.signature;
+        tvcConfig.mEnableResume = param.enableResume;
+        tvcConfig.mEnableHttps = param.enableHttps;
+        tvcConfig.mVodReqTimeOutInSec = 10;
+        tvcConfig.mSliceSize = param.sliceSize;
+        tvcConfig.mConcurrentCount = param.concurrentCount;
+        tvcConfig.mUploadResumeController = param.uploadResumeController;
+        tvcConfig.mIsDebuggable = mIsDebug;
+
         if (mTVCClient == null) {
-            mTVCClient = new TVCClient(mContext, mCustomKey, param.signature, param.enableResume,
-                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
+            mTVCClient = new TVCClient(mContext, tvcConfig);
         } else {
-            mTVCClient.updateConfig(mCustomKey, param.signature, param.enableResume,
-                    param.enableHttps, 10, param.sliceSize, param.concurrentCount, param.uploadResumeController);
+            mTVCClient.updateConfig(tvcConfig);
         }
 
         TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null,
                 param.fileName);
 
         if (info.getFileSize() == 0) {
-            Log.e(TAG, "publishVideo invalid videoPath");
+            TVCLog.e(TAG, "publishVideo invalid videoPath");
             return TVCConstants.ERR_UGC_INVALID_VIDOPATH;
         }
 
+        final long upLoadStartTime = System.currentTimeMillis();
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
             public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
@@ -235,13 +281,15 @@ public class TXUGCPublish {
                         @Override
                         public void run() {
                             if (mMediaListener != null) {
-                                TXUGCPublishTypeDef.TXMediaPublishResult result = new TXUGCPublishTypeDef.TXMediaPublishResult();
+                                TXUGCPublishTypeDef.TXMediaPublishResult result =
+                                        new TXUGCPublishTypeDef.TXMediaPublishResult();
                                 result.retCode = TXUGCPublishTypeDef.PUBLISH_RESULT_OK;
                                 result.descMsg = "publish success";
                                 result.mediaId = fileId;
                                 result.mediaURL = playUrl;
                                 mMediaListener.onMediaPublishComplete(result);
                             }
+                            TVCLog.i(TAG, "upload cost Time:" + (System.currentTimeMillis() - upLoadStartTime));
                         }
                     });
                 }
@@ -256,7 +304,8 @@ public class TXUGCPublish {
                         @Override
                         public void run() {
                             if (mMediaListener != null) {
-                                TXUGCPublishTypeDef.TXMediaPublishResult result = new TXUGCPublishTypeDef.TXMediaPublishResult();
+                                TXUGCPublishTypeDef.TXMediaPublishResult result =
+                                        new TXUGCPublishTypeDef.TXMediaPublishResult();
                                 result.retCode = errCode;
                                 result.descMsg = errMsg;
                                 mMediaListener.onMediaPublishComplete(result);
@@ -294,23 +343,33 @@ public class TXUGCPublish {
      */
     public int publishMedia(final TXUGCPublishTypeDef.TXMediaPublishParam param) {
         if (mPublishing) {
-            Log.e(TAG, "there is existing publish task");
+            TVCLog.e(TAG, "there is existing publish task");
             return TVCConstants.ERR_UGC_PUBLISHING;
         }
         if (param == null) {
-            Log.e(TAG, "publishVideo invalid param");
+            TVCLog.e(TAG, "publishVideo invalid param");
             return TVCConstants.ERR_UGC_INVALID_PARAM;
         }
         if (TextUtils.isEmpty(param.signature)) {
-            Log.e(TAG, "publishVideo invalid UGCSignature");
+            TVCLog.e(TAG, "publishVideo invalid UGCSignature");
             return TVCConstants.ERR_UGC_INVALID_SIGNATURE;
         }
         mPublishing = true;
+        mIsCancel = false;
         if (param.enablePreparePublish) {
             TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
                     new TXUGCPublishOptCenter.IPrepareUploadCallback() {
                         @Override
                         public void onFinish() {
+                            if (mIsCancel) {
+                                mIsCancel = false;
+                                TVCLog.i(TAG,"upload is cancel after prepare upload");
+                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
+                                result.retCode = TVCConstants.ERR_USER_CANCEL;
+                                result.descMsg = "request is cancelled by manual pause";
+                                mListener.onPublishComplete(result);
+                                return;
+                            }
                             int ret = publishMediaImpl(param);
                             mPublishing = (ret == TVCConstants.NO_ERROR);
                         }
@@ -406,7 +465,7 @@ public class TXUGCPublish {
         try {
             File videoFile = new File(videoPath);
             if (!videoFile.exists()) {
-                Log.w(TAG, "record: video file is not exists when record finish");
+                TVCLog.w(TAG, "record: video file is not exists when record finish");
                 return null;
             }
             MediaMetadataRetriever media = new MediaMetadataRetriever();

@@ -102,9 +102,6 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
         mActivity = (FragmentActivity) getContext();
         // 初始化SDK:TXUGCRecord
         VideoRecordSDK.getInstance().initSDK();
-        // 初始化视频草稿箱
-        VideoRecordSDK.getInstance().initRecordDraft(context);
-        VideoRecordSDK.getInstance().deleteAllParts();
         VideoRecordSDK.getInstance().setOnRestoreDraftListener(new VideoRecordSDK.OnRestoreDraftListener() {
             @Override
             public void onDraftProgress(long duration) {
@@ -122,6 +119,8 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
                 getTitleBar().setVisible(enable, ITitleBarLayout.POSITION.RIGHT);
             }
         });
+        // 初始化视频草稿箱
+        VideoRecordSDK.getInstance().initRecordDraft(context);
 
         VideoRecordSDK.getInstance().setVideoRecordListener(this);
         // 点击"下一步"
@@ -400,6 +399,7 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     public void onRecordStart() {
         getRecordRightLayout().setVisibility(View.INVISIBLE);
         getRecordBottomLayout().startRecord();
+        getRecordBottomLayout().resetSelectDeletePartFlag();
         // 开始录制后不能再选择音乐
         getRecordRightLayout().setMusicIconEnable(false);
         // 开始录制后不能切换屏比
@@ -560,9 +560,10 @@ public class UGCKitVideoRecord extends AbsVideoRecordUI implements
     }
 
     /************************************   音效Pannel回调接口 Begin  ********************************************/
-    private float mMicVolume = 1.0f;
+    private float mMicVolume = 0.5f;
     @Override
     public void onMicVolumeChanged(float volume) {
+        this.mMicVolume = volume;
         TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
         if (record != null) {
             record.setMicVolume(volume);

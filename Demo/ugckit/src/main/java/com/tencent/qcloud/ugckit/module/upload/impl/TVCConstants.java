@@ -4,7 +4,7 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "11.2.0.13154";
+    public static final String TVCVERSION = "11.4.0.13189";
     public static       String VOD_SERVER_HOST     = "vod2.qcloud.com";
     public static       String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
 
@@ -17,6 +17,18 @@ public class TVCConstants {
     public static final int NETTYPE_4G   = 2;
     public static final int NETTYPE_3G   = 3;
     public static final int NETTYPE_2G   = 4;
+
+    /**
+     * quic total timeout
+     */
+    public static final long PRE_UPLOAD_QUIC_DETECT_TIMEOUT = 2000;
+    /**
+     *  for connect,read and write
+     */
+    public static final long PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT = 2000;
+    public static final long PRE_UPLOAD_TIMEOUT = 3000;
+    public static final long PRE_UPLOAD_ANA_DNS_TIME_OUT = 2000;
+    public static final int UPLOAD_TIME_OUT_SEC = 120;
 
 
     /************************************************ 客户端错误码 **********************************/
