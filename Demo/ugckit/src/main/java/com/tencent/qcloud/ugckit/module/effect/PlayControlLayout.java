@@ -72,7 +72,7 @@ public class PlayControlLayout extends RelativeLayout implements IPlayControlLay
 
     @Override
     public void onPreviewFinish() {
-
+        mImagePlay.setImageResource(mPlayIcon);
     }
 
     public void updateUIByFragment(int type) {

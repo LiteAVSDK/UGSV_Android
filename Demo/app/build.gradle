@@ -16,7 +16,7 @@ android {
         multiDexEnabled = true
 
         ndk {
-            abiFilters rootProject.ext.ndkAbi
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
 

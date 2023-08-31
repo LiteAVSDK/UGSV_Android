@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -50,9 +49,9 @@ public class TVCDnsCache {
 
     public TVCDnsCache() {
         okHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(5, TimeUnit.SECONDS)    // 设置超时时间
-                .readTimeout(5, TimeUnit.SECONDS)       // 设置读取超时时间
-                .writeTimeout(5, TimeUnit.SECONDS)      // 设置写入超时时间
+                .connectTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)    // 设置超时时间
+                .readTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)       // 设置读取超时时间
+                .writeTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)      // 设置写入超时时间
                 .build();
         cacheMap = new ConcurrentHashMap<String, List<String>>();
         fixCacheMap = new ConcurrentHashMap<String, List<String>>();
@@ -62,7 +61,7 @@ public class TVCDnsCache {
     public boolean freshDomain(final String domain, final Callback callback) {
         if (useProxy()) return false;
         String reqUrl = HTTPDNS_SERVER + domain + "&token=" + HTTPDNS_TOKEN;
-        Log.i(TAG, "freshDNS->request url:" + reqUrl);
+        TVCLog.i(TAG, "freshDNS->request url:" + reqUrl);
         Request request = new Request.Builder()
                 .url(reqUrl)
                 .build();
@@ -73,29 +72,29 @@ public class TVCDnsCache {
                 if (callback != null) {
                     callback.onFailure(call, e);
                 }
-                Log.w(TAG, "freshDNS failed :" + e.getMessage());
+                TVCLog.w(TAG, "freshDNS failed :" + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response != null && response.isSuccessful()) {
                     String ips = response.body().string();
-                    Log.i(TAG, "freshDNS succ :" + ips);
+                    TVCLog.i(TAG, "freshDNS succ :" + ips);
                     if (ips != null && ips.length() != 0) {
                         ArrayList<String> ipLists = new ArrayList<>();
                         if (ips.contains(";")) {
                             String[] ipArray = ips.split(";");
                             for (String ipStr : ipArray) {
                                 if (checkIpValid(ipStr)) {
-                                    Log.i(TAG, "freshDNS add ip :" + ipStr);
+                                    TVCLog.i(TAG, "freshDNS add ip :" + ipStr);
                                     ipLists.add(ipStr);
                                 }
                             }
                         } else if (checkIpValid(ips)) {
-                            Log.i(TAG, "freshDNS add ip :" + ips);
+                            TVCLog.i(TAG, "freshDNS add ip :" + ips);
                             ipLists.add(ips);
                         }
-                        Log.i(TAG, domain + " add ips success, " + ipLists);
+                        TVCLog.i(TAG, domain + " add ips success, " + ipLists);
                         cacheMap.put(domain, ipLists);
                         if (callback != null) {
                             callback.onResponse(call, response);
@@ -159,7 +158,7 @@ public class TVCDnsCache {
                 }
             }
         } catch (UnknownHostException e) {
-            Log.e(TAG, "getIpBySysDns failed:" + e);
+            TVCLog.e(TAG, "getIpBySysDns failed:" + e);
         }
         return ipList;
     }
@@ -179,7 +178,7 @@ public class TVCDnsCache {
         String port = System.getProperty("http.proxyPort");
         if (host != null && port != null) {
             // 使用了本地代理模式
-            Log.i(TAG, "use proxy " + host + ":" + port + ", will not use httpdns");
+            TVCLog.i(TAG, "use proxy " + host + ":" + port + ", will not use httpdns");
             return true;
         }
         return false;

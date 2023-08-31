@@ -18,7 +18,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -98,7 +97,7 @@ public class TVCUtils {
                 fin.close();
             }
         } catch (Exception e) {
-            Log.e(TAG, "read UUID from file failed! reason: " + e.getMessage());
+            TVCLog.e(TAG, "read UUID from file failed! reason: " + e.getMessage());
         }
 
         if (!TextUtils.isEmpty(idfaInSP)) {
@@ -123,7 +122,7 @@ public class TVCUtils {
         }
 
         g_simulate_idfa = idfa;
-        Log.i(TAG, "UUID:" + g_simulate_idfa);
+        TVCLog.i(TAG, "UUID:" + g_simulate_idfa);
         if (idfaInFile == null || !idfaInFile.equals(idfa)) {
             try {
                 //存文件
@@ -138,7 +137,7 @@ public class TVCUtils {
                 fout.write(bytes);
                 fout.close();
             } catch (Exception e) {
-                Log.e(TAG, "write UUID to file failed! reason: " + e.getMessage());
+                TVCLog.e(TAG, "write UUID to file failed! reason: " + e.getMessage());
             }
         }
 

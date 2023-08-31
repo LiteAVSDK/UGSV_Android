@@ -27,7 +27,7 @@ public class PermissionManager {
     public static final String SHARED_PREFERENCE_KEY_STORAGE = "storage";
     public static final String SHARED_PREFERENCE_KEY_AUDIO = "audio";
     public static final String SHARED_PREFERENCE_KEY_CAMERA = "camera";
-    public static final String PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    public static final String PERMISSION_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
     public static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
     public static final String PERMISSION_AUDIO = Manifest.permission.RECORD_AUDIO;
     public static final String SHARED_PREFERENCE_FIRST_START = "FIRST_START";
@@ -130,7 +130,7 @@ public class PermissionManager {
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
-        if (grantResults != null) {
+        if (grantResults.length > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (requestCode == REQUEST_CODE_STORAGE) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -151,7 +151,7 @@ public class PermissionManager {
                 } else if (requestCode == REQUEST_CODE_CAMERA) {
                     if ((grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                         onCameraPermissionGrantedListener.onCameraPermissionGranted();
-                    } else if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    } else {
                         long begin = System.currentTimeMillis();
                         sharedPreferenceUtils.put(SHARED_PREFERENCE_KEY_CAMERA, begin);
                     }

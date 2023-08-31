@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.media.AudioManager;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -185,7 +186,7 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
                 ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                     @Override
                     public void onClick(int which) {
-                        if (ContextCompat.checkSelfPermission(getContext(),
+                        if (Build.VERSION.SDK_INT <= 28 && ContextCompat.checkSelfPermission(getContext(),
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                             ToastUtil.toastLongMessage(getResources().getString(R.string.need_storage_permission));
                         } else {

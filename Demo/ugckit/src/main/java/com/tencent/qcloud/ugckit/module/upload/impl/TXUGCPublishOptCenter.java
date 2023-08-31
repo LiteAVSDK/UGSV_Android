@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -28,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,6 +45,7 @@ public class TXUGCPublishOptCenter {
     private static final String KEY_COS_DOMAIN = "cosDomain";
     private static final String KEY_IS_QUIC = "isQUic";
     private static final String KEY_REQUEST_TIME = "requestTime";
+    private static final long PRE_UPLOAD_TIME_OUT = 8 * 1000;
 
     private class CosRegionInfo {
         private String region = "";
@@ -62,6 +63,7 @@ public class TXUGCPublishOptCenter {
     private UGCClient ugcClient;
     private ConcurrentHashMap<String, Boolean> publishingList;
 
+    private final Handler mProtectHandler = new Handler();
     private final Handler mDetectHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
@@ -92,27 +94,63 @@ public class TXUGCPublishOptCenter {
 
 
     private TXUGCPublishOptCenter() {
-        publishingList = new ConcurrentHashMap<String, Boolean>();
+        publishingList = new ConcurrentHashMap<>();
     }
 
     public interface IPrepareUploadCallback {
         void onFinish();
     }
 
-    public void prepareUpload(final Context context, String signature, IPrepareUploadCallback prepareUploadCallback) {
+    public void prepareUpload(final Context context, String signature,
+                              final IPrepareUploadCallback prepareUploadCallback) {
         this.signature = signature;
         boolean ret = false;
         if (!isInited) {
-            dnsCache = new TVCDnsCache();
-            ret = reFresh(context, prepareUploadCallback);
+            ret = prepareUploadInner(context, prepareUploadCallback);
         }
         if (ret) {
             isInited = true;
         } else {
+            TVCLog.i(TAG, "preUpload is already loading/init/failed, callback it ");
             if (prepareUploadCallback != null) {
                 prepareUploadCallback.onFinish();
             }
         }
+    }
+
+    /**
+     * 预上传初始化
+     */
+    private boolean prepareUploadInner(final Context context, final IPrepareUploadCallback prepareUploadCallback) {
+        dnsCache = new TVCDnsCache();
+        final long startTime = System.currentTimeMillis();
+        final AtomicBoolean isCallback = new AtomicBoolean(false);
+        final Runnable timeOutRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (isCallback.compareAndSet(false, true) && null != prepareUploadCallback) {
+                    TVCLog.w(TAG, "prepareUpload timeOut, make a callback ahead of schedule");
+                    TVCLog.i(TAG, "preloadCostTime " + (System.currentTimeMillis() - startTime));
+                    prepareUploadCallback.onFinish();
+                }
+                isCallback.set(true);
+            }
+        };
+        IPrepareUploadCallback wrapCallback = new IPrepareUploadCallback() {
+            @Override
+            public void onFinish() {
+                mProtectHandler.removeCallbacks(timeOutRunnable);
+                if (isCallback.compareAndSet(false, true) && null != prepareUploadCallback) {
+                    TVCLog.i(TAG, "prepareUpload success, remove timeOut runnable");
+                    TVCLog.i(TAG, "preloadCostTime " + (System.currentTimeMillis() - startTime));
+                    prepareUploadCallback.onFinish();
+                } else {
+                    TVCLog.i(TAG, "prepareUpload was already called, because of timeout");
+                }
+            }
+        };
+        mProtectHandler.postDelayed(timeOutRunnable, PRE_UPLOAD_TIME_OUT);
+        return reFresh(context, wrapCallback);
     }
 
     /**
@@ -123,7 +161,7 @@ public class TXUGCPublishOptCenter {
         final long reqTime = System.currentTimeMillis();
         try {
             Response response = ugcClient.prepareUploadUGC();
-            Log.i(TAG, "prepareUploadUGC resp:" + response.message());
+            TVCLog.i(TAG, "prepareUploadUGC resp:" + response.message());
             if (response.isSuccessful()) {
                 reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
                         TVCConstants.NO_ERROR, "", reqTime, System.currentTimeMillis() - reqTime);
@@ -135,7 +173,7 @@ public class TXUGCPublishOptCenter {
                         "HTTP Code:" + response.code(), reqTime, System.currentTimeMillis() - reqTime);
             }
         } catch (IOException e) {
-            Log.i(TAG, "prepareUploadUGC failed:" + e.getMessage());
+            TVCLog.i(TAG, "prepareUploadUGC failed:" + e.getMessage());
             // 获取预上传失败
             reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
                     TVCConstants.ERROR,
@@ -183,6 +221,7 @@ public class TXUGCPublishOptCenter {
                 if (prepareUploadCallback != null) {
                     prepareUploadCallback.onFinish();
                 }
+
             }
 
             @Override
@@ -208,7 +247,7 @@ public class TXUGCPublishOptCenter {
     }
 
     private synchronized void parsePrepareUploadResp(Context context, String rspString) {
-        Log.i(TAG, "parsePrepareUploadRsp->response is " + rspString);
+        TVCLog.i(TAG, "parsePrepareUploadRsp->response is " + rspString);
         if (TextUtils.isEmpty(rspString)) {
             return;
         }
@@ -236,19 +275,25 @@ public class TXUGCPublishOptCenter {
             JSONArray cosArray = dataRsp.optJSONArray("cosRegionList");
 
             if (cosArray == null || cosArray.length() <= 0) {
-                Log.e(TAG, "parsePrepareUploadRsp , cosRegionList is null!");
+                TVCLog.e(TAG, "parsePrepareUploadRsp , cosRegionList is null!");
                 return;
+            }
+            CountDownLatch getCosIpLatch = new CountDownLatch(cosArray.length());// 设置计数值
+            int cosIpFetchMaxThreadCount = Math.min(cosArray.length(), 8);
+            ExecutorService getCosIpExec = Executors.newFixedThreadPool(cosIpFetchMaxThreadCount); // 创建线程池
+            fetchCosIp(cosArray, getCosIpLatch, getCosIpExec);
+            try {
+                getCosIpLatch.await();// 等待所有线程完成操作
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             CountDownLatch latch = new CountDownLatch(cosArray.length() * 2);// 设置计数值
             int maxThreadCount = Math.min(cosArray.length() * 2, 8);
             ExecutorService exec = Executors.newFixedThreadPool(maxThreadCount); // 创建线程池
-
             final long reqTime = System.currentTimeMillis();
-
             //探测quic
             detectQuicNet(cosArray, context, latch, exec);
-
             //最优园区探测
             detectBestCos(cosArray, latch, exec);
 
@@ -264,7 +309,23 @@ public class TXUGCPublishOptCenter {
                     TextUtils.isEmpty(bestCosInfo.region) ? "" : bestCosInfo.domain + "|" + bestCosInfo.region, reqTime,
                     System.currentTimeMillis() - reqTime);
         } catch (JSONException e) {
-            Log.e(TAG, e.toString());
+            TVCLog.e(TAG, e.toString());
+        }
+    }
+
+    private void fetchCosIp(final JSONArray cosArray, final CountDownLatch latch, ExecutorService exec)
+            throws JSONException {
+        for (int i = 0; i < cosArray.length(); ++i) {
+            final JSONObject cosInfoJsonObject = cosArray.getJSONObject(i);
+            exec.execute(new Runnable() {
+                @Override
+                public void run() {
+                    final String ips = cosInfoJsonObject.optString("ip", "");
+                    final String domain = cosInfoJsonObject.optString("domain", "");
+                    getCosDNS(domain, ips);
+                    latch.countDown();
+                }
+            });
         }
     }
 
@@ -277,7 +338,7 @@ public class TXUGCPublishOptCenter {
         QuicConfig quicConfig = new QuicConfig();
         quicConfig.setCustomProtocol(false);
         quicConfig.setRaceType(QuicConfig.RACE_TYPE_ONLY_QUIC);
-        quicConfig.setTotalTimeoutSec(2);
+        quicConfig.setTotalTimeoutSec((int) (TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT / 1000L));
         QuicProxy.setTnetConfig(quicConfig);
 
         for (int i = 0; i < cosArray.length(); ++i) {
@@ -288,15 +349,12 @@ public class TXUGCPublishOptCenter {
                 public void run() {
                     final String domain = cosInfoJsonObject.optString("domain", "");
                     final String region = cosInfoJsonObject.optString("region", "");
-                    String ips = cosInfoJsonObject.optString("ip", "");
-                    // 1、获取cos 的iplist
-                    getCosDNS(domain, ips);
                     if (!TextUtils.isEmpty(domain)) {
                         QuicClient quicClient = new QuicClient(context);
                         quicClient.detectQuic(domain, new QuicClient.QuicDetectListener() {
                             @Override
                             public void onQuicDetectDone(boolean isQuic, long requestTime, int errorCode) {
-                                Log.i(TAG, "detectQuicNet domain = " + domain
+                                TVCLog.i(TAG, "detectQuicNet domain = " + domain
                                         + ", region = " + region
                                         + ", timeCos = " + requestTime
                                         + ", errorCode = " + errorCode
@@ -311,6 +369,9 @@ public class TXUGCPublishOptCenter {
                 }
             });
         }
+
+        quicConfig.setTotalTimeoutSec(TVCConstants.UPLOAD_TIME_OUT_SEC);
+        QuicProxy.setTnetConfig(quicConfig);
     }
 
     private void detectBestCos(JSONArray cosArray, final CountDownLatch latch,
@@ -323,11 +384,8 @@ public class TXUGCPublishOptCenter {
                     String region = cosInfoJsonObject.optString("region", "");
                     String domain = cosInfoJsonObject.optString("domain", "");
                     int isAcc = cosInfoJsonObject.optInt("isAcc", 0);
-                    String ips = cosInfoJsonObject.optString("ip", "");
                     if (!TextUtils.isEmpty(region) && !TextUtils.isEmpty(domain)) {
-                        // 1、获取cos 的iplist
-                        getCosDNS(domain, ips);
-                        // 2、探测最优园区
+                        // 、探测最优园区
                         detectBestCosIP(domain, region);
                     }
                     latch.countDown();
@@ -345,11 +403,10 @@ public class TXUGCPublishOptCenter {
                 long endTS = System.currentTimeMillis();
                 long timeCost = endTS - beginTS;
 
-                Log.i(TAG, "detectBestCosIP domain = " + domain
+                TVCLog.i(TAG, "detectBestCosIP domain = " + domain
                         + ", region = " + region
                         + ", timeCos = " + timeCost
                         + ", response.code = " + response.code());
-
                 sendToCompareCos(domain, region, timeCost, false);
             }
         } catch (IOException e) {
@@ -379,7 +436,7 @@ public class TXUGCPublishOptCenter {
                 bestCosInfo.domain = domain;
                 bestCosInfo.isQuic = isQuic;
 
-                Log.i(TAG, "detectBestCosIP bestCosDomain = " + bestCosInfo.domain
+                TVCLog.i(TAG, "detectBestCosIP bestCosDomain = " + bestCosInfo.domain
                         + ", bestCosRegion = " + bestCosInfo.region
                         + ", timeCos = " + minCosRespTime
                         + ", isQuic = " + isQuic);
@@ -429,10 +486,10 @@ public class TXUGCPublishOptCenter {
     public List<String> query(String host) {
         if (dnsCache != null) {
             List<String> ipList = dnsCache.query(host);
-            Log.d(TAG, "query domain" + host + ",result:" + ipList);
+            TVCLog.i(TAG, "query domain" + host + ",result:" + ipList);
             return ipList;
         } else {
-            Log.d(TAG, "query domain" + host + ",result null");
+            TVCLog.i(TAG, "query domain" + host + ",result null");
             return null;
         }
     }

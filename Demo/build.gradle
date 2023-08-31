@@ -54,7 +54,6 @@ ext {
     versionName = "v1.1"
     proguard = true
     rootPrj = "$projectDir/.."
-    ndkAbi = 'armeabi-v7a'
     if (!liteavSourcePath.isEmpty() || !liteavRefactorSourcePath.isEmpty()) {
     liteavSdk="com.tencent.liteav:LiteAVSDK_UGC:latest.release"
     } else {

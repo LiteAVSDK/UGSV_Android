@@ -293,4 +293,8 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     public RecordSpeedLayout getRecordSpeedLayout() {
         return mRecordSpeedLayout;
     }
+
+    public void resetSelectDeletePartFlag() {
+        isSelectDeleteLastPartFlag = false;
+    }
 }
