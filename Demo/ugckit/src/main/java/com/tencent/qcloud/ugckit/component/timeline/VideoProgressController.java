@@ -1,16 +1,16 @@
 package com.tencent.qcloud.ugckit.component.timeline;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.ugc.TXVideoEditer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,25 +19,24 @@ public class VideoProgressController {
     private final String TAG = "VideoProgressController";
 
     private VideoProgressView mVideoProgressView;
-    private RecyclerView      mRecyclerView;
+    private RecyclerView mRecyclerView;
     @Nullable
-    private ColorfulProgress  mColorfulProgress;
+    private ColorfulProgress mColorfulProgress;
 
-    private boolean                        mIsTouching;
-    private boolean                        mIsRangeSliderChanged;
-    private int                            mThumbnailNum;
-    private int                            mScrollState;
-    private long                           mCurrentTimeMs;
-    private float                          mCurrentScroll;
-    private float                          mThumbnailPicListDisplayWidth; // 视频缩略图列表的宽度
-    private float                          mVideoProgressDisplayWidth; // 视频进度条可显示宽度
-    private VideoProgressSeekListener      mVideoProgressSeekListener;
-    private HashMap<Integer, List>         mRangeSliderViewContainerHashmap; // 分类的范围块view
+    private boolean mIsTouching;
+    private boolean mIsRangeSliderChanged;
+    private int mThumbnailNum;
+    private int mScrollState;
+    private long mCurrentTimeMs;
+    private float mCurrentScroll;
+    private float mThumbnailPicListDisplayWidth; // 视频缩略图列表的宽度
+    private float mVideoProgressDisplayWidth; // 视频进度条可显示宽度
+    private VideoProgressSeekListener mVideoProgressSeekListener;
+    private HashMap<Integer, List> mRangeSliderViewContainerHashmap; // 分类的范围块view
     private List<RangeSliderViewContainer> mRangeSliderViewContainerList; // 所有的范围块view
-    private List<SliderViewContainer>      mSliderViewContainerList;
+    private List<SliderViewContainer> mSliderViewContainerList;
 
-    public VideoProgressController() {
-    }
+    public VideoProgressController() {}
 
     public void setVideoProgressDisplayWidth(int width) {
         mVideoProgressDisplayWidth = width;
@@ -62,7 +61,8 @@ public class VideoProgressController {
         });
     }
 
-    public void addRangeSliderView(int type, @Nullable final RangeSliderViewContainer rangeSliderView) {
+    public void addRangeSliderView(
+            int type, @Nullable final RangeSliderViewContainer rangeSliderView) {
         if (rangeSliderView == null) {
             Log.e(TAG, "addRangeSliderView, rangeSliderView is null !");
             return;
@@ -73,7 +73,8 @@ public class VideoProgressController {
         if (mRangeSliderViewContainerHashmap == null) {
             mRangeSliderViewContainerHashmap = new HashMap<>();
         }
-        List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
+        List<RangeSliderViewContainer> rangeSliderViewContainerList =
+                mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null) {
             rangeSliderViewContainerList = new ArrayList<>();
         }
@@ -129,10 +130,12 @@ public class VideoProgressController {
             return null;
         }
         if (mRangeSliderViewContainerList == null || mRangeSliderViewContainerList.size() == 0) {
-            Log.e(TAG, "removeRangeSliderView(type, index), mRangeSliderViewContainerList is empty");
+            Log.e(TAG,
+                    "removeRangeSliderView(type, index), mRangeSliderViewContainerList is empty");
             return null;
         }
-        List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
+        List<RangeSliderViewContainer> rangeSliderViewContainerList =
+                mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null || rangeSliderViewContainerList.size() == 0) {
             Log.e(TAG, "removeRangeSliderView(type, index), rangeSliderViewContainerList is empty");
             return null;
@@ -148,7 +151,8 @@ public class VideoProgressController {
         if (index < 0) {
             return null;
         }
-        if (mRangeSliderViewContainerList != null && index < mRangeSliderViewContainerList.size() && index >= 0) {
+        if (mRangeSliderViewContainerList != null && index < mRangeSliderViewContainerList.size()
+                && index >= 0) {
             return mRangeSliderViewContainerList.get(index);
         }
         return null;
@@ -163,7 +167,8 @@ public class VideoProgressController {
             Log.e(TAG, "getRangeSliderView(type, index), mRangeSliderViewContainerHashmap is null");
             return null;
         }
-        List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
+        List<RangeSliderViewContainer> rangeSliderViewContainerList =
+                mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null || rangeSliderViewContainerList.size() == 0) {
             Log.e(TAG, "getRangeSliderView(type, index), rangeSliderViewContainer is empty");
             return null;
@@ -177,7 +182,8 @@ public class VideoProgressController {
             Log.e(TAG, "showAllRangeSliderView(type), mRangeSliderViewContainerHashmap is null");
             return;
         }
-        List<RangeSliderViewContainer> rangeSliderViewContainerList = mRangeSliderViewContainerHashmap.get(type);
+        List<RangeSliderViewContainer> rangeSliderViewContainerList =
+                mRangeSliderViewContainerHashmap.get(type);
         if (rangeSliderViewContainerList == null || rangeSliderViewContainerList.size() == 0) {
             Log.e(TAG, "showAllRangeSliderView(type), rangeSliderViewContainer is empty");
             return;
@@ -212,7 +218,8 @@ public class VideoProgressController {
         if (mColorfulProgress == null) {
             return;
         }
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mColorfulProgress.getLayoutParams();
+        ViewGroup.MarginLayoutParams layoutParams =
+                (ViewGroup.MarginLayoutParams) mColorfulProgress.getLayoutParams();
         layoutParams.leftMargin = calculateColorfulProgressOffset();
         mColorfulProgress.requestLayout();
     }
@@ -274,12 +281,14 @@ public class VideoProgressController {
     }
 
     int calculateStartViewPosition(@NonNull RangeSliderViewContainer rangeSliderView) {
-        return (int) (mVideoProgressDisplayWidth / 2 - rangeSliderView.getStartView().getMeasuredWidth()
+        return (int) (mVideoProgressDisplayWidth / 2
+                - rangeSliderView.getStartView().getMeasuredWidth()
                 + duration2Distance(rangeSliderView.getStartTimeUs()) - mCurrentScroll);
     }
 
     int calculateSliderViewPosition(@NonNull SliderViewContainer sliderViewContainer) {
-        return (int) (mVideoProgressDisplayWidth / 2 + duration2Distance(sliderViewContainer.getStartTimeMs()) - mCurrentScroll);
+        return (int) (mVideoProgressDisplayWidth / 2
+                + duration2Distance(sliderViewContainer.getStartTimeMs()) - mCurrentScroll);
     }
 
     int calculateColorfulProgressOffset() {
@@ -353,13 +362,17 @@ public class VideoProgressController {
 
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        Log.i(TAG, "onScrollStateChanged, state idle, mCurrentTimeMs = " + mCurrentTimeMs);
+                        Log.i(TAG,
+                                "onScrollStateChanged, state idle, mCurrentTimeMs = "
+                                        + mCurrentTimeMs);
 
                         if (mVideoProgressSeekListener != null) {
                             mVideoProgressSeekListener.onVideoProgressSeekFinish(mCurrentTimeMs);
                         }
-                        if (mRangeSliderViewContainerList != null && mRangeSliderViewContainerList.size() > 0) {
-                            for (RangeSliderViewContainer rangeSliderView : mRangeSliderViewContainerList) {
+                        if (mRangeSliderViewContainerList != null
+                                && mRangeSliderViewContainerList.size() > 0) {
+                            for (RangeSliderViewContainer rangeSliderView :
+                                    mRangeSliderViewContainerList) {
                                 rangeSliderView.changeStartViewLayoutParams();
                             }
                         }
@@ -369,8 +382,10 @@ public class VideoProgressController {
                             changeColorfulProgressOffset();
                         }
 
-                        if (mSliderViewContainerList != null && mSliderViewContainerList.size() > 0) {
-                            for (SliderViewContainer sliderViewContainer : mSliderViewContainerList) {
+                        if (mSliderViewContainerList != null
+                                && mSliderViewContainerList.size() > 0) {
+                            for (SliderViewContainer sliderViewContainer :
+                                    mSliderViewContainerList) {
                                 sliderViewContainer.changeLayoutParams();
                             }
                         }
@@ -391,14 +406,17 @@ public class VideoProgressController {
                 long totalDuration = VideoEditerSDK.getInstance().getVideoPlayDuration();
                 long currentTimeUs = (long) (rate * totalDuration);
 
-                if (mIsTouching || mIsRangeSliderChanged || mScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    mIsRangeSliderChanged = false; // 由于范围改变引起的，回调给界面后保证能单帧预览，之后马上重置
+                if (mIsTouching || mIsRangeSliderChanged
+                        || mScrollState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    mIsRangeSliderChanged =
+                            false; // 由于范围改变引起的，回调给界面后保证能单帧预览，之后马上重置
                     if (mVideoProgressSeekListener != null) {
                         mVideoProgressSeekListener.onVideoProgressSeek(currentTimeUs);
                     }
                 }
                 mCurrentTimeMs = currentTimeUs;
-                if (mRangeSliderViewContainerList != null && mRangeSliderViewContainerList.size() > 0) {
+                if (mRangeSliderViewContainerList != null
+                        && mRangeSliderViewContainerList.size() > 0) {
                     for (RangeSliderViewContainer rangeSliderView : mRangeSliderViewContainerList) {
                         rangeSliderView.changeStartViewLayoutParams();
                     }
@@ -446,11 +464,11 @@ public class VideoProgressController {
     public float getThumbnailPicListDisplayWidth() {
         mThumbnailNum = mVideoProgressView.getThumbnailCount();
         float thumbnailWidth = mThumbnailNum * mVideoProgressView.getSingleThumbnailWidth();
-//        if (mSliderViewContainerList != null && mSliderViewContainerList.size() > 0) {
-//            for (SliderViewContainer sliderViewContainer : mSliderViewContainerList) {
-//                sliderViewContainer.changeLayoutParams();
-//            }
-//        }
+        //        if (mSliderViewContainerList != null && mSliderViewContainerList.size() > 0) {
+        //            for (SliderViewContainer sliderViewContainer : mSliderViewContainerList) {
+        //                sliderViewContainer.changeLayoutParams();
+        //            }
+        //        }
         mThumbnailPicListDisplayWidth = thumbnailWidth;
         return mThumbnailPicListDisplayWidth;
     }
@@ -460,5 +478,4 @@ public class VideoProgressController {
 
         void onVideoProgressSeekFinish(long currentTimeMs);
     }
-
 }

@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 
 import com.tencent.xmagic.demo.R;
-
 
 public class XmagicSeekBarLayout extends RelativeLayout {
     private TextView powerTxt = null;
@@ -34,10 +32,10 @@ public class XmagicSeekBarLayout extends RelativeLayout {
         this.initViews();
     }
 
-
     private void initViews() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        ViewGroup view = (ViewGroup) layoutInflater.inflate(R.layout.xmagic_seekbar_layout, this, false);
+        ViewGroup view =
+                (ViewGroup) layoutInflater.inflate(R.layout.xmagic_seekbar_layout, this, false);
         powerTxt = view.findViewById(R.id.power_text);
         xmagicSeekBar = view.findViewById(R.id.seekBar);
         currentTxt = view.findViewById(R.id.currentValue);
@@ -55,17 +53,12 @@ public class XmagicSeekBarLayout extends RelativeLayout {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
-
 
     public void setProgress(int displayMinValue, int displayMaxValue, int currentValue) {
         xmagicSeekBar.setMyMin(displayMinValue);
@@ -74,7 +67,6 @@ public class XmagicSeekBarLayout extends RelativeLayout {
         currentTxt.setText(String.valueOf(currentValue));
     }
 
-
     public void setOnSeekBarChangeListener(OnSeekBarChangeListener onSeekBarChangeListener) {
         this.onSeekBarChangeListener = onSeekBarChangeListener;
     }
@@ -82,6 +74,4 @@ public class XmagicSeekBarLayout extends RelativeLayout {
     public interface OnSeekBarChangeListener {
         void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser);
     }
-
-
 }

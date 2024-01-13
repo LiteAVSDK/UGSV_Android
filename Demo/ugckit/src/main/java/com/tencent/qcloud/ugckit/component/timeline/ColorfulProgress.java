@@ -4,11 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
 
@@ -16,15 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorfulProgress extends View {
-
-    private Paint          mPaint;
-    private Paint          mColorPaint;
-    private RectF          mViewRectf;
-    private RectF          mColorRectf;
-    private float          mWidth;
-    private float          mHeight;
+    private Paint mPaint;
+    private Paint mColorPaint;
+    private RectF mViewRectf;
+    private RectF mColorRectf;
+    private float mWidth;
+    private float mHeight;
     private List<MarkInfo> mMarkInfoList;
-    private float          mCurPositioin;
+    private float mCurPositioin;
 
     private VideoProgressController mVideoProgressController;
 
@@ -32,7 +30,6 @@ public class ColorfulProgress extends View {
         super(context);
         init();
     }
-
 
     public ColorfulProgress(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -176,9 +173,9 @@ public class ColorfulProgress extends View {
     }
 
     public static class MarkInfo {
-        public  int   color;
-        public  long  startTimeMs;
-        public  float left  = -1;
+        public int color;
+        public long startTimeMs;
+        public float left = -1;
         private float right = -1;
     }
 }

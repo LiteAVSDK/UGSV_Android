@@ -33,5 +33,4 @@ public interface IRecordSpeedLayout {
      * 文字颜色(普通状态/选中状态)
      */
     void setSpeedTextColor(ColorStateList color);
-
 }

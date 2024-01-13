@@ -29,8 +29,8 @@ public class XmagicUIProperty<V> {
      * @param effKey
      * @param value
      */
-    public XmagicUIProperty(UICategory category, String displayName, String id, String resPath
-            , int thumbDrawable, String effKey, V value) {
+    public XmagicUIProperty(UICategory category, String displayName, String id, String resPath,
+            int thumbDrawable, String effKey, V value) {
         property = new XmagicProperty<>(category.getXmagicCategory(), id, resPath, effKey, value);
         this.displayName = displayName;
         this.thumbDrawable = thumbDrawable;
@@ -49,15 +49,14 @@ public class XmagicUIProperty<V> {
      * @param value
      * @param rootDisplayName
      */
-    public XmagicUIProperty(UICategory category, String displayName, String id, String resPath, int thumbDrawable
-            , String effKey, V value, String rootDisplayName) {
+    public XmagicUIProperty(UICategory category, String displayName, String id, String resPath,
+            int thumbDrawable, String effKey, V value, String rootDisplayName) {
         property = new XmagicProperty<>(category.getXmagicCategory(), id, resPath, effKey, value);
         this.displayName = displayName;
         this.thumbDrawable = thumbDrawable;
         this.uiCategory = category;
         this.rootDisplayName = rootDisplayName;
     }
-
 
     /**
      * 美颜构造函数
@@ -68,7 +67,8 @@ public class XmagicUIProperty<V> {
      * @param effKey
      * @param value
      */
-    public XmagicUIProperty(UICategory category, String displayName, int thumbDrawable, String effKey, V value) {
+    public XmagicUIProperty(
+            UICategory category, String displayName, int thumbDrawable, String effKey, V value) {
         this(category, displayName, null, null, thumbDrawable, effKey, value);
     }
 
@@ -103,17 +103,22 @@ public class XmagicUIProperty<V> {
         public String getDescription() {
             switch (UICategory.this) {
                 case BEAUTY:
-                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_beauty);
+                    return XMagicImpl.applicationContext.getString(
+                            R.string.xmagic_panel_tab_beauty);
                 case BODY_BEAUTY:
-                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_body_beauty);
+                    return XMagicImpl.applicationContext.getString(
+                            R.string.xmagic_panel_tab_body_beauty);
                 case LUT:
                     return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_lut);
                 case SEGMENTATION:
-                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_segmentation);
+                    return XMagicImpl.applicationContext.getString(
+                            R.string.xmagic_panel_tab_segmentation);
                 case MOTION:
-                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_motion);
+                    return XMagicImpl.applicationContext.getString(
+                            R.string.xmagic_panel_tab_motion);
                 case MAKEUP:
-                    return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_makeup);
+                    return XMagicImpl.applicationContext.getString(
+                            R.string.xmagic_panel_tab_makeup);
                 default:
                     return XMagicImpl.applicationContext.getString(R.string.xmagic_panel_tab_kv);
             }

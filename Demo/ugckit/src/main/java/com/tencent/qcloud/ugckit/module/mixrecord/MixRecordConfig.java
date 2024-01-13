@@ -8,27 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MixRecordConfig extends UGCKitRecordConfig {
-
-    private String           mRecordPath;           // 视频录制的路径
-    private long             mDuration;            // 跟拍视频的时长
-    private int              mFps;                 // 跟拍视频的视频帧率
-    private int              mRecordIndex;         // 录制视频序号
-    private int              mWidth;
-    private int              mHeight;
-    private List<String>     mPlayPath;  // 跟拍视频的路径
+    private String mRecordPath; // 视频录制的路径
+    private long mDuration; // 跟拍视频的时长
+    private int mFps; // 跟拍视频的视频帧率
+    private int mRecordIndex; // 录制视频序号
+    private int mWidth;
+    private int mHeight;
+    private List<String> mPlayPath; // 跟拍视频的路径
     private ArrayList<Float> mVolumes;
 
-    public MixRecordConfig() {
-    }
+    public MixRecordConfig() {}
 
-    public void setInfo(List<String> videoPaths, int recordIndex, int width, int height, int recordAspect) {
+    public void setInfo(
+            List<String> videoPaths, int recordIndex, int width, int height, int recordAspect) {
         mPlayPath = new ArrayList<>();
         mDuration = Integer.MAX_VALUE;
         mFPS = Integer.MAX_VALUE;
         float ratio = Float.MAX_VALUE;
         for (int i = 0; i < videoPaths.size(); i++) {
             String path = videoPaths.get(i);
-            TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance().getVideoFileInfo(path);
+            TXVideoEditConstants.TXVideoInfo info =
+                    TXVideoInfoReader.getInstance().getVideoFileInfo(path);
             mPlayPath.add(path);
             if (info.fps < mFps) {
                 mFps = (int) info.fps;
@@ -36,18 +36,18 @@ public class MixRecordConfig extends UGCKitRecordConfig {
             if (info.duration < mDuration) {
                 mDuration = info.duration;
             }
-//            if(ratio > (info.width*1.0f/info.height)){
-//                mWidth = info.width;
-//                mHeight = info.height;
-//                ratio = (info.width*1.0f/info.height);
-//            }
+            //            if(ratio > (info.width*1.0f/info.height)){
+            //                mWidth = info.width;
+            //                mHeight = info.height;
+            //                ratio = (info.width*1.0f/info.height);
+            //            }
         }
         mRecordIndex = recordIndex;
         mMaxDuration = (int) mDuration;
         mFPS = mFps;
         mWidth = width;
         mHeight = height;
-        mAspectRatio = recordAspect;//TXRecordCommon.VIDEO_ASPECT_RATIO_16_9
+        mAspectRatio = recordAspect; // TXRecordCommon.VIDEO_ASPECT_RATIO_16_9
         mVolumes = new ArrayList<>(videoPaths.size() + 1);
         for (int j = 0; j < videoPaths.size() + 1; j++) {
             mVolumes.add(1.0f);
@@ -77,7 +77,8 @@ public class MixRecordConfig extends UGCKitRecordConfig {
         if (index >= mRecordIndex) {
             index -= 1;
         }
-        TXVideoEditConstants.TXVideoInfo info = TXVideoInfoReader.getInstance().getVideoFileInfo(path);
+        TXVideoEditConstants.TXVideoInfo info =
+                TXVideoInfoReader.getInstance().getVideoFileInfo(path);
         mPlayPath.set(index, path);
         if (info.fps < mFps) {
             mFps = (int) info.fps;
@@ -87,12 +88,11 @@ public class MixRecordConfig extends UGCKitRecordConfig {
         }
         mMaxDuration = (int) mDuration;
         mFPS = mFps;
-//        if((mWidth*1.0/mHeight) > (info.width*1.0f/info.height)  ){
-//            mWidth = info.width;
-//            mHeight = info.height;
-//        }
+        //        if((mWidth*1.0/mHeight) > (info.width*1.0f/info.height)  ){
+        //            mWidth = info.width;
+        //            mHeight = info.height;
+        //        }
     }
-
 
     public void setRecordPath(String path) {
         mRecordPath = path;
@@ -120,7 +120,7 @@ public class MixRecordConfig extends UGCKitRecordConfig {
     }
 
     public int getWidth() {
-        return mWidth;//
+        return mWidth; //
     }
 
     public int getHeight() {

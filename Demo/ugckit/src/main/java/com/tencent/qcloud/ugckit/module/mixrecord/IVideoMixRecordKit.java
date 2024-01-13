@@ -33,13 +33,15 @@ import java.util.List;
  *         List<String> paths = new ArrayList<>();
  *         paths.add(mFollowShotVideoPath);
  *         mUGCKitVideoFollowRecord.setMixRecordInfo(paths,0,720*2,1280,TXRecordCommon.VIDEO_ASPECT_RATIO_9_16);
- *         mUGCKitVideoFollowRecord.getTitleBar().setOnBackClickListener(new View.OnClickListener() {
+ *         mUGCKitVideoFollowRecord.getTitleBar().setOnBackClickListener(new View.OnClickListener()
+ *{
  *             @Override
  *             public void onClick(View v) {
  *                 finish();
  *             }
  *         });
- *         mUGCKitVideoFollowRecord.setOnMixRecordListener(new IVideoMixRecordKit.OnMixRecordListener() {
+ *         mUGCKitVideoFollowRecord.setOnMixRecordListener(new
+ *IVideoMixRecordKit.OnMixRecordListener() {
  *             @Override
  *             public void onMixRecordCanceled() {
  *                 finish();
@@ -51,11 +53,11 @@ import java.util.List;
  *             }
  *
  *             @Override
- *             public void onMixRecordAction(IVideoMixRecordKit.MixRecordActionT actionT, Object object) {
- *                 if(actionT== IVideoMixRecordKit.MixRecordActionT.MIX_RECORD_ACTION_T_SELECT){
+ *             public void onMixRecordAction(IVideoMixRecordKit.MixRecordActionT actionT, Object
+ *object) { if(actionT== IVideoMixRecordKit.MixRecordActionT.MIX_RECORD_ACTION_T_SELECT){
  *                     MixRecordActionData data =(MixRecordActionData)object;
- *                     Intent intent = new Intent(TCVideoFollowRecordActivity.this, TCTripleRecordVideoPickerActivity.class);
- *                     startActivityForResult(intent,REQUEST_CODE);
+ *                     Intent intent = new Intent(TCVideoFollowRecordActivity.this,
+ *TCTripleRecordVideoPickerActivity.class); startActivityForResult(intent,REQUEST_CODE);
  *                 }
  *             }
  *         });
@@ -81,14 +83,16 @@ import java.util.List;
  * </pre>
  * <p>
  * UGCKit视频合唱模块的生命周期方法<br>
- * 1、当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}初始化合唱配置，打开合唱预览界面，
- * 其中包括 左边"录制的摄像头预览界面"和右侧"跟拍视频的播放界面"<br>
- * 2、当Activity执行生命周期方法{@code onStop()}时，UGCKit需要执行{@link #stop()}暂停合唱功能，包括关闭视频录制预览界面，暂停视频录制；停止播放跟拍视频<br>
- * 3、当Activity执行生命周期方法{@code onDestroy()}时，UGCKit视频录制需要执行{@link #release()}来释放资源<br>
- * 4、当您开启Activity 的界面旋转后，Activity执行生命周期方法{@code onConfigurationChanged()}时，UGCKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
- * 5、当Activity执行 {@code stopPlay()} 时，UGCKit需要执行{@link #backPressed()} 退出视频合唱，返回上一界面
- * <p>
- * 视频合唱功能定制化<br>
+ * 1、当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link
+ *#start()}初始化合唱配置，打开合唱预览界面， 其中包括
+ *左边"录制的摄像头预览界面"和右侧"跟拍视频的播放界面"<br> 2、当Activity执行生命周期方法{@code
+ *onStop()}时，UGCKit需要执行{@link
+ *#stop()}暂停合唱功能，包括关闭视频录制预览界面，暂停视频录制；停止播放跟拍视频<br>
+ * 3、当Activity执行生命周期方法{@code onDestroy()}时，UGCKit视频录制需要执行{@link
+ *#release()}来释放资源<br> 4、当您开启Activity 的界面旋转后，Activity执行生命周期方法{@code
+ *onConfigurationChanged()}时，UGCKit需要执行{@link
+ *#screenOrientationChange()}来更改屏幕预览方向<br> 5、当Activity执行 {@code stopPlay()}
+ *时，UGCKit需要执行{@link #backPressed()} 退出视频合唱，返回上一界面 <p> 视频合唱功能定制化<br>
  * 1、禁用倒计时开始录制功能{@link #disableCountDownTimer()}<br>
  * <p>
  * 视频合唱UI定制化<br>
@@ -100,16 +104,17 @@ import java.util.List;
  * <a href="https://cloud.tencent.com/document/product/584/18373">视频合唱(Android)</a>
  *
  *Tencent Cloud UGCKit: Duet Lifecycle<br>
- * 1. After the lifecycle callback {@code onStart()} is invoked for the activity, call {@link #start()}
- * of UGCKit to initialize duet configurations and open the duet view.
- * The left half of the duet view is the shooting view and the right half is the duet video view.<br>
- * 2. After the lifecycle callback {@code onStop()} is invoked for the activity, call {@link #stop()}
- * of UGCKit to pause duet. This means closing the shooting view, pausing shooting,
- * and stopping the playback of the duet video.<br>
- * 3. After the lifecycle callback {@code onDestroy()} is invoked for the activity, call {@link #release()}
- * of UGCKit to release the resources.<br>
- * 4. After auto rotation is enabled for the activity, the lifecycle callback {@code onConfigurationChanged()}
- * will be invoked. Call {@link #screenOrientationChange()} of UGCKit to change the orientation.<br>
+ * 1. After the lifecycle callback {@code onStart()} is invoked for the activity, call {@link
+ *#start()} of UGCKit to initialize duet configurations and open the duet view. The left half of the
+ *duet view is the shooting view and the right half is the duet video view.<br>
+ * 2. After the lifecycle callback {@code onStop()} is invoked for the activity, call {@link
+ *#stop()} of UGCKit to pause duet. This means closing the shooting view, pausing shooting, and
+ *stopping the playback of the duet video.<br>
+ * 3. After the lifecycle callback {@code onDestroy()} is invoked for the activity, call {@link
+ *#release()} of UGCKit to release the resources.<br>
+ * 4. After auto rotation is enabled for the activity, the lifecycle callback {@code
+ *onConfigurationChanged()} will be invoked. Call {@link #screenOrientationChange()} of UGCKit to
+ *change the orientation.<br>
  * 5. After the lifecycle callback {@code stopPlay()} is invoked, call {@link #backPressed()}
  * of UGCKit to exit the duet view and return to the previous view.
  * <p>
@@ -125,13 +130,11 @@ import java.util.List;
  *  <a href="https://cloud.tencent.com/document/product/584/18373">视频合唱(Android)</a>
  * */
 
-
-
 public interface IVideoMixRecordKit {
     /**
-     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来完成如下功能<br>
-     * 1、初始化合唱配置<br>
-     * 2、打开合唱预览界面，其中包括 左边"录制的摄像头预览界面"和右侧"跟拍视频的播放界面"
+     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link
+     * #start()}来完成如下功能<br> 1、初始化合唱配置<br> 2、打开合唱预览界面，其中包括
+     * 左边"录制的摄像头预览界面"和右侧"跟拍视频的播放界面"
      */
     void start();
 
@@ -148,12 +151,14 @@ public interface IVideoMixRecordKit {
     void stop();
 
     /**
-     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
+     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link
+     * #release()}来释放资源<br>
      */
     void release();
 
     /**
-     * 当Activity执行生命周期方法{@code onConfigurationChanged()}时，UGCKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
+     * 当Activity执行生命周期方法{@code onConfigurationChanged()}时，UGCKit需要执行{@link
+     * #screenOrientationChange()}来更改屏幕预览方向<br>
      */
     void screenOrientationChange();
 
@@ -192,9 +197,7 @@ public interface IVideoMixRecordKit {
         void onMixRecordAction(MixRecordActionT actionT, Object object);
     }
 
-    enum MixRecordActionT {
-        MIX_RECORD_ACTION_T_SELECT
-    }
+    enum MixRecordActionT { MIX_RECORD_ACTION_T_SELECT }
     /************************************************************************/
     /*****                     功能定制化                                 *****/
     /************************************************************************/
@@ -218,5 +221,4 @@ public interface IVideoMixRecordKit {
      *               默认为true
      */
     void setEditVideoFlag(boolean enable);
-
 }

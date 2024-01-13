@@ -10,10 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-
 import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
@@ -29,18 +27,17 @@ import java.util.concurrent.Executors;
  * 用于将视频保存到本地相册
  */
 public class AlbumSaver {
+    private static final String TAG = "AlbumSaver";
+    public static final String VOLUME_EXTERNAL_PRIMARY = "external_primary";
+    private static final String IS_PENDING = "is_pending";
 
-    private static final String TAG                     = "AlbumSaver";
-    public  static final String VOLUME_EXTERNAL_PRIMARY = "external_primary";
-    private static final String IS_PENDING              = "is_pending";
-
-    private static AlbumSaver      sInstance;
-    private final  ContentResolver mContentResolver;
-    private final  Context         mContext;
-    private        long            mVideoDuration;
-    private        String          mVideoOutputPath;
-    private        String          mCoverImagePath;
-    private        ExecutorService mExecutorService;
+    private static AlbumSaver sInstance;
+    private final ContentResolver mContentResolver;
+    private final Context mContext;
+    private long mVideoDuration;
+    private String mVideoOutputPath;
+    private String mCoverImagePath;
+    private ExecutorService mExecutorService;
 
     public static AlbumSaver getInstance(@NonNull Context context) {
         if (sInstance == null) {
@@ -75,15 +72,15 @@ public class AlbumSaver {
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-               if (saveVideoToDCIM()) {
-                   if (listener != null) {
-                       listener.onSavedSuccess();
-                   }
-               } else {
-                   if (listener != null) {
-                       listener.onSavedFailed();
-                   }
-               }
+                if (saveVideoToDCIM()) {
+                    if (listener != null) {
+                        listener.onSavedSuccess();
+                    }
+                } else {
+                    if (listener != null) {
+                        listener.onSavedFailed();
+                    }
+                }
             }
         });
     }
@@ -99,7 +96,6 @@ public class AlbumSaver {
         }
     }
 
-
     private boolean saveVideoToDCIMBelowAndroid10() {
         File file = new File(mVideoOutputPath);
         if (file.exists()) {
@@ -108,12 +104,14 @@ public class AlbumSaver {
                 values.put(MediaStore.Video.VideoColumns.DATE_TAKEN, System.currentTimeMillis());
                 values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
                 values.put(MediaStore.Video.VideoColumns.DURATION, mVideoDuration);
-                mContext.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+                mContext.getContentResolver().insert(
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
 
                 if (mCoverImagePath != null) {
                     insertVideoThumb(file.getPath(), mCoverImagePath);
                 }
-                ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_publish_save_aibum));
+                ToastUtil.toastShortMessage(
+                        UGCKit.getAppContext().getString(R.string.ugckit_publish_save_aibum));
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -191,7 +189,8 @@ public class AlbumSaver {
             values.put(IS_PENDING, 0);
             UGCKit.getAppContext().getContentResolver().update(item, values, null, null);
 
-            ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_publish_save_aibum));
+            ToastUtil.toastShortMessage(
+                    UGCKit.getAppContext().getString(R.string.ugckit_publish_save_aibum));
             return true;
         } else {
             Log.d(TAG, "file :" + mVideoOutputPath + " is not exists");
@@ -222,30 +221,36 @@ public class AlbumSaver {
         //以下是查询上面插入的数据库Video的id（用于绑定缩略图）
         //根据路径查询
         Cursor cursor = mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.Video.Thumbnails._ID},//返回id列表
+                new String[] {MediaStore.Video.Thumbnails._ID}, //返回id列表
                 String.format("%s = ?", MediaStore.Video.Thumbnails.DATA), //根据路径查询数据库
-                new String[]{videoPath}, null);
+                new String[] {videoPath}, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                String videoId = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Thumbnails._ID));
+                String videoId =
+                        cursor.getString(cursor.getColumnIndex(MediaStore.Video.Thumbnails._ID));
                 //查询到了Video的id
                 ContentValues thumbValues = new ContentValues();
-                thumbValues.put(MediaStore.Video.Thumbnails.DATA, coverPath);//缩略图路径
-                thumbValues.put(MediaStore.Video.Thumbnails.VIDEO_ID, videoId);//video的id 用于绑定
-                //Video的kind一般为1
-                thumbValues.put(MediaStore.Video.Thumbnails.KIND, MediaStore.Video.Thumbnails.MINI_KIND);
+                thumbValues.put(MediaStore.Video.Thumbnails.DATA, coverPath); //缩略图路径
+                thumbValues.put(MediaStore.Video.Thumbnails.VIDEO_ID, videoId); // video的id
+                                                                                // 用于绑定
+                // Video的kind一般为1
+                thumbValues.put(
+                        MediaStore.Video.Thumbnails.KIND, MediaStore.Video.Thumbnails.MINI_KIND);
                 //只返回图片大小信息，不返回图片具体内容
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 Bitmap bitmap = BitmapFactory.decodeFile(coverPath, options);
                 if (bitmap != null) {
-                    thumbValues.put(MediaStore.Video.Thumbnails.WIDTH, bitmap.getWidth());//缩略图宽度
-                    thumbValues.put(MediaStore.Video.Thumbnails.HEIGHT, bitmap.getHeight());//缩略图高度
+                    thumbValues.put(
+                            MediaStore.Video.Thumbnails.WIDTH, bitmap.getWidth()); //缩略图宽度
+                    thumbValues.put(
+                            MediaStore.Video.Thumbnails.HEIGHT, bitmap.getHeight()); //缩略图高度
                     if (!bitmap.isRecycled()) {
                         bitmap.recycle();
                     }
                 }
-                mContentResolver.insert(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI, thumbValues);//缩略图数据库
+                mContentResolver.insert(MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+                        thumbValues); //缩略图数据库
             }
             cursor.close();
         }

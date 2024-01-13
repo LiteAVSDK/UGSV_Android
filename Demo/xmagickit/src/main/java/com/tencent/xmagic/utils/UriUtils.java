@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-
 public class UriUtils {
     /**
      * 根据URI获取文件真实路径（兼容多张机型）
@@ -21,7 +20,6 @@ public class UriUtils {
      */
     public static String getFilePathByUri(Context context, Uri uri) {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
-
             int sdkVersion = Build.VERSION.SDK_INT;
             if (sdkVersion >= 19) { // api >= 19
                 return getRealPathFromUriAboveApi19(context, uri);
@@ -79,7 +77,7 @@ public class UriUtils {
                     filePath = Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
             } else {
-                //Log.e("路径错误");
+                // Log.e("路径错误");
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             // 如果是 content 类型的 Uri
@@ -107,13 +105,15 @@ public class UriUtils {
      *
      * @return
      */
-    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    private static String getDataColumn(
+            Context context, Uri uri, String selection, String[] selectionArgs) {
         String path = null;
 
-        String[] projection = new String[]{MediaStore.Images.Media.DATA};
+        String[] projection = new String[] {MediaStore.Images.Media.DATA};
         Cursor cursor = null;
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            cursor = context.getContentResolver().query(
+                    uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
                 int columnIndex = cursor.getColumnIndexOrThrow(projection[0]);
                 path = cursor.getString(columnIndex);

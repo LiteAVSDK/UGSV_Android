@@ -2,7 +2,7 @@ package com.tencent.qcloud.ugckit.module.effect.filter;
 
 public class TCStaticFilterViewInfoManager {
     private static TCStaticFilterViewInfoManager sInstance;
-    private        int                           mCurrentPosition = 0;
+    private int mCurrentPosition = 0;
 
     public static TCStaticFilterViewInfoManager getInstance() {
         if (sInstance == null) {
@@ -26,5 +26,4 @@ public class TCStaticFilterViewInfoManager {
     public void clearCurrentPosition() {
         this.mCurrentPosition = 0;
     }
-
 }

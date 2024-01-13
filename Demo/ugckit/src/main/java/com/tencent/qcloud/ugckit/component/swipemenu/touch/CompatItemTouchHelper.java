@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.component.swipemenu.touch;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
 public class CompatItemTouchHelper extends ItemTouchHelper {
-
     private Callback mTouchCallback;
 
     public CompatItemTouchHelper(Callback callback) {

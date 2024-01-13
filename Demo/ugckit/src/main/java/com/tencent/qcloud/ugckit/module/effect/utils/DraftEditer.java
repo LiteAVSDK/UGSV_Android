@@ -11,14 +11,14 @@ import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 public class DraftEditer {
     private static DraftEditer sInstance;
     @Nullable
-    private        String      bgmPath;
-    private        int         bgmPos;
-    private        float       bgmVolume;
-    private        float       videoVolume;
-    private        long        bgmStartTime;
-    private        long        bgmEndTime;
-    private        long        bgmDuration;
-    private        String      bgmName;
+    private String bgmPath;
+    private int bgmPos;
+    private float bgmVolume;
+    private float videoVolume;
+    private long bgmStartTime;
+    private long bgmEndTime;
+    private long bgmDuration;
+    private String bgmName;
 
     public static DraftEditer getInstance() {
         if (sInstance == null) {

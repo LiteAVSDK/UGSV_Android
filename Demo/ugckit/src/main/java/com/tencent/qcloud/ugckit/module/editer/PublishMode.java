@@ -7,7 +7,7 @@ public class PublishMode {
     //发布
     public static final int MODE_PUBLISH = 1;
     //保存视频
-    public static final int MODE_SAVE    = 2;
+    public static final int MODE_SAVE = 2;
     //视频转Gif
-    public static final int MODE_GIF     = 3;
+    public static final int MODE_GIF = 3;
 }

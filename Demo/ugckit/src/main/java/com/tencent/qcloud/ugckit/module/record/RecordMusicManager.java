@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.module.record;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
@@ -15,7 +15,7 @@ public class RecordMusicManager {
 
     @NonNull
     private static RecordMusicManager sInstance = new RecordMusicManager();
-    private        MusicInfo          mMusicInfo;
+    private MusicInfo mMusicInfo;
 
     private RecordMusicManager() {
         mMusicInfo = new MusicInfo();
@@ -74,7 +74,8 @@ public class RecordMusicManager {
                 mMusicInfo.playingPath = null;
             }
             // 在试听结束时，再设置回原来的速度
-            VideoRecordSDK.getInstance().setRecordSpeed(UGCKitRecordConfig.getInstance().mRecordSpeed);
+            VideoRecordSDK.getInstance().setRecordSpeed(
+                    UGCKitRecordConfig.getInstance().mRecordSpeed);
         }
     }
 
@@ -93,7 +94,8 @@ public class RecordMusicManager {
         TXUGCRecord record = VideoRecordSDK.getInstance().getRecorder();
         if (record != null) {
             if (!TextUtils.isEmpty(mMusicInfo.path)) {
-                if (mMusicInfo.playingPath == null || !mMusicInfo.path.equals(mMusicInfo.playingPath)) {
+                if (mMusicInfo.playingPath == null
+                        || !mMusicInfo.path.equals(mMusicInfo.playingPath)) {
                     mMusicInfo.playingPath = mMusicInfo.path;
                     mMusicInfo.duration = record.setBGM(mMusicInfo.path);
                     record.playBGMFromTime((int) mMusicInfo.startTime, (int) mMusicInfo.duration);

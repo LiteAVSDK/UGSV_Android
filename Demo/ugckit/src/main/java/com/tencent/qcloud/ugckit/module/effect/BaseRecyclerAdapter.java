@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 
@@ -13,11 +13,11 @@ import java.lang.ref.WeakReference;
  * 1. 添加item的点击事件
  * 2. 添加item的长安点击事件
  */
-public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<V> implements View.OnClickListener, View.OnLongClickListener {
-
-    private   WeakReference<RecyclerView> mRecyclerView;
-    protected OnItemClickListener         mOnItemClickListener;
-    protected OnItemLongClickListener     mOnItemLongClickListener;
+public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<V> implements View.OnClickListener, View.OnLongClickListener {
+    private WeakReference<RecyclerView> mRecyclerView;
+    protected OnItemClickListener mOnItemClickListener;
+    protected OnItemLongClickListener mOnItemLongClickListener;
 
     @Override
     public void onBindViewHolder(@Nullable V holder, int position) {
@@ -32,12 +32,13 @@ public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> ext
         }
     }
 
-    abstract public void onBindVH(V holder, int position);
+    public abstract void onBindVH(V holder, int position);
 
     @Override
     public V onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mRecyclerView == null)
+        if (mRecyclerView == null) {
             mRecyclerView = new WeakReference<RecyclerView>((RecyclerView) parent);
+        }
         return onCreateVH(parent, viewType);
     }
 
@@ -70,11 +71,7 @@ public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> ext
         return true;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
+    public interface OnItemClickListener { void onItemClick(View view, int position); }
 
-    public interface OnItemLongClickListener {
-        boolean onItemLongClick(View view, int position);
-    }
+    public interface OnItemLongClickListener { boolean onItemLongClick(View view, int position); }
 }

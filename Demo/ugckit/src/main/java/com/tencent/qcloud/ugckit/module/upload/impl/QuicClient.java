@@ -14,7 +14,6 @@ import java.util.List;
  * quic处理类
  */
 public class QuicClient {
-
     private static final String TAG = "QuicClient";
 
     public static final int ERROR_CODE_QUIC_TIME_OUT = -1;
@@ -55,12 +54,10 @@ public class QuicClient {
         }
 
         @Override
-        public void onCompleted(int i, int i1) {
-        }
+        public void onCompleted(int i, int i1) {}
 
         @Override
-        public void onClose(int i, int i1, String s) {
-        }
+        public void onClose(int i, int i1, String s) {}
     };
 
     private final Runnable timeOutRunnable = new Runnable() {
@@ -120,5 +117,4 @@ public class QuicClient {
     public interface QuicDetectListener {
         void onQuicDetectDone(boolean isQuic, long requestTime, int errorCode);
     }
-
 }

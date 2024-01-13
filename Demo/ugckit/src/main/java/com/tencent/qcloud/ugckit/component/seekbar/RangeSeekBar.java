@@ -9,48 +9,48 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
 
 public class RangeSeekBar extends View {
     private static final String TAG = "RangeSeekBar";
-    private              int    mViewWidth;
-    private              int    mViewHeight;
+    private int mViewWidth;
+    private int mViewHeight;
 
-    private int      mSeekBarWidth;
-    private int      mSeekBarHeight;
-    private float    mSbLeft;
-    private float    mSbTop;
-    private float    mSbRight;
-    private float    mSbBottom;
-    private float    mSbRound;
-    private float    mLPLeft;      //left-pointer  left
-    private float    mLPRight;     //right-pointer right
-    private float    mLPOffset;
-    private float    mLPLastX;
-    private float    mRPLeft;      //right-pointer left
-    private float    mRPRight;     //right-pointer right
-    private float    mRPOffset;
-    private float    mRPLastX;
+    private int mSeekBarWidth;
+    private int mSeekBarHeight;
+    private float mSbLeft;
+    private float mSbTop;
+    private float mSbRight;
+    private float mSbBottom;
+    private float mSbRound;
+    private float mLPLeft; // left-pointer  left
+    private float mLPRight; // right-pointer right
+    private float mLPOffset;
+    private float mLPLastX;
+    private float mRPLeft; // right-pointer left
+    private float mRPRight; // right-pointer right
+    private float mRPOffset;
+    private float mRPLastX;
     @Nullable
     private Drawable mPointerDrawable;
-    private Paint    mNormalPaint;
-    private Paint    mProgressPaint;
-    private boolean  mIsDragLeft;
-    private boolean  mIsDragRight;
-    private boolean  mLastIsDragLeft;
-    private boolean  mIsRangeEnable;
-    private int      mRange;
-    private int      mBackgroundColor;
-    private int      mProgressColor;
-    private int      mLeftIndex;
-    private int      mRightIndex;
+    private Paint mNormalPaint;
+    private Paint mProgressPaint;
+    private boolean mIsDragLeft;
+    private boolean mIsDragRight;
+    private boolean mLastIsDragLeft;
+    private boolean mIsRangeEnable;
+    private int mRange;
+    private int mBackgroundColor;
+    private int mProgressColor;
+    private int mLeftIndex;
+    private int mRightIndex;
 
     private OnRangeProgressListener mListener;
 
@@ -123,10 +123,11 @@ public class RangeSeekBar extends View {
         mIsRangeEnable = true;
         mRange = 100;
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitRangeSeekBar);
+            TypedArray a =
+                    getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitRangeSeekBar);
             mPointerDrawable = a.getDrawable(R.styleable.UGCKitRangeSeekBar_rsb_pointerBackground);
-            mProgressColor = a.getColor(R.styleable.UGCKitRangeSeekBar_rsb_progressColor,
-                    Color.parseColor("#FF4081"));
+            mProgressColor = a.getColor(
+                    R.styleable.UGCKitRangeSeekBar_rsb_progressColor, Color.parseColor("#FF4081"));
             mBackgroundColor = a.getColor(R.styleable.UGCKitRangeSeekBar_rsb_backgroundColor,
                     getResources().getColor(R.color.ugckit_line_btn));
             mRange = a.getInt(R.styleable.UGCKitRangeSeekBar_rsb_range, 100);
@@ -187,24 +188,20 @@ public class RangeSeekBar extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        //draw  seek bar bg
+        // draw  seek bar bg
         RectF rectF = new RectF();
         rectF.left = mSbLeft;
         rectF.right = mSbRight;
         rectF.top = mSbTop;
         rectF.bottom = mSbBottom;
-        //draw  bg
+        // draw  bg
         canvas.drawRoundRect(rectF, mSbRound, mSbRound, mNormalPaint);
 
         if (mIsRangeEnable) {
-            //draw progress
-            canvas.drawRect(
-                    mLPLeft + mPointerDrawable.getIntrinsicWidth() / 2,
-                    mSbTop,
-                    mRPRight - mPointerDrawable.getIntrinsicWidth() / 2,
-                    mSbBottom,
-                    mProgressPaint);
-            //draw left pointer
+            // draw progress
+            canvas.drawRect(mLPLeft + mPointerDrawable.getIntrinsicWidth() / 2, mSbTop,
+                    mRPRight - mPointerDrawable.getIntrinsicWidth() / 2, mSbBottom, mProgressPaint);
+            // draw left pointer
             Rect leftRect = new Rect();
             leftRect.left = (int) mLPLeft;
             leftRect.right = (int) mLPRight;
@@ -214,7 +211,7 @@ public class RangeSeekBar extends View {
             mPointerDrawable.setBounds(leftRect);
             mPointerDrawable.draw(canvas);
 
-            //draw right pointer
+            // draw right pointer
             Rect rightRect = new Rect();
             rightRect.left = (int) mRPLeft;
             rightRect.right = (int) mRPRight;
@@ -242,7 +239,6 @@ public class RangeSeekBar extends View {
             case MotionEvent.ACTION_UP:
                 isHandle = handleUpEvent(event);
                 break;
-
         }
         return isHandle;
     }
@@ -255,7 +251,6 @@ public class RangeSeekBar extends View {
         }
         return false;
     }
-
 
     private boolean handleMoveEvent(@NonNull MotionEvent event) {
         if (mIsDragLeft || mIsDragRight) {
@@ -271,7 +266,6 @@ public class RangeSeekBar extends View {
                 }
                 float tmpLPLeft = tmpLPRight - mPointerDrawable.getIntrinsicWidth() / 2;
                 if (tmpLPLeft <= mSbLeft) {
-
                 } else {
                     calculateLPRect();
                     invalidate();
@@ -307,16 +301,18 @@ public class RangeSeekBar extends View {
     }
 
     public void setLeftIndex(int leftIndex) {
-        mLPLeft = leftIndex * 1.f / mRange * mSeekBarWidth + mSbLeft - mPointerDrawable.getIntrinsicWidth() / 2;
-//        if (mLPLeft < mSbLeft) {
-//            mLPLeft = mSbLeft;
-//        }
+        mLPLeft = leftIndex * 1.f / mRange * mSeekBarWidth + mSbLeft
+                - mPointerDrawable.getIntrinsicWidth() / 2;
+        //        if (mLPLeft < mSbLeft) {
+        //            mLPLeft = mSbLeft;
+        //        }
         mLPRight = mLPLeft + mPointerDrawable.getIntrinsicWidth();
         invalidate();
     }
 
     public void setRightIndex(int rightIndex) {
-        mRPLeft = mSbRight - (1 - rightIndex * 1.f / mRange) * mSeekBarWidth + mPointerDrawable.getIntrinsicWidth() / 2;
+        mRPLeft = mSbRight - (1 - rightIndex * 1.f / mRange) * mSeekBarWidth
+                + mPointerDrawable.getIntrinsicWidth() / 2;
         mRPRight = mRPLeft + mPointerDrawable.getIntrinsicWidth();
         if (mRPRight > mSbRight) {
             mRPRight = mSbRight;
@@ -358,7 +354,6 @@ public class RangeSeekBar extends View {
         return false;
     }
 
-
     private int calculateLPProgress() {
         float lpCenter = mLPLeft + mPointerDrawable.getIntrinsicWidth() / 2;
         if (lpCenter == mSbLeft) {
@@ -383,14 +378,11 @@ public class RangeSeekBar extends View {
         }
     }
 
-
     public void setOnRangeProgressListener(OnRangeProgressListener listener) {
         mListener = listener;
     }
 
     public interface OnRangeProgressListener {
-
         void onSeekProgress(int lpProgress, int rpProgress);
     }
-
 }

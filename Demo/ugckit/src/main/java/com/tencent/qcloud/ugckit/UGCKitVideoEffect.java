@@ -2,27 +2,26 @@ package com.tencent.qcloud.ugckit;
 
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
-import android.util.AttributeSet;
-import android.view.View;
 
-
+import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.AbsVideoEffectUI;
 import com.tencent.qcloud.ugckit.module.effect.ConfigureLoader;
 import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
-import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
+import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 
-public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgressController.VideoProgressSeekListener {
-
-    private FragmentActivity      mActivity;
-    private int                   mConfirmIcon;
+public class UGCKitVideoEffect
+        extends AbsVideoEffectUI implements VideoProgressController.VideoProgressSeekListener {
+    private FragmentActivity mActivity;
+    private int mConfirmIcon;
     private OnVideoEffectListener mOnVideoEffectListener;
 
     public UGCKitVideoEffect(Context context) {
@@ -47,7 +46,6 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
         // 加载草稿配置
         ConfigureLoader.getInstance().loadConfigToDraft();
 
-
         initTitleBar();
 
         preivewVideo();
@@ -63,7 +61,8 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
     }
 
     private void initTitleBar() {
-        mConfirmIcon = UIAttributeUtil.getResResources(mActivity, R.attr.editerConfirmIcon, R.drawable.ugckit_ic_edit_effect_confirm_selector);
+        mConfirmIcon = UIAttributeUtil.getResResources(mActivity, R.attr.editerConfirmIcon,
+                R.drawable.ugckit_ic_edit_effect_confirm_selector);
         getTitleBar().getRightButton().setBackgroundResource(mConfirmIcon);
         getTitleBar().getRightButton().setText("");
         getTitleBar().setOnBackClickListener(new View.OnClickListener() {
@@ -101,7 +100,8 @@ public class UGCKitVideoEffect extends AbsVideoEffectUI implements VideoProgress
 
     @Override
     public void start() {
-        KeyguardManager manager = (KeyguardManager) UGCKit.getAppContext().getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager manager =
+                (KeyguardManager) UGCKit.getAppContext().getSystemService(Context.KEYGUARD_SERVICE);
         if (!manager.inKeyguardRestrictedInputMode()) {
             PlayerManagerKit.getInstance().restartPlay();
         }

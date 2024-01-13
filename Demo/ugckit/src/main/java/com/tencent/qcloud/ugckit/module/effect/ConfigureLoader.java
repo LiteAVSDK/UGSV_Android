@@ -10,11 +10,10 @@ public class ConfigureLoader {
 
     @NonNull
     private static ConfigureLoader sInstance = new ConfigureLoader();
-    private        DraftEditer     mDraftEditer;
-    private        EffectEditer    mEffectEditer;
+    private DraftEditer mDraftEditer;
+    private EffectEditer mEffectEditer;
 
-    private ConfigureLoader() {
-    }
+    private ConfigureLoader() {}
 
     @NonNull
     public static ConfigureLoader getInstance() {
@@ -51,6 +50,4 @@ public class ConfigureLoader {
         mEffectEditer.setBgmEndTime(mDraftEditer.getBgmEndTime());
         mEffectEditer.setBgmDuration(mDraftEditer.getBgmDuration());
     }
-
-
 }

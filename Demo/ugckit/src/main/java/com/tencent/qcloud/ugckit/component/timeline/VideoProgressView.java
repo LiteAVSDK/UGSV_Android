@@ -2,28 +2,26 @@ package com.tencent.qcloud.ugckit.component.timeline;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tencent.qcloud.ugckit.R;
 
 import java.util.List;
 
 public class VideoProgressView extends FrameLayout {
-
-    private Context          mContext;
-    private View             mRootView;
-    private RecyclerView     mRecyclerView;
-    private int              mViewWidth;
+    private Context mContext;
+    private View mRootView;
+    private RecyclerView mRecyclerView;
+    private int mViewWidth;
     private ThumbnailAdapter mThumbnailAdapter;
 
     public VideoProgressView(@NonNull Context context) {
@@ -36,16 +34,19 @@ public class VideoProgressView extends FrameLayout {
         init(context);
     }
 
-    public VideoProgressView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public VideoProgressView(
+            @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     private void init(Context context) {
         mContext = context;
-        mRootView = LayoutInflater.from(context).inflate(R.layout.ugckit_layout_video_progress, this);
+        mRootView =
+                LayoutInflater.from(context).inflate(R.layout.ugckit_layout_video_progress, this);
         mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.rv_video_thumbnail);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
     }
 
     public void setViewWidth(int viewWidth) {
@@ -78,5 +79,4 @@ public class VideoProgressView extends FrameLayout {
     public ViewGroup getParentView() {
         return (ViewGroup) mRootView;
     }
-
 }

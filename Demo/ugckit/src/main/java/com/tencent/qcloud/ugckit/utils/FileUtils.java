@@ -2,10 +2,10 @@ package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -30,8 +30,8 @@ import java.util.List;
  * 文件工具类
  */
 public class FileUtils {
-    private final static int    MD5_FILE_BUFFER_LENGHT = 1 * 1024 * 1024; // 1MB
-    private final static byte[] gSyncCode              = new byte[0];
+    private final static int MD5_FILE_BUFFER_LENGHT = 1 * 1024 * 1024; // 1MB
+    private final static byte[] gSyncCode = new byte[0];
 
     @Nullable
     public static InputStream getInputStream(@NonNull File oFile) {
@@ -89,7 +89,7 @@ public class FileUtils {
         File file = null;
         try {
             File dir = new File(filePath);
-            if (!dir.exists()) {// 判断文件目录是否存在
+            if (!dir.exists()) { // 判断文件目录是否存在
                 boolean mkdirsResult = dir.mkdirs();
             }
             file = new File(filePath + fileName);
@@ -116,14 +116,15 @@ public class FileUtils {
         }
     }
 
-    private final static String TAG                      = "FileUtils";
-    public final static  String FILE_EXTENSION_SEPARATOR = ".";
+    private final static String TAG = "FileUtils";
+    public final static String FILE_EXTENSION_SEPARATOR = ".";
 
     /**
      * read file
      *
      * @param filePath
-     * @param charsetName The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
+     * @param charsetName The name of a supported {@link java.nio.charset.Charset
+     *         </code>charset<code>}
      * @return if file not exist, return null, else return content of file
      * @throws RuntimeException if an error occurs while operator BufferedReader
      */
@@ -165,11 +166,13 @@ public class FileUtils {
      *
      * @param filePath
      * @param content
-     * @param append   is append, if true, write to the end of file, else clear content of file and write into it
+     * @param append   is append, if true, write to the end of file, else clear content of file and
+     *         write into it
      * @return return false if content is empty, true otherwise
      * @throws RuntimeException if an error occurs while operator FileWriter
      */
-    public static boolean writeFile(@NonNull String filePath, @NonNull String content, boolean append) {
+    public static boolean writeFile(
+            @NonNull String filePath, @NonNull String content, boolean append) {
         if (TextUtils.isEmpty(content)) {
             return false;
         }
@@ -199,11 +202,13 @@ public class FileUtils {
      *
      * @param filePath
      * @param contentList
-     * @param append      is append, if true, write to the end of file, else clear content of file and write into it
+     * @param append      is append, if true, write to the end of file, else clear content of file
+     *         and write into it
      * @return return false if contentList is empty, true otherwise
      * @throws RuntimeException if an error occurs while operator FileWriter
      */
-    public static boolean writeFile(@NonNull String filePath, @Nullable List<String> contentList, boolean append) {
+    public static boolean writeFile(
+            @NonNull String filePath, @Nullable List<String> contentList, boolean append) {
         if (contentList == null || contentList.isEmpty()) {
             return false;
         }
@@ -270,7 +275,8 @@ public class FileUtils {
      *
      * @param filePath the file to be opened for writing.
      * @param stream   the input stream
-     * @param append   if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
+     * @param append   if <code>true</code>, then bytes will be written to the end of the file
+     *         rather than the beginning
      * @return return true
      * @throws RuntimeException if an error occurs while operator FileOutputStream
      */
@@ -295,11 +301,13 @@ public class FileUtils {
      *
      * @param file   the file to be opened for writing.
      * @param stream the input stream
-     * @param append if <code>true</code>, then bytes will be written to the end of the file rather than the beginning
+     * @param append if <code>true</code>, then bytes will be written to the end of the file rather
+     *         than the beginning
      * @return return true
      * @throws RuntimeException if an error occurs while operator FileOutputStream
      */
-    public static boolean writeFile(@Nullable File file, @Nullable InputStream stream, boolean append) {
+    public static boolean writeFile(
+            @Nullable File file, @Nullable InputStream stream, boolean append) {
         if (file == null || stream == null) {
             return false;
         }
@@ -353,11 +361,13 @@ public class FileUtils {
      * read file to string list, a element of list is a line
      *
      * @param filePath
-     * @param charsetName The name of a supported {@link java.nio.charset.Charset </code>charset<code>}
+     * @param charsetName The name of a supported {@link java.nio.charset.Charset
+     *         </code>charset<code>}
      * @return if file not exist, return null, else return content of file
      * @throws RuntimeException if an error occurs while operator BufferedReader
      */
-    public static List<String> readFileToList(@NonNull String filePath, @NonNull String charsetName) {
+    public static List<String> readFileToList(
+            @NonNull String filePath, @NonNull String charsetName) {
         File file = new File(filePath);
         List<String> fileContent = new ArrayList<String>();
         if (file == null || !file.isFile()) {
@@ -423,7 +433,8 @@ public class FileUtils {
         if (extenPosi == -1) {
             return filePath.substring(filePosi + 1);
         }
-        return (filePosi < extenPosi ? filePath.substring(filePosi + 1, extenPosi) : filePath.substring(filePosi + 1));
+        return (filePosi < extenPosi ? filePath.substring(filePosi + 1, extenPosi)
+                                     : filePath.substring(filePosi + 1));
     }
 
     /**
@@ -481,7 +492,6 @@ public class FileUtils {
      */
     @NonNull
     public static String getFolderName(@NonNull String filePath) {
-
         if (TextUtils.isEmpty(filePath)) {
             return filePath;
         }
@@ -527,17 +537,16 @@ public class FileUtils {
     }
 
     /**
-     * Creates the directory named by the trailing filename of this file, including the complete directory path required
-     * to create this directory. <br/>
-     * <br/>
-     * <ul>
+     * Creates the directory named by the trailing filename of this file, including the complete
+     * directory path required to create this directory. <br/> <br/> <ul>
      * <strong>Attentions:</strong>
      * <li>makeDirs("C:\\Users\\Trinea") can only create users folder</li>
      * <li>makeFolder("C:\\Users\\Trinea\\") can create Trinea folder</li>
      * </ul>
      *
      * @param filePath
-     * @return true if the necessary directories have been created or the target directory already exists, false one of
+     * @return true if the necessary directories have been created or the target directory already
+     *         exists, false one of
      * the directories can not be created.
      * <ul>
      * <li>if {@link FileUtils#getFolderName(String)} return null, return false</li>
@@ -609,8 +618,8 @@ public class FileUtils {
      * @param filePath
      * @return
      */
-    public static boolean isFileExist(@NonNull String filePath, long size, @NonNull String checkSum) {
-
+    public static boolean isFileExist(
+            @NonNull String filePath, long size, @NonNull String checkSum) {
         if (TextUtils.isEmpty(filePath)) {
             return false;
         }
@@ -658,7 +667,6 @@ public class FileUtils {
      * @return
      */
     public static boolean deleteFile(@NonNull String path) {
-
         synchronized (gSyncCode) {
             if (TextUtils.isEmpty(path)) {
                 return true;
@@ -688,7 +696,6 @@ public class FileUtils {
 
             return file.delete();
         }
-
     }
 
     /**
@@ -696,7 +703,8 @@ public class FileUtils {
      * @param toName   要改成的名字，为文件绝对路径
      * @return boolean 成功或失败
      * @Method: fileRename
-     * @Description: 将文件从fromName命名为toName，由于使用的是File自带的renameTo()接口，需要注意： <li>读写存储器权限</li> <li>
+     * @Description: 将文件从fromName命名为toName，由于使用的是File自带的renameTo()接口，需要注意：
+     * <li>读写存储器权限</li> <li>
      * fromName和toName这两个路径在相同的挂载点。如果不在同一挂载点，重命名失败。</li>
      */
     public static boolean fileRename(@NonNull String fromName, @NonNull String toName) {
@@ -712,7 +720,6 @@ public class FileUtils {
             }
             return result;
         }
-
     }
 
     /**
@@ -769,15 +776,20 @@ public class FileUtils {
                 int bytesToRead = 3 * MD5_FILE_BUFFER_LENGHT;
 
                 /*
-                 * 计算中、尾部起始位置，头部起始为0，不用计算 ------------------------------------------------- |Head 1MB| 间隔大小 | Mid 1MB| 间隔大小
-                 * | Tail 1MB| ------------------------------------------------- 其中间隔大小计算方式为： (fileSize - 3 *
-                 * MD5_FILE_BUFFER_LENGHT) / 2 所以中部起始位置为：Head + 一个间隔的大小 尾部起始点为：(fileSize - MD5_FILE_BUFFER_LENGHT)
+                 * 计算中、尾部起始位置，头部起始为0，不用计算
+                 * ------------------------------------------------- |Head 1MB| 间隔大小 | Mid 1MB|
+                 * 间隔大小 | Tail 1MB| -------------------------------------------------
+                 * 其中间隔大小计算方式为： (fileSize - 3 * MD5_FILE_BUFFER_LENGHT) / 2
+                 * 所以中部起始位置为：Head + 一个间隔的大小 尾部起始点为：(fileSize -
+                 * MD5_FILE_BUFFER_LENGHT)
                  */
-                int midStartPosition = MD5_FILE_BUFFER_LENGHT + (int) (fileSize - 3 * MD5_FILE_BUFFER_LENGHT) / 2;
+                int midStartPosition =
+                        MD5_FILE_BUFFER_LENGHT + (int) (fileSize - 3 * MD5_FILE_BUFFER_LENGHT) / 2;
                 int tailStartPosition = (int) (fileSize - MD5_FILE_BUFFER_LENGHT);
 
                 Log.d(TAG,
-                        String.format("midStartPosition = %d, tailStartPosition = %d", midStartPosition, tailStartPosition));
+                        String.format("midStartPosition = %d, tailStartPosition = %d",
+                                midStartPosition, tailStartPosition));
                 byte[] data = new byte[128 * 1024];
                 while (totalRead < bytesToRead) {
                     // Log.d(TAG, "count = " + (++count));
@@ -902,7 +914,6 @@ public class FileUtils {
                     }
                     result.append(line.trim()).append("\n");
                 }
-
             }
 
             bufferedReader.close();
@@ -922,7 +933,6 @@ public class FileUtils {
                 } finally {
                     bufferedReader = null;
                 }
-
             }
 
             if (inputStreamReader != null) {
@@ -935,7 +945,6 @@ public class FileUtils {
                     inputStreamReader = null;
                 }
             }
-
         }
         return null;
     }
@@ -970,7 +979,6 @@ public class FileUtils {
                     }
                     result.append(line.trim()).append("\n");
                 }
-
             }
 
             bufferedReader.close();
@@ -990,7 +998,6 @@ public class FileUtils {
                 } finally {
                     bufferedReader = null;
                 }
-
             }
 
             if (inputStreamReader != null) {
@@ -1003,7 +1010,6 @@ public class FileUtils {
                     inputStreamReader = null;
                 }
             }
-
         }
         return null;
     }
@@ -1018,8 +1024,8 @@ public class FileUtils {
      * @Description: 执行拷贝任务
      * @返回类型：boolean
      */
-    public static boolean copyFromAssetToSdcard(@NonNull Context context, @NonNull String assetFilename, String dstPath)
-            throws IOException {
+    public static boolean copyFromAssetToSdcard(@NonNull Context context,
+            @NonNull String assetFilename, String dstPath) throws IOException {
         InputStream source = null;
         OutputStream destination = null;
         try {
@@ -1034,8 +1040,7 @@ public class FileUtils {
             while ((nread = source.read(buffer)) != -1) {
                 if (nread == 0) {
                     nread = source.read();
-                    if (nread < 0)
-                        break;
+                    if (nread < 0) break;
                     destination.write(nread);
                     continue;
                 }
@@ -1067,26 +1072,28 @@ public class FileUtils {
      * @param assetsPath assets下指定文件夹
      * @param savePath   目标指定文件夹
      */
-    public static void copyFilesFromAssets(@NonNull Context context, String assetsPath, @NonNull String savePath) {
+    public static void copyFilesFromAssets(
+            @NonNull Context context, String assetsPath, @NonNull String savePath) {
         try {
             File file = new File(savePath);
-            String fileNames[] = context.getAssets().list(assetsPath);// 获取assets目录下的所有文件及目录名
-            if (fileNames.length > 0) {// 如果是目录
-                file.mkdirs();// 如果文件夹不存在，则递归
+            String fileNames[] =
+                    context.getAssets().list(assetsPath); // 获取assets目录下的所有文件及目录名
+            if (fileNames.length > 0) { // 如果是目录
+                file.mkdirs(); // 如果文件夹不存在，则递归
                 for (String fileName : fileNames) {
-                    copyFilesFromAssets(context, assetsPath + "/" + fileName,
-                            savePath + "/" + fileName);
+                    copyFilesFromAssets(
+                            context, assetsPath + "/" + fileName, savePath + "/" + fileName);
                 }
-            } else {// 如果是文件
+            } else { // 如果是文件
                 InputStream is = context.getAssets().open(assetsPath);
                 FileOutputStream fos = new FileOutputStream(new File(savePath));
                 byte[] buffer = new byte[1024];
                 int byteCount = 0;
-                while ((byteCount = is.read(buffer)) != -1) {// 循环从输入流读取
+                while ((byteCount = is.read(buffer)) != -1) { // 循环从输入流读取
                     // buffer字节
-                    fos.write(buffer, 0, byteCount);// 将读取的输入流写入到输出流
+                    fos.write(buffer, 0, byteCount); // 将读取的输入流写入到输出流
                 }
-                fos.flush();// 刷新缓冲区
+                fos.flush(); // 刷新缓冲区
                 is.close();
                 fos.close();
             }
@@ -1103,7 +1110,6 @@ public class FileUtils {
      * @Description: 删除当前的文件
      */
     public static boolean deleteLocalFile(@NonNull String path) {
-
         File file = new File(path);
         if (file.exists()) {
             file.delete();
@@ -1143,5 +1149,4 @@ public class FileUtils {
         }
         return configJsonStr.toString();
     }
-
 }

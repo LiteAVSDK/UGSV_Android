@@ -6,17 +6,16 @@ import androidx.annotation.Nullable;
  * 生效的配置保存【点击完成】
  */
 public class EffectEditer {
-
     private static EffectEditer sInstance;
     @Nullable
-    private        String       bgmPath;
-    private        int          bgmPos;
-    private        float        bgmVolume;
-    private        float        videoVolume;
-    private        long         bgmStartTime;
-    private        long         bgmEndTime;
-    private        long         bgmDuration;
-    private        String       bgmName;
+    private String bgmPath;
+    private int bgmPos;
+    private float bgmVolume;
+    private float videoVolume;
+    private long bgmStartTime;
+    private long bgmEndTime;
+    private long bgmDuration;
+    private String bgmName;
 
     public static EffectEditer getInstance() {
         if (sInstance == null) {

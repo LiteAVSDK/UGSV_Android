@@ -2,7 +2,6 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
 public interface SwipeMenuCreator {
-
     /**
      * Create menu for recyclerVie item.
      *
@@ -11,5 +10,4 @@ public interface SwipeMenuCreator {
      * @param viewType       The view type of the new view.
      */
     void onCreateMenu(SwipeMenu swipeLeftMenu, SwipeMenu swipeRightMenu, int viewType);
-
 }

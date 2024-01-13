@@ -1,28 +1,27 @@
 package com.tencent.qcloud.ugckit.module.picker.data;
 
-
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class TCVideoFileInfo implements Parcelable {
-    public static final int FILE_TYPE_VIDEO   = 0;
+    public static final int FILE_TYPE_VIDEO = 0;
     public static final int FILE_TYPE_PICTURE = 1;
 
-    private int     fileId;
-    private String  filePath;
-    private String  fileName;
-    private String  thumbPath;
-    private long    duration;
-    private Uri     fileUri;
-    private int     fileType   = FILE_TYPE_VIDEO;
+    private int fileId;
+    private String filePath;
+    private String fileName;
+    private String thumbPath;
+    private long duration;
+    private Uri fileUri;
+    private int fileType = FILE_TYPE_VIDEO;
     private boolean isSelected = false;
 
-    public TCVideoFileInfo() {
-    }
+    public TCVideoFileInfo() {}
 
-    public TCVideoFileInfo(int fileId, String filePath, String fileName, String thumbPath, int duration) {
+    public TCVideoFileInfo(
+            int fileId, String filePath, String fileName, String thumbPath, int duration) {
         this.fileId = fileId;
         this.filePath = filePath;
         this.fileName = fileName;
@@ -30,7 +29,8 @@ public class TCVideoFileInfo implements Parcelable {
         this.duration = duration;
     }
 
-    public TCVideoFileInfo(int fileId, Uri fileUri, String fileName, String thumbPath, int duration) {
+    public TCVideoFileInfo(
+            int fileId, Uri fileUri, String fileName, String thumbPath, int duration) {
         this.fileId = fileId;
         this.fileUri = fileUri;
         this.fileName = fileName;
@@ -145,13 +145,9 @@ public class TCVideoFileInfo implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "TCVideoFileInfo{" +
-                "fileId=" + fileId +
-                ", filePath='" + filePath + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", thumbPath='" + thumbPath + '\'' +
-                ", isSelected=" + isSelected +
-                ", duration=" + duration +
-                '}';
+        return "TCVideoFileInfo{"
+                + "fileId=" + fileId + ", filePath='" + filePath + '\'' + ", fileName='" + fileName
+                + '\'' + ", thumbPath='" + thumbPath + '\'' + ", isSelected=" + isSelected
+                + ", duration=" + duration + '}';
     }
 }

@@ -3,12 +3,11 @@ package com.tencent.qcloud.ugckit.component.swipemenu.touch;
 import android.graphics.Canvas;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 
 public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
-
     private OnItemMovementListener onItemMovementListener;
 
     private OnItemMoveListener onItemMoveListener;
@@ -19,8 +18,7 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private boolean isLongPressDragEnabled;
 
-    public DefaultItemTouchHelperCallback() {
-    }
+    public DefaultItemTouchHelperCallback() {}
 
     public void setLongPressDragEnabled(boolean canDrag) {
         this.isLongPressDragEnabled = canDrag;
@@ -56,7 +54,8 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
         return onItemMovementListener;
     }
 
-    public void setOnItemStateChangedListener(OnItemStateChangedListener onItemStateChangedListener) {
+    public void setOnItemStateChangedListener(
+            OnItemStateChangedListener onItemStateChangedListener) {
         this.onItemStateChangedListener = onItemStateChangedListener;
     }
 
@@ -65,7 +64,8 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public int getMovementFlags(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder targetViewHolder) {
+    public int getMovementFlags(
+            @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder targetViewHolder) {
         if (onItemMovementListener != null) {
             int dragFlags = onItemMovementListener.onDragFlags(recyclerView, targetViewHolder);
             int swipeFlags = onItemMovementListener.onSwipeFlags(recyclerView, targetViewHolder);
@@ -75,7 +75,8 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
             RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
             if (layoutManager instanceof GridLayoutManager) {
                 //拖拽的方向。
-                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+                int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT
+                        | ItemTouchHelper.RIGHT;
                 int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
                 //侧滑的方向：left right。
                 return makeMovementFlags(dragFlags, swipeFlags);
@@ -99,11 +100,12 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onChildDraw(Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int
-            actionState, boolean isCurrentlyActive) {
+    public void onChildDraw(Canvas c, @NonNull RecyclerView recyclerView,
+            RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
+            boolean isCurrentlyActive) {
         //判断当前是否是swipe方式：侧滑。
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            //1.ItemView--ViewHolder; 2.侧滑条目的透明度程度关联谁？dX(delta增量，范围：当前条目-width~width)。
+            // 1.ItemView--ViewHolder; 2.侧滑条目的透明度程度关联谁？dX(delta增量，范围：当前条目-width~width)。
             RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
             float alpha = 1;
             if (layoutManager instanceof LinearLayoutManager) {
@@ -114,19 +116,19 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
                     alpha = 1 - Math.abs(dX) / viewHolder.itemView.getWidth();
                 }
             }
-            viewHolder.itemView.setAlpha(alpha);//1~0
+            viewHolder.itemView.setAlpha(alpha); // 1~0
         }
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 
-
     @Override
-    public boolean onMove(RecyclerView arg0, @NonNull RecyclerView.ViewHolder srcHolder, @NonNull RecyclerView.ViewHolder targetHolder) {
-        if (srcHolder.getItemViewType() == targetHolder.getItemViewType()) {// 相同类型的允许切换。
-            if (onItemMoveListener == null)
-                return false;
+    public boolean onMove(RecyclerView arg0, @NonNull RecyclerView.ViewHolder srcHolder,
+            @NonNull RecyclerView.ViewHolder targetHolder) {
+        if (srcHolder.getItemViewType() == targetHolder.getItemViewType()) { // 相同类型的允许切换。
+            if (onItemMoveListener == null) return false;
             //回调刷新数据及界面。
-            return onItemMoveListener.onItemMove(srcHolder.getAdapterPosition(), targetHolder.getAdapterPosition());
+            return onItemMoveListener.onItemMove(
+                    srcHolder.getAdapterPosition(), targetHolder.getAdapterPosition());
         }
         return false;
     }
@@ -141,7 +143,8 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
-        if (onItemStateChangedListener != null && actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+        if (onItemStateChangedListener != null
+                && actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             onItemStateChangedListener.onSelectedChanged(viewHolder, actionState);
         }
     }
@@ -150,7 +153,8 @@ public class DefaultItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         if (onItemStateChangedListener != null) {
-            onItemStateChangedListener.onSelectedChanged(viewHolder, OnItemStateChangedListener.ACTION_STATE_IDLE);
+            onItemStateChangedListener.onSelectedChanged(
+                    viewHolder, OnItemStateChangedListener.ACTION_STATE_IDLE);
         }
     }
 }

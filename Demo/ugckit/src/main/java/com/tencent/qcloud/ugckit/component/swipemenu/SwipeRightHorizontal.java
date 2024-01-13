@@ -15,12 +15,11 @@
  */
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.OverScroller;
+import androidx.annotation.NonNull;
 
 public class SwipeRightHorizontal extends SwipeHorizontal {
-
     public SwipeRightHorizontal(View menuView) {
         super(SwipeMenuRecyclerView.RIGHT_DIRECTION, menuView);
     }
@@ -38,7 +37,8 @@ public class SwipeRightHorizontal extends SwipeHorizontal {
 
     @Override
     public void autoOpenMenu(@NonNull OverScroller scroller, int scrollX, int duration) {
-        scroller.startScroll(Math.abs(scrollX), 0, getMenuView().getWidth() - Math.abs(scrollX), 0, duration);
+        scroller.startScroll(
+                Math.abs(scrollX), 0, getMenuView().getWidth() - Math.abs(scrollX), 0, duration);
     }
 
     @Override

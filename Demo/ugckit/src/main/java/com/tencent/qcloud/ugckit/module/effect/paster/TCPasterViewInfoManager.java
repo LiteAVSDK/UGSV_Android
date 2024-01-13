@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TCPasterViewInfoManager {
     private static TCPasterViewInfoManager mInstance;
-    private        List<TCPasterViewInfo>  mPasterViewInfoList;
+    private List<TCPasterViewInfo> mPasterViewInfoList;
 
     public static TCPasterViewInfoManager getInstance() {
         if (mInstance == null) {
@@ -41,5 +41,4 @@ public class TCPasterViewInfoManager {
     public int getSize() {
         return mPasterViewInfoList.size();
     }
-
 }

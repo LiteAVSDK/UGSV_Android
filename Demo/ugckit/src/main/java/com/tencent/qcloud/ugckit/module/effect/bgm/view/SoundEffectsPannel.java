@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect.bgm.view;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.interfaces.ISoundEffectsPannel;
@@ -21,18 +20,19 @@ import com.tencent.ugc.TXRecordCommon;
 /**
  * 音效Pannel
  */
-public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsPannel, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
-    private Context              mContext;
-    private SeekBar              mSeekBarMicVolume;
-    private Button               mButtonVolume;
-    private Button               mButtonVoiceChange;
-    private Button               mButtonReverb;
-    private LinearLayout         mLayoutVolume;
+public class SoundEffectsPannel extends RelativeLayout
+        implements ISoundEffectsPannel, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+    private Context mContext;
+    private SeekBar mSeekBarMicVolume;
+    private Button mButtonVolume;
+    private Button mButtonVoiceChange;
+    private Button mButtonReverb;
+    private LinearLayout mLayoutVolume;
     private HorizontalScrollView mLayoutVoiceChange;
     private HorizontalScrollView mLayoutReverb;
-    private int                  mMicVolume = 100;
-    private int                  mLastReverbIndex;
-    private int                  mLastVoiceChangerIndex;
+    private int mMicVolume = 100;
+    private int mLastReverbIndex;
+    private int mLastVoiceChangerIndex;
 
     private SoundEffectsSettingPannelListener mSoundEffectsSettingPannelListener;
 
@@ -103,17 +103,14 @@ public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsP
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void setSoundEffectsSettingPannelListener(SoundEffectsSettingPannelListener soundEffectsSettingPannelListener) {
+    public void setSoundEffectsSettingPannelListener(
+            SoundEffectsSettingPannelListener soundEffectsSettingPannelListener) {
         mSoundEffectsSettingPannelListener = soundEffectsSettingPannelListener;
     }
 
@@ -121,152 +118,168 @@ public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsP
     public void onClick(@NonNull View v) {
         int i = v.getId();
         if (i == R.id.btn_volume) {
-            //音量
-            mButtonVolume.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
-            mButtonVoiceChange.setBackground(null);
-            mButtonReverb.setBackground(null);
-
-            mLayoutVolume.setVisibility(View.VISIBLE);
-            mLayoutReverb.setVisibility(View.GONE);
-            mLayoutVoiceChange.setVisibility(View.GONE);
+            // 音量
+            setVolume();
         } else if (i == R.id.btn_voicechange) {
-            //变声
-            mButtonVoiceChange.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
-            mButtonVolume.setBackground(null);
-            mButtonReverb.setBackground(null);
-
-            mLayoutVolume.setVisibility(View.GONE);
-            mLayoutReverb.setVisibility(View.GONE);
-            mLayoutVoiceChange.setVisibility(View.VISIBLE);
+            // 变声
+            setVoiceChange();
         } else if (i == R.id.btn_reverb) {
-            //混响
-            mButtonReverb.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
-            mButtonVoiceChange.setBackground(null);
-            mButtonVolume.setBackground(null);
-
-            mLayoutVolume.setVisibility(View.GONE);
-            mLayoutReverb.setVisibility(View.VISIBLE);
-            mLayoutVoiceChange.setVisibility(View.GONE);
+            // 混响
+            setReverb();
         } else if (i == R.id.btn_reverb_default) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_0);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_0);
             }
-
         } else if (i == R.id.btn_reverb_1) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_1);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_1);
             }
-
         } else if (i == R.id.btn_reverb_2) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_2);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_2);
             }
-
         } else if (i == R.id.btn_reverb_3) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_3);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_3);
             }
-
         } else if (i == R.id.btn_reverb_4) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_4);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_4);
             }
-
         } else if (i == R.id.btn_reverb_5) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_5);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_5);
             }
-
         } else if (i == R.id.btn_reverb_6) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickReverb(TXRecordCommon.VIDOE_REVERB_TYPE_6);
+                mSoundEffectsSettingPannelListener.onClickReverb(
+                        TXRecordCommon.VIDOE_REVERB_TYPE_6);
             }
-
         } else if (i == R.id.btn_voicechanger_default) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_0);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_0);
             }
-
         } else if (i == R.id.btn_voicechanger_1) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_1);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_1);
             }
-
         } else if (i == R.id.btn_voicechanger_2) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_2);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_2);
             }
-
         } else if (i == R.id.btn_voicechanger_3) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_3);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_3);
             }
-
         } else if (i == R.id.btn_voicechanger_4) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_4);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_4);
             }
-
         } else if (i == R.id.btn_voicechanger_6) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_6);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_6);
             }
-
         } else if (i == R.id.btn_voicechanger_7) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_7);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_7);
             }
-
         } else if (i == R.id.btn_voicechanger_8) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_8);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_8);
             }
-
         } else if (i == R.id.btn_voicechanger_9) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_9);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_9);
             }
-
         } else if (i == R.id.btn_voicechanger_10) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_10);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_10);
             }
-
         } else if (i == R.id.btn_voicechanger_11) {
             if (mSoundEffectsSettingPannelListener != null) {
-                mSoundEffectsSettingPannelListener.onClickVoiceChanger(TXRecordCommon.VIDOE_VOICECHANGER_TYPE_11);
+                mSoundEffectsSettingPannelListener.onClickVoiceChanger(
+                        TXRecordCommon.VIDOE_VOICECHANGER_TYPE_11);
             }
-
         }
 
-        if (v.getId() != mLastReverbIndex &&
-                (v.getId() == R.id.btn_reverb_default || v.getId() == R.id.btn_reverb_1 ||
-                        v.getId() == R.id.btn_reverb_2 || v.getId() == R.id.btn_reverb_3 ||
-                        v.getId() == R.id.btn_reverb_4 || v.getId() == R.id.btn_reverb_5 ||
-                        v.getId() == R.id.btn_reverb_6)) {   // 混响
-            v.setSelected(true);
+        updateVoiceChangeAndReverb(v);
+    }
 
+    private void setVolume() {
+        mButtonVolume.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
+        mButtonVoiceChange.setBackground(null);
+        mButtonReverb.setBackground(null);
+
+        mLayoutVolume.setVisibility(View.VISIBLE);
+        mLayoutReverb.setVisibility(View.GONE);
+        mLayoutVoiceChange.setVisibility(View.GONE);
+    }
+
+    private void setVoiceChange() {
+        mButtonVoiceChange.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
+        mButtonVolume.setBackground(null);
+        mButtonReverb.setBackground(null);
+
+        mLayoutVolume.setVisibility(View.GONE);
+        mLayoutReverb.setVisibility(View.GONE);
+        mLayoutVoiceChange.setVisibility(View.VISIBLE);
+    }
+
+    private void setReverb() {
+        mButtonReverb.setBackgroundResource(R.drawable.ugckit_ic_ugc_soundeffect);
+        mButtonVoiceChange.setBackground(null);
+        mButtonVolume.setBackground(null);
+
+        mLayoutVolume.setVisibility(View.GONE);
+        mLayoutReverb.setVisibility(View.VISIBLE);
+        mLayoutVoiceChange.setVisibility(View.GONE);
+    }
+
+    private void updateVoiceChangeAndReverb(@NonNull View v) {
+        if (v.getId() != mLastReverbIndex
+                && (v.getId() == R.id.btn_reverb_default || v.getId() == R.id.btn_reverb_1
+                        || v.getId() == R.id.btn_reverb_2 || v.getId() == R.id.btn_reverb_3
+                        || v.getId() == R.id.btn_reverb_4 || v.getId() == R.id.btn_reverb_5
+                        || v.getId() == R.id.btn_reverb_6)) { // 混响
+            v.setSelected(true);
             View lastV = findViewById(mLastReverbIndex);
             if (null != lastV) {
                 lastV.setSelected(false);
             }
-
             mLastReverbIndex = v.getId();
-
-        } else if (v.getId() != mLastVoiceChangerIndex &&
-                (v.getId() == R.id.btn_voicechanger_default || v.getId() == R.id.btn_voicechanger_1 || v.getId() == R.id.btn_voicechanger_2
-                        || v.getId() == R.id.btn_voicechanger_3 || v.getId() == R.id.btn_voicechanger_4
-                        || v.getId() == R.id.btn_voicechanger_6 || v.getId() == R.id.btn_voicechanger_7
-                        || v.getId() == R.id.btn_voicechanger_8 || v.getId() == R.id.btn_voicechanger_9
-                        || v.getId() == R.id.btn_voicechanger_10 || v.getId() == R.id.btn_voicechanger_11)) {  // 变声
-
+        } else if (v.getId() != mLastVoiceChangerIndex
+                && (v.getId() == R.id.btn_voicechanger_default
+                        || v.getId() == R.id.btn_voicechanger_1
+                        || v.getId() == R.id.btn_voicechanger_2
+                        || v.getId() == R.id.btn_voicechanger_3
+                        || v.getId() == R.id.btn_voicechanger_4
+                        || v.getId() == R.id.btn_voicechanger_6
+                        || v.getId() == R.id.btn_voicechanger_7
+                        || v.getId() == R.id.btn_voicechanger_8
+                        || v.getId() == R.id.btn_voicechanger_9
+                        || v.getId() == R.id.btn_voicechanger_10
+                        || v.getId() == R.id.btn_voicechanger_11)) { // 变声
             v.setSelected(true);
-
             View lastV = findViewById(mLastVoiceChangerIndex);
             if (null != lastV) {
                 lastV.setSelected(false);
             }
-
             mLastVoiceChangerIndex = v.getId();
         }
     }
@@ -288,33 +301,20 @@ public class SoundEffectsPannel extends RelativeLayout implements ISoundEffectsP
     }
 
     @Override
-    public void setSeekbarColor(int color) {
-
-    }
+    public void setSeekbarColor(int color) {}
 
     @Override
-    public void setCheckedTextColor(int color) {
-
-    }
+    public void setCheckedTextColor(int color) {}
 
     @Override
-    public void setNormalTextColor(int color) {
-
-    }
+    public void setNormalTextColor(int color) {}
 
     @Override
-    public void setConfirmButtonBackgroundColor(int color) {
-
-    }
+    public void setConfirmButtonBackgroundColor(int color) {}
 
     @Override
-    public void setConfirmButtonTextColor(int color) {
-
-    }
+    public void setConfirmButtonTextColor(int color) {}
 
     @Override
-    public void setConfirmButtonTextSize(int size) {
-
-    }
-
+    public void setConfirmButtonTextSize(int size) {}
 }

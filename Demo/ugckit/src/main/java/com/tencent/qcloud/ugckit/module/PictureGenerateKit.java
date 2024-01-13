@@ -3,11 +3,11 @@ package com.tencent.qcloud.ugckit.module;
 import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
 import com.tencent.qcloud.ugckit.utils.CoverUtil;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
-import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
@@ -16,9 +16,9 @@ import com.tencent.ugc.TXVideoEditer.TXVideoGenerateListener;
  * 图片生成管理
  */
 public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenerateListener {
-    private int     mCurrentState;
-    private String  mVideoOutputPath;
-    private String  mCoverPath;
+    private int mCurrentState;
+    private String mVideoOutputPath;
+    private String mCoverPath;
     private boolean mCoverGenerate;
 
     @NonNull
@@ -92,7 +92,8 @@ public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenera
 
     @Override
     public void onGenerateComplete(@NonNull final TXVideoEditConstants.TXGenerateResult result) {
-        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_PICTURE_EDIT, result.retCode, result.descMsg);
+        LogReport.getInstance().uploadLogs(
+                LogReport.ELK_ACTION_PICTURE_EDIT, result.retCode, result.descMsg);
 
         mCurrentState = PlayState.STATE_NONE;
         if (result.retCode == TXVideoEditConstants.GENERATE_RESULT_OK) {
@@ -131,5 +132,4 @@ public class PictureGenerateKit extends BaseGenerateKit implements TXVideoGenera
         }
         VideoEditerSDK.getInstance().clear();
     }
-
 }

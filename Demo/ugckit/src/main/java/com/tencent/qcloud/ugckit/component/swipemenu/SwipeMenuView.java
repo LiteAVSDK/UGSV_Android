@@ -3,8 +3,6 @@ package com.tencent.qcloud.ugckit.component.swipemenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -12,16 +10,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-
 public class SwipeMenuView extends LinearLayout {
-
-    private SwipeSwitch                  mSwipeSwitch;
-    private RecyclerView.ViewHolder      mAdapterVIewHolder;
+    private SwipeSwitch mSwipeSwitch;
+    private RecyclerView.ViewHolder mAdapterVIewHolder;
     private OnSwipeMenuItemClickListener mItemClickListener;
-    private int                          mDirection;
+    private int mDirection;
 
     public SwipeMenuView(Context context) {
         this(context, null);
@@ -45,7 +43,8 @@ public class SwipeMenuView extends LinearLayout {
         }
     }
 
-    public void bindMenuItemClickListener(OnSwipeMenuItemClickListener swipeMenuItemClickListener, SwipeSwitch swipeSwitch) {
+    public void bindMenuItemClickListener(
+            OnSwipeMenuItemClickListener swipeMenuItemClickListener, SwipeSwitch swipeSwitch) {
         this.mItemClickListener = swipeMenuItemClickListener;
         this.mSwipeSwitch = swipeSwitch;
     }
@@ -66,11 +65,13 @@ public class SwipeMenuView extends LinearLayout {
         parent.setOnClickListener(mMenuClickListener);
         addView(parent);
 
-        if (item.getImage() != null)
+        if (item.getImage() != null) {
             parent.addView(createIcon(item));
+        }
 
-        if (!TextUtils.isEmpty(item.getText()))
+        if (!TextUtils.isEmpty(item.getText())) {
             parent.addView(createTitle(item));
+        }
     }
 
     @NonNull
@@ -86,17 +87,21 @@ public class SwipeMenuView extends LinearLayout {
         textView.setText(item.getText());
         textView.setGravity(Gravity.CENTER);
         int textSize = item.getTextSize();
-        if (textSize > 0)
+        if (textSize > 0) {
             textView.setTextSize(textSize);
+        }
         ColorStateList textColor = item.getTitleColor();
-        if (textColor != null)
+        if (textColor != null) {
             textView.setTextColor(textColor);
+        }
         int textAppearance = item.getTextAppearance();
-        if (textAppearance != 0)
+        if (textAppearance != 0) {
             ResCompat.setTextAppearance(textView, textAppearance);
+        }
         Typeface typeface = item.getTextTypeface();
-        if (typeface != null)
+        if (typeface != null) {
             textView.setTypeface(typeface);
+        }
         return textView;
     }
 
@@ -105,7 +110,8 @@ public class SwipeMenuView extends LinearLayout {
         @Override
         public void onClick(@NonNull View v) {
             if (mItemClickListener != null && mSwipeSwitch != null && mSwipeSwitch.isMenuOpen()) {
-                mItemClickListener.onItemClick(mSwipeSwitch, mAdapterVIewHolder.getAdapterPosition(), v.getId(), mDirection);
+                mItemClickListener.onItemClick(mSwipeSwitch,
+                        mAdapterVIewHolder.getAdapterPosition(), v.getId(), mDirection);
             }
         }
     };

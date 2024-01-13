@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TCBubbleViewInfoManager {
     private static TCBubbleViewInfoManager mManager;
-    private        List<TCBubbleViewInfo>  mList;
+    private List<TCBubbleViewInfo> mList;
 
     public static TCBubbleViewInfoManager getInstance() {
         if (mManager == null) {

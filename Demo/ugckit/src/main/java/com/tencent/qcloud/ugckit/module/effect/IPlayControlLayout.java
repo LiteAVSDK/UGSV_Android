@@ -7,7 +7,6 @@ import androidx.annotation.DrawableRes;
  * 定制化播放状态控制UI
  */
 public interface IPlayControlLayout {
-
     /**
      * 设置当前播放时间字体大小
      *

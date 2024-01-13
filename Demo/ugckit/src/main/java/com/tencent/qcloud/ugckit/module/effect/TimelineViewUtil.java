@@ -1,11 +1,9 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
 public class TimelineViewUtil {
-
     private TimeLineView mTimeLineView;
 
-    private TimelineViewUtil() {
-    }
+    private TimelineViewUtil() {}
 
     private static TimelineViewUtil instance;
 

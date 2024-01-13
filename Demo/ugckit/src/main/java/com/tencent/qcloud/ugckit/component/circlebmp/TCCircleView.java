@@ -5,16 +5,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * 一个圆形的View
  */
 public class TCCircleView extends View {
-    private int   mColor = Color.RED;
+    private int mColor = Color.RED;
     private Paint mPaint;
     private RectF mRectF;
 
@@ -40,7 +40,6 @@ public class TCCircleView extends View {
         mRectF = new RectF();
     }
 
-
     public void setColor(int color) {
         mColor = color;
         mPaint.setColor(mColor);
@@ -56,7 +55,6 @@ public class TCCircleView extends View {
         mRectF.right = w;
         mRectF.bottom = h;
     }
-
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {

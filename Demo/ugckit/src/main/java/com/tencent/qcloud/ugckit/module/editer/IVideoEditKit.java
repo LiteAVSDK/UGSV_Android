@@ -10,10 +10,9 @@ import com.tencent.qcloud.ugckit.module.cut.IVideoCutKit;
  * 如下演示了UGCKit视频录制模块简单用法：<br>
  */
 public interface IVideoEditKit {
-
     /**
-     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来完成如下功能<br>
-     * 重新播放视频
+     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link
+     * #start()}来完成如下功能<br> 重新播放视频
      */
     void start();
 
@@ -25,7 +24,8 @@ public interface IVideoEditKit {
     void stop();
 
     /**
-     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
+     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link
+     * #release()}来释放资源<br>
      */
     void release();
 
@@ -68,11 +68,11 @@ public interface IVideoEditKit {
 
     /**
      * 设置视频的源路径</p>
-     * 注意：【如果上一个页面为"视频裁剪页面"，并且设置了下一步进行"视频编辑"{@link IVideoCutKit#setVideoEditFlag(boolean)}，
-     * 那么就不需要调用此接口{@link IVideoEditKit#setVideoPath(String)} 设置视频路径。】
+     * 注意：【如果上一个页面为"视频裁剪页面"，并且设置了下一步进行"视频编辑"{@link
+     * IVideoCutKit#setVideoEditFlag(boolean)}， 那么就不需要调用此接口{@link
+     * IVideoEditKit#setVideoPath(String)} 设置视频路径。】
      *
      * @param videoPath 视频裁剪的源路径
      */
     void setVideoPath(String videoPath);
-
 }

@@ -5,20 +5,20 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.StatFs;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import java.io.File;
 
 public class VideoDeviceUtil {
     private static final String TAG = "VideoDeviceUtil";
 
-    public VideoDeviceUtil() {
-    }
+    public VideoDeviceUtil() {}
 
     public static boolean isNetworkAvailable(@NonNull Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivity =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity == null) {
             return false;
         } else {
@@ -127,5 +127,4 @@ public class VideoDeviceUtil {
 
         return freeMemory;
     }
-
 }

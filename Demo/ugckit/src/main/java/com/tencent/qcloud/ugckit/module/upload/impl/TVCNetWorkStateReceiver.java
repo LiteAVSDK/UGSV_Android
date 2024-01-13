@@ -19,9 +19,9 @@ public class TVCNetWorkStateReceiver extends BroadcastReceiver {
         boolean networkChange = false;
         //检测API是不是小于23，因为到了API23之后getNetworkInfo(int networkType)方法被弃用
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-
             //获得ConnectivityManager对象
-            ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connMgr =
+                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
             //获取ConnectivityManager对象对应的NetworkInfo对象
             //获取WIFI连接的信息
@@ -37,13 +37,14 @@ public class TVCNetWorkStateReceiver extends BroadcastReceiver {
                     networkChange = true;
                 }
             } else {
-                networkChange = true; // 某些特定机型存在 info 为 null的情况，避免 crash，且保证 DNS 有效，进行一次强制刷新。
+                networkChange = true; // 某些特定机型存在 info 为 null的情况，避免 crash，且保证 DNS
+                                      // 有效，进行一次强制刷新。
             }
-            //API大于23时使用下面的方式进行网络监听
+            // API大于23时使用下面的方式进行网络监听
         } else {
-
             //获得ConnectivityManager对象
-            ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connMgr =
+                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
             //获取所有网络连接的信息
             Network[] networks = connMgr.getAllNetworks();
@@ -56,20 +57,24 @@ public class TVCNetWorkStateReceiver extends BroadcastReceiver {
                     //获取ConnectivityManager对象对应的NetworkInfo对象
                     NetworkInfo networkInfo = connMgr.getNetworkInfo(networks[i]);
                     if (networkInfo != null) {
-                        sb.append(networkInfo.getTypeName() + " connect is " + networkInfo.isConnected());
+                        sb.append(networkInfo.getTypeName() + " connect is "
+                                + networkInfo.isConnected());
                         if (networkInfo.isConnected()) {
                             networkChange = true;
                         }
                     } else {
-                        networkChange = true; // 某些特定机型存在 info 为 null的情况，避免 crash，且保证 DNS 有效，进行一次强制刷新。
+                        networkChange = true; // 某些特定机型存在 info 为 null的情况，避免
+                                              // crash，且保证 DNS 有效，进行一次强制刷新。
                     }
                 }
             } else {
-                networkChange = true; // 某些特定机型存在 info 为 null的情况，避免 crash，且保证 DNS 有效，进行一次强制刷新。
+                networkChange = true; // 某些特定机型存在 info 为 null的情况，避免 crash，且保证 DNS
+                                      // 有效，进行一次强制刷新。
             }
         }
 
         if (networkChange) {
+            TVCLog.i(TAG, "networkChanged");
             TXUGCPublishOptCenter.getInstance().reFresh(context.getApplicationContext(), null);
         }
     }

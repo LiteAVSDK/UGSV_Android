@@ -4,7 +4,7 @@ public class TCPasterInfo {
     private String iconPath;
     private String name;
     private String pasterPath;
-    private int    pasterType;
+    private int pasterType;
 
     public int getPasterType() {
         return pasterType;

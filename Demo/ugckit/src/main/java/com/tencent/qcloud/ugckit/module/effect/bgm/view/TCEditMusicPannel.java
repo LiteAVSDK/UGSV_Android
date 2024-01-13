@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect.bgm.view;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,26 +9,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
-
-import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.slider.RangeSlider;
 import com.tencent.qcloud.ugckit.module.record.MusicInfo;
+import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 
-public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPannel, SeekBar.OnSeekBarChangeListener, RangeSlider.OnRangeChangeListener, View.OnClickListener {
-    private Context     mContext;
-    private SeekBar     mSeekBarMicVolume;
-    private SeekBar     mSeekBarBGMVolume;
+public class TCEditMusicPannel
+        extends RelativeLayout implements IEditMusicPannel, SeekBar.OnSeekBarChangeListener,
+                                          RangeSlider.OnRangeChangeListener, View.OnClickListener {
+    private Context mContext;
+    private SeekBar mSeekBarMicVolume;
+    private SeekBar mSeekBarBGMVolume;
     private RangeSlider mSliderRange;
-    private TextView    mTextStartTime;
-    private TextView    mTextMicVolume;
-    private TextView    mTextMusicName;
-    private ImageView   mImageReplace;
-    private ImageView   mImageDelete;
-    private int         mMicVolume = 100;
-    private int         mBGMVolume = 100;
-    private long        mBgmDuration;
+    private TextView mTextStartTime;
+    private TextView mTextMicVolume;
+    private TextView mTextMusicName;
+    private ImageView mImageReplace;
+    private ImageView mImageDelete;
+    private int mMicVolume = 100;
+    private int mBGMVolume = 100;
+    private long mBgmDuration;
 
     private MusicChangeListener mMusicChangeListener;
 
@@ -68,7 +69,8 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
         mImageDelete.setOnClickListener(this);
 
         mTextStartTime = (TextView) findViewById(R.id.tv_bgm_start_time);
-        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), "00:00"));
+        mTextStartTime.setText(String.format(
+                getResources().getString(R.string.ugckit_bgm_start_position), "00:00"));
 
         mTextMusicName = (TextView) findViewById(R.id.tx_music_name);
         mTextMusicName.setText("");
@@ -117,14 +119,10 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     @Override
     public void setOnMusicChangeListener(MusicChangeListener volumeChangeListener) {
@@ -133,23 +131,24 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
 
     /******** RangeSlider callback start *********/
     @Override
-    public void onKeyDown(int type) {
-
-    }
+    public void onKeyDown(int type) {}
 
     @Override
     public void onKeyUp(int type, int leftPinIndex, int rightPinIndex) {
-        long leftTime = mBgmDuration * leftPinIndex / 100; //ms
+        long leftTime = mBgmDuration * leftPinIndex / 100; // ms
         long rightTime = mBgmDuration * rightPinIndex / 100;
 
-        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position),
-                DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
+        mTextStartTime.setText(
+                String.format(getResources().getString(R.string.ugckit_bgm_start_position),
+                        DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
 
         if (mMusicChangeListener != null) {
             mMusicChangeListener.onMusicTimeChanged(leftTime, rightTime);
         }
 
-        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
+        mTextStartTime.setText(
+                String.format(getResources().getString(R.string.ugckit_bgm_start_position),
+                        DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
     }
 
     /******** RangeSlider callback end *********/
@@ -169,15 +168,16 @@ public class TCEditMusicPannel extends RelativeLayout implements IEditMusicPanne
     }
 
     private void setCutRange(long startTime, long endTime) {
-        if (startTime == -1 || endTime == -1)
-            return;
+        if (startTime == -1 || endTime == -1) return;
         if (mSliderRange != null && mBgmDuration != 0) {
             int left = (int) (startTime * 100 / mBgmDuration);
             int right = (int) (endTime * 100 / mBgmDuration);
             mSliderRange.setCutRange(left, right);
         }
         if (mTextStartTime != null) {
-            mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
+            mTextStartTime.setText(
+                    String.format(getResources().getString(R.string.ugckit_bgm_start_position),
+                            DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
         }
     }
 }

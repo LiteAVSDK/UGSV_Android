@@ -25,7 +25,8 @@ import okhttp3.Response;
 public class TVCDnsCache {
     private final Pattern patternIpV4 = Pattern.compile("^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])"
             + "(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}$");
-    private final Pattern patternIpV6 = Pattern.compile("^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]"
+    private final Pattern patternIpV6 = Pattern.compile(
+            "^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]"
             + "{1,4}:){1,7}:)|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}(:[0-9A-Fa-f]{1,4})"
             + "{1,2})|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4}){1,3})|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4})"
             + "{1,4})|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){1,5})|([0-9A-Fa-f]{1,4}:(:[0-9A-Fa-f]{1,4}){1,6})"
@@ -42,17 +43,22 @@ public class TVCDnsCache {
     private static final String TAG = "TVC-TVCDnsCache";
 
     private OkHttpClient okHttpClient;
-    private static String HTTPDNS_SERVER = "https://119.29.29.99/d?dn=";      //httpdns服务器请求ip
+    private static String HTTPDNS_SERVER = "https://119.29.29.99/d?dn="; // httpdns服务器请求ip
     private ConcurrentHashMap<String, List<String>> cacheMap;
-    private ConcurrentHashMap<String, List<String>> fixCacheMap;    //固定的dns缓存，从后台获取，认为这个是可信的
+    private ConcurrentHashMap<String, List<String>>
+            fixCacheMap; //固定的dns缓存，从后台获取，认为这个是可信的
     private static String HTTPDNS_TOKEN = "800654663"; //该token用于https加密标志，可明文保存
 
     public TVCDnsCache() {
-        okHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)    // 设置超时时间
-                .readTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)       // 设置读取超时时间
-                .writeTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)      // 设置写入超时时间
-                .build();
+        okHttpClient = new OkHttpClient()
+                               .newBuilder()
+                               .connectTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT,
+                                       TimeUnit.MILLISECONDS) // 设置超时时间
+                               .readTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT,
+                                       TimeUnit.MILLISECONDS) // 设置读取超时时间
+                               .writeTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT,
+                                       TimeUnit.MILLISECONDS) // 设置写入超时时间
+                               .build();
         cacheMap = new ConcurrentHashMap<String, List<String>>();
         fixCacheMap = new ConcurrentHashMap<String, List<String>>();
     }
@@ -62,9 +68,7 @@ public class TVCDnsCache {
         if (useProxy()) return false;
         String reqUrl = HTTPDNS_SERVER + domain + "&token=" + HTTPDNS_TOKEN;
         TVCLog.i(TAG, "freshDNS->request url:" + reqUrl);
-        Request request = new Request.Builder()
-                .url(reqUrl)
-                .build();
+        Request request = new Request.Builder().url(reqUrl).build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -120,11 +124,9 @@ public class TVCDnsCache {
 
     // 添加指定域名的ip列表，ip列表是后台返回的
     public void addDomainDNS(String domain, ArrayList<String> ipLists) {
-        if (useProxy())
-            return;
+        if (useProxy()) return;
 
-        if (ipLists == null || ipLists.size() == 0)
-            return;
+        if (ipLists == null || ipLists.size() == 0) return;
 
         fixCacheMap.put(domain, ipLists);
     }

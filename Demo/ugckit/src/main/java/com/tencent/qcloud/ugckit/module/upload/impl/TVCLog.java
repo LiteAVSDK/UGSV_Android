@@ -8,7 +8,6 @@ import com.tencent.qcloud.core.logger.QCloudLogger;
 
 @SuppressWarnings("UnusedReturnValue")
 public class TVCLog {
-
     private static final String MODULE_TAG = "[TVCUpload]";
 
     /**
@@ -18,7 +17,8 @@ public class TVCLog {
      */
     public static void setDebuggable(boolean isDebug, Context context) {
         // target qCloud log config
-        new CosXmlBaseService(context, new CosXmlServiceConfig.Builder().setDebuggable(isDebug).builder());
+        new CosXmlBaseService(
+                context, new CosXmlServiceConfig.Builder().setDebuggable(isDebug).builder());
     }
 
     public static void v(String tag, String msg) {

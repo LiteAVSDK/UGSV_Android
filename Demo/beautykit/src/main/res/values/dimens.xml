@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="beautykit_title">18sp</dimen>
+    <dimen name="beautykit_sub_content">14sp</dimen>
+
+    <dimen name="beautykit_h1">9sp</dimen>
+    <dimen name="beautykit_h2">10sp</dimen>
+    <dimen name="beautykit_h3">11sp</dimen>
+    <dimen name="beautykit_h4">12sp</dimen>
+    <dimen name="beautykit_h5">13sp</dimen>
+    <dimen name="beautykit_h6">14sp</dimen>
+    <dimen name="beautykit_h7">15sp</dimen>
+    <dimen name="beautykit_h8">16sp</dimen>
+    <dimen name="beautykit_h9">17sp</dimen>
+    <dimen name="beautykit_h10">18sp</dimen>
+    <dimen name="beautykit_h11">19sp</dimen>
+    <dimen name="beautykit_h12">20sp</dimen>
+
+    <dimen name="beautykit_live_btn_size">35dp</dimen>
+
+    <dimen name="beautykit_qav_multi_video_friend_item_width">60dp</dimen>
+    <dimen name="beautykit_qav_grid_view_item_width_audio">75dp</dimen>
+    <dimen name="beautykit_ugc_item_thumb_height">60dp</dimen>
+    <dimen name="beautykit_ugc_cut_margin">10dp</dimen>
+    <dimen name="beautykit_ugc_aspect_width">50dp</dimen>
+    <dimen name="beautykit_ugc_aspect_divider">18dp</dimen>
+    <dimen name="beautykit_ugc_progress_cursor">2dp</dimen>
+    <dimen name="beautykit_ugc_progress_min_pos">2dp</dimen>
+    <dimen name="beautykit_ugc_progress_divider">1dp</dimen>
+    <dimen name="beautykit_video_progress_height">50dp</dimen>
+    <dimen name="beautykit_video_thumbnail_width">50dp</dimen>
+</resources>

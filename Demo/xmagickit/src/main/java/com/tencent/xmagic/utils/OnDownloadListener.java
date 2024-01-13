@@ -15,5 +15,4 @@ public interface OnDownloadListener {
      * 下载失败
      */
     void onDownloadFailed(int errorCode);
-
 }

@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.module.mixrecord;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -16,7 +16,7 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
     private MixRecordPlayerView mTopView;
     private MixRecordPlayerView mMiddleView;
     private MixRecordPlayerView mBottomView;
-    private float               mContinuePosition = -1;
+    private float mContinuePosition = -1;
 
     public TripleRecordPlayerViews(Context context) {
         super(context);
@@ -28,7 +28,8 @@ public class TripleRecordPlayerViews extends LinearLayout implements IPlayerView
         initViews();
     }
 
-    public TripleRecordPlayerViews(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public TripleRecordPlayerViews(
+            Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initViews();
     }

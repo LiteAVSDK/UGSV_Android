@@ -62,22 +62,22 @@ import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
  * </pre>
  * <p>
  * UGCKit视频录制模块的生命周期方法<br>
- * 1、当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}初始化录制配置，开始视频录制预览界面<br>
- * 2、当Activity执行生命周期方法{@code onStop()}时，UGCKit需要执行{@link #stop()}暂停视频录制，关闭视频录制预览界面，并更新视频录制界面<br>
- * 3、当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
- * 4、当您开启Activity 的界面旋转后，Activity执行生命周期方法{@code onConfigurationChanged()}时，
- * UGCKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
- * 5、当Activity执行 {@code stopPlay()} 时，UGCKit需要执行{@link #backPressed()} 退出视频录制，返回上一界面
- * <p>
+ * 1、当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link
+ * #start()}初始化录制配置，开始视频录制预览界面<br> 2、当Activity执行生命周期方法{@code
+ * onStop()}时，UGCKit需要执行{@link
+ * #stop()}暂停视频录制，关闭视频录制预览界面，并更新视频录制界面<br>
+ * 3、当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link
+ * #release()}来释放资源<br> 4、当您开启Activity 的界面旋转后，Activity执行生命周期方法{@code
+ * onConfigurationChanged()}时， UGCKit需要执行{@link
+ * #screenOrientationChange()}来更改屏幕预览方向<br> 5、当Activity执行 {@code stopPlay()}
+ * 时，UGCKit需要执行{@link #backPressed()} 退出视频录制，返回上一界面 <p>
  * UGCKit视频录制背景音乐设置<br>
- * 1、通过 {@link #setOnMusicChooseListener(OnMusicChooseListener)} 监听点击音乐Icon，启动背景音乐Activity进行音乐选择。
- * 2、当Activity选择背景音乐后，通过{@link #setRecordMusicInfo(MusicInfo)} 设置给UGCKit。<br>
- * 其中必须设置的包括背景音乐名称{@link MusicInfo#name}，背景音乐路径{@link MusicInfo#path}，
- * 和背景音乐在列表中的位置{@link MusicInfo#position}<br>
- * <p>
- * 视频录制功能定制化<br>
- * 1、视频录制完是否进行视频特效处理 {@link #setEditVideoFlag(boolean)}<br>
- * 2、禁用录制速度功能{@link #disableRecordSpeed()}<br>
+ * 1、通过 {@link #setOnMusicChooseListener(OnMusicChooseListener)}
+ * 监听点击音乐Icon，启动背景音乐Activity进行音乐选择。 2、当Activity选择背景音乐后，通过{@link
+ * #setRecordMusicInfo(MusicInfo)} 设置给UGCKit。<br> 其中必须设置的包括背景音乐名称{@link
+ * MusicInfo#name}，背景音乐路径{@link MusicInfo#path}， 和背景音乐在列表中的位置{@link
+ * MusicInfo#position}<br> <p> 视频录制功能定制化<br> 1、视频录制完是否进行视频特效处理 {@link
+ * #setEditVideoFlag(boolean)}<br> 2、禁用录制速度功能{@link #disableRecordSpeed()}<br>
  * 3、禁用拍照功能{@link #disableTakePhoto}<br>
  * 4、禁用背景音乐功能{@link #disableRecordMusic}<br>
  * 5、禁用音效功能{@link #disableRecordSoundEffect()}<br>
@@ -102,11 +102,9 @@ import com.tencent.qcloud.ugckit.module.record.UGCKitRecordConfig;
  * <a href="https://cloud.tencent.com/document/product/584/20322">变声和混响(Android)</a>
  */
 public interface IVideoRecordKit {
-
     /**
-     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来完成如下功能<br>
-     * 1、初始化录制配置<br>
-     * 2、开始视频录制预览界面
+     * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link
+     * #start()}来完成如下功能<br> 1、初始化录制配置<br> 2、开始视频录制预览界面
      */
     void start();
 
@@ -119,12 +117,14 @@ public interface IVideoRecordKit {
     void stop();
 
     /**
-     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
+     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link
+     * #release()}来释放资源<br>
      */
     void release();
 
     /**
-     * 当Activity执行生命周期方法{@code onConfigurationChanged()}时，UGCKit需要执行{@link #screenOrientationChange()}来更改屏幕预览方向<br>
+     * 当Activity执行生命周期方法{@code onConfigurationChanged()}时，UGCKit需要执行{@link
+     * #screenOrientationChange()}来更改屏幕预览方向<br>
      */
     void screenOrientationChange();
 
@@ -240,5 +240,4 @@ public interface IVideoRecordKit {
      * 禁用美颜功能
      */
     void disableBeauty();
-
 }

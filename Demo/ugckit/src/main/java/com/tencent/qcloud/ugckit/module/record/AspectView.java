@@ -4,14 +4,13 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.ugc.TXRecordCommon;
@@ -20,23 +19,23 @@ import com.tencent.ugc.TXRecordCommon;
  * 屏比，目前有三种（1:1；3:4；4:3; 9:16; 16:9）
  */
 public class AspectView extends RelativeLayout implements View.OnClickListener {
-    private static final String           TAG = "AspectView";
-    private              Activity         mActivity;
-    private              TextView         mTextAspect;
-    private              ImageView        mImageAspectCurr;
-    private              ImageView        mImageAspectFirst;
-    private              ImageView        mImageAspectSecond;
-    private              ImageView        mImageAspectThird;
-    private              ImageView        mImageAspectFourth;
-    private              ImageView        mImageAspecteMask;
-    private              RelativeLayout   mLayoutAspectSelect;
-    private              boolean          mToggleAspect;
-    private              int              mFirstAspect; // UI上三个位置的屏比分别对应哪个Icon
-    private              int              mSecondAspect;
-    private              int              mThirdAspect;
-    private              int              mFourthAspect;
-    private              int              mCurrentAspect;
-    private              OnAspectListener mOnAspectListener;
+    private static final String TAG = "AspectView";
+    private Activity mActivity;
+    private TextView mTextAspect;
+    private ImageView mImageAspectCurr;
+    private ImageView mImageAspectFirst;
+    private ImageView mImageAspectSecond;
+    private ImageView mImageAspectThird;
+    private ImageView mImageAspectFourth;
+    private ImageView mImageAspecteMask;
+    private RelativeLayout mLayoutAspectSelect;
+    private boolean mToggleAspect;
+    private int mFirstAspect; // UI上三个位置的屏比分别对应哪个Icon
+    private int mSecondAspect;
+    private int mThirdAspect;
+    private int mFourthAspect;
+    private int mCurrentAspect;
+    private OnAspectListener mOnAspectListener;
 
     public AspectView(Context context) {
         super(context);
@@ -181,6 +180,8 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
                 mThirdAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_1_1;
                 mFourthAspect = TXRecordCommon.VIDEO_ASPECT_RATIO_4_3;
                 break;
+            default:
+                break;
         }
     }
 
@@ -188,8 +189,11 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
      * 显示切换屏比动画
      */
     private void showAspectSelectAnim() {
-        ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mLayoutAspectSelect, "translationX",
-                2 * (getResources().getDimension(R.dimen.ugckit_aspect_divider) + getResources().getDimension(R.dimen.ugckit_aspect_width)), 0f);
+        float translationX = (getResources().getDimension(R.dimen.ugckit_aspect_divider)
+                                     + getResources().getDimension(R.dimen.ugckit_aspect_width))
+                * 2;
+        ObjectAnimator showAnimator =
+                ObjectAnimator.ofFloat(mLayoutAspectSelect, "translationX", translationX, 0f);
         showAnimator.setDuration(80);
         showAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -198,19 +202,13 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
             }
 
             @Override
-            public void onAnimationEnd(Animator animator) {
-
-            }
+            public void onAnimationEnd(Animator animator) {}
 
             @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
+            public void onAnimationCancel(Animator animator) {}
 
             @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
+            public void onAnimationRepeat(Animator animator) {}
         });
         showAnimator.start();
     }
@@ -219,14 +217,15 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
      * 隐藏切换屏比动画
      */
     public void hideAspectSelectAnim() {
-        ObjectAnimator showAnimator = ObjectAnimator.ofFloat(mLayoutAspectSelect, "translationX", 0f,
-                2 * (getResources().getDimension(R.dimen.ugckit_aspect_divider) + getResources().getDimension(R.dimen.ugckit_aspect_width)));
+        float translationX = (getResources().getDimension(R.dimen.ugckit_aspect_divider)
+                                     + getResources().getDimension(R.dimen.ugckit_aspect_width))
+                * 2;
+        ObjectAnimator showAnimator =
+                ObjectAnimator.ofFloat(mLayoutAspectSelect, "translationX", 0f, translationX);
         showAnimator.setDuration(80);
         showAnimator.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
+            public void onAnimationStart(Animator animator) {}
 
             @Override
             public void onAnimationEnd(Animator animator) {
@@ -234,14 +233,10 @@ public class AspectView extends RelativeLayout implements View.OnClickListener {
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
+            public void onAnimationCancel(Animator animator) {}
 
             @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
+            public void onAnimationRepeat(Animator animator) {}
         });
         showAnimator.start();
     }

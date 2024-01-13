@@ -11,7 +11,6 @@ import android.widget.Toast;
  * Toast 不能自定义时长, 这里简单做法是: 到时间了重新 new 一个 Toast
  */
 public class XmagicToast {
-
     private static final String TAG = "CustomToast";
 
     private Toast mToast;
@@ -28,7 +27,7 @@ public class XmagicToast {
             }
             mToast.setText(mText);
             mToast.show();
-            mHandler.postDelayed(mRunnableAlwaysShow, 3500/*Toast.LENGTH_LONG=3500*/);
+            mHandler.postDelayed(mRunnableAlwaysShow, 3500 /*Toast.LENGTH_LONG=3500*/);
         }
     };
 
@@ -58,7 +57,7 @@ public class XmagicToast {
 
     public void dismiss() {
         Log.d(TAG, "dismiss toast by user.");
-        mHandler.removeCallbacks(mRunnableDismiss);//移除 show() 时 postDelayed 的, 避免重复
+        mHandler.removeCallbacks(mRunnableDismiss); //移除 show() 时 postDelayed 的, 避免重复
         mHandler.post(mRunnableDismiss);
     }
 }

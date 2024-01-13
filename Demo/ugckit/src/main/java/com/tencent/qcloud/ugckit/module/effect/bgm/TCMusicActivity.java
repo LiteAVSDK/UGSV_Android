@@ -4,36 +4,37 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
-import com.tencent.qcloud.ugckit.UGCKitConstants;
-import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.component.progressbutton.SampleProgressButton;
+import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class TCMusicActivity
+        extends Activity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final String TAG = "TCMusicActivity";
 
-    private LinearLayout                     mLayoutBack;
-    private SwipeRefreshLayout               mSwipeRefreshLayout;
-    private RecyclerView                     mRecyclerView;
-    private View                             mEmptyView;
-    private TCMusicAdapter                   mTCMusicAdapter;
+    private LinearLayout mLayoutBack;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView mRecyclerView;
+    private View mEmptyView;
+    private TCMusicAdapter mTCMusicAdapter;
     private TCMusicManager.LoadMusicListener mLoadMusicListener;
-    private List<TCMusicInfo>                mTCMusicInfoList;
+    private List<TCMusicInfo> mTCMusicInfoList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +75,8 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
                         mTCMusicAdapter.notifyDataSetChanged();
                         mSwipeRefreshLayout.setRefreshing(false);
 
-                        mEmptyView.setVisibility(mTCMusicAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                        mEmptyView.setVisibility(
+                                mTCMusicAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                     }
                 });
             }
@@ -109,7 +111,8 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
                         info.progress = 0;
                         mTCMusicAdapter.updateItem(position, info);
 
-                        ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_bgm_select_activity_download_failed));
+                        ToastUtil.toastShortMessage(getResources().getString(
+                                R.string.ugckit_bgm_select_activity_download_failed));
                     }
                 });
             }
@@ -140,7 +143,9 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
         mLayoutBack.setOnClickListener(this);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setEnabled(false);
 
@@ -223,18 +228,17 @@ public class TCMusicActivity extends Activity implements SwipeRefreshLayout.OnRe
         private int mSpace;
 
         @Override
-        public void getItemOffsets(@NonNull Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        public void getItemOffsets(
+                @NonNull Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             outRect.left = 0;
             outRect.right = 0;
             outRect.bottom = mSpace;
             outRect.top = 0;
-
         }
 
         public SpaceItemDecoration(int space) {
             this.mSpace = space;
         }
     }
-
 }

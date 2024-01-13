@@ -18,14 +18,13 @@ import java.util.Objects;
  * Glide图像裁剪
  */
 public class TCGlideCircleTransform extends BitmapTransformation {
-
     private final String id = getClass().getName();
 
-    public TCGlideCircleTransform(Context context) {
-    }
+    public TCGlideCircleTransform(Context context) {}
 
     @Override
-    protected Bitmap transform(BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+    protected Bitmap transform(
+            BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
         return createCircleImage(toTransform, 0);
     }
 

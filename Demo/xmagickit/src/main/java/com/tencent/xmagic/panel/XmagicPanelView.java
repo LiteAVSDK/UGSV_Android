@@ -28,13 +28,14 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tencent.xmagic.XmagicProperty;
+import com.tencent.xmagic.XmagicProperty.XmagicPropertyValues;
 import com.tencent.xmagic.demo.R;
 import com.tencent.xmagic.download.MotionDLModel;
 import com.tencent.xmagic.download.ResDownloadUtil;
@@ -46,8 +47,6 @@ import com.tencent.xmagic.utils.UriUtils;
 import com.tencent.xmagic.widget.XmagicSeekBarLayout;
 import com.tencent.xmagic.widget.diaolog.ProgressDialog;
 import com.tencent.xmagic.widget.diaolog.TipDialog;
-import com.tencent.xmagic.XmagicProperty;
-import com.tencent.xmagic.XmagicProperty.XmagicPropertyValues;
 
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -59,29 +58,27 @@ import java.util.List;
 public class XmagicPanelView extends RelativeLayout {
     private static final int RC_CHOOSE_PHOTO = 2002;
 
-    private TextView errorTxt = null;    //用于展示错误提示的View
+    private TextView errorTxt = null; //用于展示错误提示的View
     private XmagicSeekBarLayout seekBarkLayout = null;
 
-
     private RelativeLayout firstMenuLayout = null;
-    private RadioGroup radioGroup = null;       //分类菜单
-    private RecyclerView firstRecyclerView = null;       //展示一级菜单内容
+    private RadioGroup radioGroup = null; //分类菜单
+    private RecyclerView firstRecyclerView = null; //展示一级菜单内容
     private XmagicPanelAdapter firstAdapter = null;
 
-
-    private RelativeLayout secondMenuLayout = null;   //二级菜单
+    private RelativeLayout secondMenuLayout = null; //二级菜单
     private ImageView backImg = null;
-    private TextView titleTxt = null;   //展示二级菜单标题
-    private RecyclerView secondRecycleView = null;    //展示二级菜单内容
+    private TextView titleTxt = null; //展示二级菜单标题
+    private RecyclerView secondRecycleView = null; //展示二级菜单内容
     private XmagicPanelAdapter secondAdapter = null;
     private PanelViewCallBack panelViewCallBack = null;
-    private XmagicUIProperty<?> segXmagicProperty = null;   //自定义分割的item
+    private XmagicUIProperty<?> segXmagicProperty = null; //自定义分割的item
 
     private ViewGroup layout;
     private ImageView closeBtn;
     private LinearLayout expandLayout;
     private ImageView revertBtn;
-    private ImageView beautyCompareBtn;   //美颜开关
+    private ImageView beautyCompareBtn; //美颜开关
     private float layoutHeight = 0;
 
     private static final int animateTime = 300;
@@ -121,57 +118,58 @@ public class XmagicPanelView extends RelativeLayout {
         radioGroup = layout.findViewById(R.id.radioGroup);
         firstMenuLayout = layout.findViewById(R.id.rl_root_panel);
         firstRecyclerView = layout.findViewById(R.id.scrollViewContainer);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager manager =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         firstRecyclerView.setLayoutManager(manager);
-        firstAdapter = new XmagicPanelAdapter(new XmagicPanelAdapter.XmagicPanelItemClickListener() {
-            @Override
-            public void onItemClick(XmagicUIProperty<?> xmagicUIProperty) {
-                onRecycleViewItemClick(xmagicUIProperty, PanelMenu.FIRST_MENU);
-            }
+        firstAdapter =
+                new XmagicPanelAdapter(new XmagicPanelAdapter.XmagicPanelItemClickListener() {
+                    @Override
+                    public void onItemClick(XmagicUIProperty<?> xmagicUIProperty) {
+                        onRecycleViewItemClick(xmagicUIProperty, PanelMenu.FIRST_MENU);
+                    }
 
-            @Override
-            public void onChecked(XmagicUIProperty<?> xmagicUIProperty) {
-                onRecycleViewItemChecked(xmagicUIProperty, PanelMenu.FIRST_MENU);
-            }
+                    @Override
+                    public void onChecked(XmagicUIProperty<?> xmagicUIProperty) {
+                        onRecycleViewItemChecked(xmagicUIProperty, PanelMenu.FIRST_MENU);
+                    }
 
-            @Override
-            public void onBeautySwitchCheckedChange(boolean isChecked) {
-                seekBarkLayout.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
-                if (isChecked) {
-                    firstAdapter.getCheckedPosition();
-                }
-                if (panelViewCallBack != null) {
-                    panelViewCallBack.onBeautyCloseOrOpen(isChecked);
-                }
-            }
-        });
+                    @Override
+                    public void onBeautySwitchCheckedChange(boolean isChecked) {
+                        seekBarkLayout.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
+                        if (isChecked) {
+                            firstAdapter.getCheckedPosition();
+                        }
+                        if (panelViewCallBack != null) {
+                            panelViewCallBack.onBeautyCloseOrOpen(isChecked);
+                        }
+                    }
+                });
         firstRecyclerView.setAdapter(firstAdapter);
 
         secondMenuLayout = layout.findViewById(R.id.rl_item_panel);
         backImg = layout.findViewById(R.id.btn_back);
         titleTxt = layout.findViewById(R.id.tv_item_name);
         secondRecycleView = layout.findViewById(R.id.rv_item_listview);
-        LinearLayoutManager manager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager manager1 =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         secondRecycleView.setLayoutManager(manager1);
-        secondAdapter = new XmagicPanelAdapter(new XmagicPanelAdapter.XmagicPanelItemClickListener() {
-            @Override
-            public void onItemClick(XmagicUIProperty<?> xmagicUIProperty) {
-                onRecycleViewItemClick(xmagicUIProperty, PanelMenu.SECOND_MENU);
-            }
+        secondAdapter =
+                new XmagicPanelAdapter(new XmagicPanelAdapter.XmagicPanelItemClickListener() {
+                    @Override
+                    public void onItemClick(XmagicUIProperty<?> xmagicUIProperty) {
+                        onRecycleViewItemClick(xmagicUIProperty, PanelMenu.SECOND_MENU);
+                    }
 
-            @Override
-            public void onChecked(XmagicUIProperty<?> xmagicUIProperty) {
-                onRecycleViewItemChecked(xmagicUIProperty, PanelMenu.SECOND_MENU);
-            }
+                    @Override
+                    public void onChecked(XmagicUIProperty<?> xmagicUIProperty) {
+                        onRecycleViewItemChecked(xmagicUIProperty, PanelMenu.SECOND_MENU);
+                    }
 
-            @Override
-            public void onBeautySwitchCheckedChange(boolean isChecked) {
-
-            }
-        });
+                    @Override
+                    public void onBeautySwitchCheckedChange(boolean isChecked) {}
+                });
         secondRecycleView.setAdapter(secondAdapter);
     }
-
 
     private void initUISettings() {
         layout.post((new Runnable() {
@@ -184,14 +182,20 @@ public class XmagicPanelView extends RelativeLayout {
         closeBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                layout.animate().setListener(new ValueAnimationListener() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        layout.setVisibility(View.INVISIBLE);
-                        expandLayout.setVisibility(View.VISIBLE);
-                    }
-                }).setDuration(animateTime).translationY(layoutHeight * 0.45f).scaleX(0.1f).scaleY(0.1f).start();
+                layout.animate()
+                        .setListener(new ValueAnimationListener() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                layout.setVisibility(View.INVISIBLE);
+                                expandLayout.setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .setDuration(animateTime)
+                        .translationY(layoutHeight * 0.45f)
+                        .scaleX(0.1f)
+                        .scaleY(0.1f)
+                        .start();
             }
         });
         expandLayout.setOnClickListener(new OnClickListener() {
@@ -199,12 +203,18 @@ public class XmagicPanelView extends RelativeLayout {
             public void onClick(View v) {
                 expandLayout.setVisibility(View.GONE);
                 layout.setVisibility(View.VISIBLE);
-                layout.animate().setListener(new ValueAnimationListener() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                    }
-                }).setDuration(animateTime).translationY(0).scaleX(1f).scaleY(1f).start();
+                layout.animate()
+                        .setListener(new ValueAnimationListener() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                            }
+                        })
+                        .setDuration(animateTime)
+                        .translationY(0)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .start();
             }
         });
         revertBtn.setOnClickListener(new OnClickListener() {
@@ -214,21 +224,22 @@ public class XmagicPanelView extends RelativeLayout {
                 String msg = v.getResources().getString(R.string.revert_tip_msg);
                 String leftStr = v.getResources().getString(R.string.revert_tip_dialog_left_btn);
                 String rightStr = v.getResources().getString(R.string.revert_tip_dialog_right_btn);
-                TipDialog tipDialog = new TipDialog(v.getContext()).setData(title, msg, leftStr, rightStr);
-                tipDialog.setClickListener(new TipDialog.TipDialogClickListener() {
-                    @Override
-                    public void onLeftBtnClick(Button btn) {
+                TipDialog tipDialog =
+                        new TipDialog(v.getContext()).setData(title, msg, leftStr, rightStr);
+                tipDialog
+                        .setClickListener(new TipDialog.TipDialogClickListener() {
+                            @Override
+                            public void onLeftBtnClick(Button btn) {}
 
-                    }
-
-                    @Override
-                    public void onRightBtnCLick(Button btn) {
-                        if (panelViewCallBack != null) {
-                            XmagicPanelDataManager.getInstance().setPanelBeautyOpen(true);
-                            panelViewCallBack.onRevertBtnClick();
-                        }
-                    }
-                }).show();
+                            @Override
+                            public void onRightBtnCLick(Button btn) {
+                                if (panelViewCallBack != null) {
+                                    XmagicPanelDataManager.getInstance().setPanelBeautyOpen(true);
+                                    panelViewCallBack.onRevertBtnClick();
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         beautyCompareBtn.setOnTouchListener(new OnTouchListener() {
@@ -243,7 +254,7 @@ public class XmagicPanelView extends RelativeLayout {
                     case MotionEvent.ACTION_CANCEL:
                         isDown = false;
                         break;
-                    default:  // 其他情况，不回调接口
+                    default: // 其他情况，不回调接口
                         return true;
                 }
                 if (panelViewCallBack != null) {
@@ -253,7 +264,6 @@ public class XmagicPanelView extends RelativeLayout {
             }
         });
     }
-
 
     //初始化数据
     private void initData() {
@@ -265,43 +275,43 @@ public class XmagicPanelView extends RelativeLayout {
                 seekBarkLayout.setVisibility(View.INVISIBLE);
             }
         });
-        seekBarkLayout.setOnSeekBarChangeListener(new XmagicSeekBarLayout.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    if (seekBarkLayout.getTag() instanceof XmagicUIProperty) {
-                        XmagicUIProperty<?> focusProperty = (XmagicUIProperty<?>) seekBarkLayout.getTag();
-                        if (focusProperty != null && focusProperty.property.effValue != null) {
-                            ((XmagicPropertyValues) focusProperty.property.effValue).setCurrentDisplayValue(progress);
-                            //调节属性, 回调
-                            callUpdateProperty(focusProperty);
+        seekBarkLayout.setOnSeekBarChangeListener(
+                new XmagicSeekBarLayout.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser) {
+                            if (seekBarkLayout.getTag() instanceof XmagicUIProperty) {
+                                XmagicUIProperty<?> focusProperty =
+                                        (XmagicUIProperty<?>) seekBarkLayout.getTag();
+                                if (focusProperty != null
+                                        && focusProperty.property.effValue != null) {
+                                    ((XmagicPropertyValues) focusProperty.property.effValue)
+                                            .setCurrentDisplayValue(progress);
+                                    //调节属性, 回调
+                                    callUpdateProperty(focusProperty);
+                                }
+                            }
                         }
                     }
-                }
-            }
-        });
+                });
         initRootRadioGroup();
-
     }
-
 
     /**
      * 初始化美颜分类选项
      */
     private void initRootRadioGroup() {
-        XmagicUIProperty.UICategory[] uiCategoryList = new XmagicUIProperty.UICategory[]{
-                XmagicUIProperty.UICategory.BEAUTY,
-                XmagicUIProperty.UICategory.BODY_BEAUTY,
-                XmagicUIProperty.UICategory.LUT,
-                XmagicUIProperty.UICategory.MOTION,
-                XmagicUIProperty.UICategory.MAKEUP,
-                XmagicUIProperty.UICategory.SEGMENTATION};
+        XmagicUIProperty.UICategory[] uiCategoryList = new XmagicUIProperty.UICategory[] {
+                XmagicUIProperty.UICategory.BEAUTY, XmagicUIProperty.UICategory.BODY_BEAUTY,
+                XmagicUIProperty.UICategory.LUT, XmagicUIProperty.UICategory.MOTION,
+                XmagicUIProperty.UICategory.MAKEUP, XmagicUIProperty.UICategory.SEGMENTATION};
         int uiCategoryListSize = uiCategoryList.length;
         int btnWidths = 0;
         int firstRadioBtnId = 0;
         for (int i = 0; i < uiCategoryListSize; i++) {
             XmagicUIProperty.UICategory category = uiCategoryList[i];
-            List<XmagicUIProperty<?>> datas = XmagicPanelDataManager.getInstance().getXmagicUIProperty(category);
+            List<XmagicUIProperty<?>> datas =
+                    XmagicPanelDataManager.getInstance().getXmagicUIProperty(category);
             if (datas == null || datas.size() == 0) {
                 continue;
             }
@@ -317,7 +327,8 @@ public class XmagicPanelView extends RelativeLayout {
                 btn.setButtonDrawable(null);
                 btn.setTextSize(16);
                 btn.setLines(1);
-                btn.setTextColor(ContextCompat.getColorStateList(getContext(), R.color.color_radiobutton));
+                btn.setTextColor(
+                        ContextCompat.getColorStateList(getContext(), R.color.color_radiobutton));
                 btn.setText(category.getDescription());
                 btnWidths += (int) (btn.getPaint().measureText(category.getDescription())
                         + btn.getPaddingLeft() + btn.getPaddingRight());
@@ -327,11 +338,13 @@ public class XmagicPanelView extends RelativeLayout {
 
         int count = radioGroup.getChildCount();
         int leftAndRightMargin =
-                (getContext().getResources().getDisplayMetrics().widthPixels - btnWidths) / (count + 1);
+                (getContext().getResources().getDisplayMetrics().widthPixels - btnWidths)
+                / (count + 1);
         leftAndRightMargin = Math.max(leftAndRightMargin, dip2px(getContext(), 30));
         for (int index = 0; index < count; index++) {
             RadioButton radioButton = (RadioButton) radioGroup.getChildAt(index);
-            RadioGroup.LayoutParams layoutParams = (RadioGroup.LayoutParams) radioButton.getLayoutParams();
+            RadioGroup.LayoutParams layoutParams =
+                    (RadioGroup.LayoutParams) radioButton.getLayoutParams();
             layoutParams.leftMargin = leftAndRightMargin;
             if (index == count - 1) {
                 layoutParams.rightMargin = leftAndRightMargin;
@@ -343,9 +356,6 @@ public class XmagicPanelView extends RelativeLayout {
         listener.onCheckedChanged(radioGroup, firstRadioBtnId);
     }
 
-
-
-
     class CheckedListener implements RadioGroup.OnCheckedChangeListener {
         private boolean isFirstClick = true;
 
@@ -354,7 +364,8 @@ public class XmagicPanelView extends RelativeLayout {
             RadioButton radioButton = group.findViewById(checkedId);
             UICategory uiCategory = (UICategory) radioButton.getTag();
             if (uiCategory != null) {
-                List<XmagicUIProperty<?>> datas = XmagicPanelDataManager.getInstance().getXmagicUIProperty(uiCategory);
+                List<XmagicUIProperty<?>> datas =
+                        XmagicPanelDataManager.getInstance().getXmagicUIProperty(uiCategory);
                 if (datas == null || datas.size() == 0) {
                     String noAuthTip = getResources().getString(R.string.check_noauth_tip);
                     Toast.makeText(getContext(), noAuthTip, Toast.LENGTH_LONG).show();
@@ -367,7 +378,8 @@ public class XmagicPanelView extends RelativeLayout {
                     }
                 } else {
                     //此种情况指的是美颜开关关闭，并且点击了美颜radiobutton的情况，这种情况应该隐藏seekBarkLayout
-                    if (uiCategory == UICategory.BEAUTY && !XmagicPanelDataManager.getInstance().isPanelBeautyOpen()) {
+                    if (uiCategory == UICategory.BEAUTY
+                            && !XmagicPanelDataManager.getInstance().isPanelBeautyOpen()) {
                         seekBarkLayout.setVisibility(INVISIBLE);
                     } else {
                         firstRecyclerView.scrollToPosition(firstAdapter.getCheckedPosition());
@@ -378,7 +390,6 @@ public class XmagicPanelView extends RelativeLayout {
         }
     }
 
-
     /**
      * 当菜单的按钮被点击的时候
      *
@@ -388,7 +399,7 @@ public class XmagicPanelView extends RelativeLayout {
     private void onRecycleViewItemClick(XmagicUIProperty xmagicUIProperty, PanelMenu menu) {
         if (menu == PanelMenu.FIRST_MENU) {
             if (xmagicUIProperty.xmagicUIPropertyList != null
-                    && xmagicUIProperty.xmagicUIPropertyList.size() > 0) {  //表示有二级菜单
+                    && xmagicUIProperty.xmagicUIPropertyList.size() > 0) { //表示有二级菜单
                 setCurrentXmagicUIProperty(xmagicUIProperty, menu);
                 firstAdapter.notifyDataSetChanged();
                 firstAdapter.getCheckedPosition();
@@ -416,7 +427,7 @@ public class XmagicPanelView extends RelativeLayout {
                     firstAdapter.getCheckedPosition();
                 }
             }
-        } else {   //二级菜单
+        } else { //二级菜单
             if (checkIsNeedDownload(xmagicUIProperty, menu)) {
                 return;
             }
@@ -436,7 +447,8 @@ public class XmagicPanelView extends RelativeLayout {
      * @param menu             1表示一级菜单  2表示二级菜单
      */
     private void setCurrentXmagicUIProperty(XmagicUIProperty<?> uiProperty, PanelMenu menu) {
-        if (uiProperty.uiCategory == UICategory.BEAUTY || uiProperty.uiCategory == UICategory.BODY_BEAUTY) {
+        if (uiProperty.uiCategory == UICategory.BEAUTY
+                || uiProperty.uiCategory == UICategory.BODY_BEAUTY) {
             XmagicPanelDataManager.getInstance().getBeautyList().remove(uiProperty);
             XmagicPanelDataManager.getInstance().getBeautyList().add(uiProperty);
         }
@@ -445,7 +457,8 @@ public class XmagicPanelView extends RelativeLayout {
             XmagicPanelDataManager.getInstance().getSelectedItems().put(des, uiProperty);
         } else {
             if (uiProperty.uiCategory == UICategory.BEAUTY) {
-                XmagicPanelDataManager.getInstance().getSelectedItems().put(uiProperty.rootDisplayName, uiProperty);
+                XmagicPanelDataManager.getInstance().getSelectedItems().put(
+                        uiProperty.rootDisplayName, uiProperty);
             } else {
                 XmagicPanelDataManager.getInstance().getSelectedItems().put("动效2", uiProperty);
             }
@@ -453,8 +466,11 @@ public class XmagicPanelView extends RelativeLayout {
     }
 
     private void onRecycleViewItemChecked(XmagicUIProperty<?> xmagicUIProperty, PanelMenu menu) {
-        //1. 因为动效、美妆、分割不能同时设置上去，所以需要在用户点击了这些item之后，当用户停留在对应的item 列表的时候设置对应的item，
-        // 也就是用户 选中了美妆、动效的时候，如果用户从从美妆列表切换到了动效列表，则直接重新设置已经选中的动效item
+        // 1.
+        // 因为动效、美妆、分割不能同时设置上去，所以需要在用户点击了这些item之后，当用户停留在对应的item
+        // 列表的时候设置对应的item，
+        // 也就是用户
+        // 选中了美妆、动效的时候，如果用户从从美妆列表切换到了动效列表，则直接重新设置已经选中的动效item
         if (xmagicUIProperty.uiCategory == UICategory.MOTION
                 || xmagicUIProperty.uiCategory == UICategory.MAKEUP
                 || xmagicUIProperty.uiCategory == UICategory.SEGMENTATION) {
@@ -465,7 +481,6 @@ public class XmagicPanelView extends RelativeLayout {
         callUpdateProperty(xmagicUIProperty);
         setSeekBarState(xmagicUIProperty);
     }
-
 
     private boolean checkIsSupportAndAuth(XmagicUIProperty<?> xmagicUIProperty) {
         if (xmagicUIProperty != null && xmagicUIProperty.property != null) {
@@ -492,7 +507,8 @@ public class XmagicPanelView extends RelativeLayout {
      * @return
      */
     private boolean checkIsNeedDownload(XmagicUIProperty<?> uiProperty, PanelMenu menu) {
-        if (uiProperty != null && uiProperty.xmagicUIPropertyList == null && uiProperty.dlModel != null) {
+        if (uiProperty != null && uiProperty.xmagicUIPropertyList == null
+                && uiProperty.dlModel != null) {
             startDownload(uiProperty, menu);
             return true;
         }
@@ -512,7 +528,9 @@ public class XmagicPanelView extends RelativeLayout {
         ResDownloadUtil.checkOrDownloadMotions(getContext(), dlModel, new OnDownloadListener() {
             @Override
             public void onDownloadSuccess(String directory) {
-                Log.e(TAG, "onDownloadSuccess  " + directory + "   " + Thread.currentThread().getName());
+                Log.e(TAG,
+                        "onDownloadSuccess  " + directory + "   "
+                                + Thread.currentThread().getName());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -538,7 +556,9 @@ public class XmagicPanelView extends RelativeLayout {
 
             @Override
             public void onDownloadFailed(int errorCode) {
-                Log.e(TAG, "onDownloadFailed  " + errorCode + "   " + Thread.currentThread().getName());
+                Log.e(TAG,
+                        "onDownloadFailed  " + errorCode + "   "
+                                + Thread.currentThread().getName());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -554,8 +574,9 @@ public class XmagicPanelView extends RelativeLayout {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog();
             mProgressDialog.createLoadingDialog(getContext());
-            mProgressDialog.setCancelable(false);               // 设置是否可以通过点击Back键取消
-            mProgressDialog.setCanceledOnTouchOutside(false);   // 设置在点击Dialog外是否取消Dialog进度条
+            mProgressDialog.setCancelable(false); // 设置是否可以通过点击Back键取消
+            mProgressDialog.setCanceledOnTouchOutside(
+                    false); // 设置在点击Dialog外是否取消Dialog进度条
             mProgressDialog.show();
         }
     }
@@ -567,16 +588,18 @@ public class XmagicPanelView extends RelativeLayout {
         }
     }
 
-
     /**
      * 设置进度条
      */
     private void setSeekBarState(XmagicUIProperty<?> xmagicUIProperty) {
         if (xmagicUIProperty.property != null
-                && xmagicUIProperty.property.effValue instanceof XmagicProperty.XmagicPropertyValues) {
-            XmagicPropertyValues effValue = (XmagicPropertyValues) xmagicUIProperty.property.effValue;
+                && xmagicUIProperty.property.effValue
+                        instanceof XmagicProperty.XmagicPropertyValues) {
+            XmagicPropertyValues effValue =
+                    (XmagicPropertyValues) xmagicUIProperty.property.effValue;
             int currentVale = (int) effValue.getCurrentDisplayValue();
-            seekBarkLayout.setProgress((int) effValue.displayMinValue, (int) effValue.displayMaxValue, currentVale);
+            seekBarkLayout.setProgress(
+                    (int) effValue.displayMinValue, (int) effValue.displayMaxValue, currentVale);
             seekBarkLayout.setVisibility(View.VISIBLE);
             seekBarkLayout.setTag(xmagicUIProperty);
         } else {
@@ -584,7 +607,6 @@ public class XmagicPanelView extends RelativeLayout {
             seekBarkLayout.setTag(null);
         }
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_CHOOSE_PHOTO && resultCode == RESULT_OK) {
@@ -596,8 +618,10 @@ public class XmagicPanelView extends RelativeLayout {
                 if (checkResult) {
                     onActivityResult(filePath);
                 } else {
-                    Toast.makeText(getContext(), getResources().getString(com.tencent.xmagic.R.string.xamgic_5000),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),
+                                 getResources().getString(com.tencent.xmagic.R.string.xamgic_5000),
+                                 Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         }
@@ -613,9 +637,9 @@ public class XmagicPanelView extends RelativeLayout {
         if (!TextUtils.isEmpty(path)) {
             segXmagicProperty.property.effKey = path;
             //此处不进行回调，因为一般情况下，此时xmagic处于ondestroy状态，此时设置会导致随后的resume之后的设置不生效，所以屏蔽掉这次设置
-            //callUpdateProperty(segXmagicProperty);
-            XmagicPanelDataManager.getInstance().getSelectedItems().
-                    put(segXmagicProperty.uiCategory.getDescription(), segXmagicProperty);
+            // callUpdateProperty(segXmagicProperty);
+            XmagicPanelDataManager.getInstance().getSelectedItems().put(
+                    segXmagicProperty.uiCategory.getDescription(), segXmagicProperty);
             setSeekBarState(segXmagicProperty);
             XmagicPanelDataManager.getInstance().setLastItem(segXmagicProperty);
             if (firstAdapter != null) {
@@ -623,7 +647,6 @@ public class XmagicPanelView extends RelativeLayout {
             }
         }
     }
-
 
     private boolean checkBitmap(String segmentBgFileName) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
@@ -638,10 +661,8 @@ public class XmagicPanelView extends RelativeLayout {
             int height = options.outHeight;
             boolean isVertical = width < height;
             boolean isMin0 = width <= 0 || height <= 0;
-            boolean isVerticalResult =
-                    (isVertical && (width > maxWidth || height > maxHeight));
-            boolean isHorResult =
-                    (!isVertical && (width > maxHeight || height > maxWidth));
+            boolean isVerticalResult = (isVertical && (width > maxWidth || height > maxHeight));
+            boolean isHorResult = (!isVertical && (width > maxHeight || height > maxWidth));
             if (isVerticalResult || isHorResult || isMin0) {
                 return false;
             }
@@ -662,13 +683,11 @@ public class XmagicPanelView extends RelativeLayout {
         errorTxt.setText(errorMsg);
     }
 
-
     private void callUpdateProperty(XmagicUIProperty<?> xmagicUIProperty) {
         if (panelViewCallBack != null && xmagicUIProperty.property != null) {
             panelViewCallBack.onUserUpdateProperty(xmagicUIProperty.property);
         }
     }
-
 
     /**
      * 用于判断是否点击了 分割中的自定义item
@@ -679,7 +698,7 @@ public class XmagicPanelView extends RelativeLayout {
     private boolean isCustomSegItem(XmagicUIProperty<?> xmagicUIProperty) {
         return (xmagicUIProperty.uiCategory == UICategory.SEGMENTATION
                 && TextUtils.equals(xmagicUIProperty.displayName,
-                getContext().getString(R.string.segmentation_custom_label)));
+                        getContext().getString(R.string.segmentation_custom_label)));
     }
 
     /**
@@ -704,7 +723,6 @@ public class XmagicPanelView extends RelativeLayout {
         }
     }
 
-
     public interface PanelViewCallBack {
         void onUserUpdateProperty(XmagicProperty<?> xmagicProperty);
 
@@ -712,57 +730,45 @@ public class XmagicPanelView extends RelativeLayout {
 
         void onRevertBtnClick();
 
-        void onBeautySwitchCheckedChanged(boolean isChecked);   //美颜的总开关回调函数
+        void onBeautySwitchCheckedChanged(boolean isChecked); //美颜的总开关回调函数
 
         void onBeautyCloseOrOpen(boolean isOpen);
-
     }
 
     /**
      * 打开系统相册
      */
     public static void openPhotoAlbum(Activity activity) {
-        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*|video/*");
+        Intent intentToPickPic =
+                new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        intentToPickPic.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*|video/*");
         activity.startActivityForResult(intentToPickPic, RC_CHOOSE_PHOTO); // 打开相册，选择图片
     }
 
     public static void openPhotoAlbum(Fragment fragment) {
-        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*|video/*");
+        Intent intentToPickPic =
+                new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        intentToPickPic.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*|video/*");
         fragment.startActivityForResult(intentToPickPic, RC_CHOOSE_PHOTO); // 打开相册，选择图片
     }
 
-
-    public enum PanelMenu {
-        FIRST_MENU,
-        SECOND_MENU
-    }
-
+    public enum PanelMenu { FIRST_MENU, SECOND_MENU }
 
     static class ValueAnimationListener implements Animator.AnimatorListener {
+        @Override
+        public void onAnimationStart(Animator animation) {}
 
         @Override
-        public void onAnimationStart(Animator animation) {
-
-        }
+        public void onAnimationEnd(Animator animation) {}
 
         @Override
-        public void onAnimationEnd(Animator animation) {
-
-        }
+        public void onAnimationCancel(Animator animation) {}
 
         @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
+        public void onAnimationRepeat(Animator animation) {}
     }
-
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)

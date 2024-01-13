@@ -9,7 +9,6 @@ import com.tencent.ugc.TXRecordCommon;
  */
 
 public interface ISoundEffectsPannel {
-
     /**
      * 设置音效面板监听器
      *

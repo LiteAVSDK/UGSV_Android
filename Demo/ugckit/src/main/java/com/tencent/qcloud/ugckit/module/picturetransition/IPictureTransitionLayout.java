@@ -6,7 +6,6 @@ import androidx.annotation.DrawableRes;
  * 定制化图片转场Icon
  */
 public interface IPictureTransitionLayout {
-
     /**
      * 设置切换图片转场监听器
      *
@@ -18,12 +17,16 @@ public interface IPictureTransitionLayout {
         /**
          * 设置图片转场类型
          *
-         * @param type {@link com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING}
-         *             {@link com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_UP_DOWN_SLIPPING}
+         * @param type {@link
+         *         com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING}
+         *             {@link
+         * com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_UP_DOWN_SLIPPING}
          *             {@link com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_ENLARGE}
          *             {@link com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_NARROW}
-         *             {@link com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_ROTATIONAL_SCALING}
-         *             {@link com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_FADEIN_FADEOUT}
+         *             {@link
+         * com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_ROTATIONAL_SCALING}
+         *             {@link
+         * com.tencent.ugc.TXVideoEditConstants#TX_TRANSITION_TYPE_FADEIN_FADEOUT}
          */
         void transition(int type);
     }

@@ -8,7 +8,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,13 +15,10 @@ import androidx.fragment.app.DialogFragment;
 
 import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 
-
 public class PermissionIntroductionDialog extends DialogFragment {
-
     public static final String DIALOG_NAME = "PermissionIntroductionDialog";
     private static final String SHARED_PREFERENCE_FILE_NAME_PERMISSION = "permission";
     private static final String SHARED_PREFERENCE_KEY_BEAUTY = "beauty";
-
 
     private PositiveClickListener mPositiveButtonClickListener;
     private Button mButtonNegative;
@@ -71,7 +67,6 @@ public class PermissionIntroductionDialog extends DialogFragment {
         return mDialog;
     }
 
-
     private void initButtonPositive() {
         mButtonPositive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,18 +93,13 @@ public class PermissionIntroductionDialog extends DialogFragment {
         mPositiveButtonClickListener = listener;
     }
 
-    public interface PositiveClickListener {
-        void onClickPositive();
-    }
+    public interface PositiveClickListener { void onClickPositive(); }
 
-    public enum DialogPosition {
-        TOP,
-        BOTTOM
-    }
-
+    public enum DialogPosition { TOP, BOTTOM }
 
     public static boolean isGrantPermission() {
-        return (Boolean) new SharedPreferenceUtils(UGCKit.getAppContext(), SHARED_PREFERENCE_FILE_NAME_PERMISSION)
+        return (Boolean) new SharedPreferenceUtils(
+                UGCKit.getAppContext(), SHARED_PREFERENCE_FILE_NAME_PERMISSION)
                 .getSharedPreference(SHARED_PREFERENCE_KEY_BEAUTY, false);
     }
 
@@ -117,5 +107,4 @@ public class PermissionIntroductionDialog extends DialogFragment {
         new SharedPreferenceUtils(UGCKit.getAppContext(), SHARED_PREFERENCE_FILE_NAME_PERMISSION)
                 .put(SHARED_PREFERENCE_KEY_BEAUTY, true);
     }
-
 }

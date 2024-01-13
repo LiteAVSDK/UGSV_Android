@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IPasterPannel {
     int TAB_ANIMATED_PASTER = 1;
-    int TAB_PASTER          = 2;
+    int TAB_PASTER = 2;
 
     /**
      * 获取当前Tab
@@ -72,7 +72,6 @@ public interface IPasterPannel {
          */
         void onItemClick(TCPasterInfo tcPasterInfo, int position);
     }
-
 
     /**
      * 设置添加贴纸监听器

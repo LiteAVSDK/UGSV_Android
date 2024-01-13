@@ -2,33 +2,30 @@ package com.tencent.qcloud.ugckit.component.swipemenu;
 
 import android.content.Context;
 import android.text.TextUtils;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
-import com.tencent.qcloud.ugckit.R;
-
 
 import java.util.ArrayList;
 
 public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder> {
-
-    private Context                    mContext;
+    private Context mContext;
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
-    private ItemView.OnDeleteListener  mOnDeleteListener;
-    public  int                        mBitmapWidth;
-    public  int                        mBitmapHeight;
-    private int                        mRemoveIconId;
+    private ItemView.OnDeleteListener mOnDeleteListener;
+    public int mBitmapWidth;
+    public int mBitmapHeight;
+    private int mRemoveIconId;
 
     public MenuAdapter(Context context, ArrayList<TCVideoFileInfo> fileInfos) {
         mContext = context;
@@ -65,12 +62,14 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
 
     @Override
     public View onCreateContentView(@NonNull ViewGroup parent, int viewType) {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_swipe_menu_item, parent, false);
+        return LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.ugckit_swipe_menu_item, parent, false);
     }
 
     @NonNull
     @Override
-    public MenuAdapter.DefaultViewHolder onCompatCreateViewHolder(@NonNull View realContentView, int viewType) {
+    public MenuAdapter.DefaultViewHolder onCompatCreateViewHolder(
+            @NonNull View realContentView, int viewType) {
         return new DefaultViewHolder(realContentView);
     }
 
@@ -81,7 +80,8 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
 
         // 自定义宽高
         if (mBitmapHeight != 0 && mBitmapWidth != 0) {
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(mBitmapWidth, mBitmapHeight);
+            RelativeLayout.LayoutParams params =
+                    new RelativeLayout.LayoutParams(mBitmapWidth, mBitmapHeight);
             holder.ivThumb.setLayoutParams(params);
         }
         // 自定义删除按钮
@@ -106,9 +106,9 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
     }
 
     static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView                 ivThumb;
-        TextView                  tvDuration;
-        ImageView                 ivDelete;
+        ImageView ivThumb;
+        TextView tvDuration;
+        ImageView ivDelete;
         ItemView.OnDeleteListener mOnDeleteListener;
 
         public DefaultViewHolder(@NonNull View itemView) {

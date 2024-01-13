@@ -2,37 +2,36 @@ package com.tencent.qcloud.ugckit.module.mixrecord;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.RecordButton;
 import com.tencent.qcloud.ugckit.module.record.RecordModeView;
 import com.tencent.qcloud.ugckit.module.record.RecordProgressView;
 import com.tencent.qcloud.ugckit.module.record.VideoRecordSDK;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.ugc.TXUGCRecord;
 
 import java.util.Locale;
 
 public class MixRecordBottomLayout extends RelativeLayout implements View.OnClickListener {
-    private Activity                            mActivity;
-    private ImageView                           mImageCameraSwitch;
-    private TextView                            mTextProgressTime;
-    private ImageView                           mImageDeleteLastPart;
-    private ImageView                           mImageTorch;
-    private RecordProgressView                  mRecordProgressView;
-    private RecordButton                        mRecordButton;
-    private RecordModeView                      mRecordModeView;
-    private View                                mRecordModeDot;
+    private Activity mActivity;
+    private ImageView mImageCameraSwitch;
+    private TextView mTextProgressTime;
+    private ImageView mImageDeleteLastPart;
+    private ImageView mImageTorch;
+    private RecordProgressView mRecordProgressView;
+    private RecordButton mRecordButton;
+    private RecordModeView mRecordModeView;
+    private View mRecordModeDot;
     private RecordButton.OnRecordButtonListener mOnRecordButtonListener;
-    private boolean                             mFrontCameraFlag = true;        // 是否前置摄像头UI判断
-    private boolean                             mIsTorchOpenFlag;               // 是否打开闪光灯UI判断
-    private boolean                             mIsSelectDeleteLastPartFlag;    // 是否点击一次过"删除最有一段分段视频"按钮
+    private boolean mFrontCameraFlag = true; // 是否前置摄像头UI判断
+    private boolean mIsTorchOpenFlag; // 是否打开闪光灯UI判断
+    private boolean mIsSelectDeleteLastPartFlag; // 是否点击一次过"删除最有一段分段视频"按钮
 
     public MixRecordBottomLayout(Context context) {
         super(context);
@@ -102,7 +101,6 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
         }
     }
 
-
     /**
      * 切换前后摄像头
      */
@@ -161,7 +159,7 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
     private void deleteLastPart() {
         int size = VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size();
 
-        if (size == 0) {// 没有任何分段视频，返回
+        if (size == 0) { // 没有任何分段视频，返回
             return;
         }
         if (!mIsSelectDeleteLastPartFlag) {
@@ -176,9 +174,12 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
             VideoRecordSDK.getInstance().deleteLastPart();
             long duration = VideoRecordSDK.getInstance().getPartManager().getDuration();
             float timeSecond = duration / 1000f;
-            mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond) + getResources().getString(R.string.ugckit_unit_second));
+            mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond)
+                    + getResources().getString(R.string.ugckit_unit_second));
             if (mOnRecordButtonListener != null) {
-                mOnRecordButtonListener.onDeleteParts(VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size(), duration);
+                mOnRecordButtonListener.onDeleteParts(
+                        VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size(),
+                        duration);
             }
         }
     }
@@ -220,7 +221,8 @@ public class MixRecordBottomLayout extends RelativeLayout implements View.OnClic
     public void updateProgress(long milliSecond) {
         mRecordProgressView.setProgress((int) milliSecond);
         float second = milliSecond / 1000f;
-        mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", second) + getResources().getString(R.string.ugckit_unit_second));
+        mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", second)
+                + getResources().getString(R.string.ugckit_unit_second));
     }
 
     public RecordProgressView getRecordProgressView() {

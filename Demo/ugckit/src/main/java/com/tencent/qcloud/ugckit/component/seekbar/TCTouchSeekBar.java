@@ -7,12 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
 
@@ -20,22 +19,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TCTouchSeekBar extends View {
-    private int               downX       = 0;
-    private int               downY       = 0;
-    private int               upX         = 0;
-    private int               upY         = 0;
-    private int               moveX       = 0;
-    private int               moveY       = 0;
-    private int               mViewWidth;
-    private int               mViewHeight;
-    private Bitmap            mDotDefaultBitmap;
-    private Bitmap            mDotCheckedBitmap;
-    private OnTouchCallback   mCallback;
-    private int               mCurrentPos = 2;
+    private int downX = 0;
+    private int downY = 0;
+    private int upX = 0;
+    private int upY = 0;
+    private int moveX = 0;
+    private int moveY = 0;
+    private int mViewWidth;
+    private int mViewHeight;
+    private Bitmap mDotDefaultBitmap;
+    private Bitmap mDotCheckedBitmap;
+    private OnTouchCallback mCallback;
+    private int mCurrentPos = 2;
     private ArrayList<String> mSelectionList;
-    private int               mUnitWidth;
-    private Paint             mPaint;
-    private int               mTextSize   = 40;
+    private int mUnitWidth;
+    private Paint mPaint;
+    private int mTextSize = 40;
 
     public TCTouchSeekBar(Context context) {
         super(context);
@@ -49,9 +48,14 @@ public class TCTouchSeekBar extends View {
         super(context, attrs, defStyleAttr);
 
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitTCTouchSeekBar);
-            mDotDefaultBitmap = ((BitmapDrawable) a.getDrawable(R.styleable.UGCKitTCTouchSeekBar_tsb_dotDefault)).getBitmap();
-            mDotCheckedBitmap = ((BitmapDrawable) a.getDrawable(R.styleable.UGCKitTCTouchSeekBar_tsb_dotChecked)).getBitmap();
+            TypedArray a =
+                    getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitTCTouchSeekBar);
+            mDotDefaultBitmap = ((BitmapDrawable) a.getDrawable(
+                                         R.styleable.UGCKitTCTouchSeekBar_tsb_dotDefault))
+                                        .getBitmap();
+            mDotCheckedBitmap = ((BitmapDrawable) a.getDrawable(
+                                         R.styleable.UGCKitTCTouchSeekBar_tsb_dotChecked))
+                                        .getBitmap();
             a.recycle();
         }
         mPaint = new Paint();
@@ -72,7 +76,7 @@ public class TCTouchSeekBar extends View {
             mSelectionList.addAll(Arrays.asList(section));
         } else {
             //随便写的
-            String[] str = new String[]{
+            String[] str = new String[] {
                     getResources().getString(R.string.ugckit_touch_seekbar_low),
                     getResources().getString(R.string.ugckit_touch_seekbar_mid),
                     getResources().getString(R.string.ugckit_touch_seekbar_high),
@@ -97,21 +101,28 @@ public class TCTouchSeekBar extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         //先画一个背景 X轴横线
-        canvas.drawLine(mDotDefaultBitmap.getWidth() / 2, mViewHeight / 2, mViewWidth - mDotDefaultBitmap.getWidth() / 2, mViewHeight / 2, mPaint);
+        canvas.drawLine(mDotDefaultBitmap.getWidth() / 2, mViewHeight / 2,
+                mViewWidth - mDotDefaultBitmap.getWidth() / 2, mViewHeight / 2, mPaint);
 
         //画刻度点和刻度
         for (int i = 0; i < mSelectionList.size(); i++) {
             if (i == mCurrentPos) {
                 canvas.drawBitmap(mDotCheckedBitmap,
-                        mCurrentPos * mUnitWidth - (mDotCheckedBitmap.getWidth() - mDotDefaultBitmap.getWidth()) / 2,
+                        mCurrentPos * mUnitWidth
+                                - (mDotCheckedBitmap.getWidth() - mDotDefaultBitmap.getWidth()) / 2,
                         mViewHeight / 2 - mDotCheckedBitmap.getHeight() / 2, mPaint);
             } else {
-                canvas.drawBitmap(mDotDefaultBitmap, i * mUnitWidth, mViewHeight / 2 - mDotDefaultBitmap.getHeight() / 2, mPaint);
+                canvas.drawBitmap(mDotDefaultBitmap, i * mUnitWidth,
+                        mViewHeight / 2 - mDotDefaultBitmap.getHeight() / 2, mPaint);
             }
-            canvas.drawText(mSelectionList.get(i), i * mUnitWidth + (mDotDefaultBitmap.getWidth() - mTextSize / 2 * mSelectionList.get(i).length()) / 2, mViewHeight / 2 - mDotDefaultBitmap.getHeight() / 2 - 5, mPaint);
+            canvas.drawText(mSelectionList.get(i),
+                    i * mUnitWidth
+                            + (mDotDefaultBitmap.getWidth()
+                                      - mTextSize / 2 * mSelectionList.get(i).length())
+                                    / 2,
+                    mViewHeight / 2 - mDotDefaultBitmap.getHeight() / 2 - 5, mPaint);
         }
     }
-
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
@@ -175,7 +186,5 @@ public class TCTouchSeekBar extends View {
         return mCurrentPos;
     }
 
-    public interface OnTouchCallback {
-        void onCallback(int position);
-    }
+    public interface OnTouchCallback { void onCallback(int position); }
 }

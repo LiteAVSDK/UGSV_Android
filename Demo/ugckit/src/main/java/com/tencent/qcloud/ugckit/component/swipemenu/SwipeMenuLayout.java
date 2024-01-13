@@ -2,9 +2,6 @@ package com.tencent.qcloud.ugckit.component.swipemenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -14,36 +11,37 @@ import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.OverScroller;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 import com.tencent.qcloud.ugckit.R;
 
-
 public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
-
     public static final int DEFAULT_SCROLLER_DURATION = 200;
 
-    private int                  mLeftViewId       = 0;
-    private int                  mContentViewId    = 0;
-    private int                  mRightViewId      = 0;
-    private int                  mScrollerDuration = DEFAULT_SCROLLER_DURATION;
-    private int                  mScaledTouchSlop;
-    private int                  mLastX;
-    private int                  mLastY;
-    private int                  mDownX;
-    private int                  mDownY;
-    private int                  mScaledMinimumFlingVelocity;
-    private int                  mScaledMaximumFlingVelocity;
-    private float                mOpenPercent      = 0.5f;
-    private boolean              shouldResetSwipe;
-    private boolean              mDragging;
-    private boolean              swipeEnable       = true;
-    private View                 mContentView;
-    private SwipeLeftHorizontal  mSwipeLeftHorizontal;
+    private int mLeftViewId = 0;
+    private int mContentViewId = 0;
+    private int mRightViewId = 0;
+    private int mScrollerDuration = DEFAULT_SCROLLER_DURATION;
+    private int mScaledTouchSlop;
+    private int mLastX;
+    private int mLastY;
+    private int mDownX;
+    private int mDownY;
+    private int mScaledMinimumFlingVelocity;
+    private int mScaledMaximumFlingVelocity;
+    private float mOpenPercent = 0.5f;
+    private boolean shouldResetSwipe;
+    private boolean mDragging;
+    private boolean swipeEnable = true;
+    private View mContentView;
+    private SwipeLeftHorizontal mSwipeLeftHorizontal;
     private SwipeRightHorizontal mSwipeRightHorizontal;
-    private SwipeHorizontal      mSwipeCurrentHorizontal;
-    private OverScroller         mScroller;
+    private SwipeHorizontal mSwipeCurrentHorizontal;
+    private OverScroller mScroller;
     @Nullable
-    private VelocityTracker      mVelocityTracker;
+    private VelocityTracker mVelocityTracker;
 
     public SwipeMenuLayout(@NonNull Context context) {
         this(context, null);
@@ -56,10 +54,14 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
     public SwipeMenuLayout(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.UGCKitSwipeMenuLayout);
-        mLeftViewId = typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_leftViewId, mLeftViewId);
-        mContentViewId = typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_contentViewId, mContentViewId);
-        mRightViewId = typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_rightViewId, mRightViewId);
+        TypedArray typedArray =
+                context.obtainStyledAttributes(attrs, R.styleable.UGCKitSwipeMenuLayout);
+        mLeftViewId =
+                typedArray.getResourceId(R.styleable.UGCKitSwipeMenuLayout_leftViewId, mLeftViewId);
+        mContentViewId = typedArray.getResourceId(
+                R.styleable.UGCKitSwipeMenuLayout_contentViewId, mContentViewId);
+        mRightViewId = typedArray.getResourceId(
+                R.styleable.UGCKitSwipeMenuLayout_rightViewId, mRightViewId);
         typedArray.recycle();
 
         ViewConfiguration configuration = ViewConfiguration.get(getContext());
@@ -164,8 +166,7 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
                 return false;
             }
             case MotionEvent.ACTION_CANCEL: {
-                if (!mScroller.isFinished())
-                    mScroller.abortAnimation();
+                if (!mScroller.isFinished()) mScroller.abortAnimation();
                 return false;
             }
         }
@@ -189,7 +190,8 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
                 if (!isSwipeEnable()) break;
                 int disX = (int) (mLastX - ev.getX());
                 int disY = (int) (mLastY - ev.getY());
-                if (!mDragging && Math.abs(disX) > mScaledTouchSlop && Math.abs(disX) > Math.abs(disY)) {
+                if (!mDragging && Math.abs(disX) > mScaledTouchSlop
+                        && Math.abs(disX) > Math.abs(disY)) {
                     mDragging = true;
                 }
                 if (mDragging) {
@@ -245,8 +247,7 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
                 mVelocityTracker.recycle();
                 mVelocityTracker = null;
                 if (Math.abs(mDownX - ev.getX()) > mScaledTouchSlop
-                        || Math.abs(mDownY - ev.getY()) > mScaledTouchSlop
-                        || isLeftMenuOpen()
+                        || Math.abs(mDownY - ev.getY()) > mScaledTouchSlop || isLeftMenuOpen()
                         || isRightMenuOpen()) {
                     ev.setAction(MotionEvent.ACTION_CANCEL);
                     super.onTouchEvent(ev);
@@ -282,7 +283,8 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
         final int width = mSwipeCurrentHorizontal.getMenuWidth();
         final int halfWidth = width / 2;
         final float distanceRatio = Math.min(1f, 1.0f * Math.abs(dx) / width);
-        final float distance = halfWidth + halfWidth * distanceInfluenceForSnapDuration(distanceRatio);
+        final float distance =
+                halfWidth + halfWidth * distanceInfluenceForSnapDuration(distanceRatio);
         int duration;
         if (velocity > 0) {
             duration = 4 * Math.round(1000 * Math.abs(distance / velocity));
@@ -302,13 +304,19 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
 
     private void judgeOpenClose(int dx, int dy) {
         if (mSwipeCurrentHorizontal != null) {
-            if (Math.abs(getScrollX()) >= (mSwipeCurrentHorizontal.getMenuView().getWidth() * mOpenPercent)) { // auto open
-                if (Math.abs(dx) > mScaledTouchSlop || Math.abs(dy) > mScaledTouchSlop) { // swipe up
-                    if (isMenuOpenNotEqual()) smoothCloseMenu();
-                    else smoothOpenMenu();
+            if (Math.abs(getScrollX()) >= (mSwipeCurrentHorizontal.getMenuView().getWidth()
+                        * mOpenPercent)) { // auto open
+                if (Math.abs(dx) > mScaledTouchSlop
+                        || Math.abs(dy) > mScaledTouchSlop) { // swipe up
+                    if (isMenuOpenNotEqual())
+                        smoothCloseMenu();
+                    else
+                        smoothOpenMenu();
                 } else { // normal up
-                    if (isMenuOpen()) smoothCloseMenu();
-                    else smoothOpenMenu();
+                    if (isMenuOpen())
+                        smoothCloseMenu();
+                    else
+                        smoothOpenMenu();
                 }
             } else { // auto close
                 smoothCloseMenu();
@@ -377,7 +385,8 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
 
     @Override
     public boolean isRightCompleteOpen() {
-        return mSwipeRightHorizontal != null && !mSwipeRightHorizontal.isCompleteClose(getScrollX());
+        return mSwipeRightHorizontal != null
+                && !mSwipeRightHorizontal.isCompleteClose(getScrollX());
     }
 
     @Override
@@ -387,12 +396,14 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
 
     @Override
     public boolean isLeftMenuOpenNotEqual() {
-        return mSwipeLeftHorizontal != null && mSwipeLeftHorizontal.isMenuOpenNotEqual(getScrollX());
+        return mSwipeLeftHorizontal != null
+                && mSwipeLeftHorizontal.isMenuOpenNotEqual(getScrollX());
     }
 
     @Override
     public boolean isRightMenuOpenNotEqual() {
-        return mSwipeRightHorizontal != null && mSwipeRightHorizontal.isMenuOpenNotEqual(getScrollX());
+        return mSwipeRightHorizontal != null
+                && mSwipeRightHorizontal.isMenuOpenNotEqual(getScrollX());
     }
 
     @Override
@@ -491,8 +502,8 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
             int top = getPaddingTop() + lp.topMargin;
 
             int parentViewWidth = getMeasuredWidthAndState();
-            rightMenu.layout(parentViewWidth, top, parentViewWidth + menuViewWidth, top + menuViewHeight);
+            rightMenu.layout(
+                    parentViewWidth, top, parentViewWidth + menuViewWidth, top + menuViewHeight);
         }
     }
-
 }

@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.module.effect.utils;
 
 public class Edit {
-
     /**
      * 视频裁剪片段选取改变监听
      */

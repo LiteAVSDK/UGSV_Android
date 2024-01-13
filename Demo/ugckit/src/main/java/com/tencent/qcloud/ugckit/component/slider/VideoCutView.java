@@ -3,69 +3,68 @@ package com.tencent.qcloud.ugckit.component.slider;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.effect.time.TCVideoEditerAdapter;
 import com.tencent.qcloud.ugckit.module.effect.utils.Edit;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.ugc.TXVideoEditConstants;
 
 /**
  * 裁剪View
  */
 public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeChangeListener {
-
     @NonNull
-    private String                   TAG        = "VideoCutView";
-    private Context                  mContext;
-    private RecyclerView             mRecyclerView;
-    private RangeSlider              mRangeSlider;
-    private float                    mCurrentScroll;
+    private String TAG = "VideoCutView";
+    private Context mContext;
+    private RecyclerView mRecyclerView;
+    private RangeSlider mRangeSlider;
+    private float mCurrentScroll;
     /**
      * 单个缩略图的宽度
      */
-    private int                      mSingleWidth;
+    private int mSingleWidth;
     /**
      * 所有缩略图的宽度
      */
-    private int                      mAllWidth;
+    private int mAllWidth;
     /**
      * 整个视频的时长
      */
-    private long                     mVideoDuration;
+    private long mVideoDuration;
     /**
      * 控件最大时长16s
      */
-    private long                     mViewMaxDuration;
+    private long mViewMaxDuration;
     /**
      * 如果视频时长超过了控件的最大时长，底部在滑动时最左边的起始位置时间
      */
-    private long                     mStartTime = 0;
+    private long mStartTime = 0;
     /**
      * 裁剪的起始时间，最左边是0
      */
-    private int                      mViewLeftTime;
+    private int mViewLeftTime;
     /**
      * 裁剪的结束时间，最右边最大是16000ms
      */
-    private int                      mViewRightTime;
+    private int mViewRightTime;
     /**
      * 最终视频的起始时间
      */
-    private long                     mVideoStartPos;
+    private long mVideoStartPos;
     /**
      * 最终视频的结束时间
      */
-    private long                     mVideoEndPos;
-    private TCVideoEditerAdapter     mAdapter;
+    private long mVideoEndPos;
+    private TCVideoEditerAdapter mAdapter;
     private Edit.OnCutChangeListener mRangeChangeListener;
 
     public VideoCutView(Context context) {
@@ -102,7 +101,8 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
         mAdapter = new TCVideoEditerAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
 
-        mSingleWidth = mContext.getResources().getDimensionPixelOffset(R.dimen.ugckit_item_thumb_height);
+        mSingleWidth =
+                mContext.getResources().getDimensionPixelOffset(R.dimen.ugckit_item_thumb_height);
     }
 
     /**
@@ -120,7 +120,8 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
         if (width > screenWidth) {
             width = screenWidth;
         }
-        layoutParams.width = width + 2 * resources.getDimensionPixelOffset(R.dimen.ugckit_cut_margin);
+        layoutParams.width =
+                width + 2 * resources.getDimensionPixelOffset(R.dimen.ugckit_cut_margin);
         setLayoutParams(layoutParams);
     }
 
@@ -178,7 +179,7 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
 
     @Override
     public void onKeyUp(int type, int leftPinIndex, int rightPinIndex) {
-        mViewLeftTime = (int) (mViewMaxDuration * leftPinIndex / 100); //ms
+        mViewLeftTime = (int) (mViewMaxDuration * leftPinIndex / 100); // ms
         mViewRightTime = (int) (mViewMaxDuration * rightPinIndex / 100);
 
         onTimeChanged();
@@ -232,5 +233,4 @@ public class VideoCutView extends RelativeLayout implements RangeSlider.OnRangeC
     public RangeSlider getRangeSlider() {
         return mRangeSlider;
     }
-
 }

@@ -6,36 +6,36 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
-import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
-import com.tencent.qcloud.ugckit.module.effect.IFloatLayerView;
-import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
-import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
-import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
-import com.tencent.qcloud.ugckit.utils.FileUtils;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerView;
 import com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerViewGroup;
 import com.tencent.qcloud.ugckit.component.timeline.RangeSliderViewContainer;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.component.timeline.ViewConst;
+import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
+import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
+import com.tencent.qcloud.ugckit.module.effect.IFloatLayerView;
+import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
+import com.tencent.qcloud.ugckit.module.effect.TimelineViewUtil;
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.qcloud.ugckit.module.effect.paster.view.PasterPannel;
 import com.tencent.qcloud.ugckit.module.effect.paster.view.PasterView;
 import com.tencent.qcloud.ugckit.module.effect.paster.view.TCPasterOperationViewFactory;
-import com.tencent.qcloud.ugckit.module.effect.paster.view.PasterPannel;
+import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
+import com.tencent.qcloud.ugckit.utils.FileUtils;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 
@@ -49,52 +49,49 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.OnItemClickListener,
-        FloatLayerViewGroup.OnItemClickListener,
-        FloatLayerView.IOperationViewClickListener,
-        IPasterPannel.OnItemClickListener,
-        IPasterPannel.OnTabChangedListener,
-        IPasterPannel.OnAddClickListener,
-        View.OnClickListener,
-        PlayerManagerKit.OnPlayStateListener,
-        PlayerManagerKit.OnPreviewListener {
-    private final String TAG                         = "TCPasterFragment";
-    private final int    MSG_COPY_PASTER_FILES       = 1;
-    private final String PASTER_FOLDER_NAME          = "paster";
+public class TCPasterFragment extends Fragment
+        implements BaseRecyclerAdapter.OnItemClickListener, FloatLayerViewGroup.OnItemClickListener,
+                   FloatLayerView.IOperationViewClickListener, IPasterPannel.OnItemClickListener,
+                   IPasterPannel.OnTabChangedListener, IPasterPannel.OnAddClickListener,
+                   View.OnClickListener, PlayerManagerKit.OnPlayStateListener,
+                   PlayerManagerKit.OnPreviewListener {
+    private final String TAG = "TCPasterFragment";
+    private final int MSG_COPY_PASTER_FILES = 1;
+    private final String PASTER_FOLDER_NAME = "paster";
     private final String ANIMATED_PASTER_FOLDER_NAME = "AnimatedPaster";
-    private final String PASTER_LIST_JSON_FILE_NAME  = "pasterList.json";
+    private final String PASTER_LIST_JSON_FILE_NAME = "pasterList.json";
 
     @Nullable
-    private String                                            mPasterSDcardFolder;
+    private String mPasterSDcardFolder;
     @Nullable
-    private String                                            mAnimatedPasterSDcardFolder;
-    private TXVideoEditer                                     mTXVideoEditer;
-    private RecyclerView                                      mRvPaster;
-    private ImageView                                         mIvDel;
-    private View                                              mFootView;
-    private AddPasterAdapter                                  mAddPasterAdapter;
-    private List<TCPasterInfo>                                mAddPasterInfoList;
-    private PasterPannel                                      mPasterPannel; // 选择贴纸控件
-    private FloatLayerViewGroup                               mFloatLayerViewGroup; // 图层父布局，承载贴纸
-    private int                                               mCurrentSelectedPos = -1;// 当前被选中的贴纸控件
+    private String mAnimatedPasterSDcardFolder;
+    private TXVideoEditer mTXVideoEditer;
+    private RecyclerView mRvPaster;
+    private ImageView mIvDel;
+    private View mFootView;
+    private AddPasterAdapter mAddPasterAdapter;
+    private List<TCPasterInfo> mAddPasterInfoList;
+    private PasterPannel mPasterPannel; // 选择贴纸控件
+    private FloatLayerViewGroup mFloatLayerViewGroup; // 图层父布局，承载贴纸
+    private int mCurrentSelectedPos = -1; // 当前被选中的贴纸控件
     @Nullable
     private RangeSliderViewContainer.OnDurationChangeListener mOnDurationChangeListener;
-    private HandlerThread                                     mWorkHandlerThread;
+    private HandlerThread mWorkHandlerThread;
     @Nullable
-    private Handler                                           mWorkHandler;
-    private List<TCPasterInfo>                                mPasterInfoList;
-    private List<TCPasterInfo>                                mAnimatedPasterInfoList;
-    private boolean                                           mIsUpdatePng        = false;
-    private long                                              mDuration;
-    private long                                              mDefaultWordStartTime;
-    private long                                              mDefaultWordEndTime;
-    private VideoProgressController                           mVideoProgressController;
-    private int                                               addIcon             = R.drawable.ugckit_ic_edit_add_selector;
-    private int                                               deleteIcon          = R.drawable.ugckit_ic_word_del_normal;
-    private int                                               mCoverIcon;
-    private int                                               pasterTextSize;
-    private int                                               pasterTextColor;
-    private long                                              mCurrentPosition    = 0;
+    private Handler mWorkHandler;
+    private List<TCPasterInfo> mPasterInfoList;
+    private List<TCPasterInfo> mAnimatedPasterInfoList;
+    private boolean mIsUpdatePng = false;
+    private long mDuration;
+    private long mDefaultWordStartTime;
+    private long mDefaultWordEndTime;
+    private VideoProgressController mVideoProgressController;
+    private int addIcon = R.drawable.ugckit_ic_edit_add_selector;
+    private int deleteIcon = R.drawable.ugckit_ic_word_del_normal;
+    private int mCoverIcon;
+    private int pasterTextSize;
+    private int pasterTextColor;
+    private long mCurrentPosition = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +102,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ugckit_fragment_paster, container, false);
     }
 
@@ -169,7 +167,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
         mAddPasterInfoList = new ArrayList<>();
         mRvPaster = (RecyclerView) view.findViewById(R.id.paster_rv_list);
-        mRvPaster.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRvPaster.setLayoutManager(
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mAddPasterAdapter = new AddPasterAdapter(mAddPasterInfoList, getActivity());
         mAddPasterAdapter.setCoverIconResouce(mCoverIcon);
         mAddPasterAdapter.setPasterTextSize(pasterTextSize);
@@ -184,7 +183,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         mPasterPannel.setOnAddClickListener(this);
         mPasterPannel.setVisibility(View.GONE);
 
-        mFloatLayerViewGroup = (FloatLayerViewGroup) getActivity().findViewById(R.id.paster_container);
+        mFloatLayerViewGroup =
+                (FloatLayerViewGroup) getActivity().findViewById(R.id.paster_container);
         mFloatLayerViewGroup.setOnItemClickListener(this);
         mFloatLayerViewGroup.enableChildSingleClick(false); // 在容器里不响应子控件的单击事件
         mFloatLayerViewGroup.enableDoubleChildClick(false); // 在容器里不响应子控件的双击事件
@@ -198,8 +198,10 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         if (fragmentActivity != null) {
             File sdcardDir = fragmentActivity.getExternalFilesDir(null);
             if (sdcardDir != null) {
-                mPasterSDcardFolder = sdcardDir + File.separator + PASTER_FOLDER_NAME + File.separator;
-                mAnimatedPasterSDcardFolder = sdcardDir + File.separator + ANIMATED_PASTER_FOLDER_NAME + File.separator;
+                mPasterSDcardFolder =
+                        sdcardDir + File.separator + PASTER_FOLDER_NAME + File.separator;
+                mAnimatedPasterSDcardFolder =
+                        sdcardDir + File.separator + ANIMATED_PASTER_FOLDER_NAME + File.separator;
             }
         }
 
@@ -226,9 +228,10 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
     private long calculateStartTime() {
         long retPosition = mCurrentPosition;
-        int  count       = mFloatLayerViewGroup != null ? mFloatLayerViewGroup.getChildCount() : 0;
+        int count = mFloatLayerViewGroup != null ? mFloatLayerViewGroup.getChildCount() : 0;
         if (count > 0) {
-            //检查当前position是否存在录制起点, 如果有需要+1s间隔（和历史逻辑保持一致）。不用判断增加1s后是否还有重叠的现象
+            //检查当前position是否存在录制起点,
+            //如果有需要+1s间隔（和历史逻辑保持一致）。不用判断增加1s后是否还有重叠的现象
             for (int i = 0; i < count; i++) {
                 FloatLayerView floatLayerView = mFloatLayerViewGroup.getOperationView(i);
                 if (retPosition == floatLayerView.getStartTime()) {
@@ -279,7 +282,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             if (!mFloatLayerViewGroup.isShown()) {
                 mFloatLayerViewGroup.setVisibility(View.VISIBLE);
                 // 暂停播放
-                mTXVideoEditer.refreshOneFrame(); // 将视频画面中的字幕清除  ，避免与上层控件造成混淆导致体验不好的问题。
+                mTXVideoEditer.refreshOneFrame(); // 将视频画面中的字幕清除
+                                                  // ，避免与上层控件造成混淆导致体验不好的问题。
 
                 PlayerManagerKit.getInstance().pausePlay();
             }
@@ -288,11 +292,13 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             // 预览界面选中
             mFloatLayerViewGroup.selectOperationView(position);
             // 进度条范围选中
-            RangeSliderViewContainer lastSlider = mVideoProgressController.getRangeSliderView(ViewConst.VIEW_TYPE_PASTER, mCurrentSelectedPos);
+            RangeSliderViewContainer lastSlider = mVideoProgressController.getRangeSliderView(
+                    ViewConst.VIEW_TYPE_PASTER, mCurrentSelectedPos);
             if (lastSlider != null) {
                 lastSlider.setEditComplete();
             }
-            RangeSliderViewContainer currentSlider = mVideoProgressController.getRangeSliderView(ViewConst.VIEW_TYPE_PASTER, position);
+            RangeSliderViewContainer currentSlider = mVideoProgressController.getRangeSliderView(
+                    ViewConst.VIEW_TYPE_PASTER, position);
             if (currentSlider != null) {
                 currentSlider.showEdit();
             }
@@ -304,7 +310,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         mPasterPannel.show();
         mFloatLayerViewGroup.setVisibility(View.VISIBLE);
         // 暂停播放
-        mTXVideoEditer.refreshOneFrame(); // 将视频画面中的字幕清除  ，避免与上层控件造成混淆导致体验不好的问题。
+        mTXVideoEditer.refreshOneFrame(); // 将视频画面中的字幕清除
+                                          // ，避免与上层控件造成混淆导致体验不好的问题。
 
         PlayerManagerKit.getInstance().pausePlay();
     }
@@ -313,20 +320,24 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         if (!TextUtils.isEmpty(mPasterSDcardFolder)) {
             File pasterFolder = new File(mPasterSDcardFolder);
             if (!pasterFolder.exists()) {
-                FileUtils.copyFilesFromAssets(getActivity(), PASTER_FOLDER_NAME, mPasterSDcardFolder);
+                FileUtils.copyFilesFromAssets(
+                        getActivity(), PASTER_FOLDER_NAME, mPasterSDcardFolder);
             }
         }
         if (!TextUtils.isEmpty(mAnimatedPasterSDcardFolder)) {
             File animatedFolder = new File(mAnimatedPasterSDcardFolder);
             if (!animatedFolder.exists()) {
-                FileUtils.copyFilesFromAssets(getActivity(), ANIMATED_PASTER_FOLDER_NAME, mAnimatedPasterSDcardFolder);
+                FileUtils.copyFilesFromAssets(
+                        getActivity(), ANIMATED_PASTER_FOLDER_NAME, mAnimatedPasterSDcardFolder);
             }
         }
     }
 
     private void preparePasterInfoToShow() {
-        mPasterInfoList = getPasterInfoList(PasterView.TYPE_CHILD_VIEW_PASTER, mPasterSDcardFolder, PASTER_LIST_JSON_FILE_NAME);
-        mAnimatedPasterInfoList = getPasterInfoList(PasterView.TYPE_CHILD_VIEW_ANIMATED_PASTER, mAnimatedPasterSDcardFolder, PASTER_LIST_JSON_FILE_NAME);
+        mPasterInfoList = getPasterInfoList(
+                PasterView.TYPE_CHILD_VIEW_PASTER, mPasterSDcardFolder, PASTER_LIST_JSON_FILE_NAME);
+        mAnimatedPasterInfoList = getPasterInfoList(PasterView.TYPE_CHILD_VIEW_ANIMATED_PASTER,
+                mAnimatedPasterSDcardFolder, PASTER_LIST_JSON_FILE_NAME);
 
         BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
             @Override
@@ -346,7 +357,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     @NonNull
-    private List<TCPasterInfo> getPasterInfoList(int pasterType, String fileFolder, String fileName) {
+    private List<TCPasterInfo> getPasterInfoList(
+            int pasterType, String fileFolder, String fileName) {
         List<TCPasterInfo> pasterInfoList = new ArrayList<TCPasterInfo>();
 
         if (TextUtils.isEmpty(fileFolder)) {
@@ -379,15 +391,18 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     @Override
-    public void onLayerOperationViewItemClick(FloatLayerView view, int lastSelectedPos, int currentSelectedPos) {
+    public void onLayerOperationViewItemClick(
+            FloatLayerView view, int lastSelectedPos, int currentSelectedPos) {
         pausePlay(true);
 
-        RangeSliderViewContainer lastSlider = mVideoProgressController.getRangeSliderView(lastSelectedPos);
+        RangeSliderViewContainer lastSlider =
+                mVideoProgressController.getRangeSliderView(lastSelectedPos);
         if (lastSlider != null) {
             lastSlider.setEditComplete();
         }
 
-        RangeSliderViewContainer currentSlider = mVideoProgressController.getRangeSliderView(currentSelectedPos);
+        RangeSliderViewContainer currentSlider =
+                mVideoProgressController.getRangeSliderView(currentSelectedPos);
         if (currentSlider != null) {
             currentSlider.showEdit();
         }
@@ -401,11 +416,13 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         if (isShow) {
             // 将字幕控件显示出来
             mFloatLayerViewGroup.setVisibility(View.VISIBLE);
-            mTXVideoEditer.refreshOneFrame();// 将视频画面中的字幕清除  ，避免与上层控件造成混淆导致体验不好的问题。
+            mTXVideoEditer.refreshOneFrame(); // 将视频画面中的字幕清除
+                                              // ，避免与上层控件造成混淆导致体验不好的问题。
         }
         int selectedIndex = mFloatLayerViewGroup.getSelectedViewIndex();
-        if (selectedIndex != -1) {// 说明有控件被选中 那么显示出时间区间的选择
-            RangeSliderViewContainer view = mVideoProgressController.getRangeSliderView(selectedIndex);
+        if (selectedIndex != -1) { // 说明有控件被选中 那么显示出时间区间的选择
+            RangeSliderViewContainer view =
+                    mVideoProgressController.getRangeSliderView(selectedIndex);
             if (isShow) {
                 view.showEdit();
             } else {
@@ -430,28 +447,33 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         Bitmap bitmap = null;
         int pasterType = tcPasterInfo.getPasterType();
         if (pasterType == PasterView.TYPE_CHILD_VIEW_ANIMATED_PASTER) {
-            AnimatedPasterConfig animatedPasterConfig = getAnimatedPasterParamFromPath(mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator);
+            AnimatedPasterConfig animatedPasterConfig = getAnimatedPasterParamFromPath(
+                    mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator);
             if (animatedPasterConfig == null) {
                 Log.e(TAG, "onItemClick, animatedPasterConfig is null");
                 return;
             }
             int keyFrameIndex = animatedPasterConfig.keyframe;
-            String keyFrameName = animatedPasterConfig.frameArray.get(keyFrameIndex - 1).pictureName;
+            String keyFrameName =
+                    animatedPasterConfig.frameArray.get(keyFrameIndex - 1).pictureName;
 
             if (!TextUtils.isEmpty(mAnimatedPasterSDcardFolder)) {
-                pasterPath = mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator + keyFrameName + ".png";
+                pasterPath = mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator
+                        + keyFrameName + ".png";
                 bitmap = BitmapFactory.decodeFile(pasterPath);
             }
         } else if (pasterType == PasterView.TYPE_CHILD_VIEW_PASTER) {
             if (!TextUtils.isEmpty(mPasterSDcardFolder)) {
-                pasterPath = mPasterSDcardFolder + tcPasterInfo.getName() + File.separator + tcPasterInfo.getName() + ".png";
+                pasterPath = mPasterSDcardFolder + tcPasterInfo.getName() + File.separator
+                        + tcPasterInfo.getName() + ".png";
                 bitmap = BitmapFactory.decodeFile(pasterPath);
             }
         }
         // 更新一下默认配置的时间
         updateDefaultTime();
 
-        PasterView pasterOperationView = TCPasterOperationViewFactory.newOperationView(getActivity());
+        PasterView pasterOperationView =
+                TCPasterOperationViewFactory.newOperationView(getActivity());
         pasterOperationView.setPasterPath(pasterPath);
         pasterOperationView.setChildType(tcPasterInfo.getPasterType());
         pasterOperationView.setIconPath(tcPasterInfo.getIconPath());
@@ -464,7 +486,8 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         pasterOperationView.showEdit(false);
 
         RangeSliderViewContainer rangeSliderView = new RangeSliderViewContainer(getActivity());
-        rangeSliderView.init(mVideoProgressController, mDefaultWordStartTime, mDefaultWordEndTime - mDefaultWordStartTime, mDuration);
+        rangeSliderView.init(mVideoProgressController, mDefaultWordStartTime,
+                mDefaultWordEndTime - mDefaultWordStartTime, mDuration);
         rangeSliderView.setDurationChangeListener(mOnDurationChangeListener);
         mVideoProgressController.addRangeSliderView(ViewConst.VIEW_TYPE_PASTER, rangeSliderView);
         mVideoProgressController.setCurrentTimeMs(mDefaultWordStartTime);
@@ -495,22 +518,21 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     /****** 可编辑控件的回调start ******/
     @Override
     public void onDeleteClick() {
-//        int index = mTCLayerViewGroup.getSelectedViewIndex();
-//        PasterOperationView view = (PasterOperationView) mTCLayerViewGroup.getSelectedLayerOperationView();
-//        if (view != null) {
-//            mTCLayerViewGroup.removeOperationView(view);
-//        }
-//        ((TCVideoEffectActivity) getActivity()).mVideoProgressController.removeRangeSliderView(index);
-//
-//        mAddPasterInfoList.remove(index);
-//        mAddPasterAdapter.notifyDataSetChanged();
-//        mAddPasterAdapter.setCurrentSelectedPos(-1);
+        //        int index = mTCLayerViewGroup.getSelectedViewIndex();
+        //        PasterOperationView view = (PasterOperationView)
+        //        mTCLayerViewGroup.getSelectedLayerOperationView(); if (view != null) {
+        //            mTCLayerViewGroup.removeOperationView(view);
+        //        }
+        //        ((TCVideoEffectActivity)
+        //        getActivity()).mVideoProgressController.removeRangeSliderView(index);
+        //
+        //        mAddPasterInfoList.remove(index);
+        //        mAddPasterAdapter.notifyDataSetChanged();
+        //        mAddPasterAdapter.setCurrentSelectedPos(-1);
     }
 
     @Override
-    public void onEditClick() {
-
-    }
+    public void onEditClick() {}
 
     // 拖动、旋转的回调
     @Override
@@ -588,17 +610,24 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
 
         animatedPasterConfig = new AnimatedPasterConfig();
         try {
-            animatedPasterConfig.name = jsonObjectConfig.getString(AnimatedPasterConfig.CONFIG_NAME);
+            animatedPasterConfig.name =
+                    jsonObjectConfig.getString(AnimatedPasterConfig.CONFIG_NAME);
             animatedPasterConfig.count = jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_COUNT);
-            animatedPasterConfig.period = jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_PERIOD);
+            animatedPasterConfig.period =
+                    jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_PERIOD);
             animatedPasterConfig.width = jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_WIDTH);
-            animatedPasterConfig.height = jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_HEIGHT);
-            animatedPasterConfig.keyframe = jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_KEYFRAME);
-            JSONArray frameJsonArray = jsonObjectConfig.getJSONArray(AnimatedPasterConfig.CONFIG_KEYFRAME_ARRAY);
+            animatedPasterConfig.height =
+                    jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_HEIGHT);
+            animatedPasterConfig.keyframe =
+                    jsonObjectConfig.getInt(AnimatedPasterConfig.CONFIG_KEYFRAME);
+            JSONArray frameJsonArray =
+                    jsonObjectConfig.getJSONArray(AnimatedPasterConfig.CONFIG_KEYFRAME_ARRAY);
             for (int i = 0; i < animatedPasterConfig.count; i++) {
                 JSONObject frameNameObject = frameJsonArray.getJSONObject(i);
-                AnimatedPasterConfig.PasterPicture pasterPicture = new AnimatedPasterConfig.PasterPicture();
-                pasterPicture.pictureName = frameNameObject.getString(AnimatedPasterConfig.PasterPicture.PICTURE_NAME);
+                AnimatedPasterConfig.PasterPicture pasterPicture =
+                        new AnimatedPasterConfig.PasterPicture();
+                pasterPicture.pictureName =
+                        frameNameObject.getString(AnimatedPasterConfig.PasterPicture.PICTURE_NAME);
 
                 animatedPasterConfig.frameArray.add(pasterPicture);
             }
@@ -620,20 +649,26 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             rect.x = view.getImageX();
             rect.y = view.getImageY();
             rect.width = view.getImageWidth();
-            Log.i(TAG, "addPasterListVideoToEditer, adjustPasterRect, paster x y = " + rect.x + "," + rect.y);
+            Log.i(TAG,
+                    "addPasterListVideoToEditer, adjustPasterRect, paster x y = " + rect.x + ","
+                            + rect.y);
 
             int childType = view.getChildType();
             if (childType == PasterView.TYPE_CHILD_VIEW_ANIMATED_PASTER) {
-                TXVideoEditConstants.TXAnimatedPaster txAnimatedPaster = new TXVideoEditConstants.TXAnimatedPaster();
+                TXVideoEditConstants.TXAnimatedPaster txAnimatedPaster =
+                        new TXVideoEditConstants.TXAnimatedPaster();
 
-                txAnimatedPaster.animatedPasterPathFolder = mAnimatedPasterSDcardFolder + view.getPasterName() + File.separator;
+                txAnimatedPaster.animatedPasterPathFolder =
+                        mAnimatedPasterSDcardFolder + view.getPasterName() + File.separator;
                 txAnimatedPaster.startTime = view.getStartTime();
                 txAnimatedPaster.endTime = view.getEndTime();
                 txAnimatedPaster.frame = rect;
                 txAnimatedPaster.rotation = view.getImageRotate();
 
                 animatedPasterList.add(txAnimatedPaster);
-                Log.i(TAG, "addPasterListVideoToEditer, txAnimatedPaster startTimeMs, endTime is : " + txAnimatedPaster.startTime + ", " + txAnimatedPaster.endTime);
+                Log.i(TAG,
+                        "addPasterListVideoToEditer, txAnimatedPaster startTimeMs, endTime is : "
+                                + txAnimatedPaster.startTime + ", " + txAnimatedPaster.endTime);
             } else if (childType == PasterView.TYPE_CHILD_VIEW_PASTER) {
                 TXVideoEditConstants.TXPaster txPaster = new TXVideoEditConstants.TXPaster();
 
@@ -643,7 +678,9 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
                 txPaster.frame = rect;
 
                 pasterList.add(txPaster);
-                Log.i(TAG, "addPasterListVideoToEditer, txPaster startTimeMs, endTime is : " + txPaster.startTime + ", " + txPaster.endTime);
+                Log.i(TAG,
+                        "addPasterListVideoToEditer, txPaster startTimeMs, endTime is : "
+                                + txPaster.startTime + ", " + txPaster.endTime);
             }
         }
         mTXVideoEditer.setAnimatedPasterList(animatedPasterList);
@@ -662,8 +699,10 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
         for (int i = 0; i < mFloatLayerViewGroup.getChildCount(); i++) {
             PasterView view = (PasterView) mFloatLayerViewGroup.getOperationView(i);
 
-            Log.i(TAG, "saveIntoManager, view centerX and centerY = " + view.getCenterX() + ", " + view.getCenterY() +
-                    ", start end time = " + view.getStartTime() + ", " + view.getEndTime());
+            Log.i(TAG,
+                    "saveIntoManager, view centerX and centerY = " + view.getCenterX() + ", "
+                            + view.getCenterY() + ", start end time = " + view.getStartTime() + ", "
+                            + view.getEndTime());
 
             TCPasterViewInfo info = new TCPasterViewInfo();
             info.setViewCenterX(view.getCenterX());
@@ -715,12 +754,14 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
             view.setStartToEndTime(viewStartTime, viewEndTime);
 
             RangeSliderViewContainer rangeSliderView = new RangeSliderViewContainer(getActivity());
-            rangeSliderView.init(mVideoProgressController, viewStartTime, viewEndTime - viewStartTime, mDuration);
+            rangeSliderView.init(mVideoProgressController, viewStartTime,
+                    viewEndTime - viewStartTime, mDuration);
             rangeSliderView.setDurationChangeListener(mOnDurationChangeListener);
             rangeSliderView.setEditComplete();
 
-            mVideoProgressController.addRangeSliderView(ViewConst.VIEW_TYPE_PASTER, rangeSliderView);
-            mFloatLayerViewGroup.addOperationView(view);// 添加到Group中去管理
+            mVideoProgressController.addRangeSliderView(
+                    ViewConst.VIEW_TYPE_PASTER, rangeSliderView);
+            mFloatLayerViewGroup.addOperationView(view); // 添加到Group中去管理
 
             TCPasterInfo tcPasterInfo = new TCPasterInfo();
             tcPasterInfo.setName(info.getName());
@@ -762,9 +803,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     @Override
-    public void onPlayStateStop() {
-
-    }
+    public void onPlayStateStop() {}
 
     @Override
     public void onPreviewProgress(int time) {
@@ -772,9 +811,7 @@ public class TCPasterFragment extends Fragment implements BaseRecyclerAdapter.On
     }
 
     @Override
-    public void onPreviewFinish() {
-
-    }
+    public void onPreviewFinish() {}
 
     @Override
     public void onDestroyView() {

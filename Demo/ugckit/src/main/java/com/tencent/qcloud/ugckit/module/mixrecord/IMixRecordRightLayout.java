@@ -7,7 +7,6 @@ import androidx.annotation.DrawableRes;
  * 定制化合唱右侧工具栏
  */
 public interface IMixRecordRightLayout {
-
     /**
      * 设置合唱右侧工具栏点击事件
      *
@@ -16,7 +15,6 @@ public interface IMixRecordRightLayout {
     void setOnItemClickListener(OnItemClickListener listener);
 
     interface OnItemClickListener {
-
         /**
          * 显示基础美颜面板
          */

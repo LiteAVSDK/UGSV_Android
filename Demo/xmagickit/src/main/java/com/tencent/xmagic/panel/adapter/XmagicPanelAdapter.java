@@ -10,7 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,8 +21,8 @@ import com.tencent.xmagic.panel.adapter.XmagicPanelAdapter.PropertyHolder;
 
 import java.util.List;
 
-public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> implements View.OnClickListener {
-
+public class XmagicPanelAdapter
+        extends RecyclerView.Adapter<PropertyHolder> implements View.OnClickListener {
     private XmagicPanelItemClickListener mListener;
     private List<XmagicUIProperty<?>> properties;
 
@@ -34,7 +33,8 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
     @NonNull
     @Override
     public PropertyHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_property_view, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext())
+                            .inflate(R.layout.item_property_view, viewGroup, false);
         return new PropertyHolder(view);
     }
 
@@ -52,8 +52,10 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
         if (xmagicProperty.uiCategory == XmagicUIProperty.UICategory.KV) {
             holder.itemView.setOnClickListener(null);
             boolean isOpen = XmagicPanelDataManager.getInstance().isPanelBeautyOpen();
-            final String closeTip = holder.itemView.getResources().getString(R.string.pannel_beauty_switch_close_txt);
-            final String openTip = holder.itemView.getResources().getString(R.string.pannel_beauty_switch_open_txt);
+            final String closeTip = holder.itemView.getResources().getString(
+                    R.string.pannel_beauty_switch_close_txt);
+            final String openTip = holder.itemView.getResources().getString(
+                    R.string.pannel_beauty_switch_open_txt);
             holder.tvItemName.setText(isOpen ? closeTip : openTip);
             holder.tvItemName.setTextColor(Color.parseColor("#ffffff"));
             holder.foregroundImg.setVisibility(View.GONE);
@@ -63,19 +65,20 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
             holder.aSwitch.setOnCheckedChangeListener(null);
             holder.aSwitch.setChecked(XmagicPanelDataManager.getInstance().isPanelBeautyOpen());
             holder.aSwitch.setEnabled(true);
-            holder.aSwitch.setOnCheckedChangeListener((new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    buttonView.setEnabled(false);
-                    XmagicPanelDataManager.getInstance().setPanelBeautyOpen(isChecked);
-                    if (mListener != null) {
-                        mListener.onBeautySwitchCheckedChange(isChecked);
-                    }
-                    holder.tvItemName.setText(isChecked ? closeTip : openTip);
-                    holder.tvItemName.setTextColor(Color.parseColor("#ffffff"));
-                    notifyDataSetChanged();
-                }
-            }));
+            holder.aSwitch.setOnCheckedChangeListener(
+                    (new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            buttonView.setEnabled(false);
+                            XmagicPanelDataManager.getInstance().setPanelBeautyOpen(isChecked);
+                            if (mListener != null) {
+                                mListener.onBeautySwitchCheckedChange(isChecked);
+                            }
+                            holder.tvItemName.setText(isChecked ? closeTip : openTip);
+                            holder.tvItemName.setTextColor(Color.parseColor("#ffffff"));
+                            notifyDataSetChanged();
+                        }
+                    }));
         } else {
             holder.aSwitch.setVisibility(View.GONE);
             holder.rightLine.setVisibility(View.GONE);
@@ -84,17 +87,23 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
             holder.tvItemName.setText(xmagicProperty.displayName);
             holder.ivItemIcon.setVisibility(View.VISIBLE);
             if (xmagicProperty.thumbDrawable != 0) {
-                Glide.with(holder.ivItemIcon.getContext()).load(xmagicProperty.thumbDrawable).into(holder.ivItemIcon);
+                Glide.with(holder.ivItemIcon.getContext())
+                        .load(xmagicProperty.thumbDrawable)
+                        .into(holder.ivItemIcon);
             } else {
-                Glide.with(holder.ivItemIcon.getContext()).load(xmagicProperty.thumbImagePath).into(holder.ivItemIcon);
+                Glide.with(holder.ivItemIcon.getContext())
+                        .load(xmagicProperty.thumbImagePath)
+                        .into(holder.ivItemIcon);
             }
             boolean isPanelBeautyState = XmagicPanelDataManager.getInstance().isPanelBeautyOpen();
-            if (xmagicProperty.uiCategory == XmagicUIProperty.UICategory.BEAUTY && !isPanelBeautyState) {
+            if (xmagicProperty.uiCategory == XmagicUIProperty.UICategory.BEAUTY
+                    && !isPanelBeautyState) {
                 holder.itemView.setOnClickListener(null);
                 holder.foregroundImg.setVisibility(View.VISIBLE);
                 holder.tvItemName.setTextColor(Color.parseColor("#80ffffff"));
                 holder.tvItemName.setTypeface(null, Typeface.NORMAL);
-                Drawable drawable = holder.itemView.getResources().getDrawable(R.drawable.ratio_bg_00ffffff);
+                Drawable drawable =
+                        holder.itemView.getResources().getDrawable(R.drawable.ratio_bg_00ffffff);
                 holder.ivItemIcon.setBackground(drawable);
             } else {
                 holder.itemView.setOnClickListener(this);
@@ -102,18 +111,19 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
                 if (isSelected(xmagicProperty)) {
                     holder.tvItemName.setTextColor(Color.parseColor("#F14257"));
                     holder.tvItemName.setTypeface(null, Typeface.BOLD);
-                    Drawable drawable = holder.itemView.getResources().getDrawable(R.drawable.ratio_bg_f14257);
+                    Drawable drawable =
+                            holder.itemView.getResources().getDrawable(R.drawable.ratio_bg_f14257);
                     holder.ivItemIcon.setBackground(drawable);
                 } else {
                     holder.tvItemName.setTextColor(Color.parseColor("#ffffff"));
                     holder.tvItemName.setTypeface(null, Typeface.NORMAL);
-                    Drawable drawable = holder.itemView.getResources().getDrawable(R.drawable.ratio_bg_00ffffff);
+                    Drawable drawable = holder.itemView.getResources().getDrawable(
+                            R.drawable.ratio_bg_00ffffff);
                     holder.ivItemIcon.setBackground(drawable);
                 }
             }
         }
     }
-
 
     private long lastTime = 0L;
 
@@ -125,7 +135,7 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
                     && xmagicUIProperty.uiCategory == XmagicUIProperty.UICategory.SEGMENTATION
                     && xmagicUIProperty.property != null
                     && ("video_segmentation_transparent_bg".equals(xmagicUIProperty.property.id)
-                    || "video_segmentation_blur_75".equals(xmagicUIProperty.property.id))) {
+                            || "video_segmentation_blur_75".equals(xmagicUIProperty.property.id))) {
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - lastTime < 3 * 1000) {
                     return;
@@ -140,7 +150,6 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
         this.properties = properties;
         notifyDataSetChanged();
     }
-
 
     /**
      * 获取被选中的item的位置
@@ -178,7 +187,8 @@ public class XmagicPanelAdapter extends RecyclerView.Adapter<PropertyHolder> imp
      * @return
      */
     private boolean isSelected(XmagicUIProperty xmagicUIProperty) {
-        return XmagicPanelDataManager.getInstance().getSelectedItems().containsValue(xmagicUIProperty);
+        return XmagicPanelDataManager.getInstance().getSelectedItems().containsValue(
+                xmagicUIProperty);
     }
 
     static class PropertyHolder extends RecyclerView.ViewHolder {

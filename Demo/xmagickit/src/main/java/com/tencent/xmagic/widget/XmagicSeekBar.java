@@ -5,15 +5,15 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
-
 import androidx.appcompat.widget.AppCompatSeekBar;
 
 /**
- * 系统 SeekBar 从 API 26 (Android 8.0) 才开始支持 setMin(int) 方法, 见 https://developer.android.com/reference/android/widget/ProgressBar#setMin(int)
- * 此类专门为此做了兼容处理, 请使用 {@link #setMyMin(int)}, {@link #setMyMax(int)}, {@link #setMyProgress(int, boolean)} 方法代替.
+ * 系统 SeekBar 从 API 26 (Android 8.0) 才开始支持 setMin(int) 方法, 见
+ * https://developer.android.com/reference/android/widget/ProgressBar#setMin(int)
+ * 此类专门为此做了兼容处理, 请使用 {@link #setMyMin(int)}, {@link #setMyMax(int)}, {@link
+ * #setMyProgress(int, boolean)} 方法代替.
  */
 public class XmagicSeekBar extends AppCompatSeekBar {
-
     private int mMin;
     private int mMax;
 
@@ -57,7 +57,8 @@ public class XmagicSeekBar extends AppCompatSeekBar {
         super.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                changeListener.onProgressChanged(seekBar, convertInnerProgressToUiProgress(progress), fromUser);
+                changeListener.onProgressChanged(
+                        seekBar, convertInnerProgressToUiProgress(progress), fromUser);
             }
 
             @Override

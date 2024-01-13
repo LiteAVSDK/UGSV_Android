@@ -1,11 +1,10 @@
 package com.tencent.qcloud.ugckit.utils;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublishTypeDef;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.ugc.TXRecordCommon;
@@ -29,51 +28,52 @@ import okhttp3.Response;
  * 日志上报模块
  */
 public class LogReport {
-    private static final String       TAG                            = "LogReport";
+    private static final String TAG = "LogReport";
     // ELK统计上报HOST
-    public static final  String       DEFAULT_ELK_HOST               = "https://qcloud.com";
+    public static final String DEFAULT_ELK_HOST = "https://ilivelog.qcloud.com";
     /******************************
      * ELK统计上报事件
      ******************************/
     // 程序启动
-    public static final  String       ELK_ACTION_START_UP            = "startup";
+    public static final String ELK_ACTION_START_UP = "startup";
     // 程序使用时长（秒）
-    public static final  String       ELK_ACTION_STAY_TIME           = "staytime";
+    public static final String ELK_ACTION_STAY_TIME = "staytime";
     // 图片编辑
-    public static final  String       ELK_ACTION_PICTURE_EDIT        = "pictureedit";
+    public static final String ELK_ACTION_PICTURE_EDIT = "pictureedit";
     // 注册
-    public static final  String       ELK_ACTION_REGISTER            = "register";
+    public static final String ELK_ACTION_REGISTER = "register";
     // 安装
-    public static final  String       ELK_ACTION_INSTALL             = "install";
+    public static final String ELK_ACTION_INSTALL = "install";
     // 登录
-    public static final  String       ELK_ACTION_LOGIN               = "login";
+    public static final String ELK_ACTION_LOGIN = "login";
     // 视频编辑
-    public static final  String       ELK_ACTION_VIDEO_EDIT          = "videoedit";
+    public static final String ELK_ACTION_VIDEO_EDIT = "videoedit";
     // 视频合成
-    public static final  String       ELK_ACTION_VIDEO_JOINER        = "videojoiner";
+    public static final String ELK_ACTION_VIDEO_JOINER = "videojoiner";
     // 获取视频签名（发布视频前的准备工作）
-    public static final  String       ELK_ACTION_VIDEO_SIGN          = "videosign";
+    public static final String ELK_ACTION_VIDEO_SIGN = "videosign";
     // 发布视频到点播系统
-    public static final  String       ELK_ACTION_VIDEO_UPLOAD_VOD    = "videouploadvod";
+    public static final String ELK_ACTION_VIDEO_UPLOAD_VOD = "videouploadvod";
     // 发布视频到服务器
-    public static final  String       ELK_ACTION_VIDEO_UPLOAD_SERVER = "videouploadserver";
+    public static final String ELK_ACTION_VIDEO_UPLOAD_SERVER = "videouploadserver";
     // 开始录制
-    public static final  String       ELK_ACTION_START_RECORD        = "startrecord";
+    public static final String ELK_ACTION_START_RECORD = "startrecord";
     // 停止录制
-    public static final  String       ELK_ACTION_VIDEO_RECORD        = "videorecord";
+    public static final String ELK_ACTION_VIDEO_RECORD = "videorecord";
     // 点播视频
-    public static final  String       ELK_ACTION_VOD_PLAY            = "vodplay";
+    public static final String ELK_ACTION_VOD_PLAY = "vodplay";
     // 合唱
-    public static final  String       ELK_ACTION_VIDEO_CHORUS        = "videochorus";
-    private              OkHttpClient mHttpClient;
-    private              String       mUserId;
+    public static final String ELK_ACTION_VIDEO_CHORUS = "videochorus";
+    private OkHttpClient mHttpClient;
+    private String mUserId;
 
     private LogReport() {
-        mHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .build();
+        mHttpClient = new OkHttpClient()
+                              .newBuilder()
+                              .connectTimeout(10, TimeUnit.SECONDS)
+                              .readTimeout(10, TimeUnit.SECONDS)
+                              .writeTimeout(10, TimeUnit.SECONDS)
+                              .build();
     }
 
     public void setUserId(String userid) {
@@ -89,22 +89,28 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXRecordCommon.START_RECORD_OK:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_ok);
+                desc = UGCKit.getAppContext().getResources().getString(
+                        R.string.ugckit_video_record_activity_start_record_start_record_ok);
                 break;
             case TXRecordCommon.START_RECORD_ERR_IS_IN_RECORDING:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_is_in_recording);
+                desc = UGCKit.getAppContext().getResources().getString(
+                        R.string.ugckit_video_record_activity_start_record_start_record_err_is_in_recording);
                 break;
             case TXRecordCommon.START_RECORD_ERR_VIDEO_PATH_IS_EMPTY:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_video_path_is_empty);
+                desc = UGCKit.getAppContext().getResources().getString(
+                        R.string.ugckit_video_record_activity_start_record_start_record_err_video_path_is_empty);
                 break;
             case TXRecordCommon.START_RECORD_ERR_API_IS_LOWER_THAN_18:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_api_is_lower_than_18);
+                desc = UGCKit.getAppContext().getResources().getString(
+                        R.string.ugckit_video_record_activity_start_record_start_record_err_api_is_lower_than_18);
                 break;
             case TXRecordCommon.START_RECORD_ERR_NOT_INIT:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_not_init);
+                desc = UGCKit.getAppContext().getResources().getString(
+                        R.string.ugckit_video_record_activity_start_record_start_record_err_not_init);
                 break;
             case TXRecordCommon.START_RECORD_ERR_LICENCE_VERIFICATION_FAILED:
-                desc = UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_start_record_start_record_err_licence_verification_failed);
+                desc = UGCKit.getAppContext().getResources().getString(
+                        R.string.ugckit_video_record_activity_start_record_start_record_err_licence_verification_failed);
                 break;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_START_RECORD, retCode, desc);
@@ -119,13 +125,16 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXVideoEditConstants.GENERATE_RESULT_OK:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_edit_generate_result_ok);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_edit_generate_result_ok);
                 break;
             case TXVideoEditConstants.GENERATE_RESULT_FAILED:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_edit_generate_result_failed);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_edit_generate_result_failed);
                 break;
             case TXVideoEditConstants.GENERATE_RESULT_LICENCE_VERIFICATION_FAILED:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_edit_licence_verification_failed);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_edit_licence_verification_failed);
                 break;
         }
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_EDIT, retCode, desc);
@@ -160,7 +169,8 @@ public class LogReport {
                 desc = UGCKit.getAppContext().getString(R.string.ugckit_video_join_result_failed);
                 break;
             case TXVideoEditConstants.GENERATE_RESULT_LICENCE_VERIFICATION_FAILED:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_join_licence_verification_failed);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_join_licence_verification_failed);
                 break;
             default:
                 desc = "";
@@ -178,19 +188,24 @@ public class LogReport {
         String desc = null;
         switch (retCode) {
             case TXLiveConstants.PLAY_ERR_GET_RTMP_ACC_URL_FAIL:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_get_rtmp_acc_url);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_play_failed_code_get_rtmp_acc_url);
                 break;
             case TXLiveConstants.PLAY_ERR_FILE_NOT_FOUND:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_file_not_found);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_play_failed_code_file_not_found);
                 break;
             case TXLiveConstants.PLAY_ERR_HEVC_DECODE_FAIL:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_hevc_decode_failed);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_play_failed_code_hevc_decode_failed);
                 break;
             case TXLiveConstants.PLAY_ERR_HLS_KEY:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_hls_key_error);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_play_failed_code_hls_key_error);
                 break;
             case TXLiveConstants.PLAY_ERR_GET_PLAYINFO_FAIL:
-                desc = UGCKit.getAppContext().getString(R.string.ugckit_video_play_failed_code_get_play_info);
+                desc = UGCKit.getAppContext().getString(
+                        R.string.ugckit_video_play_failed_code_get_play_info);
                 break;
             default:
                 desc = "";
@@ -201,14 +216,13 @@ public class LogReport {
 
     public void reportVodPlaySucc(int retCode) {
         LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VOD_PLAY, retCode,
-                UGCKit.getAppContext().getString(R.string.ugckit_video_play_success_des), new Callback() {
+                UGCKit.getAppContext().getString(R.string.ugckit_video_play_success_des),
+                new Callback() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                    }
+                    public void onFailure(Call call, IOException e) {}
 
                     @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                    }
+                    public void onResponse(Call call, Response response) throws IOException {}
                 });
     }
 
@@ -217,9 +231,11 @@ public class LogReport {
         if (result.retCode == TXUGCPublishTypeDef.PUBLISH_RESULT_OK) {
             desc = UGCKit.getAppContext().getString(R.string.ugckit_video_publish_success);
         } else {
-            desc = UGCKit.getAppContext().getString(R.string.ugckit_video_publish_failed) + result.descMsg;
+            desc = UGCKit.getAppContext().getString(R.string.ugckit_video_publish_failed)
+                    + result.descMsg;
         }
-        LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_UPLOAD_VOD, result.retCode, desc);
+        LogReport.getInstance().uploadLogs(
+                LogReport.ELK_ACTION_VIDEO_UPLOAD_VOD, result.retCode, desc);
     }
 
     private static class LogMgrHolder {
@@ -234,17 +250,15 @@ public class LogReport {
 
     public void uploadLogs(String action, long code, String errorMsg) {
         String userName = mUserId;
-        Log.i(TAG, "uploadLogs action:" + action + ",userName:" + userName + ",code:" + code + ",errorMsg:" + errorMsg);
+        Log.i(TAG,
+                "uploadLogs action:" + action + ",userName:" + userName + ",code:" + code
+                        + ",errorMsg:" + errorMsg);
         uploadLogs(action, code, errorMsg, new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
+            public void onFailure(Call call, IOException e) {}
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-            }
+            public void onResponse(Call call, Response response) throws IOException {}
         });
     }
 
@@ -267,9 +281,10 @@ public class LogReport {
             e.printStackTrace();
         }
         Request request = new Request.Builder()
-                .url(reqUrl)
-                .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body))
-                .build();
+                                  .url(reqUrl)
+                                  .post(RequestBody.create(
+                                          MediaType.parse("application/json; charset=utf-8"), body))
+                                  .build();
         mHttpClient.newCall(request).enqueue(callback);
     }
 }

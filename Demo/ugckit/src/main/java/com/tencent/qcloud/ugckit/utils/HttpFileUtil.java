@@ -23,15 +23,16 @@ import java.net.URL;
  * *****************************************************************************
  */
 public class HttpFileUtil extends HttpCommon {
-    private String           mUrl;
-    private String           mFolder;
-    private String           mFilename;
-    private long             mContentLength;
-    private long             mDownloadingSize;
-    private boolean          mNeedProgress;
+    private String mUrl;
+    private String mFolder;
+    private String mFilename;
+    private long mContentLength;
+    private long mDownloadingSize;
+    private boolean mNeedProgress;
     private HttpFileListener mListener;
 
-    public HttpFileUtil(String url, String folder, String filename, HttpFileListener listener, boolean needProgress) {
+    public HttpFileUtil(String url, String folder, String filename, HttpFileListener listener,
+            boolean needProgress) {
         mUrl = url;
         mFolder = folder;
         mFilename = filename;
@@ -41,8 +42,9 @@ public class HttpFileUtil extends HttpCommon {
 
     @Override
     public void run() {
-        if (!VideoDeviceUtil.isNetworkAvailable(UGCKit.getAppContext()) ||
-                TextUtils.isEmpty(mUrl) || TextUtils.isEmpty(mFolder) || TextUtils.isEmpty(mFilename) || !mUrl.startsWith("http")) {
+        if (!VideoDeviceUtil.isNetworkAvailable(UGCKit.getAppContext()) || TextUtils.isEmpty(mUrl)
+                || TextUtils.isEmpty(mFolder) || TextUtils.isEmpty(mFilename)
+                || !mUrl.startsWith("http")) {
             fail(null, 0);
             return;
         }
@@ -57,7 +59,32 @@ public class HttpFileUtil extends HttpCommon {
                 }
             }
         }
+        HttpDownload httpDownload = new HttpDownload();
+
+        try {
+            httpDownload.start();
+        } catch (Exception e) {
+            httpDownload.failException = e;
+            e.printStackTrace();
+        } finally {
+            httpDownload.stop();
+        }
+
+        if (!httpDownload.success || null != httpDownload.failException) {
+            mListener.onSaveFailed(httpDownload.dstFile, httpDownload.failException);
+        }
+    }
+
+    private void fail(Exception e, int statusCode) {
+        if (mListener != null) {
+            mListener.onSaveFailed(null, e);
+        }
+        mListener = null;
+    }
+
+    private class HttpDownload {
         File dstFile = new File(mFolder + File.separator + mFilename);
+        ;
         HttpURLConnection client = null;
         InputStream responseIs = null;
         FileOutputStream fos = null;
@@ -65,7 +92,7 @@ public class HttpFileUtil extends HttpCommon {
         boolean success = false;
         Exception failException = null;
 
-        try {
+        public void start() throws Exception {
             if (dstFile.exists()) {
                 dstFile.delete();
             }
@@ -86,7 +113,8 @@ public class HttpFileUtil extends HttpCommon {
                     mContentLength = client.getContentLength();
                     if (!VideoDeviceUtil.isExternalStorageSpaceEnough(mContentLength)) {
                         if (mListener != null) {
-                            mListener.onSaveFailed(dstFile, new Exception("not enough storage space"));
+                            mListener.onSaveFailed(
+                                    dstFile, new Exception("not enough storage space"));
                         }
                         return;
                     }
@@ -114,12 +142,12 @@ public class HttpFileUtil extends HttpCommon {
                     mListener.onSaveSuccess(dstFile);
                 }
             } else {
-                failException = new HttpStatusException("http status got exception. code = " + statusCode);
+                failException =
+                        new HttpStatusException("http status got exception. code = " + statusCode);
             }
-        } catch (Exception e) {
-            failException = e;
-            e.printStackTrace();
-        } finally {
+        }
+
+        public void stop() {
             try {
                 if (fos != null) {
                     fos.close();
@@ -135,16 +163,5 @@ public class HttpFileUtil extends HttpCommon {
                 e.printStackTrace();
             }
         }
-
-        if (!success || null != failException) {
-            mListener.onSaveFailed(dstFile, failException);
-        }
-    }
-
-    private void fail(Exception e, int statusCode) {
-        if (mListener != null) {
-            mListener.onSaveFailed(null, e);
-        }
-        mListener = null;
     }
 }

@@ -20,7 +20,9 @@ public class TXHttpTaskMetrics extends HttpTaskMetrics {
 
         tcpConnectionTimeCost = TXHttpTaskMetrics.getTCPConnectionTimeCost(this);
 
-        TVCLog.i(TAG, "onDataReady: tcpConnectionTimeCost = " + tcpConnectionTimeCost + " recvRspTimeCost = " + recvRspTimeCost);
+        TVCLog.i(TAG,
+                "onDataReady: tcpConnectionTimeCost = " + tcpConnectionTimeCost
+                        + " recvRspTimeCost = " + recvRspTimeCost);
 
         TVCLog.i(TAG, "onDataReady: " + this.toString());
     }
@@ -34,11 +36,14 @@ public class TXHttpTaskMetrics extends HttpTaskMetrics {
     }
 
     public static double getTCPConnectionTimeCost(HttpTaskMetrics httpTaskMetrics) {
-        return httpTaskMetrics.dnsLookupTookTime() + httpTaskMetrics.connectTookTime() + httpTaskMetrics.secureConnectTookTime();
+        return httpTaskMetrics.dnsLookupTookTime() + httpTaskMetrics.connectTookTime()
+                + httpTaskMetrics.secureConnectTookTime();
     }
 
     public static double getRecvRspTimeCost(HttpTaskMetrics httpTaskMetrics) {
-        return getTCPConnectionTimeCost(httpTaskMetrics) + httpTaskMetrics.writeRequestHeaderTookTime() + httpTaskMetrics.writeRequestBodyTookTime() + httpTaskMetrics.readResponseHeaderTookTime();
+        return getTCPConnectionTimeCost(httpTaskMetrics)
+                + httpTaskMetrics.writeRequestHeaderTookTime()
+                + httpTaskMetrics.writeRequestBodyTookTime()
+                + httpTaskMetrics.readResponseHeaderTookTime();
     }
-
 }

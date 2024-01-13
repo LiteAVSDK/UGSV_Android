@@ -2,14 +2,13 @@
 package com.tencent.qcloud.ugckit.component.swipemenu.touch;
 
 import androidx.annotation.IntDef;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public interface OnItemStateChangedListener {
-
     /**
      * ItemTouchHelper is in idle state. At this state, either there is no related motion event by
      * the user or latest motion events have not yet triggered a swipe or drag.
@@ -29,7 +28,8 @@ public interface OnItemStateChangedListener {
     /**
      * Called when the ViewHolder swiped or dragged by the ItemTouchHelper is changed.
      *
-     * @param viewHolder  The new ViewHolder that is being swiped or dragged. Might be null if it is cleared.
+     * @param viewHolder  The new ViewHolder that is being swiped or dragged. Might be null if it is
+     *         cleared.
      * @param actionState One of {@link OnItemStateChangedListener#ACTION_STATE_IDLE},
      *                    {@link OnItemStateChangedListener#ACTION_STATE_SWIPE} or
      *                    {@link OnItemStateChangedListener#ACTION_STATE_DRAG}.
@@ -38,6 +38,5 @@ public interface OnItemStateChangedListener {
 
     @IntDef({ACTION_STATE_IDLE, ACTION_STATE_SWIPE, ACTION_STATE_DRAG})
     @Retention(RetentionPolicy.SOURCE)
-    @interface ActionStateMode {
-    }
+    @interface ActionStateMode {}
 }

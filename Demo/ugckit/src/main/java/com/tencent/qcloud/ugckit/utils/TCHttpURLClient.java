@@ -16,7 +16,6 @@ import java.net.URLConnection;
  * Android 9 已经去掉org.apache.http.legacy 这个库，使用 HTTPURLConnection
  */
 public class TCHttpURLClient {
-
     private static class Holder {
         public static final TCHttpURLClient INSTANCE = new TCHttpURLClient();
     }
@@ -25,9 +24,7 @@ public class TCHttpURLClient {
         return Holder.INSTANCE;
     }
 
-    private TCHttpURLClient() {
-    }
-
+    private TCHttpURLClient() {}
 
     /**
      * get请求
@@ -48,8 +45,7 @@ public class TCHttpURLClient {
                     connection.connect();
                     InputStream in = connection.getInputStream();
                     if (in == null) {
-                        if (callback != null)
-                            callback.onError();
+                        if (callback != null) callback.onError();
                         return;
                     }
                     bufferedReader = new BufferedReader(new InputStreamReader(in));
@@ -58,12 +54,10 @@ public class TCHttpURLClient {
                     while ((line = bufferedReader.readLine()) != null) {
                         sb.append(line);
                     }
-                    if (callback != null)
-                        callback.onSuccess(sb.toString());
+                    if (callback != null) callback.onSuccess(sb.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if (callback != null)
-                        callback.onError();
+                    if (callback != null) callback.onError();
                 } finally {
                     if (bufferedReader != null) {
                         try {
@@ -94,7 +88,8 @@ public class TCHttpURLClient {
                     connection.setConnectTimeout(15000);
                     connection.setReadTimeout(15000);
                     connection.setRequestMethod("POST");
-                    connection.addRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    connection.addRequestProperty(
+                            "Content-Type", "application/json; charset=utf-8");
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
                     connection.connect();
@@ -106,8 +101,7 @@ public class TCHttpURLClient {
 
                     InputStream in = connection.getInputStream();
                     if (in == null) {
-                        if (callback != null)
-                            callback.onError();
+                        if (callback != null) callback.onError();
                         return;
                     }
                     bufferedReader = new BufferedReader(new InputStreamReader(in));
@@ -116,12 +110,10 @@ public class TCHttpURLClient {
                     while ((line = bufferedReader.readLine()) != null) {
                         sb.append(line);
                     }
-                    if (callback != null)
-                        callback.onSuccess(sb.toString());
+                    if (callback != null) callback.onSuccess(sb.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    if (callback != null)
-                        callback.onError();
+                    if (callback != null) callback.onError();
                 } finally {
                     if (bufferedReader != null) {
                         try {
@@ -135,11 +127,9 @@ public class TCHttpURLClient {
         });
     }
 
-
     public interface OnHttpCallback {
         void onSuccess(String result);
 
         void onError();
     }
-
 }

@@ -13,15 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * 需要下载的资源信息
  */
 
 public class MotionDLUtils {
-
     private static MotionModel model = null;
-
 
     private static void readMotions(Context context) {
         if (model == null) {
@@ -30,7 +27,7 @@ public class MotionDLUtils {
             try {
                 String[] names = assetManager.list("json");
                 if (names != null && names.length > 0) {
-                    Arrays.sort(names);   //进行升序排列
+                    Arrays.sort(names); //进行升序排列
                     for (String name : names) {
                         motionsFileName = name;
                     }
@@ -104,7 +101,6 @@ public class MotionDLUtils {
         }
     }
 
-
     public static String getIconUrlByName(Context context, String resourceName) {
         readMotions(context);
         String iconUrlBase = model.motionIconBaseUrl;
@@ -137,7 +133,6 @@ public class MotionDLUtils {
         return null;
     }
 
-
     static class MotionModel {
         public String motionsBaseUrl;
         public String motionIconBaseUrl;
@@ -147,6 +142,5 @@ public class MotionDLUtils {
         public List<String> motiongan;
         public List<String> motionmakeup;
         public List<String> motionseg;
-
     }
 }

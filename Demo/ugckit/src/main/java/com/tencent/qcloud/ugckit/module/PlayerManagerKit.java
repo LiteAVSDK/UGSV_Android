@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.module;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
@@ -11,17 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
-
-    private static final String           TAG       = "PlayerKit";
+    private static final String TAG = "PlayerKit";
     @NonNull
-    private static       PlayerManagerKit sInstance = new PlayerManagerKit();
+    private static PlayerManagerKit sInstance = new PlayerManagerKit();
 
-    private int                       mCurrentState;
-    private long                      mPreviewAtTime;
-    public  boolean                   isPreviewFinish;
-    private Object                    mProgressObject = new Object();
-    private Object                    mStateObject    = new Object();
-    private List<OnPreviewListener>   mProgressListenerList;
+    private int mCurrentState;
+    private long mPreviewAtTime;
+    public boolean isPreviewFinish;
+    private Object mProgressObject = new Object();
+    private Object mStateObject = new Object();
+    private List<OnPreviewListener> mProgressListenerList;
     private List<OnPlayStateListener> mStateListenerList;
 
     private PlayerManagerKit() {
@@ -47,7 +46,9 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
 
                 long startTime = VideoEditerSDK.getInstance().getCutterStartTime();
                 long endTime = VideoEditerSDK.getInstance().getCutterEndTime();
-                Log.d(TAG, "[UGCKit][PlayerKit]startPlay startTime:" + startTime + ",endTime:" + endTime);
+                Log.d(TAG,
+                        "[UGCKit][PlayerKit]startPlay startTime:" + startTime
+                                + ",endTime:" + endTime);
                 editer.startPlayFromTime(startTime, endTime);
 
                 mCurrentState = PlayState.STATE_PLAY;
@@ -65,7 +66,9 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
         addPreviewListener();
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
-            Log.d(TAG, "[UGCKit][PlayerKit]startPlayCutTime startTime:" + startTime + ",endTime:" + endTime);
+            Log.d(TAG,
+                    "[UGCKit][PlayerKit]startPlayCutTime startTime:" + startTime
+                            + ",endTime:" + endTime);
             editer.startPlayFromTime(startTime, endTime);
 
             notifyStart();
@@ -78,8 +81,9 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
      */
     public void stopPlay() {
         Log.i(TAG, "stopPlay " + mCurrentState);
-        if (mCurrentState == PlayState.STATE_RESUME || mCurrentState == PlayState.STATE_PLAY ||
-                mCurrentState == PlayState.STATE_PREVIEW_AT_TIME || mCurrentState == PlayState.STATE_PAUSE) {
+        if (mCurrentState == PlayState.STATE_RESUME || mCurrentState == PlayState.STATE_PLAY
+                || mCurrentState == PlayState.STATE_PREVIEW_AT_TIME
+                || mCurrentState == PlayState.STATE_PAUSE) {
             TXVideoEditer mEditer = VideoEditerSDK.getInstance().getEditer();
             if (mEditer != null) {
                 mEditer.stopPlay();
@@ -172,7 +176,7 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
             restartPlay();
         }
     }
-    
+
     private boolean isOnAddingMotion = false;
 
     public void setOnAddingMotion(boolean isAddingMotion) {
@@ -183,7 +187,9 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
         Log.i(TAG, "playVideo mCurrentState = " + mCurrentState);
         if (mCurrentState == PlayState.STATE_NONE || mCurrentState == PlayState.STATE_STOP) {
             startPlay();
-        } else if ((mCurrentState == PlayState.STATE_RESUME || mCurrentState == PlayState.STATE_PLAY) && !isMotionFilter) {
+        } else if ((mCurrentState == PlayState.STATE_RESUME
+                           || mCurrentState == PlayState.STATE_PLAY)
+                && !isMotionFilter) {
             pausePlay();
         } else if (mCurrentState == PlayState.STATE_PAUSE) {
             resumePlay();
@@ -205,7 +211,8 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
             addPreviewListener();
-            Log.d(TAG, "[UGCKit][PlayerKit]startPlay startTime:" + startTime + ",endTime:" + endTime);
+            Log.d(TAG,
+                    "[UGCKit][PlayerKit]startPlay startTime:" + startTime + ",endTime:" + endTime);
             editer.startPlayFromTime(startTime, endTime);
             mCurrentState = PlayState.STATE_PLAY;
             notifyStart();
@@ -334,5 +341,4 @@ public class PlayerManagerKit implements TXVideoEditer.TXVideoPreviewListener {
 
         void onPreviewFinish();
     }
-
 }

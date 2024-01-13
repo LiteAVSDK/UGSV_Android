@@ -1,6 +1,5 @@
 package com.tencent.qcloud.ugckit.module.upload;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
@@ -20,7 +19,6 @@ import com.tencent.qcloud.ugckit.module.upload.impl.TXUGCPublishOptCenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
-
 
 /**
  * 短视频发布接口类
@@ -107,8 +105,7 @@ public class TXUGCPublish {
         }
 
         final TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath,
-                getFileType(coverPath),
-                coverPath, param.fileName);
+                getFileType(coverPath), coverPath, param.fileName);
 
         if (info.getFileSize() == 0) {
             TVCLog.e(TAG, "publishVideo invalid videoPath");
@@ -118,13 +115,15 @@ public class TXUGCPublish {
         final long upLoadStartTime = System.currentTimeMillis();
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
-            public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
+            public void onSuccess(
+                    final String fileId, final String playUrl, final String coverUrl) {
                 if (mHandler != null) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             if (mListener != null) {
-                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
+                                TXUGCPublishTypeDef.TXPublishResult result =
+                                        new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = TXUGCPublishTypeDef.PUBLISH_RESULT_OK;
                                 result.descMsg = "publish success";
                                 result.videoId = fileId;
@@ -132,7 +131,9 @@ public class TXUGCPublish {
                                 result.coverURL = coverUrl;
                                 mListener.onPublishComplete(result);
                             }
-                            TVCLog.i(TAG, "upload cost Time:" + (System.currentTimeMillis() - upLoadStartTime));
+                            TVCLog.i(TAG,
+                                    "upload cost Time:"
+                                            + (System.currentTimeMillis() - upLoadStartTime));
                         }
                     });
                 }
@@ -147,7 +148,8 @@ public class TXUGCPublish {
                         @Override
                         public void run() {
                             if (mListener != null) {
-                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
+                                TXUGCPublishTypeDef.TXPublishResult result =
+                                        new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = errCode;
                                 result.descMsg = errMsg;
                                 mListener.onPublishComplete(result);
@@ -202,14 +204,15 @@ public class TXUGCPublish {
         mIsCancel = false;
         if (param.enablePreparePublish) {
             // 启动预发布初始化，预发布后再开始上传
-            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
-                    new TXUGCPublishOptCenter.IPrepareUploadCallback() {
+            TXUGCPublishOptCenter.getInstance().prepareUpload(
+                    mContext, param.signature, new TXUGCPublishOptCenter.IPrepareUploadCallback() {
                         @Override
                         public void onFinish() {
                             if (mIsCancel) {
                                 mIsCancel = false;
-                                TVCLog.i(TAG,"upload is cancel after prepare upload");
-                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
+                                TVCLog.i(TAG, "upload is cancel after prepare upload");
+                                TXUGCPublishTypeDef.TXPublishResult result =
+                                        new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = TVCConstants.ERR_USER_CANCEL;
                                 result.descMsg = "request is cancelled by manual pause";
                                 mListener.onPublishComplete(result);
@@ -264,8 +267,8 @@ public class TXUGCPublish {
             mTVCClient.updateConfig(tvcConfig);
         }
 
-        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null,
-                param.fileName);
+        TVCUploadInfo info = new TVCUploadInfo(
+                getFileType(param.mediaPath), param.mediaPath, null, null, param.fileName);
 
         if (info.getFileSize() == 0) {
             TVCLog.e(TAG, "publishVideo invalid videoPath");
@@ -275,7 +278,8 @@ public class TXUGCPublish {
         final long upLoadStartTime = System.currentTimeMillis();
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
-            public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
+            public void onSuccess(
+                    final String fileId, final String playUrl, final String coverUrl) {
                 if (mHandler != null) {
                     mHandler.post(new Runnable() {
                         @Override
@@ -289,7 +293,9 @@ public class TXUGCPublish {
                                 result.mediaURL = playUrl;
                                 mMediaListener.onMediaPublishComplete(result);
                             }
-                            TVCLog.i(TAG, "upload cost Time:" + (System.currentTimeMillis() - upLoadStartTime));
+                            TVCLog.i(TAG,
+                                    "upload cost Time:"
+                                            + (System.currentTimeMillis() - upLoadStartTime));
                         }
                     });
                 }
@@ -357,14 +363,15 @@ public class TXUGCPublish {
         mPublishing = true;
         mIsCancel = false;
         if (param.enablePreparePublish) {
-            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
-                    new TXUGCPublishOptCenter.IPrepareUploadCallback() {
+            TXUGCPublishOptCenter.getInstance().prepareUpload(
+                    mContext, param.signature, new TXUGCPublishOptCenter.IPrepareUploadCallback() {
                         @Override
                         public void onFinish() {
                             if (mIsCancel) {
                                 mIsCancel = false;
-                                TVCLog.i(TAG,"upload is cancel after prepare upload");
-                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
+                                TVCLog.i(TAG, "upload is cancel after prepare upload");
+                                TXUGCPublishTypeDef.TXPublishResult result =
+                                        new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = TVCConstants.ERR_USER_CANCEL;
                                 result.descMsg = "request is cancelled by manual pause";
                                 mListener.onPublishComplete(result);
@@ -417,7 +424,6 @@ public class TXUGCPublish {
         }
     }
 
-
     private String getFileType(String filePath) {
         String fileType = "";
         if (null == filePath || filePath.length() == 0) {
@@ -458,7 +464,6 @@ public class TXUGCPublish {
         }
         return fileType;
     }
-
 
     private String getVideoThumb(String videoPath) {
         String strCoverFilePath = null;

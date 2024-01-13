@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.module.effect.bgm;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -21,10 +20,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class TCMusicManager {
-    private static final String            TAG    = "TCBgmManager";
-    private              boolean           isLoading;
-    private              SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(UGCKit.getAppContext());
-    private              LoadMusicListener mLoadMusicListener;
+    private static final String TAG = "TCBgmManager";
+    private boolean isLoading;
+    private SharedPreferences mPrefs =
+            PreferenceManager.getDefaultSharedPreferences(UGCKit.getAppContext());
+    private LoadMusicListener mLoadMusicListener;
 
     private static class TCMusicMgrHolder {
         @NonNull
@@ -42,38 +42,39 @@ public class TCMusicManager {
             return;
         }
         isLoading = true;
-        TCHttpURLClient.getInstance().get(UGCKitConstants.SVR_BGM_GET_URL, new TCHttpURLClient.OnHttpCallback() {
-            @Override
-            public void onSuccess(String result) {
-                Log.i(TAG, "http request success:  result = " + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    JSONObject bgmObject = jsonObject.getJSONObject("bgm");
-                    if (bgmObject == null && mLoadMusicListener != null) {
-                        mLoadMusicListener.onBgmList(null);
-                        return;
-                    }
-                    JSONArray list = bgmObject.getJSONArray("list");
-                    Type listType = new TypeToken<ArrayList<TCMusicInfo>>() {
-                    }.getType();
-                    ArrayList<TCMusicInfo> bgmInfoList = new Gson().fromJson(list.toString(), listType);
+        TCHttpURLClient.getInstance().get(
+                UGCKitConstants.SVR_BGM_GET_URL, new TCHttpURLClient.OnHttpCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.i(TAG, "http request success:  result = " + result);
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            JSONObject bgmObject = jsonObject.getJSONObject("bgm");
+                            if (bgmObject == null && mLoadMusicListener != null) {
+                                mLoadMusicListener.onBgmList(null);
+                                return;
+                            }
+                            JSONArray list = bgmObject.getJSONArray("list");
+                            Type listType = new TypeToken<ArrayList<TCMusicInfo>>() {}.getType();
+                            ArrayList<TCMusicInfo> bgmInfoList =
+                                    new Gson().fromJson(list.toString(), listType);
 
-                    getLocalPath(bgmInfoList);
-                    if (mLoadMusicListener != null) {
-                        mLoadMusicListener.onBgmList(bgmInfoList);
+                            getLocalPath(bgmInfoList);
+                            if (mLoadMusicListener != null) {
+                                mLoadMusicListener.onBgmList(bgmInfoList);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } finally {
+                            isLoading = false;
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    isLoading = false;
-                }
-            }
 
-            @Override
-            public void onError() {
-                isLoading = false;
-            }
-        });
+                    @Override
+                    public void onError() {
+                        isLoading = false;
+                    }
+                });
     }
 
     /**
@@ -96,7 +97,8 @@ public class TCMusicManager {
     }
 
     public void downloadMusicInfo(final String bgmName, final int position, String url) {
-        TCMusicDownloadProgress TCMusicDownloadProgress = new TCMusicDownloadProgress(bgmName, position, url);
+        TCMusicDownloadProgress TCMusicDownloadProgress =
+                new TCMusicDownloadProgress(bgmName, position, url);
         TCMusicDownloadProgress.start(new TCMusicDownloadProgress.Downloadlistener() {
             @Override
             public void onDownloadFail(String errorMsg) {
@@ -147,7 +149,6 @@ public class TCMusicManager {
     }
 
     public interface LoadMusicListener {
-
         void onBgmList(final ArrayList<TCMusicInfo> tcBgmInfoList);
 
         void onBgmDownloadSuccess(int position, String filePath);

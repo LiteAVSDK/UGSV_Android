@@ -4,10 +4,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +13,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.utils.ScreenUtils;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
-import com.tencent.qcloud.ugckit.R;
-
 
 import java.lang.ref.WeakReference;
 
@@ -30,17 +28,18 @@ import java.lang.ref.WeakReference;
  * 字幕输入框
  */
 public class TCWordInputDialog extends DialogFragment implements View.OnClickListener {
-    private static final String   TAG = "TCWordInputDialog";
-    private              TextView mTextSure;
-    private              TextView mTextCancel;
-    private              EditText mEditContent;
+    private static final String TAG = "TCWordInputDialog";
+    private TextView mTextSure;
+    private TextView mTextCancel;
+    private EditText mEditContent;
     @Nullable
-    private              String   mDefaultText;
+    private String mDefaultText;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        setDialogStyle();//去掉标题栏
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            Bundle savedInstanceState) {
+        setDialogStyle(); //去掉标题栏
         return inflater.inflate(R.layout.ugckit_fragment_input_word, null, false);
     }
 
@@ -67,12 +66,11 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
         } else if (i == R.id.word_tv_done) {
             String text = mEditContent.getText().toString();
             if (TextUtils.isEmpty(text)) {
-
-                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_word_input_dialog_please_enter_subtitles));
+                ToastUtil.toastShortMessage(getResources().getString(
+                        R.string.ugckit_word_input_dialog_please_enter_subtitles));
                 return;
             }
             onClickSure();
-
         }
     }
 
@@ -91,7 +89,6 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
             mWefCallback.get().onInputSure(text);
         }
     }
-
 
     private void dismissDialog() {
         try {
@@ -112,7 +109,8 @@ public class TCWordInputDialog extends DialogFragment implements View.OnClickLis
         if (dialog != null) {
             Window window = dialog.getWindow();
             if (window != null)
-                window.setLayout((int) (ScreenUtils.getScreenWidth(dialog.getContext()) * 0.9),//设置宽度最小为 90%
+                window.setLayout((int) (ScreenUtils.getScreenWidth(dialog.getContext())
+                                         * 0.9), //设置宽度最小为 90%
                         WindowManager.LayoutParams.WRAP_CONTENT);
         }
     }

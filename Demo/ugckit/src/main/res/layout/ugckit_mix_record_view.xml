@@ -56,7 +56,7 @@
         android:clickable="true"
         android:visibility="gone" />
 
-    <com.tencent.liteav.demo.beauty.view.BeautyPanel
+    <com.tencent.liteav.beautykit.view.BeautyPanel
         android:id="@+id/beauty_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

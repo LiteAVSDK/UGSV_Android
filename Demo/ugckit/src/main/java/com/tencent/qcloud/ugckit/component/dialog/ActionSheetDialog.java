@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.component.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import androidx.annotation.NonNull;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
 
@@ -23,20 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActionSheetDialog {
-
-    private Context         mContext;
-    private Dialog          mDialog;
-    private TextView        mTextTitle;
-    private TextView        mTextCancel;
-    private LinearLayout    mLayoutContent;
-    private ScrollView      mScrollContent;
+    private Context mContext;
+    private Dialog mDialog;
+    private TextView mTextTitle;
+    private TextView mTextCancel;
+    private LinearLayout mLayoutContent;
+    private ScrollView mScrollContent;
     private List<SheetItem> mSheetItemList;
-    private Display         mDisplay;
-    private boolean         mShowTitle = false;
+    private Display mDisplay;
+    private boolean mShowTitle = false;
 
     public ActionSheetDialog(@NonNull Context context) {
         this.mContext = context;
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager =
+                (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mDisplay = windowManager.getDefaultDisplay();
     }
 
@@ -50,8 +49,7 @@ public class ActionSheetDialog {
 
         // 获取自定义Dialog布局中的控件
         mScrollContent = (ScrollView) view.findViewById(R.id.sLayout_content);
-        mLayoutContent = (LinearLayout) view
-                .findViewById(R.id.lLayout_content);
+        mLayoutContent = (LinearLayout) view.findViewById(R.id.lLayout_content);
         mTextTitle = (TextView) view.findViewById(R.id.txt_title);
         mTextCancel = (TextView) view.findViewById(R.id.txt_cancel);
         mTextCancel.setOnClickListener(new OnClickListener() {
@@ -101,8 +99,8 @@ public class ActionSheetDialog {
      * @return
      */
     @NonNull
-    public ActionSheetDialog addSheetItem(String strItem, SheetItemColor color,
-                                          OnSheetItemClickListener listener) {
+    public ActionSheetDialog addSheetItem(
+            String strItem, SheetItemColor color, OnSheetItemClickListener listener) {
         if (mSheetItemList == null) {
             mSheetItemList = new ArrayList<SheetItem>();
         }
@@ -123,8 +121,7 @@ public class ActionSheetDialog {
         // TODO 高度控制，非最佳解决办法
         // 添加条目过多的时候控制高度
         if (size >= 7) {
-            LayoutParams params = (LayoutParams) mScrollContent
-                    .getLayoutParams();
+            LayoutParams params = (LayoutParams) mScrollContent.getLayoutParams();
             params.height = mDisplay.getHeight() / 2;
             mScrollContent.setLayoutParams(params);
         }
@@ -134,8 +131,9 @@ public class ActionSheetDialog {
             final int index = i;
             SheetItem sheetItem = mSheetItemList.get(i - 1);
             String strItem = sheetItem.name;
-            SheetItemColor color = sheetItem.color;
-            final OnSheetItemClickListener listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+            final SheetItemColor color = sheetItem.color;
+            final OnSheetItemClickListener listener =
+                    (OnSheetItemClickListener) sheetItem.itemClickListener;
 
             TextView textView = new TextView(mContext);
             textView.setText(strItem);
@@ -152,25 +150,28 @@ public class ActionSheetDialog {
             } else {
                 if (mShowTitle) {
                     if (i >= 1 && i < size) {
-                        textView.setBackgroundResource(R.drawable.ugckit_actionsheet_middle_selector);
+                        textView.setBackgroundResource(
+                                R.drawable.ugckit_actionsheet_middle_selector);
                     } else {
-                        textView.setBackgroundResource(R.drawable.ugckit_actionsheet_bottom_selector);
+                        textView.setBackgroundResource(
+                                R.drawable.ugckit_actionsheet_bottom_selector);
                     }
                 } else {
                     if (i == 1) {
                         textView.setBackgroundResource(R.drawable.ugckit_actionsheet_top_selector);
                     } else if (i < size) {
-                        textView.setBackgroundResource(R.drawable.ugckit_actionsheet_middle_selector);
+                        textView.setBackgroundResource(
+                                R.drawable.ugckit_actionsheet_middle_selector);
                     } else {
-                        textView.setBackgroundResource(R.drawable.ugckit_actionsheet_bottom_selector);
+                        textView.setBackgroundResource(
+                                R.drawable.ugckit_actionsheet_bottom_selector);
                     }
                 }
             }
 
             // 字体颜色
             if (color == null) {
-                textView.setTextColor(Color.parseColor(SheetItemColor.Blue
-                        .getName()));
+                textView.setTextColor(Color.parseColor(SheetItemColor.Blue.getName()));
             } else {
                 textView.setTextColor(Color.parseColor(color.getName()));
             }
@@ -198,17 +199,15 @@ public class ActionSheetDialog {
         mDialog.show();
     }
 
-    public interface OnSheetItemClickListener {
-        void onClick(int which);
-    }
+    public interface OnSheetItemClickListener { void onClick(int which); }
 
     public class SheetItem {
-        String                   name;
+        String name;
         OnSheetItemClickListener itemClickListener;
-        SheetItemColor           color;
+        SheetItemColor color;
 
-        public SheetItem(String name, SheetItemColor color,
-                         OnSheetItemClickListener itemClickListener) {
+        public SheetItem(
+                String name, SheetItemColor color, OnSheetItemClickListener itemClickListener) {
             this.name = name;
             this.color = color;
             this.itemClickListener = itemClickListener;
@@ -216,7 +215,8 @@ public class ActionSheetDialog {
     }
 
     public enum SheetItemColor {
-        Blue("#037BFF"), Red("#FD4A2E");
+        Blue("#037BFF"),
+        Red("#FD4A2E");
 
         private String name;
 

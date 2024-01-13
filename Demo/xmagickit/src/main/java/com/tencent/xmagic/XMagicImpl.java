@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 
 import com.tencent.xmagic.module.XmagicResParser;
@@ -26,7 +25,6 @@ import com.tencent.xmagic.telicense.TELicenseCheck;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class XMagicImpl implements SensorEventListener {
     private static final String TAG = "XMagicImpl";
@@ -46,7 +44,6 @@ public class XMagicImpl implements SensorEventListener {
 
     public static Context applicationContext = null;
 
-
     private boolean isOpenBeauty = true;
 
     /**
@@ -64,7 +61,8 @@ public class XMagicImpl implements SensorEventListener {
      */
     public static void init(Context context) {
         applicationContext = context.getApplicationContext();
-        XmagicResParser.setResPath(new File(applicationContext.getFilesDir(), "xmagic").getAbsolutePath());
+        XmagicResParser.setResPath(
+                new File(applicationContext.getFilesDir(), "xmagic").getAbsolutePath());
     }
 
     public static void setXmagicAuthKeyAndUrl(String authLicenceUrl, String authKey) {
@@ -77,12 +75,13 @@ public class XMagicImpl implements SensorEventListener {
      *
      * @param listener
      */
-    public static void checkAuth(final TELicenseCheck.TELicenseCheckListener listener) {                         //
+    public static void checkAuth(final TELicenseCheck.TELicenseCheckListener listener) { //
         if (applicationContext == null) {
             throw new RuntimeException("please init XMagicImpl init()");
         }
         if (listener == null) {
-            TELicenseCheck.getInstance().setTELicense(applicationContext, xmagicAuthLicenceUrl, xmagicAuthKey, null);
+            TELicenseCheck.getInstance().setTELicense(
+                    applicationContext, xmagicAuthLicenceUrl, xmagicAuthKey, null);
         } else {
             TELicenseCheck.TELicenseCheckListener l = new TELicenseCheck.TELicenseCheckListener() {
                 @Override
@@ -97,7 +96,8 @@ public class XMagicImpl implements SensorEventListener {
                     });
                 }
             };
-            TELicenseCheck.getInstance().setTELicense(applicationContext, xmagicAuthLicenceUrl, xmagicAuthKey,l);
+            TELicenseCheck.getInstance().setTELicense(
+                    applicationContext, xmagicAuthLicenceUrl, xmagicAuthKey, l);
         }
     }
 
@@ -109,23 +109,26 @@ public class XMagicImpl implements SensorEventListener {
      */
     public XMagicImpl(final Activity activity, RelativeLayout panelLayout) {
         getUserBeauty();
-        XmagicApi.OnXmagicPropertyErrorListener listener = new XmagicApi.OnXmagicPropertyErrorListener() {
-            @Override
-            public void onXmagicPropertyError(final String errorMsg, final int code) {
-                activity.runOnUiThread(new Runnable() {
+        XmagicApi.OnXmagicPropertyErrorListener listener =
+                new XmagicApi.OnXmagicPropertyErrorListener() {
                     @Override
-                    public void run() {
-                        if (xmagicPanelView != null) {
-                            xmagicPanelView.showErrorMsg(code + ":" + errorMsg);
-                        } else {
-                            Toast.makeText(activity.getApplicationContext(),
-                                    code + ":" + errorMsg, Toast.LENGTH_LONG).show();
-                        }
+                    public void onXmagicPropertyError(final String errorMsg, final int code) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (xmagicPanelView != null) {
+                                    xmagicPanelView.showErrorMsg(code + ":" + errorMsg);
+                                } else {
+                                    Toast.makeText(activity.getApplicationContext(),
+                                                 code + ":" + errorMsg, Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }
+                        });
                     }
-                });
-            }
-        };
-        mXmagicApi = XmagicApiWrapper.createXmagicApi(activity.getApplicationContext(), true, listener);
+                };
+        mXmagicApi =
+                XmagicApiWrapper.createXmagicApi(activity.getApplicationContext(), true, listener);
         initPropertyUiPanel(activity, panelLayout);
         mSensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -155,7 +158,8 @@ public class XMagicImpl implements SensorEventListener {
             @Override
             public void onRevertBtnClick() {
                 if (mXmagicApi != null) {
-                    mXmagicApi.updateProperties(XmagicPanelDataManager.getInstance().getRevertXmagicData());
+                    mXmagicApi.updateProperties(
+                            XmagicPanelDataManager.getInstance().getRevertXmagicData());
                 }
                 if (xmagicPanelView != null) {
                     xmagicPanelView.revertMenuList();
@@ -187,7 +191,6 @@ public class XMagicImpl implements SensorEventListener {
                     mXmagicApi.updateProperties(updateList);
                 }
             }
-
         });
         panelLayout.removeAllViews();
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -210,7 +213,6 @@ public class XMagicImpl implements SensorEventListener {
         }
         return textureId;
     }
-
 
     private void updateProperty(XmagicProperty<?> xmagicProperty) {
         if (mXmagicApi != null && xmagicProperty != null) {
@@ -274,8 +276,6 @@ public class XMagicImpl implements SensorEventListener {
         }
     }
 
-
-
     public void setAudioMute(boolean isMute) {
         mMute = isMute;
         if (mXmagicApi != null) {
@@ -291,9 +291,7 @@ public class XMagicImpl implements SensorEventListener {
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (isOpenPhotoAlbum && xmagicPanelView != null) {
@@ -302,23 +300,21 @@ public class XMagicImpl implements SensorEventListener {
         }
     }
 
-
-    public enum XmagicState {
-        IDLE, STARTED, STOPPED
-    }
-
+    public enum XmagicState { IDLE, STARTED, STOPPED }
 
     public void setBeautyStateOpen() {
-        Editor editor = applicationContext.getSharedPreferences("xmagic_settings", Context.MODE_PRIVATE).edit();
+        Editor editor =
+                applicationContext.getSharedPreferences("xmagic_settings", Context.MODE_PRIVATE)
+                        .edit();
         editor.putBoolean("xmagic_state", true).commit();
         userBeauty = true;
     }
 
     private void getUserBeauty() {
-        SharedPreferences sp = applicationContext.getSharedPreferences("xmagic_settings", Context.MODE_PRIVATE);
+        SharedPreferences sp =
+                applicationContext.getSharedPreferences("xmagic_settings", Context.MODE_PRIVATE);
         userBeauty = sp.getBoolean("xmagic_state", false);
     }
-
 
     public void setHostFragment(Fragment mHostFragment) {
         this.mHostFragment = mHostFragment;

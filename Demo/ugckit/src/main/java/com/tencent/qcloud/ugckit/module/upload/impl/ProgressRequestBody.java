@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
@@ -16,15 +15,11 @@ import okio.ForwardingSink;
 import okio.Okio;
 import okio.Sink;
 
-
 public class ProgressRequestBody extends RequestBody {
-
-    public interface ProgressListener {
-        void onProgress(long currentBytes, long contentLength);
-    }
+    public interface ProgressListener { void onProgress(long currentBytes, long contentLength); }
 
     public class ProgressModel {
-        private long currentBytes  = 0;
+        private long currentBytes = 0;
         private long contentLength = 0;
 
         public ProgressModel(long currentBytes, long contentLength) {
@@ -41,11 +36,11 @@ public class ProgressRequestBody extends RequestBody {
         }
     }
 
-    public static final int              UPDATE = 0x01;
-    private             RequestBody      requestBody;
-    private             ProgressListener mListener;
-    private             MyHandler        myHandler;
-    private             BufferedSink     bufferedSink;
+    public static final int UPDATE = 0x01;
+    private RequestBody requestBody;
+    private ProgressListener mListener;
+    private MyHandler myHandler;
+    private BufferedSink bufferedSink;
 
     public ProgressRequestBody(RequestBody body, ProgressListener listener) {
         requestBody = body;
@@ -67,9 +62,9 @@ public class ProgressRequestBody extends RequestBody {
                 case UPDATE:
                     ProgressModel progressModel = (ProgressModel) msg.obj;
                     if (mListener != null)
-                        mListener.onProgress(progressModel.getCurrentBytes(), progressModel.getContentLength());
+                        mListener.onProgress(
+                                progressModel.getCurrentBytes(), progressModel.getContentLength());
                     break;
-
             }
         }
     }
@@ -97,7 +92,6 @@ public class ProgressRequestBody extends RequestBody {
     }
 
     private Sink sink(BufferedSink sink) {
-
         return new ForwardingSink(sink) {
             long bytesWritten = 0L;
             long contentLength = 0L;

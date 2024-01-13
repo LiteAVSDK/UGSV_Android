@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.utils;
 
 import android.os.Build;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,8 +18,7 @@ import java.util.zip.ZipInputStream;
 public class VideoUtil {
     private static final String TAG = "VideoUtil";
 
-    public VideoUtil() {
-    }
+    public VideoUtil() {}
 
     public static boolean isEmpty(@Nullable Collection object) {
         return null == object || object.isEmpty();
@@ -100,7 +99,6 @@ public class VideoUtil {
                                     } catch (IOException var40) {
                                         ;
                                     }
-
                                 }
                             }
                         }
@@ -119,7 +117,6 @@ public class VideoUtil {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
 
                 return dataDir;
@@ -130,5 +127,4 @@ public class VideoUtil {
     public static boolean hasJellyBeanMR2() {
         return Build.VERSION.SDK_INT >= 18;
     }
-
 }

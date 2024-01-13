@@ -1,8 +1,6 @@
 package com.tencent.qcloud.ugckit.component;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -10,17 +8,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 
 public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
-
-    private LinearLayout   mLeftGroup;
-    private TextView       mLeftTitle;
-    private TextView       mCenterTitle;
-    private ImageView      mLeftIcon;
-    private Button         mRightButton;
+    private LinearLayout mLeftGroup;
+    private TextView mLeftTitle;
+    private TextView mCenterTitle;
+    private ImageView mLeftIcon;
+    private Button mRightButton;
     private RelativeLayout mTitleLayout;
 
     public TitleBarLayout(Context context) {
@@ -115,6 +114,4 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     public TextView getMiddleTitle() {
         return null;
     }
-
-
 }

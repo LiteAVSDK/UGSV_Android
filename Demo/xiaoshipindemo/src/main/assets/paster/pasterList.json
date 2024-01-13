@@ -1,0 +1,23 @@
+{
+  "pasterList" : [
+    {
+	  "icon" : "cat/icon.png",
+	  "name" : "cat"
+    },
+    
+    {
+	  "icon" : "happy/icon.png",
+	  "name" : "happy"
+    },
+    
+    {
+	  "icon" : "lovely/icon.png",
+	  "name" : "lovely"
+    },
+    
+    {
+	  "icon" : "rainbow/icon.png",
+	  "name" : "rainbow"
+    }
+  ]
+}

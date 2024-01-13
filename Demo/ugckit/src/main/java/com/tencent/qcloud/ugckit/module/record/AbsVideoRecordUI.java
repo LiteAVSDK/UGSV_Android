@@ -5,30 +5,28 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
-import com.tencent.liteav.demo.beauty.model.BeautyInfo;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
-import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
+import com.tencent.liteav.beautykit.constant.BeautyConstants;
+import com.tencent.liteav.beautykit.model.BeautyInfo;
+import com.tencent.liteav.beautykit.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
-
+import com.tencent.qcloud.ugckit.module.effect.bgm.view.SoundEffectsPannel;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IVideoRecordKit;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
 public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoRecordKit {
-
-    private TitleBarLayout        mTitleBar;
-    private TXCloudVideoView      mVideoView;
-    private ScrollFilterView      mScrollFilterView;
-    private RecordRightLayout     mRecordRightLayout;
-    private RecordBottomLayout    mRecordBottomLayout;
-    private RelativeLayout        mTencentEffectPanel;
-    private BeautyPanel           mBeautyPanel;
-    private RecordMusicPannel     mRecordMusicPannel;
-    private SoundEffectsPannel    mSoundEffectsPannel;
-    private ImageSnapShotView     mImageSnapShotView;
-    private RecordPauseSnapView   mRecordPauseSnapView;
-    private ImageView             mTEInfoImg;
+    private TitleBarLayout mTitleBar;
+    private TXCloudVideoView mVideoView;
+    private ScrollFilterView mScrollFilterView;
+    private RecordRightLayout mRecordRightLayout;
+    private RecordBottomLayout mRecordBottomLayout;
+    private RelativeLayout mTencentEffectPanel;
+    private BeautyPanel mBeautyPanel;
+    private RecordMusicPannel mRecordMusicPannel;
+    private SoundEffectsPannel mSoundEffectsPannel;
+    private ImageSnapShotView mImageSnapShotView;
+    private RecordPauseSnapView mRecordPauseSnapView;
+    private ImageView mTEInfoImg;
 
     public AbsVideoRecordUI(Context context) {
         super(context);
@@ -70,7 +68,6 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
         mRecordPauseSnapView = (RecordPauseSnapView) findViewById(R.id.record_pause_snap_view);
 
         mTEInfoImg = findViewById(R.id.record_right_te_info_img);
-
     }
 
     public TitleBarLayout getTitleBar() {
@@ -155,5 +152,4 @@ public abstract class AbsVideoRecordUI extends RelativeLayout implements IVideoR
     public void disableBeauty() {
         mRecordRightLayout.disableBeauty();
     }
-
 }

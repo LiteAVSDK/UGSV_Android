@@ -2,10 +2,10 @@ package com.tencent.qcloud.ugckit.module.mixrecord;
 
 import android.content.Context;
 import android.media.AudioManager;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
+import androidx.annotation.Nullable;
 
 import com.tencent.liteav.audio.TXCAudioUGCRecorder;
 import com.tencent.qcloud.ugckit.R;
@@ -32,7 +32,8 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
         initViews();
     }
 
-    public FollowRecordPlayerViews(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public FollowRecordPlayerViews(
+            Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initViews();
     }
@@ -130,11 +131,9 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
     }
 
     @Override
-    public void setContinuePosition(float position) {
+    public void setContinuePosition(float position) {}
 
-    }
-	
-	  /**
+    /**
      * 视频合唱，在开启器外放场景下，设置一个系统60%的外放音量，保证合唱时消除效果
      */
     private void setPlayoutVolumeIfNeed() {
@@ -144,14 +143,16 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
         }
 
         Context appContext = getContext().getApplicationContext();
-        AudioManager audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager =
+                (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
         if (audioManager.isWiredHeadsetOn() || audioManager.isBluetoothA2dpOn()) {
             Log.d(TAG, "headset in on");
             return;
         }
 
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        int targetVolume = (int) (maxVolume * UGCKitRecordConfig.getInstance().mPlayoutVolumePercentForUGC);
+        int targetVolume =
+                (int) (maxVolume * UGCKitRecordConfig.getInstance().mPlayoutVolumePercentForUGC);
         targetVolume = Math.min(maxVolume, targetVolume);
         int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         if (currentVolume <= targetVolume) {
@@ -159,8 +160,10 @@ public class FollowRecordPlayerViews extends LinearLayout implements IPlayerView
         }
 
         try {
-            Log.d(TAG, "setStreamVolume, targetVolume=" + targetVolume + ", maxVolume=" + maxVolume);
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, AudioManager.FLAG_PLAY_SOUND);
+            Log.d(TAG,
+                    "setStreamVolume, targetVolume=" + targetVolume + ", maxVolume=" + maxVolume);
+            audioManager.setStreamVolume(
+                    AudioManager.STREAM_MUSIC, targetVolume, AudioManager.FLAG_PLAY_SOUND);
         } catch (Exception e) {
             Log.w(TAG, "setStreamVolume eorror=" + Log.getStackTraceString(e));
         }

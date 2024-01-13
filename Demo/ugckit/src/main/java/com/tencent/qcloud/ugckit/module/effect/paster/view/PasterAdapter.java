@@ -1,30 +1,27 @@
 package com.tencent.qcloud.ugckit.module.effect.paster.view;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.effect.paster.IPasterPannel;
 import com.tencent.qcloud.ugckit.module.effect.paster.TCPasterInfo;
-import com.tencent.qcloud.ugckit.R;
-
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PasterAdapter extends RecyclerView.Adapter<PasterAdapter.PasterViewHolder> implements View.OnClickListener {
-
+public class PasterAdapter extends RecyclerView.Adapter<PasterAdapter.PasterViewHolder>
+        implements View.OnClickListener {
     @Nullable
-    private List<TCPasterInfo>                mPasterInfoList;
-    private WeakReference<RecyclerView>       mRecyclerView;
+    private List<TCPasterInfo> mPasterInfoList;
+    private WeakReference<RecyclerView> mRecyclerView;
     private IPasterPannel.OnItemClickListener mOnItemClickListener;
 
     public PasterAdapter(@Nullable List<TCPasterInfo> pasterInfoList) {
@@ -41,13 +38,16 @@ public class PasterAdapter extends RecyclerView.Adapter<PasterAdapter.PasterView
         if (mRecyclerView == null) {
             mRecyclerView = new WeakReference<RecyclerView>((RecyclerView) parent);
         }
-        return new PasterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_layout_paster_view, null));
+        return new PasterViewHolder(LayoutInflater.from(parent.getContext())
+                                            .inflate(R.layout.ugckit_layout_paster_view, null));
     }
 
     @Override
     public void onBindViewHolder(@NonNull PasterViewHolder holder, int position) {
         holder.itemView.setOnClickListener(this);
-        Glide.with(holder.itemView.getContext()).load(mPasterInfoList.get(position).getIconPath()).into(holder.ivPaster);
+        Glide.with(holder.itemView.getContext())
+                .load(mPasterInfoList.get(position).getIconPath())
+                .into(holder.ivPaster);
     }
 
     @Override
@@ -79,5 +79,4 @@ public class PasterAdapter extends RecyclerView.Adapter<PasterAdapter.PasterView
     public void setOnItemClickListener(IPasterPannel.OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
-
 }

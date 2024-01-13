@@ -19,19 +19,18 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
 /**
  * UGC Client
  */
 public class UGCClient {
-    private static final String                TAG      = "TVC-UGCClient";
-    private              String                signature;
-    private              OkHttpClient          okHttpClient;
-    private              OkHttpClient          mHeadOkHttpClient;
-    private              OkHttpClient          mPreUploadOkHttpClient;
-    private              TXOkHTTPEventListener mTXOkHTTPEventListener;
-    private              String                serverIP = "";
-    private static       UGCClient             ourInstance;
+    private static final String TAG = "TVC-UGCClient";
+    private String signature;
+    private OkHttpClient okHttpClient;
+    private OkHttpClient mHeadOkHttpClient;
+    private OkHttpClient mPreUploadOkHttpClient;
+    private TXOkHTTPEventListener mTXOkHTTPEventListener;
+    private String serverIP = "";
+    private static UGCClient ourInstance;
 
     public static UGCClient getInstance(String signature, int iTimeOut) {
         synchronized (UGCClient.class) {
@@ -45,45 +44,54 @@ public class UGCClient {
         return ourInstance;
     }
 
-
     private UGCClient(String signature, int iTimeOut) {
         this.signature = signature;
         mTXOkHTTPEventListener = new TXOkHTTPEventListener();
-        okHttpClient = new OkHttpClient().newBuilder()
-                .dns(new HttpDNS())
-                .connectTimeout(iTimeOut, TimeUnit.SECONDS)    // 设置超时时间
-                .readTimeout(iTimeOut, TimeUnit.SECONDS)       // 设置读取超时时间
-                .writeTimeout(iTimeOut, TimeUnit.SECONDS)      // 设置写入超时时间
-                .addNetworkInterceptor(new LoggingInterceptor())
-                .eventListener(mTXOkHTTPEventListener)
-                .build();
-        mHeadOkHttpClient = new OkHttpClient().newBuilder()
-                .dns(new HttpDNS())
-                .connectTimeout(TVCConstants.PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT, TimeUnit.MILLISECONDS)
-                // 设置超时时间
-                .readTimeout(TVCConstants.PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT, TimeUnit.MILLISECONDS)
-                // 设置读取超时时间
-                .writeTimeout(TVCConstants.PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT, TimeUnit.MILLISECONDS)
-                // 设置写入超时时间
-                .addNetworkInterceptor(new LoggingInterceptor())
-                .eventListener(mTXOkHTTPEventListener)
-                .build();
-        mPreUploadOkHttpClient = new OkHttpClient().newBuilder()
-                .dns(new HttpDNS())
-                .connectTimeout(TVCConstants.PRE_UPLOAD_TIMEOUT, TimeUnit.MILLISECONDS)    // 设置超时时间
-                .readTimeout(TVCConstants.PRE_UPLOAD_TIMEOUT, TimeUnit.MILLISECONDS)       // 设置读取超时时间
-                .writeTimeout(TVCConstants.PRE_UPLOAD_TIMEOUT, TimeUnit.MILLISECONDS)      // 设置写入超时时间
-                .addNetworkInterceptor(new LoggingInterceptor())
-                .eventListener(mTXOkHTTPEventListener)
-                .build();
+        okHttpClient = new OkHttpClient()
+                               .newBuilder()
+                               .dns(new HttpDNS())
+                               .connectTimeout(iTimeOut, TimeUnit.SECONDS) // 设置超时时间
+                               .readTimeout(iTimeOut, TimeUnit.SECONDS) // 设置读取超时时间
+                               .writeTimeout(iTimeOut, TimeUnit.SECONDS) // 设置写入超时时间
+                               .addNetworkInterceptor(new LoggingInterceptor())
+                               .eventListener(mTXOkHTTPEventListener)
+                               .build();
+        mHeadOkHttpClient =
+                new OkHttpClient()
+                        .newBuilder()
+                        .dns(new HttpDNS())
+                        .connectTimeout(TVCConstants.PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT,
+                                TimeUnit.MILLISECONDS)
+                        // 设置超时时间
+                        .readTimeout(TVCConstants.PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT,
+                                TimeUnit.MILLISECONDS)
+                        // 设置读取超时时间
+                        .writeTimeout(TVCConstants.PRE_UPLOAD_HTTP_DETECT_COMMON_TIMEOUT,
+                                TimeUnit.MILLISECONDS)
+                        // 设置写入超时时间
+                        .addNetworkInterceptor(new LoggingInterceptor())
+                        .eventListener(mTXOkHTTPEventListener)
+                        .build();
+        mPreUploadOkHttpClient = new OkHttpClient()
+                                         .newBuilder()
+                                         .dns(new HttpDNS())
+                                         .connectTimeout(TVCConstants.PRE_UPLOAD_TIMEOUT,
+                                                 TimeUnit.MILLISECONDS) // 设置超时时间
+                                         .readTimeout(TVCConstants.PRE_UPLOAD_TIMEOUT,
+                                                 TimeUnit.MILLISECONDS) // 设置读取超时时间
+                                         .writeTimeout(TVCConstants.PRE_UPLOAD_TIMEOUT,
+                                                 TimeUnit.MILLISECONDS) // 设置写入超时时间
+                                         .addNetworkInterceptor(new LoggingInterceptor())
+                                         .eventListener(mTXOkHTTPEventListener)
+                                         .build();
     }
-
 
     /**
      * 预上传（UGC接口）
      */
     public Response prepareUploadUGC() throws IOException {
-        String reqUrl = "https://" + TVCConstants.VOD_SERVER_HOST + "/v3/index.php?Action=PrepareUploadUGC";
+        String reqUrl =
+                "https://" + TVCConstants.VOD_SERVER_HOST + "/v3/index.php?Action=PrepareUploadUGC";
         TVCLog.d(TAG, "PrepareUploadUGC->request url:" + reqUrl);
 
         String body = "";
@@ -119,8 +127,8 @@ public class UGCClient {
      * @param vodSessionKey vodSessionKey
      * @param callback      回调  @return
      */
-    public void initUploadUGC(String domain, TVCUploadInfo info, String customKey, String vodSessionKey,
-                              final Callback callback) {
+    public void initUploadUGC(String domain, TVCUploadInfo info, String customKey,
+            String vodSessionKey, final Callback callback) {
         String reqUrl = "https://" + domain + "/v3/index.php?Action=ApplyUploadUGC";
         TVCLog.d(TAG, "initUploadUGC->request url:" + reqUrl);
 
@@ -179,7 +187,8 @@ public class UGCClient {
      * @param vodSessionKey 视频上传的会话key
      * @param callback      回调
      */
-    public void finishUploadUGC(String domain, String customKey, String vodSessionKey, final Callback callback) {
+    public void finishUploadUGC(
+            String domain, String customKey, String vodSessionKey, final Callback callback) {
         String reqUrl = "https://" + domain + "/v3/index.php?Action=CommitUploadUGC";
         TVCLog.d(TAG, "finishUploadUGC->request url:" + reqUrl);
         String body = "";
@@ -236,7 +245,9 @@ public class UGCClient {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
 
-            TVCLog.d(TAG, "Sending request " + request.url() + " on " + chain.connection() + "\n" + request.headers());
+            TVCLog.d(TAG,
+                    "Sending request " + request.url() + " on " + chain.connection() + "\n"
+                            + request.headers());
             if (!TVCDnsCache.useProxy()) {
                 serverIP = chain.connection().route().socketAddress().getAddress().getHostAddress();
             }

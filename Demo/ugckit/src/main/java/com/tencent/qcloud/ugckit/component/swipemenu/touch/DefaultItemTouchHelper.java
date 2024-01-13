@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.component.swipemenu.touch;
 
 public class DefaultItemTouchHelper extends CompatItemTouchHelper {
-
     private DefaultItemTouchHelperCallback mDefaultItemTouchHelperCallback;
 
     /**
@@ -73,7 +72,6 @@ public class DefaultItemTouchHelper extends CompatItemTouchHelper {
         return mDefaultItemTouchHelperCallback.isLongPressDragEnabled();
     }
 
-
     /**
      * Set can long press swipe.
      *
@@ -97,8 +95,10 @@ public class DefaultItemTouchHelper extends CompatItemTouchHelper {
      *
      * @param onItemStateChangedListener {@link OnItemStateChangedListener}.
      */
-    public void setOnItemStateChangedListener(OnItemStateChangedListener onItemStateChangedListener) {
-        this.mDefaultItemTouchHelperCallback.setOnItemStateChangedListener(onItemStateChangedListener);
+    public void setOnItemStateChangedListener(
+            OnItemStateChangedListener onItemStateChangedListener) {
+        this.mDefaultItemTouchHelperCallback.setOnItemStateChangedListener(
+                onItemStateChangedListener);
     }
 
     /**
@@ -109,5 +109,4 @@ public class DefaultItemTouchHelper extends CompatItemTouchHelper {
     public OnItemStateChangedListener getOnItemStateChangedListener() {
         return this.mDefaultItemTouchHelperCallback.getOnItemStateChangedListener();
     }
-
 }

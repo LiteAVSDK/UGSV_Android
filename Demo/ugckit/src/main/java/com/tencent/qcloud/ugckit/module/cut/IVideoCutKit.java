@@ -57,23 +57,23 @@ import com.tencent.qcloud.ugckit.basic.UGCKitResult;
  * <p>
  * 视频裁剪功能定制化<br>
  * 1、设置是否下一步进行视频编辑，{@link #setVideoEditFlag(boolean)}<br>
- * 若进行视频编辑，则设置为{@code true}，不输出裁剪后的视频路径，{@code IVideoCutKit} 同时进行视频裁剪和视频预处理。下一个页面必跳转到"视频编辑页面"<br>
+ * 若进行视频编辑，则设置为{@code true}，不输出裁剪后的视频路径，{@code IVideoCutKit}
+ * 同时进行视频裁剪和视频预处理。下一个页面必跳转到"视频编辑页面"<br>
  * 若不进行视频编辑，则设置为{@code false}，输出裁剪并压缩的视频路径。
  * <p>
  * 视频裁剪UI定制化<br>
  * 1、定制化"裁剪View" {@link IVideoCutLayout} <br>
  * <p>
  * 如果您不使用UGCKit视频裁剪组件，自行搭建UI，调用SDK功能。<br>
- * 请参照文档<a href="https://cloud.tencent.com/document/product/584/9502">视频编辑(Android)</a> 中"压缩裁剪"
+ * 请参照文档<a href="https://cloud.tencent.com/document/product/584/9502">视频编辑(Android)</a>
+ * 中"压缩裁剪"
  *
  * Custom Video Clipping Features<br>
- * 1. Call {@link #setVideoEditFlag(boolean)} to specify whether to enter the editing view after clipping.<br>
- * Use {@code true} if you want to enter the editing view, in which case the video path
- * will not be returned after clipping. {@code IVideoCutKit} will clip and preprocess
- * the video at the same time and enter the editing view after clipping.<br>
- * Use {@code false} if you do not want to enter the editing view, in which case the
- * video path will be returned after clipping.
- * <p>
+ * 1. Call {@link #setVideoEditFlag(boolean)} to specify whether to enter the editing view after
+ * clipping.<br> Use {@code true} if you want to enter the editing view, in which case the video
+ * path will not be returned after clipping. {@code IVideoCutKit} will clip and preprocess the video
+ * at the same time and enter the editing view after clipping.<br> Use {@code false} if you do not
+ * want to enter the editing view, in which case the video path will be returned after clipping. <p>
  * Custom Video Clipping UI<br>
  * 1. Call {@link IVideoCutLayout} to customize the clipping view.<br>
  * <p>
@@ -83,9 +83,7 @@ import com.tencent.qcloud.ugckit.basic.UGCKitResult;
  *     Video Editing (Android)</a> (the “Compression and Clipping” section)
  */
 
-
 public interface IVideoCutKit {
-
     /**
      * 设置视频裁剪的源路径
      *

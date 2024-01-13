@@ -8,16 +8,14 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
 
-
 public class NumberProgressBar extends View {
-
     private long mMaxProgress = 100;
 
     /**
@@ -67,10 +65,9 @@ public class NumberProgressBar extends View {
     @Nullable
     private String mPrefix = "";
 
-
-    private final int   default_text_color      = Color.rgb(66, 145, 241);
-    private final int   default_reached_color   = Color.rgb(66, 145, 241);
-    private final int   default_unreached_color = Color.rgb(204, 204, 204);
+    private final int default_text_color = Color.rgb(66, 145, 241);
+    private final int default_reached_color = Color.rgb(66, 145, 241);
+    private final int default_unreached_color = Color.rgb(204, 204, 204);
     private final float default_progress_text_offset;
     private final float default_text_size;
     private final float default_reached_bar_height;
@@ -79,21 +76,20 @@ public class NumberProgressBar extends View {
     /**
      * For save and restore instance of progressbar.
      */
-    private static final String INSTANCE_STATE                = "saved_instance";
-    private static final String INSTANCE_TEXT_COLOR           = "text_color";
-    private static final String INSTANCE_TEXT_SIZE            = "text_size";
-    private static final String INSTANCE_REACHED_BAR_HEIGHT   = "reached_bar_height";
-    private static final String INSTANCE_REACHED_BAR_COLOR    = "reached_bar_color";
+    private static final String INSTANCE_STATE = "saved_instance";
+    private static final String INSTANCE_TEXT_COLOR = "text_color";
+    private static final String INSTANCE_TEXT_SIZE = "text_size";
+    private static final String INSTANCE_REACHED_BAR_HEIGHT = "reached_bar_height";
+    private static final String INSTANCE_REACHED_BAR_COLOR = "reached_bar_color";
     private static final String INSTANCE_UNREACHED_BAR_HEIGHT = "unreached_bar_height";
-    private static final String INSTANCE_UNREACHED_BAR_COLOR  = "unreached_bar_color";
-    private static final String INSTANCE_MAX                  = "max";
-    private static final String INSTANCE_PROGRESS             = "progress";
-    private static final String INSTANCE_SUFFIX               = "suffix";
-    private static final String INSTANCE_PREFIX               = "prefix";
-    private static final String INSTANCE_TEXT_VISIBILITY      = "text_visibility";
+    private static final String INSTANCE_UNREACHED_BAR_COLOR = "unreached_bar_color";
+    private static final String INSTANCE_MAX = "max";
+    private static final String INSTANCE_PROGRESS = "progress";
+    private static final String INSTANCE_SUFFIX = "suffix";
+    private static final String INSTANCE_PREFIX = "prefix";
+    private static final String INSTANCE_TEXT_VISIBILITY = "text_visibility";
 
     private static final int PROGRESS_TEXT_VISIBLE = 0;
-
 
     /**
      * The width of the text that to be drawn.
@@ -138,7 +134,7 @@ public class NumberProgressBar extends View {
      * Reached bar area rect.
      */
     @NonNull
-    private RectF mReachedRectF   = new RectF(0, 0, 0, 0);
+    private RectF mReachedRectF = new RectF(0, 0, 0, 0);
 
     /**
      * The progress text offset.
@@ -154,9 +150,7 @@ public class NumberProgressBar extends View {
 
     private boolean mIfDrawText = true;
 
-    public enum ProgressTextVisibility {
-        Visible, Invisible
-    }
+    public enum ProgressTextVisibility { Visible, Invisible }
 
     public NumberProgressBar(@NonNull Context context) {
         this(context, null);
@@ -174,20 +168,32 @@ public class NumberProgressBar extends View {
         default_text_size = sp2px(10);
         default_progress_text_offset = dp2px(3.0f);
 
-        //load styled attributes.
-        final TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.UGCKitNumberProgressBar,
-                defStyleAttr, 0);
+        // load styled attributes.
+        final TypedArray attributes = context.getTheme().obtainStyledAttributes(
+                attrs, R.styleable.UGCKitNumberProgressBar, defStyleAttr, 0);
 
-        mReachedBarColor = attributes.getColor(R.styleable.UGCKitNumberProgressBar_progress_reached_color, default_reached_color);
-        mUnreachedBarColor = attributes.getColor(R.styleable.UGCKitNumberProgressBar_progress_unreached_color, default_unreached_color);
-        mTextColor = attributes.getColor(R.styleable.UGCKitNumberProgressBar_progress_text_color, default_text_color);
-        mTextSize = attributes.getDimension(R.styleable.UGCKitNumberProgressBar_progress_text_size, default_text_size);
+        mReachedBarColor = attributes.getColor(
+                R.styleable.UGCKitNumberProgressBar_progress_reached_color, default_reached_color);
+        mUnreachedBarColor =
+                attributes.getColor(R.styleable.UGCKitNumberProgressBar_progress_unreached_color,
+                        default_unreached_color);
+        mTextColor = attributes.getColor(
+                R.styleable.UGCKitNumberProgressBar_progress_text_color, default_text_color);
+        mTextSize = attributes.getDimension(
+                R.styleable.UGCKitNumberProgressBar_progress_text_size, default_text_size);
 
-        mReachedBarHeight = attributes.getDimension(R.styleable.UGCKitNumberProgressBar_progress_reached_bar_height, default_reached_bar_height);
-        mUnreachedBarHeight = attributes.getDimension(R.styleable.UGCKitNumberProgressBar_progress_unreached_bar_height, default_unreached_bar_height);
-        mOffset = attributes.getDimension(R.styleable.UGCKitNumberProgressBar_progress_text_offset, default_progress_text_offset);
+        mReachedBarHeight = attributes.getDimension(
+                R.styleable.UGCKitNumberProgressBar_progress_reached_bar_height,
+                default_reached_bar_height);
+        mUnreachedBarHeight = attributes.getDimension(
+                R.styleable.UGCKitNumberProgressBar_progress_unreached_bar_height,
+                default_unreached_bar_height);
+        mOffset = attributes.getDimension(R.styleable.UGCKitNumberProgressBar_progress_text_offset,
+                default_progress_text_offset);
 
-        int textVisible = attributes.getInt(R.styleable.UGCKitNumberProgressBar_progress_text_visibility, PROGRESS_TEXT_VISIBLE);
+        int textVisible =
+                attributes.getInt(R.styleable.UGCKitNumberProgressBar_progress_text_visibility,
+                        PROGRESS_TEXT_VISIBLE);
         if (textVisible != PROGRESS_TEXT_VISIBLE) {
             mIfDrawText = false;
         }
@@ -206,7 +212,8 @@ public class NumberProgressBar extends View {
 
     @Override
     protected int getSuggestedMinimumHeight() {
-        return Math.max((int) mTextSize, Math.max((int) mReachedBarHeight, (int) mUnreachedBarHeight));
+        return Math.max(
+                (int) mTextSize, Math.max((int) mReachedBarHeight, (int) mUnreachedBarHeight));
     }
 
     @Override
@@ -218,7 +225,8 @@ public class NumberProgressBar extends View {
         int result;
         int mode = MeasureSpec.getMode(measureSpec);
         int size = MeasureSpec.getSize(measureSpec);
-        int padding = isWidth ? getPaddingLeft() + getPaddingRight() : getPaddingTop() + getPaddingBottom();
+        int padding = isWidth ? getPaddingLeft() + getPaddingRight()
+                              : getPaddingTop() + getPaddingBottom();
         if (mode == MeasureSpec.EXACTLY) {
             result = size;
         } else {
@@ -267,11 +275,12 @@ public class NumberProgressBar extends View {
         mTextPaint.setTextSize(mTextSize);
     }
 
-
     private void calculateDrawRectFWithoutProgressText() {
         mReachedRectF.left = getPaddingLeft();
         mReachedRectF.top = getHeight() / 2.0f - mReachedBarHeight / 2.0f;
-        mReachedRectF.right = (getWidth() - getPaddingLeft() - getPaddingRight()) / (getMax() * 1.0f) * getProgress() + getPaddingLeft();
+        mReachedRectF.right = (getWidth() - getPaddingLeft() - getPaddingRight())
+                        / (getMax() * 1.0f) * getProgress()
+                + getPaddingLeft();
         mReachedRectF.bottom = getHeight() / 2.0f + mReachedBarHeight / 2.0f;
 
         mUnreachedRectF.left = mReachedRectF.right;
@@ -281,7 +290,6 @@ public class NumberProgressBar extends View {
     }
 
     private void calculateDrawRectF() {
-
         mCurrentDrawText = String.format("%d", getProgress() * 100 / getMax());
         mCurrentDrawText = mPrefix + mCurrentDrawText + mSuffix;
         mDrawTextWidth = mTextPaint.measureText(mCurrentDrawText);
@@ -293,12 +301,15 @@ public class NumberProgressBar extends View {
             mDrawReachedBar = true;
             mReachedRectF.left = getPaddingLeft();
             mReachedRectF.top = getHeight() / 2.0f - mReachedBarHeight / 2.0f;
-            mReachedRectF.right = (getWidth() - getPaddingLeft() - getPaddingRight()) / (getMax() * 1.0f) * getProgress() - mOffset + getPaddingLeft();
+            mReachedRectF.right = (getWidth() - getPaddingLeft() - getPaddingRight())
+                            / (getMax() * 1.0f) * getProgress()
+                    - mOffset + getPaddingLeft();
             mReachedRectF.bottom = getHeight() / 2.0f + mReachedBarHeight / 2.0f;
             mDrawTextStart = (mReachedRectF.right + mOffset);
         }
 
-        mDrawTextEnd = (int) ((getHeight() / 2.0f) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2.0f));
+        mDrawTextEnd = (int) ((getHeight() / 2.0f)
+                - ((mTextPaint.descent() + mTextPaint.ascent()) / 2.0f));
 
         if ((mDrawTextStart + mDrawTextWidth) >= getWidth() - getPaddingRight()) {
             mDrawTextStart = getWidth() - getPaddingRight() - mDrawTextWidth;
@@ -470,7 +481,9 @@ public class NumberProgressBar extends View {
             setProgress(bundle.getLong(INSTANCE_PROGRESS));
             setPrefix(bundle.getString(INSTANCE_PREFIX));
             setSuffix(bundle.getString(INSTANCE_SUFFIX));
-            setProgressTextVisibility(bundle.getBoolean(INSTANCE_TEXT_VISIBILITY) ? ProgressTextVisibility.Visible : ProgressTextVisibility.Invisible);
+            setProgressTextVisibility(bundle.getBoolean(INSTANCE_TEXT_VISIBILITY)
+                            ? ProgressTextVisibility.Visible
+                            : ProgressTextVisibility.Invisible);
             super.onRestoreInstanceState(bundle.getParcelable(INSTANCE_STATE));
             return;
         }
@@ -495,5 +508,4 @@ public class NumberProgressBar extends View {
     public boolean getProgressTextVisibility() {
         return mIfDrawText;
     }
-
 }

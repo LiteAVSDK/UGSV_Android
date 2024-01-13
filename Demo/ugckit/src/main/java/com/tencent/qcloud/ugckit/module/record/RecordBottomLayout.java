@@ -2,39 +2,38 @@ package com.tencent.qcloud.ugckit.module.record;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
-
-import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
 import com.tencent.ugc.TXUGCRecord;
 
 import java.util.Locale;
 
 public class RecordBottomLayout extends RelativeLayout implements View.OnClickListener {
-    private Activity                 mActivity;
-    private ImageView                mImageCameraSwitch;         // 切换摄像头
-    private TextView                 mTextProgressTime;
-    private ImageView                mImageDeleteLastPart;       // 删除上一段
-    private ImageView                mImageTorch;                // 闪光灯
-    private RecordProgressView       mRecordProgressView;        // 录制进度条
-    private RecordSpeedLayout        mRecordSpeedLayout;         // 速度面板
-    private RecordButton             mButtonRecord;              // 录制按钮
-    private RecordModeView           mRecordModeView;            // 录制模式[单击/长按]
-    private View                     mRecordModeDot;
-    private int                      mTorchOnImage;
-    private int                      mTorchOffImage;
-    private int                      mTorchDisableImage;
-    private boolean                  mFrontCameraFlag = true;                //是否前置摄像头UI判断
-    private boolean                  mIsTorchOpenFlag;                       // 是否打开闪光灯UI判断
-    private boolean                  isSelectDeleteLastPartFlag;             // 是否点击一次过"删除最有一段分段视频"按钮
-    private boolean                  mDisableTakePhoto;
-    private boolean                  mDisableLongPressRecord;
+    private Activity mActivity;
+    private ImageView mImageCameraSwitch; // 切换摄像头
+    private TextView mTextProgressTime;
+    private ImageView mImageDeleteLastPart; // 删除上一段
+    private ImageView mImageTorch; // 闪光灯
+    private RecordProgressView mRecordProgressView; // 录制进度条
+    private RecordSpeedLayout mRecordSpeedLayout; // 速度面板
+    private RecordButton mButtonRecord; // 录制按钮
+    private RecordModeView mRecordModeView; // 录制模式[单击/长按]
+    private View mRecordModeDot;
+    private int mTorchOnImage;
+    private int mTorchOffImage;
+    private int mTorchDisableImage;
+    private boolean mFrontCameraFlag = true; //是否前置摄像头UI判断
+    private boolean mIsTorchOpenFlag; // 是否打开闪光灯UI判断
+    private boolean isSelectDeleteLastPartFlag; // 是否点击一次过"删除最有一段分段视频"按钮
+    private boolean mDisableTakePhoto;
+    private boolean mDisableLongPressRecord;
     private OnDeleteLastPartListener mOnDeleteLastPartListener;
 
     public RecordBottomLayout(Context context) {
@@ -92,9 +91,12 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
             }
         });
 
-        mTorchDisableImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchDisableIcon, R.drawable.ugckit_torch_disable);
-        mTorchOffImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchOffIcon, R.drawable.ugckit_selector_torch_close);
-        mTorchOnImage = UIAttributeUtil.getResResources(mActivity, R.attr.recordTorchOnIcon, R.drawable.ugckit_selector_torch_open);
+        mTorchDisableImage = UIAttributeUtil.getResResources(
+                mActivity, R.attr.recordTorchDisableIcon, R.drawable.ugckit_torch_disable);
+        mTorchOffImage = UIAttributeUtil.getResResources(
+                mActivity, R.attr.recordTorchOffIcon, R.drawable.ugckit_selector_torch_close);
+        mTorchOnImage = UIAttributeUtil.getResResources(
+                mActivity, R.attr.recordTorchOnIcon, R.drawable.ugckit_selector_torch_open);
 
         if (mFrontCameraFlag) {
             mImageTorch.setVisibility(View.GONE);
@@ -116,7 +118,6 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
             switchCamera();
         }
     }
-
 
     /**
      * 切换前后摄像头
@@ -193,15 +194,10 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
 
             long duration = VideoRecordSDK.getInstance().getPartManager().getDuration();
             float timeSecond = duration / 1000;
-            mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond) + getResources().getString(R.string.ugckit_unit_second));
+            mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecond)
+                    + getResources().getString(R.string.ugckit_unit_second));
 
-            mOnDeleteLastPartListener.onUpdateTitle(timeSecond >= UGCKitRecordConfig.getInstance().mMinDuration / 1000);
-
-            // 删除分段后再次判断size
-            size = VideoRecordSDK.getInstance().getPartManager().getPartsPathList().size();
-            if (size == 0) { // 重新开始录
-                mOnDeleteLastPartListener.onReRecord();
-            }
+            mOnDeleteLastPartListener.onDeleteLastPart();
         }
     }
 
@@ -236,9 +232,7 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     }
 
     public interface OnDeleteLastPartListener {
-        void onUpdateTitle(boolean enable);
-
-        void onReRecord();
+        void onDeleteLastPart();
     }
 
     public void startRecord() {
@@ -275,7 +269,8 @@ public class RecordBottomLayout extends RelativeLayout implements View.OnClickLi
     public void updateProgress(long milliSecond) {
         mRecordProgressView.setProgress((int) milliSecond);
         float second = milliSecond / 1000f;
-        mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", second) + getResources().getString(R.string.ugckit_unit_second));
+        mTextProgressTime.setText(String.format(Locale.CHINA, "%.1f", second)
+                + getResources().getString(R.string.ugckit_unit_second));
     }
 
     public RecordButton getRecordButton() {

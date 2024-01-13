@@ -2,7 +2,6 @@ package com.tencent.qcloud.ugckit.module.record;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,27 +11,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
-
-import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordMusicPannel;
 import com.tencent.qcloud.ugckit.component.slider.RangeSlider;
+import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordMusicPannel;
+import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 
-
-public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPannel, SeekBar.OnSeekBarChangeListener, RangeSlider.OnRangeChangeListener, View.OnClickListener {
-    private Context                                mContext;
-    private SeekBar                                mSeekBarVolume;
-    private RangeSlider                            mRangeSlider;
-    private Button                                 mButtonConfirm;
-    private TextView                               mTextStartTime;
-    private TextView                               mTextMusicName;
-    private ImageView                              mImageLogo;
-    private ImageView                              mImageVoiceWave;
-    private ImageView                              mImageReplace;
-    private ImageView                              mImageDelete;
-    private int                                    mMusicVolume = 100;
-    private long                                   mMusicDuration;
+public class RecordMusicPannel
+        extends RelativeLayout implements IRecordMusicPannel, SeekBar.OnSeekBarChangeListener,
+                                          RangeSlider.OnRangeChangeListener, View.OnClickListener {
+    private Context mContext;
+    private SeekBar mSeekBarVolume;
+    private RangeSlider mRangeSlider;
+    private Button mButtonConfirm;
+    private TextView mTextStartTime;
+    private TextView mTextMusicName;
+    private ImageView mImageLogo;
+    private ImageView mImageVoiceWave;
+    private ImageView mImageReplace;
+    private ImageView mImageDelete;
+    private int mMusicVolume = 100;
+    private long mMusicDuration;
     private IRecordMusicPannel.MusicChangeListener mMusicChangeListener;
 
     public RecordMusicPannel(Context context) {
@@ -69,7 +69,8 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
         mImageDelete.setOnClickListener(this);
 
         mTextStartTime = (TextView) findViewById(R.id.tv_bgm_start_time);
-        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), "00:00"));
+        mTextStartTime.setText(String.format(
+                getResources().getString(R.string.ugckit_bgm_start_position), "00:00"));
 
         mTextMusicName = (TextView) findViewById(R.id.tx_music_name);
         mTextMusicName.setText("");
@@ -97,30 +98,26 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStopTrackingTouch(SeekBar seekBar) {}
 
     @Override
-    public void onKeyDown(int type) {
-
-    }
+    public void onKeyDown(int type) {}
 
     @Override
     public void onKeyUp(int type, int leftPinIndex, int rightPinIndex) {
-        long leftTime = mMusicDuration * leftPinIndex / 100; //ms
+        long leftTime = mMusicDuration * leftPinIndex / 100; // ms
         long rightTime = mMusicDuration * rightPinIndex / 100;
 
         if (mMusicChangeListener != null) {
             mMusicChangeListener.onMusicTimeChanged(leftTime, rightTime);
         }
 
-        mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
+        mTextStartTime.setText(
+                String.format(getResources().getString(R.string.ugckit_bgm_start_position),
+                        DateTimeUtil.millsecondToMinuteSecond((int) leftTime)));
     }
 
     private void setCutRange(long startTime, long endTime) {
@@ -130,7 +127,9 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
             mRangeSlider.setCutRange(left, right);
         }
         if (mTextStartTime != null) {
-            mTextStartTime.setText(String.format(getResources().getString(R.string.ugckit_bgm_start_position), DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
+            mTextStartTime.setText(
+                    String.format(getResources().getString(R.string.ugckit_bgm_start_position),
+                            DateTimeUtil.millsecondToMinuteSecond((int) startTime)));
         }
     }
 
@@ -155,7 +154,8 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
     }
 
     @Override
-    public void setOnMusicChangeListener(IRecordMusicPannel.MusicChangeListener volumeChangeListener) {
+    public void setOnMusicChangeListener(
+            IRecordMusicPannel.MusicChangeListener volumeChangeListener) {
         mMusicChangeListener = volumeChangeListener;
     }
 
@@ -188,8 +188,7 @@ public class RecordMusicPannel extends RelativeLayout implements IRecordMusicPan
     }
 
     @Override
-    public void setMusicRangeColor(Drawable color) {
-    }
+    public void setMusicRangeColor(Drawable color) {}
 
     @Override
     public void setMusicRangeBackgroundResource(int resid) {

@@ -3,13 +3,13 @@ package com.tencent.xmagic.panel;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 
-import com.tencent.xmagic.module.XmagicResParser;
-import com.tencent.xmagic.module.XmagicUIProperty;
 import com.tencent.xmagic.XmagicConstant;
 import com.tencent.xmagic.XmagicConstant.BeautyConstant;
 import com.tencent.xmagic.XmagicProperty;
 import com.tencent.xmagic.XmagicProperty.Category;
 import com.tencent.xmagic.XmagicProperty.XmagicPropertyValues;
+import com.tencent.xmagic.module.XmagicResParser;
+import com.tencent.xmagic.module.XmagicUIProperty;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -22,9 +22,8 @@ import java.util.Set;
  * Manage data in XmagicPanelView
  */
 public class XmagicPanelDataManager {
-
-
-    private final Map<XmagicUIProperty.UICategory, List<XmagicUIProperty<?>>> allData = new ArrayMap<>();
+    private final Map<XmagicUIProperty.UICategory, List<XmagicUIProperty<?>>> allData =
+            new ArrayMap<>();
     /**
      * 用于存放用户选中的item
      * save user checked item，
@@ -33,10 +32,10 @@ public class XmagicPanelDataManager {
     /**
      * 用户点击过的 所有美颜的item  和美体item,用于在恢复美颜效果时使用，
      * 因为美颜SDK在页面不可见的时候就需要销毁，可见后又需要重新创建，所以在重新创建后则需要将上次的状态重新设置给新创建的美颜对象
-     * All beauty items and body beauty items clicked by the user are used to restore the beauty effect,
-     * Because the beauty SDK needs to be destroyed when the page is invisible;
-     * and needs to be recreated after it is visible, so after re-creation,
-     * the last state needs to be reset to the newly created beauty object
+     * All beauty items and body beauty items clicked by the user are used to restore the beauty
+     * effect, Because the beauty SDK needs to be destroyed when the page is invisible; and needs to
+     * be recreated after it is visible, so after re-creation, the last state needs to be reset to
+     * the newly created beauty object
      */
     private final Set<XmagicUIProperty<?>> beautyList = new LinkedHashSet<>();
     /**
@@ -47,17 +46,16 @@ public class XmagicPanelDataManager {
 
     private boolean isPanelBeautyOpen = true;
 
-    private XmagicPanelDataManager() {
-    }
+    private XmagicPanelDataManager() {}
 
     private static class ClassHolder {
-        static final XmagicPanelDataManager XMAGIC_PANEL_DATA_MANAGER = new XmagicPanelDataManager();
+        static final XmagicPanelDataManager XMAGIC_PANEL_DATA_MANAGER =
+                new XmagicPanelDataManager();
     }
 
     public static XmagicPanelDataManager getInstance() {
         return ClassHolder.XMAGIC_PANEL_DATA_MANAGER;
     }
-
 
     /**
      * 获取去除子列表的 动效 数据集  motion数据集合
@@ -68,7 +66,6 @@ public class XmagicPanelDataManager {
     public List<XmagicProperty<?>> getMotionXmagicProperties() {
         return getXmagicPropertyByUICategory(XmagicUIProperty.UICategory.MOTION);
     }
-
 
     /**
      * 获取去除子列表的美颜数据集   beauty的数据
@@ -98,7 +95,8 @@ public class XmagicPanelDataManager {
      * @return 对应的去除了子列表的item集合
      * @return items
      */
-    private List<XmagicProperty<?>> getXmagicPropertyByUICategory(XmagicUIProperty.UICategory uiCategory) {
+    private List<XmagicProperty<?>> getXmagicPropertyByUICategory(
+            XmagicUIProperty.UICategory uiCategory) {
         List<XmagicUIProperty<?>> propertyDataList = allData.get(uiCategory);
         if (propertyDataList != null) {
             List<XmagicProperty<?>> beautyProperties = new ArrayList<>();
@@ -118,7 +116,6 @@ public class XmagicPanelDataManager {
         return null;
     }
 
-
     /**
      * 获取美颜的默认设置项
      * get default beauty settings data
@@ -128,14 +125,17 @@ public class XmagicPanelDataManager {
     public List<XmagicProperty<?>> getDefaultBeautyData() {
         List<XmagicProperty<?>> defProperty = new ArrayList<>();
         XmagicPropertyValues values1 = new XmagicProperty.XmagicPropertyValues(0, 100, 30, 0, 1);
-        defProperty.add(new XmagicProperty<>(Category.BEAUTY, null, null, BeautyConstant.BEAUTY_WHITEN, values1));
+        defProperty.add(new XmagicProperty<>(
+                Category.BEAUTY, null, null, BeautyConstant.BEAUTY_WHITEN, values1));
         XmagicPropertyValues values2 = new XmagicPropertyValues(0, 100, 50, 0, 1);
-        defProperty.add(new XmagicProperty<>(Category.BEAUTY, null, null, BeautyConstant.BEAUTY_SMOOTH, values2));
+        defProperty.add(new XmagicProperty<>(
+                Category.BEAUTY, null, null, BeautyConstant.BEAUTY_SMOOTH, values2));
         XmagicPropertyValues values3 = new XmagicPropertyValues(0, 100, 20, 0, 1);
-        defProperty.add(new XmagicProperty<>(Category.BEAUTY, null, null, BeautyConstant.BEAUTY_ENLARGE_EYE, values3));
+        defProperty.add(new XmagicProperty<>(
+                Category.BEAUTY, null, null, BeautyConstant.BEAUTY_ENLARGE_EYE, values3));
         XmagicPropertyValues values4 = new XmagicProperty.XmagicPropertyValues(0, 100, 30, 0, 1);
-        defProperty.add(new XmagicProperty<>(Category.BEAUTY, "nature", null,
-                BeautyConstant.BEAUTY_FACE_NATURE, values4));
+        defProperty.add(new XmagicProperty<>(
+                Category.BEAUTY, "nature", null, BeautyConstant.BEAUTY_FACE_NATURE, values4));
         addDefaultBeautyToBeautyList();
         return defProperty;
     }
@@ -145,20 +145,24 @@ public class XmagicPanelDataManager {
      * chang UI panel data by default data
      */
     private void addDefaultBeautyToBeautyList() {
-        for (XmagicUIProperty<?> xmagicUIProperty : allData.get(XmagicUIProperty.UICategory.BEAUTY)) {
+        for (XmagicUIProperty<?> xmagicUIProperty :
+                allData.get(XmagicUIProperty.UICategory.BEAUTY)) {
             if (xmagicUIProperty == null) {
                 continue;
             }
             if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_WHITEN, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_WHITEN, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 30);
                 beautyList.add(xmagicUIProperty);
             } else if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_SMOOTH, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_SMOOTH, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 50);
                 beautyList.add(xmagicUIProperty);
             } else if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_ENLARGE_EYE, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_ENLARGE_EYE, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 20);
                 beautyList.add(xmagicUIProperty);
             } else if (xmagicUIProperty.xmagicUIPropertyList != null) {
@@ -167,7 +171,8 @@ public class XmagicPanelDataManager {
                         continue;
                     }
                     if (uiProperty.property != null
-                            && (TextUtils.equals(BeautyConstant.BEAUTY_FACE_NATURE, uiProperty.property.effKey))) {
+                            && (TextUtils.equals(BeautyConstant.BEAUTY_FACE_NATURE,
+                                    uiProperty.property.effKey))) {
                         changeXmagicPropertyDisPlayValue(uiProperty, 30);
                         beautyList.add(uiProperty);
                     }
@@ -176,7 +181,6 @@ public class XmagicPanelDataManager {
         }
     }
 
-
     /**
      * 用于修改xmagicUIProperty 中的property 的value
      * Used to modify the value of the property in xmagicUIProperty
@@ -184,17 +188,18 @@ public class XmagicPanelDataManager {
      * @param xmagicUIProperty
      * @param disPlayValue
      */
-    private void changeXmagicPropertyDisPlayValue(XmagicUIProperty<?> xmagicUIProperty, int disPlayValue) {
+    private void changeXmagicPropertyDisPlayValue(
+            XmagicUIProperty<?> xmagicUIProperty, int disPlayValue) {
         changePropertyDisPlayValue(xmagicUIProperty.property, disPlayValue);
     }
 
     private void changePropertyDisPlayValue(XmagicProperty<?> xmagicProperty, int disPlayValue) {
         if (xmagicProperty != null && xmagicProperty.effValue != null) {
-            XmagicPropertyValues propertyValues = (XmagicProperty.XmagicPropertyValues) xmagicProperty.effValue;
+            XmagicPropertyValues propertyValues =
+                    (XmagicProperty.XmagicPropertyValues) xmagicProperty.effValue;
             propertyValues.setCurrentDisplayValue(disPlayValue);
         }
     }
-
 
     /**
      * 获取使用过的美颜选项
@@ -203,7 +208,8 @@ public class XmagicPanelDataManager {
      * ，所以在重新创建新的对象的时候，通过此方法拿到上次的设置，进行美颜还原
      * Since the SDK needs to be destroyed when the page is in the background,
      * a new xmagicApi object will be created when the page is switched back to the foreground,
-     * so when a new object is recreated, the last setting is obtained through this method to restore the beauty.
+     * so when a new object is recreated, the last setting is obtained through this method to
+     * restore the beauty.
      */
     public List<XmagicProperty<?>> getUsedProperty() {
         List<XmagicProperty<?>> xmagicPropertyList = new ArrayList<>();
@@ -212,10 +218,13 @@ public class XmagicPanelDataManager {
                 xmagicPropertyList.add(xmagicUIProperty.property);
             }
         }
-        XmagicProperty<?> lut = new XmagicProperty<>(Category.LUT, XmagicProperty.ID_NONE, "", null, null);
+        XmagicProperty<?> lut =
+                new XmagicProperty<>(Category.LUT, XmagicProperty.ID_NONE, "", null, null);
         String resPath = XmagicResParser.getResPath() + "light_assets/template.json";
-        XmagicProperty<?> motion = new XmagicProperty<>(Category.MOTION, XmagicProperty.ID_NONE, resPath, null, null);
-        XmagicProperty<?> makeup = new XmagicProperty<>(Category.MAKEUP, XmagicProperty.ID_NONE, resPath, null, null);
+        XmagicProperty<?> motion =
+                new XmagicProperty<>(Category.MOTION, XmagicProperty.ID_NONE, resPath, null, null);
+        XmagicProperty<?> makeup =
+                new XmagicProperty<>(Category.MAKEUP, XmagicProperty.ID_NONE, resPath, null, null);
         xmagicPropertyList.add(lut);
         xmagicPropertyList.add(makeup);
         xmagicPropertyList.add(motion);
@@ -223,7 +232,8 @@ public class XmagicPanelDataManager {
         /**
          * 由于动效、美妆、分割不能同时生效，所以在恢复的时候应该设置最后一次添加的（动效||美妆||分割）
          * Since motion , makeup, and segmentation cannot take effect at the same time,
-         * the last added (motion ||makeup||segment) should be set when restoring.so use the selectedItems
+         * the last added (motion ||makeup||segment) should be set when restoring.so use the
+         * selectedItems
          */
         for (XmagicUIProperty<?> xmagicUIProperty : selectedItems.values()) {
             if (xmagicUIProperty != null && xmagicUIProperty.property != null) {
@@ -247,25 +257,30 @@ public class XmagicPanelDataManager {
      */
     public synchronized List<XmagicProperty<?>> getRevertXmagicData() {
         List<XmagicProperty<?>> cleanUpData = new ArrayList<>();
-        List<XmagicUIProperty<?>> tempBeautyList = new ArrayList<>();  //用于存放，还原美颜时，还依然生效的美白、磨皮、大眼、自然
+        List<XmagicUIProperty<?>> tempBeautyList =
+                new ArrayList<>(); //用于存放，还原美颜时，还依然生效的美白、磨皮、大眼、自然
         for (XmagicUIProperty<?> xmagicUIProperty : beautyList) {
             if (xmagicUIProperty == null) {
                 continue;
             }
             if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_WHITEN, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_WHITEN, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 30);
                 tempBeautyList.add(xmagicUIProperty);
             } else if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_SMOOTH, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_SMOOTH, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 50);
                 tempBeautyList.add(xmagicUIProperty);
             } else if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_ENLARGE_EYE, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_ENLARGE_EYE, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 20);
                 tempBeautyList.add(xmagicUIProperty);
             } else if (xmagicUIProperty.property != null
-                    && (TextUtils.equals(BeautyConstant.BEAUTY_FACE_NATURE, xmagicUIProperty.property.effKey))) {
+                    && (TextUtils.equals(
+                            BeautyConstant.BEAUTY_FACE_NATURE, xmagicUIProperty.property.effKey))) {
                 changeXmagicPropertyDisPlayValue(xmagicUIProperty, 30);
                 tempBeautyList.add(xmagicUIProperty);
             } else {
@@ -296,10 +311,13 @@ public class XmagicPanelDataManager {
             XmagicUIProperty<?> xmagicUIProperty = list.get(1);
             selectedItems.put(xmagicUIProperty.uiCategory.getDescription(), xmagicUIProperty);
         }
-        XmagicProperty<?> lut = new XmagicProperty<>(Category.LUT, XmagicProperty.ID_NONE, "", null, null);
+        XmagicProperty<?> lut =
+                new XmagicProperty<>(Category.LUT, XmagicProperty.ID_NONE, "", null, null);
         String resPath = XmagicResParser.getResPath() + "light_assets/template.json";
-        XmagicProperty<?> motion = new XmagicProperty<>(Category.MOTION, XmagicProperty.ID_NONE, resPath, null, null);
-        XmagicProperty<?> makeup = new XmagicProperty<>(Category.MAKEUP, XmagicProperty.ID_NONE, resPath, null, null);
+        XmagicProperty<?> motion =
+                new XmagicProperty<>(Category.MOTION, XmagicProperty.ID_NONE, resPath, null, null);
+        XmagicProperty<?> makeup =
+                new XmagicProperty<>(Category.MAKEUP, XmagicProperty.ID_NONE, resPath, null, null);
         cleanUpData.add(lut);
         cleanUpData.add(makeup);
         cleanUpData.add(motion);
@@ -348,8 +366,8 @@ public class XmagicPanelDataManager {
         return xmagicPropertyList;
     }
 
-
-    public void addAllDataItem(XmagicUIProperty.UICategory uiCategory, List<XmagicUIProperty<?>> list) {
+    public void addAllDataItem(
+            XmagicUIProperty.UICategory uiCategory, List<XmagicUIProperty<?>> list) {
         allData.put(uiCategory, list);
     }
 

@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.component.swipemenu.touch;
 
 public interface OnItemMoveListener {
-
     /**
      * When drag and drop the callback.
      *
@@ -17,5 +16,4 @@ public interface OnItemMoveListener {
      * @param position swipe position.
      */
     void onItemDismiss(int position);
-
 }

@@ -3,24 +3,23 @@ package com.tencent.qcloud.ugckit.module.picker.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-
-import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.R;
-import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
-import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 import com.tencent.qcloud.ugckit.component.swipemenu.MenuAdapter;
 import com.tencent.qcloud.ugckit.component.swipemenu.SwipeMenuRecyclerView;
 import com.tencent.qcloud.ugckit.component.swipemenu.touch.OnItemMoveListener;
+import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
+import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,17 +28,19 @@ import java.util.Collections;
 /**
  * 选择器下方"已被选中"列表
  */
-public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteListener, OnItemMoveListener, View.OnClickListener, IPickedLayout {
-    private Activity              mActivity;
-    private TextView              mTextDrag;
-    private Button                mButtonNext;
+public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteListener,
+                                                            OnItemMoveListener,
+                                                            View.OnClickListener, IPickedLayout {
+    private Activity mActivity;
+    private TextView mTextDrag;
+    private Button mButtonNext;
     private SwipeMenuRecyclerView mSwipeMenuRecyclerView;
 
-    private MenuAdapter                mMenuAdapter;
+    private MenuAdapter mMenuAdapter;
     private ArrayList<TCVideoFileInfo> mTCVideoFileInfoList;
-    private OnNextStepListener         mOnNextStepListener;
-    private String                     mDragText;
-    private int                        mMinSelectedItemCount = 1;
+    private OnNextStepListener mOnNextStepListener;
+    private String mDragText;
+    private int mMinSelectedItemCount = 1;
 
     public PickedLayout(Context context) {
         super(context);
@@ -66,8 +67,10 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
         mButtonNext = (Button) findViewById(R.id.btn_next);
         mButtonNext.setEnabled(false);
         mButtonNext.setOnClickListener(this);
-        mSwipeMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.swipe_menu_recycler_view);
-        mSwipeMenuRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+        mSwipeMenuRecyclerView =
+                (SwipeMenuRecyclerView) findViewById(R.id.swipe_menu_recycler_view);
+        mSwipeMenuRecyclerView.setLayoutManager(
+                new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
         mMenuAdapter = new MenuAdapter(mActivity, mTCVideoFileInfoList);
         mMenuAdapter.setOnItemDeleteListener(this);
         mSwipeMenuRecyclerView.setAdapter(mMenuAdapter);
@@ -91,7 +94,7 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
 
     @Override
     public void onDelete(int position) {
-        if (position < 0) {  // 异常情况处理，getAdapterPosition可能返回为 -1
+        if (position < 0) { // 异常情况处理，getAdapterPosition可能返回为 -1
             return;
         }
         mMenuAdapter.removeIndex(position);
@@ -108,9 +111,7 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
     }
 
     @Override
-    public void onItemDismiss(int position) {
-
-    }
+    public void onItemDismiss(int position) {}
 
     @Override
     public void onClick(@NonNull View v) {
@@ -129,14 +130,16 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
             TCVideoFileInfo fileInfo = mMenuAdapter.getItem(i);
             File file = new File(fileInfo.getFilePath());
             if (!file.exists()) {
-                showErrorDialog(getResources().getString(R.string.ugckit_picture_choose_activity_the_selected_file_does_not_exist));
+                showErrorDialog(getResources().getString(
+                        R.string.ugckit_picture_choose_activity_the_selected_file_does_not_exist));
                 return null;
             }
             picturePathList.add(fileInfo);
         }
         if (type == TYPE_PICTURE) {
             if (count < 2) {
-                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_picture_choose_activity_please_select_multiple_images));
+                ToastUtil.toastShortMessage(getResources().getString(
+                        R.string.ugckit_picture_choose_activity_please_select_multiple_images));
                 return picturePathList;
             }
         }
@@ -144,10 +147,12 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
     }
 
     private void showErrorDialog(String msg) {
-        AlertDialog.Builder normalDialog = new AlertDialog.Builder(mActivity, R.style.UGCKitConfirmDialogStyle);
+        AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(mActivity, R.style.UGCKitConfirmDialogStyle);
         normalDialog.setMessage(msg);
         normalDialog.setCancelable(false);
-        normalDialog.setPositiveButton(getResources().getString(R.string.ugckit_picture_choose_activity_got_it), null);
+        normalDialog.setPositiveButton(
+                getResources().getString(R.string.ugckit_picture_choose_activity_got_it), null);
         normalDialog.show();
     }
 
@@ -191,13 +196,10 @@ public class PickedLayout extends RelativeLayout implements ItemView.OnDeleteLis
         mMinSelectedItemCount = minSelectedItemCount;
     }
 
-
     @Override
     public void setOnNextStepListener(OnNextStepListener listener) {
         mOnNextStepListener = listener;
     }
 
-    public interface OnNextStepListener {
-        void onNextStep();
-    }
+    public interface OnNextStepListener { void onNextStep(); }
 }

@@ -4,9 +4,9 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "11.4.0.13189";
-    public static       String VOD_SERVER_HOST     = "vod2.qcloud.com";
-    public static       String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
+    public static final String TVCVERSION = "11.6.0.13613";
+    public static String VOD_SERVER_HOST = "vod2.qcloud.com";
+    public static String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
 
     // 最大重试次数
     public static int MAX_REQUEST_COUNT = 2;
@@ -14,9 +14,9 @@ public class TVCConstants {
     //网络类型
     public static final int NETTYPE_NONE = 0;
     public static final int NETTYPE_WIFI = 1;
-    public static final int NETTYPE_4G   = 2;
-    public static final int NETTYPE_3G   = 3;
-    public static final int NETTYPE_2G   = 4;
+    public static final int NETTYPE_4G = 2;
+    public static final int NETTYPE_3G = 3;
+    public static final int NETTYPE_2G = 4;
 
     /**
      * quic total timeout
@@ -30,8 +30,8 @@ public class TVCConstants {
     public static final long PRE_UPLOAD_ANA_DNS_TIME_OUT = 2000;
     public static final int UPLOAD_TIME_OUT_SEC = 120;
 
-
-    /************************************************ 客户端错误码 **********************************/
+    /************************************************ 客户端错误码
+     * **********************************/
     /**
      * 成功
      */
@@ -99,7 +99,7 @@ public class TVCConstants {
     /**
      * 视频文件的路径错误
      */
-    public static final int ERR_UGC_INVALID_VIDOPATH   = 1013;
+    public static final int ERR_UGC_INVALID_VIDOPATH = 1013;
     /**
      * 当前路径下视频文件不存在
      */
@@ -135,14 +135,16 @@ public class TVCConstants {
      */
     public static final int ERR_UPLOAD_SIGN_EXPIRED = 1020;
 
-
-    /************************************************ 数据上报定义 **********************************/
-    public static int UPLOAD_EVENT_ID_REQUEST_UPLOAD                = 10001;  //UGC请求上传
-    public static int UPLOAD_EVENT_ID_COS_UPLOAD                    = 20001;  //UGC调用cos上传
-    public static int UPLOAD_EVENT_ID_UPLOAD_RESULT                 = 10002;  //UGC结束上传
-    public static int UPLOAD_EVENT_ID_VOD_UPLOAD                    = 30001;  //直接上传到vod
-    public static int UPLOAD_EVENT_DAU                              = 40001;  //短视频上传DAU上报
-    public static int UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT        = 11001;          //vod http dns请求结果
-    public static int UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT = 11002;          //PrepareUploadUGC请求结果
-    public static int UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT          = 11003;          //检测最优园区结果(包含cos iplist)
+    /************************************************ 数据上报定义
+     * **********************************/
+    public static int UPLOAD_EVENT_ID_REQUEST_UPLOAD = 10001; // UGC请求上传
+    public static int UPLOAD_EVENT_ID_COS_UPLOAD = 20001; // UGC调用cos上传
+    public static int UPLOAD_EVENT_ID_UPLOAD_RESULT = 10002; // UGC结束上传
+    public static int UPLOAD_EVENT_ID_VOD_UPLOAD = 30001; //直接上传到vod
+    public static int UPLOAD_EVENT_DAU = 40001; //短视频上传DAU上报
+    public static int UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT = 11001; // vod http dns请求结果
+    public static int UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT =
+            11002; // PrepareUploadUGC请求结果
+    public static int UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT =
+            11003; //检测最优园区结果(包含cos iplist)
 }

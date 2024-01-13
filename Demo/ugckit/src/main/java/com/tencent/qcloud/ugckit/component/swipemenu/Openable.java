@@ -1,8 +1,6 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
-
 public interface Openable {
-
     /**
      * The menu is open?
      *
@@ -94,5 +92,4 @@ public interface Openable {
      * @param duration duration time.
      */
     void smoothOpenRightMenu(int duration);
-
 }

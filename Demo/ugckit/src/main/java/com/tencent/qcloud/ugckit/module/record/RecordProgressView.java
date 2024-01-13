@@ -4,12 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.util.AttributeSet;
+import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.AttributeSet;
-import android.view.View;
-
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordProgressView;
@@ -22,23 +21,23 @@ import java.util.ArrayList;
 public class RecordProgressView extends View implements IRecordProgressView {
     private final String TAG = "RecordProgressView";
 
-    private Paint               mRecordPaint;
-    private Paint               mPendingPaint;
-    private Paint               mSpacePaint;
+    private Paint mRecordPaint;
+    private Paint mPendingPaint;
+    private Paint mSpacePaint;
     @Nullable
-    private Handler             mHandler;
+    private Handler mHandler;
     private ArrayList<ClipInfo> mClipInfoList;
-    private ClipInfo            mCurClipInfo;
-    private int                 mMaxDuration;
-    private int                 mMinDuration;
-    private int                 mLastTotalDuration;
-    public  int                 mNormalColor;           // 已经录制的视频进度条颜色
-    public  int                 mDeleteColor;           // 删除上一段选中的进度条颜色
-    public  int                 mBackgroundColor;       // 进度条背景颜色
-    public  int                 mSpaceColor;            // 多段录制间隔颜色
-    private boolean             isPending;
-    private boolean             isCursorShow = false;
-    private boolean             isInProgress = false;
+    private ClipInfo mCurClipInfo;
+    private int mMaxDuration;
+    private int mMinDuration;
+    private int mLastTotalDuration;
+    public int mNormalColor; // 已经录制的视频进度条颜色
+    public int mDeleteColor; // 删除上一段选中的进度条颜色
+    public int mBackgroundColor; // 进度条背景颜色
+    public int mSpaceColor; // 多段录制间隔颜色
+    private boolean isPending;
+    private boolean isCursorShow = false;
+    private boolean isInProgress = false;
 
     public RecordProgressView(Context context) {
         super(context);
@@ -90,10 +89,13 @@ public class RecordProgressView extends View implements IRecordProgressView {
         int lastTotalProgress = 0;
         float totalWidth = 0;
         for (ClipInfo clipInfo : mClipInfoList) {
-            float newWidth = (lastTotalProgress + clipInfo.progress) / (float) mMaxDuration * getWidth();
+            float newWidth =
+                    (lastTotalProgress + clipInfo.progress) / (float) mMaxDuration * getWidth();
             switch (clipInfo.clipType) {
                 case ClipInfo.CLIP_TYPE_SPACE:
-                    canvas.drawRect(totalWidth - getResources().getDimension(R.dimen.ugckit_progress_divider), 0f, newWidth, getHeight(), mSpacePaint);
+                    canvas.drawRect(totalWidth
+                                    - getResources().getDimension(R.dimen.ugckit_progress_divider),
+                            0f, newWidth, getHeight(), mSpacePaint);
                     break;
                 case ClipInfo.CLIP_TYPE_PROGRESS:
                     canvas.drawRect(totalWidth, 0f, newWidth, getHeight(), mRecordPaint);
@@ -106,15 +108,21 @@ public class RecordProgressView extends View implements IRecordProgressView {
             totalWidth = newWidth;
         }
         if (mCurClipInfo != null && mCurClipInfo.progress != 0) {
-            canvas.drawRect(totalWidth, 0f, totalWidth + mCurClipInfo.progress / (float) mMaxDuration * getWidth(), getHeight(), mRecordPaint);
+            canvas.drawRect(totalWidth, 0f,
+                    totalWidth + mCurClipInfo.progress / (float) mMaxDuration * getWidth(),
+                    getHeight(), mRecordPaint);
             totalWidth = totalWidth + mCurClipInfo.progress / (float) mMaxDuration * getWidth();
         }
         if (lastTotalProgress + mCurClipInfo.progress < mMinDuration) {
             canvas.drawRect(mMinDuration / (float) mMaxDuration * getWidth(), 0f,
-                    mMinDuration / (float) mMaxDuration * getWidth() + getResources().getDimension(R.dimen.ugckit_progress_min_pos), getHeight(), mSpacePaint);
+                    mMinDuration / (float) mMaxDuration * getWidth()
+                            + getResources().getDimension(R.dimen.ugckit_progress_min_pos),
+                    getHeight(), mSpacePaint);
         }
         if (isCursorShow || isInProgress) {
-            canvas.drawRect(totalWidth, 0f, totalWidth + getResources().getDimension(R.dimen.ugckit_progress_cursor), getHeight(), mSpacePaint);
+            canvas.drawRect(totalWidth, 0f,
+                    totalWidth + getResources().getDimension(R.dimen.ugckit_progress_cursor),
+                    getHeight(), mSpacePaint);
         }
     }
 
@@ -138,8 +146,8 @@ public class RecordProgressView extends View implements IRecordProgressView {
 
     private class ClipInfo {
         public static final int CLIP_TYPE_PROGRESS = 1;
-        public static final int CLIP_TYPE_PENDING  = 2;
-        public static final int CLIP_TYPE_SPACE    = 3;
+        public static final int CLIP_TYPE_PENDING = 2;
+        public static final int CLIP_TYPE_SPACE = 3;
 
         public int progress;
         public int clipType;
@@ -175,6 +183,10 @@ public class RecordProgressView extends View implements IRecordProgressView {
 
     public void clipComplete() {
         isInProgress = false;
+
+        if (mCurClipInfo.progress == 0) {
+            return;
+        }
 
         mLastTotalDuration = mLastTotalDuration + mCurClipInfo.progress;
 
@@ -238,4 +250,7 @@ public class RecordProgressView extends View implements IRecordProgressView {
         }
     }
 
+    public int getLastTotalDuration() {
+        return this.mLastTotalDuration;
+    }
 }

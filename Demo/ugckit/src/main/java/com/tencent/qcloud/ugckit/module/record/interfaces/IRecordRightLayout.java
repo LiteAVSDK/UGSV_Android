@@ -10,7 +10,6 @@ import com.tencent.ugc.TXRecordCommon;
  * 录制右侧工具栏定制化UI，包括"音乐Icon"，"屏比Icon"，"美颜Icon"，"音效Icon"
  */
 public interface IRecordRightLayout {
-
     /**
      * 设置点击监听器
      *
@@ -23,7 +22,6 @@ public interface IRecordRightLayout {
          * 显示美颜面板
          */
         void onShowBeautyPanel();
-
 
         /**
          * 显示美颜面板
@@ -70,7 +68,8 @@ public interface IRecordRightLayout {
      * 设置"音效"按钮是否可用
      *
      * @param enable {@code true} 清除背景音后，音效Icon变为可点击<br>
-     *               {@code false} 录制添加BGM后是录制不了人声的，而音效是针对人声有效的，此时开启音效遮罩层，音效Icon变为不可用
+     *               {@code false}
+     * 录制添加BGM后是录制不了人声的，而音效是针对人声有效的，此时开启音效遮罩层，音效Icon变为不可用
      */
     void setSoundEffectIconEnable(boolean enable);
 

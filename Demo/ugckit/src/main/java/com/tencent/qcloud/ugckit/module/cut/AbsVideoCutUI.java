@@ -7,12 +7,10 @@ import android.widget.RelativeLayout;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
-
 public abstract class AbsVideoCutUI extends RelativeLayout implements IVideoCutKit {
-
-    private TitleBarLayout  mTitleBar;
+    private TitleBarLayout mTitleBar;
     private VideoPlayLayout mVideoPlayLayout;
-    private VideoCutLayout  mVideoCutLayout;
+    private VideoCutLayout mVideoCutLayout;
 
     public AbsVideoCutUI(Context context) {
         super(context);

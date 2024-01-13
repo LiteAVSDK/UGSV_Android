@@ -2,33 +2,31 @@ package com.tencent.qcloud.ugckit.module.effect.paster;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
-import com.tencent.qcloud.ugckit.R;
-
 
 import java.util.List;
 
 public class AddPasterAdapter extends BaseRecyclerAdapter<AddPasterAdapter.AddPasterViewHolder> {
-    public static final int TYPE_FOOTER = 0;  // 带有Footer的
-    public static final int TYPE_NORMAL = 1;  // 真实数据
+    public static final int TYPE_FOOTER = 0; // 带有Footer的
+    public static final int TYPE_NORMAL = 1; // 真实数据
 
-    private Context            mContext;
-    private View               mFooterView;
-    private int                mCurrentSelectedPos = -1;
-    private int                mPasterTextSize;
-    private int                mPasterTextColor;
-    private int                mCoverIcon;
+    private Context mContext;
+    private View mFooterView;
+    private int mCurrentSelectedPos = -1;
+    private int mPasterTextSize;
+    private int mPasterTextColor;
+    private int mCoverIcon;
     private List<TCPasterInfo> mPasterInfoList;
 
     public AddPasterAdapter(List<TCPasterInfo> pasterInfoList, Context context) {
@@ -68,13 +66,17 @@ public class AddPasterAdapter extends BaseRecyclerAdapter<AddPasterAdapter.AddPa
         if (!TextUtils.isEmpty(pasterPath)) {
             holder.ivAddPaster.setImageBitmap(BitmapFactory.decodeFile(pasterPath));
         }
-        holder.tvAddPasterText.setText(UGCKit.getAppContext().getResources().getString(R.string.ugckit_add_paster_adapter_paster) + String.valueOf(position + 1));
+        String text = UGCKit.getAppContext().getResources().getString(
+                              R.string.ugckit_add_paster_adapter_paster)
+                + (position + 1);
+        holder.tvAddPasterText.setText(text);
         if (mCoverIcon != 0) {
             if (mPasterTextSize != 0) {
                 holder.tvAddPasterText.setTextSize(mPasterTextSize);
             }
             if (mPasterTextColor != 0) {
-                holder.tvAddPasterText.setTextColor(mContext.getResources().getColor(mPasterTextColor));
+                holder.tvAddPasterText.setTextColor(
+                        mContext.getResources().getColor(mPasterTextColor));
             }
             holder.ivAddPasterTint.setImageResource(mCoverIcon);
         }
@@ -91,7 +93,9 @@ public class AddPasterAdapter extends BaseRecyclerAdapter<AddPasterAdapter.AddPa
         if (mFooterView != null && viewType == TYPE_FOOTER) {
             return new AddPasterViewHolder(mFooterView);
         }
-        return new AddPasterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_item_add_paster, parent, false));
+        View itemView = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.ugckit_item_add_paster, parent, false);
+        return new AddPasterViewHolder(itemView);
     }
 
     @Override
@@ -117,7 +121,7 @@ public class AddPasterAdapter extends BaseRecyclerAdapter<AddPasterAdapter.AddPa
     public class AddPasterViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAddPaster;
         ImageView ivAddPasterTint;
-        TextView  tvAddPasterText;
+        TextView tvAddPasterText;
 
         public AddPasterViewHolder(@NonNull View itemView) {
             super(itemView);
