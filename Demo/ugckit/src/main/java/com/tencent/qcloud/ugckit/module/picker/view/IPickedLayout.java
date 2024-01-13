@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public interface IPickedLayout {
     int TYPE_PICTURE = 1;
-    int TYPE_VIDEO   = 0;
+    int TYPE_VIDEO = 0;
 
     /**
      * 添加一个到已选中列表

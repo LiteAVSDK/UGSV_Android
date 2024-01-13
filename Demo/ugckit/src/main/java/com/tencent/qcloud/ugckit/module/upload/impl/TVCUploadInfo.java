@@ -13,13 +13,13 @@ import java.util.regex.Pattern;
 public class TVCUploadInfo {
     private String fileType;
     private String filePath;
-    private long   fileLastModTime;
+    private long fileLastModTime;
     private String coverType;
     private String coverPath;
-    private long   coverLastModTime;
-    private String fileName      = null;
-    private long   videoFileSize = 0;
-    private long   coverFileSize = 0;
+    private long coverLastModTime;
+    private String fileName = null;
+    private long videoFileSize = 0;
+    private long coverFileSize = 0;
     private String coverName;
 
     /**
@@ -37,7 +37,8 @@ public class TVCUploadInfo {
         this.coverPath = coverPath;
     }
 
-    public TVCUploadInfo(String fileType, String filePath, String coverType, String coverPath, String fileName) {
+    public TVCUploadInfo(
+            String fileType, String filePath, String coverType, String coverPath, String fileName) {
         this.fileType = fileType;
         this.filePath = filePath;
         this.coverType = coverType;

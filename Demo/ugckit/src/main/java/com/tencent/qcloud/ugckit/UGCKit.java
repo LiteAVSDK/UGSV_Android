@@ -26,5 +26,4 @@ public class UGCKit {
     public static Context getAppContext() {
         return sAppContext;
     }
-
 }

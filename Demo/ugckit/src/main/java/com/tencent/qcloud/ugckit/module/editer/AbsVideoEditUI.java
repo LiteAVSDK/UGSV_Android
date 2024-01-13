@@ -4,13 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.tencent.qcloud.ugckit.module.cut.VideoPlayLayout;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
+import com.tencent.qcloud.ugckit.module.cut.VideoPlayLayout;
 
 public abstract class AbsVideoEditUI extends RelativeLayout implements IVideoEditKit {
-
-    private TitleBarLayout  mLayoutTitleBar;
+    private TitleBarLayout mLayoutTitleBar;
     private VideoPlayLayout mLayoutVideoPlay;
 
     public AbsVideoEditUI(Context context) {
@@ -45,5 +44,4 @@ public abstract class AbsVideoEditUI extends RelativeLayout implements IVideoEdi
     public VideoPlayLayout getVideoPlayLayout() {
         return mLayoutVideoPlay;
     }
-
 }

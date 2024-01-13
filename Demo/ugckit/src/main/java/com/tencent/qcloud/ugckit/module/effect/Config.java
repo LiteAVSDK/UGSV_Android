@@ -15,8 +15,7 @@ public class Config {
     @NonNull
     private static Config sInstance = new Config();
 
-    private Config() {
-    }
+    private Config() {}
 
     @NonNull
     public static Config getInstance() {

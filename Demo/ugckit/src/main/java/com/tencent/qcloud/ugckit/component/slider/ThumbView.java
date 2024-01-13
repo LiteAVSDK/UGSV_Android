@@ -3,19 +3,18 @@ package com.tencent.qcloud.ugckit.component.slider;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.View;
+import androidx.annotation.NonNull;
 
 public class ThumbView extends View {
-
     private static final int EXTEND_TOUCH_SLOP = 15;
 
-    private final int      mExtendTouchSlop;
-    private       Drawable mThumbDrawable;
-    private       boolean  mPressed;
-    private       int      mThumbWidth;
-    private       int      mTickIndex;
+    private final int mExtendTouchSlop;
+    private Drawable mThumbDrawable;
+    private boolean mPressed;
+    private int mThumbWidth;
+    private int mTickIndex;
 
     public ThumbView(@NonNull Context context, int thumbWidth, Drawable drawable) {
         super(context);
@@ -29,7 +28,8 @@ public class ThumbView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(MeasureSpec.makeMeasureSpec(mThumbWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(
+                        MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.EXACTLY));
 
         mThumbDrawable.setBounds(0, 0, mThumbWidth, getMeasuredHeight());
     }

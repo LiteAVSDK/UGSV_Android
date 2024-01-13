@@ -26,7 +26,8 @@ import java.util.List;
  *        super.onCreate(savedInstanceState);
  *        setContentView(R.layout.picture_join_layout);
  *
- *        mPicPathList = getIntent().getStringArrayListExtra(UGCKitConstants.INTENT_KEY_MULTI_PIC_LIST);
+ *        mPicPathList =
+ * getIntent().getStringArrayListExtra(UGCKitConstants.INTENT_KEY_MULTI_PIC_LIST);
  *        mPictureTransition = (PictureJoin) findViewById(R.id.picture_transition);
  *        mPictureTransition.setInputPictureList(mPicPathList);
  *        mPictureTransition.setOnPictureJoinListener(new IPictureJoinKit.OnPictureJoinListener() {
@@ -61,7 +62,6 @@ import java.util.List;
  * https://cloud.tencent.com/document/product/584/20328
  */
 public interface IPictureJoinKit {
-
     void resumePlay();
 
     void pausePlay();
@@ -101,5 +101,4 @@ public interface IPictureJoinKit {
      * 获取转场设置工具栏
      */
     PictureTransitionLayout getPictureTransitionLayout();
-
 }

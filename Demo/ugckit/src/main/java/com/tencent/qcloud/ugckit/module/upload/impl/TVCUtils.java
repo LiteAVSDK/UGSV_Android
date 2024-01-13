@@ -44,8 +44,8 @@ public class TVCUtils {
         return new String(out);
     }
 
-    private static final char[] DIGITS_LOWER =
-            {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] DIGITS_LOWER = {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     public static String string2Md5(String value) {
         String MD5 = "";
@@ -79,7 +79,8 @@ public class TVCUtils {
             return g_simulate_idfa;
         }
         //读SP
-        SharedPreferences sp = context.getSharedPreferences("com.tencent.ugcpublish.dev_uuid", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(
+                "com.tencent.ugcpublish.dev_uuid", Context.MODE_PRIVATE);
         idfaInSP = sp.getString("key_user_id", "");
 
         try {
@@ -107,7 +108,8 @@ public class TVCUtils {
         }
 
         if (TextUtils.isEmpty(idfa)) {
-            //UUID：16进制字符串(UTC毫秒时间(6字节) + 以开机到现在的时间戳为种子的随机数(4字节) + MD5(应用包名 + 系统生成UUID)(16字节)
+            // UUID：16进制字符串(UTC毫秒时间(6字节) + 以开机到现在的时间戳为种子的随机数(4字节) +
+            // MD5(应用包名 + 系统生成UUID)(16字节)
             idfa = "";
             long utcTimeMS = System.currentTimeMillis();
             long tickTimeMS = SystemClock.elapsedRealtime();
@@ -158,7 +160,8 @@ public class TVCUtils {
      * 获取网络类型
      */
     public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivity =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
             if (info != null && info.isConnected()) {
@@ -179,7 +182,8 @@ public class TVCUtils {
      * @return true 表示网络可用
      */
     public static int getNetWorkType(Context context) {
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager manager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -191,7 +195,7 @@ public class TVCUtils {
                 NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                 if (mobileInfo != null) {
                     switch (mobileInfo.getType()) {
-                        case ConnectivityManager.TYPE_MOBILE:// 手机网络
+                        case ConnectivityManager.TYPE_MOBILE: // 手机网络
                             switch (mobileInfo.getSubtype()) {
                                 case TelephonyManager.NETWORK_TYPE_UMTS:
                                 case TelephonyManager.NETWORK_TYPE_EVDO_0:
@@ -267,7 +271,6 @@ public class TVCUtils {
         return appname;
     }
 
-
     /**
      * 通过uri获取多媒体文件的绝对路径
      *
@@ -287,11 +290,12 @@ public class TVCUtils {
             // 以 content:// 开头的，比如 content://media/extenral/images/media/17766
             if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())
                     && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                Cursor cursor = context.getContentResolver()
-                        .query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                Cursor cursor = context.getContentResolver().query(
+                        uri, new String[] {MediaStore.Images.Media.DATA}, null, null, null);
                 if (cursor != null) {
                     if (cursor.moveToFirst()) {
-                        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        int columnIndex =
+                                cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                         if (columnIndex > -1) {
                             path = cursor.getString(columnIndex);
                         }
@@ -300,7 +304,8 @@ public class TVCUtils {
                 }
                 return path;
             }
-            // 4.4及之后的 是以 content:// 开头的，比如 content://com.android.providers.media.documents/document/image%3A235700
+            // 4.4及之后的 是以 content:// 开头的，比如
+            // content://com.android.providers.media.documents/document/image%3A235700
             if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (isExternalStorageDocument(uri)) {
@@ -315,9 +320,8 @@ public class TVCUtils {
                 } else if (isDownloadsDocument(uri)) {
                     // DownloadsProvider
                     final String id = DocumentsContract.getDocumentId(uri);
-                    final Uri contentUri = ContentUris.withAppendedId(Uri.parse(
-                            "content://downloads/public_downloads"),
-                            Long.parseLong(id));
+                    final Uri contentUri = ContentUris.withAppendedId(
+                            Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
                     path = getDataColumn(context, contentUri, null, null);
                     return path;
                 } else if (isMediaDocument(uri)) {
@@ -334,7 +338,7 @@ public class TVCUtils {
                         contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                     }
                     final String selection = "_id=?";
-                    final String[] selectionArgs = new String[]{split[1]};
+                    final String[] selectionArgs = new String[] {split[1]};
                     path = getDataColumn(context, contentUri, selection, selectionArgs);
                     return path;
                 } else {
@@ -364,16 +368,14 @@ public class TVCUtils {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    private static String getDataColumn(Context context,
-                                        Uri uri,
-                                        String selection,
-                                        String[] selectionArgs) {
+    private static String getDataColumn(
+            Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
         try {
-            cursor = context.getContentResolver()
-                    .query(uri, projection, selection, selectionArgs, null);
+            cursor = context.getContentResolver().query(
+                    uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
@@ -405,7 +407,6 @@ public class TVCUtils {
         return absPath;
     }
 
-
     public static boolean isExistsForPathOrUri(Context context, String pathOrURIStr) {
         boolean bVideoFileExist = false;
         String absPath = getAbsolutePath(context, pathOrURIStr);
@@ -428,7 +429,8 @@ public class TVCUtils {
         StringBuilder stringBuilder = null;
         try {
             File file = new File(filePath);
-            char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+            char[] hexDigits = {
+                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
             FileInputStream in = new FileInputStream(file);
             FileChannel ch = in.getChannel();
 

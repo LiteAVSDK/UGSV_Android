@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordButton;
@@ -24,17 +23,17 @@ import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
  * 多种拍摄模式的按钮
  */
 public class RecordButton extends RelativeLayout implements IRecordButton, View.OnTouchListener {
-    private Activity               mActivity;
-    private ViewGroup              mRootLayout;
-    private View                   mViewPhotoModeOutter;
-    private View                   mViewPhotoModeInner;
-    private View                   mViewTapModeOutter;
-    private View                   mViewTapModeInner;
-    private View                   mViewPressModeOutter;
-    private View                   mViewPressModeInner;
-    private ImageView              mImageRecordPause;
-    private int                    mRecordMode;
-    private boolean                mIsRecording;
+    private Activity mActivity;
+    private ViewGroup mRootLayout;
+    private View mViewPhotoModeOutter;
+    private View mViewPhotoModeInner;
+    private View mViewTapModeOutter;
+    private View mViewTapModeInner;
+    private View mViewPressModeOutter;
+    private View mViewPressModeInner;
+    private ImageView mImageRecordPause;
+    private int mRecordMode;
+    private boolean mIsRecording;
     private OnRecordButtonListener mOnRecordButtonListener;
 
     public RecordButton(Context context) {
@@ -82,22 +81,27 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
 
         //兼容android5.0以下不能从drawable文件中读取主题颜色
         int photoModeOuterColor = UIAttributeUtil.getColorRes(getContext(),
-                R.attr.recordButtonPhotoModeOutterBackground, R.color.ugckit_record_button_take_photo_background_color);
+                R.attr.recordButtonPhotoModeOutterBackground,
+                R.color.ugckit_record_button_take_photo_background_color);
         mViewPhotoModeOutter.setBackground(createCircleGradientDrawable(photoModeOuterColor));
         int photoModeInnerColor = UIAttributeUtil.getColorRes(getContext(),
                 R.attr.recordButtonPhotoModeInnerBackground, R.color.color_text_white);
         mViewPhotoModeInner.setBackground(createCircleGradientDrawable(photoModeInnerColor));
         int tapModeOuterColor = UIAttributeUtil.getColorRes(getContext(),
-                R.attr.recordButtonTapModeOutterBackground, R.color.ugckit_record_button_click_shot_background_color);
+                R.attr.recordButtonTapModeOutterBackground,
+                R.color.ugckit_record_button_click_shot_background_color);
         mViewTapModeOutter.setBackground(createCircleGradientDrawable(tapModeOuterColor));
-        int tapModeInnerColor = UIAttributeUtil.getColorRes(getContext(),
-                R.attr.recordButtonTapModeInnerBackground, R.color.ugckit_record_button_click_shotInner_color);
+        int tapModeInnerColor =
+                UIAttributeUtil.getColorRes(getContext(), R.attr.recordButtonTapModeInnerBackground,
+                        R.color.ugckit_record_button_click_shotInner_color);
         mViewTapModeInner.setBackground(createCircleGradientDrawable(tapModeInnerColor));
         int pressModeOuterColor = UIAttributeUtil.getColorRes(getContext(),
-                R.attr.recordButtonPressModeOutterBackground, R.color.ugckit_record_button_touch_shot_background_color);
+                R.attr.recordButtonPressModeOutterBackground,
+                R.color.ugckit_record_button_touch_shot_background_color);
         mViewPressModeOutter.setBackground(createCircleGradientDrawable(pressModeOuterColor));
         int pressModeInnerColor = UIAttributeUtil.getColorRes(getContext(),
-                R.attr.recordButtonPressModeInnerBackground, R.color.ugckit_record_button_touch_shot_inner_color);
+                R.attr.recordButtonPressModeInnerBackground,
+                R.color.ugckit_record_button_touch_shot_inner_color);
         mViewPressModeInner.setBackground(createCircleGradientDrawable(pressModeInnerColor));
     }
 
@@ -173,8 +177,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
      * 开始"拍照"操作执行的动画
      */
     private void startTakePhotoAnim() {
-        ObjectAnimator btnBkgZoomOutXAn = ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleX", ((float) mRootLayout.getWidth()) / mViewPhotoModeOutter.getWidth());
-        ObjectAnimator btnBkgZoomOutYAn = ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleY", ((float) mRootLayout.getHeight()) / mViewPhotoModeOutter.getHeight());
+        ObjectAnimator btnBkgZoomOutXAn = ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleX",
+                ((float) mRootLayout.getWidth()) / mViewPhotoModeOutter.getWidth());
+        ObjectAnimator btnBkgZoomOutYAn = ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleY",
+                ((float) mRootLayout.getHeight()) / mViewPhotoModeOutter.getHeight());
 
         ObjectAnimator btnZoomInXAn = ObjectAnimator.ofFloat(mViewPhotoModeInner, "scaleX", 0.95f);
         ObjectAnimator btnZoomInYAn = ObjectAnimator.ofFloat(mViewPhotoModeInner, "scaleY", 0.95f);
@@ -182,12 +188,13 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(80);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.play(btnBkgZoomOutXAn).with(btnBkgZoomOutYAn).with(btnZoomInXAn).with(btnZoomInYAn);
+        animatorSet.play(btnBkgZoomOutXAn)
+                .with(btnBkgZoomOutYAn)
+                .with(btnZoomInXAn)
+                .with(btnZoomInYAn);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -197,14 +204,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
     }
@@ -214,7 +217,8 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
      */
     public void endTakePhotoAnim() {
         ObjectAnimator btnBkgZoomInXAn = ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleX", 1f);
-        ObjectAnimator btnBkgZoomIntYAn = ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleY", 1f);
+        ObjectAnimator btnBkgZoomIntYAn =
+                ObjectAnimator.ofFloat(mViewPhotoModeOutter, "scaleY", 1f);
 
         ObjectAnimator btnZoomInXAn = ObjectAnimator.ofFloat(mViewPhotoModeInner, "scaleX", 1f);
         ObjectAnimator btnZoomInYAn = ObjectAnimator.ofFloat(mViewPhotoModeInner, "scaleY", 1f);
@@ -222,7 +226,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(80);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.play(btnBkgZoomInXAn).with(btnBkgZoomIntYAn).with(btnZoomInXAn).with(btnZoomInYAn);
+        animatorSet.play(btnBkgZoomInXAn)
+                .with(btnBkgZoomIntYAn)
+                .with(btnZoomInXAn)
+                .with(btnZoomInYAn);
         animatorSet.start();
     }
 
@@ -277,12 +284,13 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(80);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.play(btnBkgZoomOutXAn).with(btnBkgZoomOutYAn).with(btnZoomInXAn).with(btnZoomInYAn);
+        animatorSet.play(btnBkgZoomOutXAn)
+                .with(btnBkgZoomOutYAn)
+                .with(btnZoomInXAn)
+                .with(btnZoomInYAn);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -293,14 +301,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
     }
@@ -320,12 +324,13 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(80);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.play(btnBkgZoomOutXAn).with(btnBkgZoomOutYAn).with(btnZoomInXAn).with(btnZoomInYAn);
+        animatorSet.play(btnBkgZoomOutXAn)
+                .with(btnBkgZoomOutYAn)
+                .with(btnZoomInXAn)
+                .with(btnZoomInYAn);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -336,14 +341,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
         mImageRecordPause.setVisibility(View.VISIBLE);
@@ -354,7 +355,8 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
      */
     private void pauseRecordAnimByLongTouch() {
         ObjectAnimator btnBkgZoomInXAn = ObjectAnimator.ofFloat(mViewPressModeOutter, "scaleX", 1f);
-        ObjectAnimator btnBkgZoomIntYAn = ObjectAnimator.ofFloat(mViewPressModeOutter, "scaleY", 1f);
+        ObjectAnimator btnBkgZoomIntYAn =
+                ObjectAnimator.ofFloat(mViewPressModeOutter, "scaleY", 1f);
 
         ObjectAnimator btnZoomInXAn = ObjectAnimator.ofFloat(mViewPressModeInner, "scaleX", 1f);
         ObjectAnimator btnZoomInYAn = ObjectAnimator.ofFloat(mViewPressModeInner, "scaleY", 1f);
@@ -362,11 +364,13 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(80);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.play(btnBkgZoomInXAn).with(btnBkgZoomIntYAn).with(btnZoomInXAn).with(btnZoomInYAn);
+        animatorSet.play(btnBkgZoomInXAn)
+                .with(btnBkgZoomIntYAn)
+                .with(btnZoomInXAn)
+                .with(btnZoomInYAn);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -377,14 +381,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
         mImageRecordPause.setVisibility(View.GONE);
@@ -403,7 +403,10 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(80);
         animatorSet.setInterpolator(new LinearInterpolator());
-        animatorSet.play(btnBkgZoomInXAn).with(btnBkgZoomIntYAn).with(btnZoomInXAn).with(btnZoomInYAn);
+        animatorSet.play(btnBkgZoomInXAn)
+                .with(btnBkgZoomIntYAn)
+                .with(btnZoomInXAn)
+                .with(btnZoomInYAn);
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -414,19 +417,13 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
+            public void onAnimationEnd(Animator animation) {}
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
         mImageRecordPause.setVisibility(View.GONE);
@@ -479,5 +476,4 @@ public class RecordButton extends RelativeLayout implements IRecordButton, View.
     public void setPauseIconResource(int resid) {
         mImageRecordPause.setImageResource(resid);
     }
-
 }

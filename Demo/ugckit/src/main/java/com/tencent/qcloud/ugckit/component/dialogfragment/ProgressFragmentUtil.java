@@ -1,15 +1,14 @@
 package com.tencent.qcloud.ugckit.component.dialogfragment;
 
+import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
-import android.view.View;
-
 
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 
 public class ProgressFragmentUtil {
-    private String                    mTitle;
-    private FragmentActivity          mActivity;
+    private String mTitle;
+    private FragmentActivity mActivity;
     private VideoWorkProgressFragment mLoadingProgress;
 
     public ProgressFragmentUtil(FragmentActivity context) {
@@ -75,7 +74,5 @@ public class ProgressFragmentUtil {
         });
     }
 
-    public interface IProgressListener {
-        void onStop();
-    }
+    public interface IProgressListener { void onStop(); }
 }

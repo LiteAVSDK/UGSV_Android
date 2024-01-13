@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 自定义loading dialog -->
+    <style name="BeautyLoadingDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- 短视频录制主题UI配置-->
+    <style name="BeautyPanelStyle">
+        <!-- 美颜面板 -->
+        <item name="beautyPanelColorPrimary">@color/beautykit_color_red</item>
+        <item name="beautyPanelSmoothIcon">@drawable/beautykit_ic_smooth</item>
+        <item name="beautyPanelNaturalIcon">@drawable/beautykit_ic_natural</item>
+        <item name="beautyPanelPituIcon">@drawable/beautykit_ic_pitu</item>
+        <item name="beautyPanelWhiteIcon">@drawable/beautykit_ic_white</item>
+        <item name="beautyPanelRuddyIcon">@drawable/beautykit_ic_ruddy</item>
+        <item name="beautyPanelBigeyeIcon">@drawable/beautykit_ic_bigeye</item>
+        <item name="beautyPanelFaceslimIcon">@drawable/beautykit_ic_faceslim</item>
+        <item name="beautyPanelFacevIcon">@drawable/beautykit_ic_facev</item>
+        <item name="beautyPanelChinIcon">@drawable/beautykit_ic_chin</item>
+        <item name="beautyPanelFaceshortIcon">@drawable/beautykit_ic_face_short</item>
+        <item name="beautyPanelNoseslimIcon">@drawable/beautykit_ic_noseslim</item>
+        <item name="beautyPanelEyeLightenIcon">@drawable/beautykit_ic_eye_bright</item>
+        <item name="beautyPanelToothWhiteIcon">@drawable/beautykit_ic_tooth_white</item>
+        <item name="beautyPanelPouchRemoveIcon">@drawable/beautykit_ic_pouch_remove</item>
+        <item name="beautyPanelSmileLinesRemoveIcon">@drawable/beautykit_ic_smile_lines</item>
+        <item name="beautyPanelWrinkleIcon">@drawable/beautykit_ic_wrinkles</item>
+        <item name="beautyPanelForeheadIcon">@drawable/beautykit_ic_forehead</item>
+        <item name="beautyPanelEyeDistanceIcon">@drawable/beautykit_ic_eye_distance</item>
+        <item name="beautyPanelEyeAngleIcon">@drawable/beautykit_ic_eye_angle</item>
+        <item name="beautyPanelMouthShapeIcon">@drawable/beautykit_ic_mouse_shape</item>
+        <item name="beautyPanelNoseWingIcon">@drawable/beautykit_ic_nose_wing</item>
+        <item name="beautyPanelNosePositionIcon">@drawable/beautykit_ic_nose_position</item>
+        <item name="beautyPanelMouseWidthIcon">@drawable/beautykit_ic_mouse_width</item>
+        <item name="beautyPanelFaceShapeIcon">@drawable/beautykit_ic_face_shape</item>
+    </style>
+</resources>

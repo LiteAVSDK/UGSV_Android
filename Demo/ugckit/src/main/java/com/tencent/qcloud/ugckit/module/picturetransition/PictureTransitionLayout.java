@@ -1,26 +1,25 @@
 package com.tencent.qcloud.ugckit.module.picturetransition;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.ugc.TXVideoEditConstants;
 
-public class PictureTransitionLayout extends RelativeLayout implements View.OnClickListener, IPictureTransitionLayout {
-
-    private FragmentActivity     mActivity;
-    private ImageButton          mIbTransition1; //左右
-    private ImageButton          mIbTransition2; //上下
-    private ImageButton          mIbTransition3; //放大
-    private ImageButton          mIbTransition4; //缩小
-    private ImageButton          mIbTransition5; //旋转
-    private ImageButton          mIbTransition6; //淡入淡出
+public class PictureTransitionLayout
+        extends RelativeLayout implements View.OnClickListener, IPictureTransitionLayout {
+    private FragmentActivity mActivity;
+    private ImageButton mIbTransition1; //左右
+    private ImageButton mIbTransition2; //上下
+    private ImageButton mIbTransition3; //放大
+    private ImageButton mIbTransition4; //缩小
+    private ImageButton mIbTransition5; //旋转
+    private ImageButton mIbTransition6; //淡入淡出
     private OnTransitionListener mOnTransitionListener;
 
     public PictureTransitionLayout(Context context) {
@@ -70,10 +69,12 @@ public class PictureTransitionLayout extends RelativeLayout implements View.OnCl
         int id = v.getId();
         if (id == R.id.transition1) {
             mIbTransition1.setSelected(true);
-            mOnTransitionListener.transition(TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING);
+            mOnTransitionListener.transition(
+                    TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING);
         } else if (id == R.id.transition2) {
             mIbTransition2.setSelected(true);
-            mOnTransitionListener.transition(TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING);
+            mOnTransitionListener.transition(
+                    TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING);
         } else if (id == R.id.transition3) {
             mIbTransition3.setSelected(true);
             mOnTransitionListener.transition(TXVideoEditConstants.TX_TRANSITION_TYPE_ENLARGE);
@@ -82,10 +83,12 @@ public class PictureTransitionLayout extends RelativeLayout implements View.OnCl
             mOnTransitionListener.transition(TXVideoEditConstants.TX_TRANSITION_TYPE_NARROW);
         } else if (id == R.id.transition5) {
             mIbTransition5.setSelected(true);
-            mOnTransitionListener.transition(TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING);
+            mOnTransitionListener.transition(
+                    TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING);
         } else if (id == R.id.transition6) {
             mIbTransition6.setSelected(true);
-            mOnTransitionListener.transition(TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT);
+            mOnTransitionListener.transition(
+                    TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT);
         }
     }
 
@@ -153,5 +156,4 @@ public class PictureTransitionLayout extends RelativeLayout implements View.OnCl
     public void setFadeinoutIconResource(int resid) {
         mIbTransition6.setImageResource(resid);
     }
-
 }

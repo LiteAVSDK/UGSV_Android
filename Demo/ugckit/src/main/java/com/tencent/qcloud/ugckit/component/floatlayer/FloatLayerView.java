@@ -12,18 +12,17 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-
-import com.tencent.qcloud.ugckit.module.effect.IFloatLayerView;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.module.effect.IFloatLayerView;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,23 +37,23 @@ public class FloatLayerView extends View implements IFloatLayerView {
     /**
      * 控制缩放，旋转图标所在四个点得位置
      */
-    private static final int LEFT_TOP     = 0;
-    private static final int RIGHT_TOP    = 1;
+    private static final int LEFT_TOP = 0;
+    private static final int RIGHT_TOP = 1;
     private static final int RIGHT_BOTTOM = 2;
-    private static final int LEFT_BOTTOM  = 3;
+    private static final int LEFT_BOTTOM = 3;
 
     /**
      * 一些默认的常量
      */
-    private static final int     DEFAULT_FRAME_PADDING         = 0;
-    private static final int     DEFAULT_FRAME_WIDTH           = 2;
-    private static final int     DEFAULT_FRAME_COLOR           = Color.WHITE;
-    private static final float   DEFAULT_SCALE                 = 1.0f;
-    private static final float   DEFAULT_DEGREE                = 0;
-    private static final int     DEFAULT_CONTROL_LOCATION      = RIGHT_TOP;
-    private static final boolean DEFAULT_EDITABLE              = true;
-    private static final int     DEFAULT_OTHER_DRAWABLE_WIDTH  = 50;
-    private static final int     DEFAULT_OTHER_DRAWABLE_HEIGHT = 50;
+    private static final int DEFAULT_FRAME_PADDING = 0;
+    private static final int DEFAULT_FRAME_WIDTH = 2;
+    private static final int DEFAULT_FRAME_COLOR = Color.WHITE;
+    private static final float DEFAULT_SCALE = 1.0f;
+    private static final float DEFAULT_DEGREE = 0;
+    private static final int DEFAULT_CONTROL_LOCATION = RIGHT_TOP;
+    private static final boolean DEFAULT_EDITABLE = true;
+    private static final int DEFAULT_OTHER_DRAWABLE_WIDTH = 50;
+    private static final int DEFAULT_OTHER_DRAWABLE_HEIGHT = 50;
 
     private boolean isMeasured;
 
@@ -172,11 +171,11 @@ public class FloatLayerView extends View implements IFloatLayerView {
     /**
      * 点击编辑状态
      */
-    private static final int STATUS_EDIT        = 3;
+    private static final int STATUS_EDIT = 3;
     /**
      * 点击删除状态
      */
-    private static final int STATUS_DELETE      = 4;
+    private static final int STATUS_DELETE = 4;
 
     /**
      * 当前所处的状态
@@ -204,7 +203,6 @@ public class FloatLayerView extends View implements IFloatLayerView {
     private boolean isEditable = DEFAULT_EDITABLE;
 
     private DisplayMetrics metrics;
-
 
     @NonNull
     private PointF mPreMovePointF = new PointF();
@@ -235,7 +233,7 @@ public class FloatLayerView extends View implements IFloatLayerView {
     private long mStartTime, mEndTime;
 
     private boolean mShowDelete = true;
-    private boolean mShowEdit   = true;
+    private boolean mShowEdit = true;
 
     @Override
     public void showDelete(boolean showDelete) {
@@ -284,29 +282,39 @@ public class FloatLayerView extends View implements IFloatLayerView {
      */
     private void obtainStyledAttributes(AttributeSet attrs) {
         metrics = getContext().getResources().getDisplayMetrics();
-        framePadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_FRAME_PADDING, metrics);
-        frameWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_FRAME_WIDTH, metrics);
+        framePadding = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, DEFAULT_FRAME_PADDING, metrics);
+        frameWidth = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, DEFAULT_FRAME_WIDTH, metrics);
 
-        TypedArray mTypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitFloatLayerView);
+        TypedArray mTypedArray =
+                getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitFloatLayerView);
 
         Drawable srcDrawable = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_src);
         mBitmap = drawable2Bitmap(srcDrawable);
 
-        framePadding = mTypedArray.getDimensionPixelSize(R.styleable.UGCKitFloatLayerView_framePadding, framePadding);
-        frameWidth = mTypedArray.getDimensionPixelSize(R.styleable.UGCKitFloatLayerView_frameWidth, frameWidth);
-        frameColor = mTypedArray.getColor(R.styleable.UGCKitFloatLayerView_frameColor, DEFAULT_FRAME_COLOR);
+        framePadding = mTypedArray.getDimensionPixelSize(
+                R.styleable.UGCKitFloatLayerView_framePadding, framePadding);
+        frameWidth = mTypedArray.getDimensionPixelSize(
+                R.styleable.UGCKitFloatLayerView_frameWidth, frameWidth);
+        frameColor = mTypedArray.getColor(
+                R.styleable.UGCKitFloatLayerView_frameColor, DEFAULT_FRAME_COLOR);
         mScale = mTypedArray.getFloat(R.styleable.UGCKitFloatLayerView_scale, DEFAULT_SCALE);
         mDegree = mTypedArray.getFloat(R.styleable.UGCKitFloatLayerView_degree, DEFAULT_DEGREE);
         mRotateDrawable = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_controlDrawable);
-        mControlLocation = mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_controlLocation, RIGHT_BOTTOM);
+        mControlLocation =
+                mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_controlLocation, RIGHT_BOTTOM);
 
         mEditDrawble = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_editDrawable);
-        mEditLocation = mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_editLocation, RIGHT_TOP);
+        mEditLocation =
+                mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_editLocation, RIGHT_TOP);
 
         mDeleteDrawable = mTypedArray.getDrawable(R.styleable.UGCKitFloatLayerView_deleteDrawable);
-        mDeleteLocatoin = mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_deleteLocation, LEFT_TOP);
+        mDeleteLocatoin =
+                mTypedArray.getInt(R.styleable.UGCKitFloatLayerView_deleteLocation, LEFT_TOP);
 
-        isEditable = mTypedArray.getBoolean(R.styleable.UGCKitFloatLayerView_editable, DEFAULT_EDITABLE);
+        isEditable =
+                mTypedArray.getBoolean(R.styleable.UGCKitFloatLayerView_editable, DEFAULT_EDITABLE);
 
         mTypedArray.recycle();
     }
@@ -366,7 +374,8 @@ public class FloatLayerView extends View implements IFloatLayerView {
             mViewPaddingLeft = newPaddingLeft;
             mViewPaddingTop = newPaddingTop;
         }
-        layout(newPaddingLeft, newPaddingTop, newPaddingLeft + actualWidth, newPaddingTop + actualHeight);
+        layout(newPaddingLeft, newPaddingTop, newPaddingLeft + actualWidth,
+                newPaddingTop + actualHeight);
         this.mX = newPaddingLeft + mRotateDrawableWidth / 2;
         this.mY = newPaddingTop + mRotateDrawableHeight / 2;
         this.width = mViewWidth;
@@ -425,7 +434,8 @@ public class FloatLayerView extends View implements IFloatLayerView {
     }
 
     public Bitmap getRotateBitmap() {
-        Bitmap bitmap = Bitmap.createBitmap(this.mBitmap, 0, 0, this.mBitmap.getWidth(), this.mBitmap.getHeight(), matrix, true);
+        Bitmap bitmap = Bitmap.createBitmap(this.mBitmap, 0, 0, this.mBitmap.getWidth(),
+                this.mBitmap.getHeight(), matrix, true);
         return bitmap;
     }
 
@@ -469,9 +479,10 @@ public class FloatLayerView extends View implements IFloatLayerView {
 
             int intrinsicWidth = drawable.getIntrinsicWidth();
             int intrinsicHeight = drawable.getIntrinsicHeight();
-            Bitmap bitmap = Bitmap.createBitmap(intrinsicWidth <= 0 ? DEFAULT_OTHER_DRAWABLE_WIDTH
-                    : intrinsicWidth, intrinsicHeight <= 0 ? DEFAULT_OTHER_DRAWABLE_HEIGHT
-                    : intrinsicHeight, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(
+                    intrinsicWidth <= 0 ? DEFAULT_OTHER_DRAWABLE_WIDTH : intrinsicWidth,
+                    intrinsicHeight <= 0 ? DEFAULT_OTHER_DRAWABLE_HEIGHT : intrinsicHeight,
+                    Bitmap.Config.ARGB_8888);
 
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -480,7 +491,6 @@ public class FloatLayerView extends View implements IFloatLayerView {
         } catch (OutOfMemoryError e) {
             return null;
         }
-
     }
 
     /**
@@ -501,7 +511,6 @@ public class FloatLayerView extends View implements IFloatLayerView {
         if (mBitmap == null) return;
         canvas.drawBitmap(mBitmap, matrix, mPaint);
 
-
         //处于可编辑状态才画边框和控制图标
         if (isEditable) {
             mPath.reset();
@@ -516,28 +525,30 @@ public class FloatLayerView extends View implements IFloatLayerView {
 
             if (mRotateDrawable != null) {
                 mRotateDrawable.setBounds(mControlPoint.x - mRotateDrawableWidth / 2,
-                        mControlPoint.y - mRotateDrawableHeight / 2, mControlPoint.x + mRotateDrawableWidth
-                                / 2, mControlPoint.y + mRotateDrawableHeight / 2);
+                        mControlPoint.y - mRotateDrawableHeight / 2,
+                        mControlPoint.x + mRotateDrawableWidth / 2,
+                        mControlPoint.y + mRotateDrawableHeight / 2);
                 mRotateDrawable.draw(canvas);
             }
 
             if (mEditDrawble != null && mShowEdit) {
                 mEditDrawble.setBounds(mEditPoint.x - mRotateDrawableWidth / 2,
-                        mEditPoint.y - mRotateDrawableHeight / 2, mEditPoint.x + mRotateDrawableWidth
-                                / 2, mEditPoint.y + mRotateDrawableHeight / 2);
+                        mEditPoint.y - mRotateDrawableHeight / 2,
+                        mEditPoint.x + mRotateDrawableWidth / 2,
+                        mEditPoint.y + mRotateDrawableHeight / 2);
                 mEditDrawble.draw(canvas);
             }
 
             if (mDeleteDrawable != null && mShowDelete) {
                 mDeleteDrawable.setBounds(mDeletePoint.x - mRotateDrawableWidth / 2,
-                        mDeletePoint.y - mRotateDrawableHeight / 2, mDeletePoint.x + mRotateDrawableWidth
-                                / 2, mDeletePoint.y + mRotateDrawableHeight / 2);
+                        mDeletePoint.y - mRotateDrawableHeight / 2,
+                        mDeletePoint.x + mRotateDrawableWidth / 2,
+                        mDeletePoint.y + mRotateDrawableHeight / 2);
                 mDeleteDrawable.draw(canvas);
             }
         }
         adjustLayout();
     }
-
 
     /**
      * 设置Matrix, 强制刷新
@@ -546,14 +557,16 @@ public class FloatLayerView extends View implements IFloatLayerView {
         if (mBitmap == null) return;
         int bitmapWidth = (int) (mBitmap.getWidth() * mScale);
         int bitmapHeight = (int) (mBitmap.getHeight() * mScale);
-        computeRect(-framePadding, -framePadding, bitmapWidth + framePadding, bitmapHeight + framePadding, mDegree);
+        computeRect(-framePadding, -framePadding, bitmapWidth + framePadding,
+                bitmapHeight + framePadding, mDegree);
 
         //设置缩放比例
         matrix.setScale(mScale, mScale);
         //绕着图片中心进行旋转
         matrix.postRotate(mDegree % 360, bitmapWidth / 2, bitmapHeight / 2);
         //设置画该图片的起始点
-        matrix.postTranslate(offsetX + mRotateDrawableWidth / 2, offsetY + mRotateDrawableHeight / 2);
+        matrix.postTranslate(
+                offsetX + mRotateDrawableWidth / 2, offsetY + mRotateDrawableHeight / 2);
 
         adjustLayout();
     }
@@ -575,7 +588,8 @@ public class FloatLayerView extends View implements IFloatLayerView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (mClickListener != null/* && (mStatus == STATUS_DELETE || mStatus == STATUS_EDIT)*/) {
+                if (mClickListener
+                        != null /* && (mStatus == STATUS_DELETE || mStatus == STATUS_EDIT)*/) {
                     //再次判定抬起点 是否处于icon的范围之内
                     int secondJudgeState = judgeStatus(event.getX(), event.getY());
                     //满足才触发回调
@@ -604,7 +618,9 @@ public class FloatLayerView extends View implements IFloatLayerView {
                     int halfBitmapHeight = mBitmap.getHeight() / 2;
 
                     //图片某个点到图片中心的距离
-                    float bitmapToCenterDistance = (float) Math.sqrt(halfBitmapWidth * halfBitmapWidth + halfBitmapHeight * halfBitmapHeight);
+                    float bitmapToCenterDistance =
+                            (float) Math.sqrt(halfBitmapWidth * halfBitmapWidth
+                                    + halfBitmapHeight * halfBitmapHeight);
 
                     //移动的点到图片中心的距离
                     float moveToCenterDistance = distance4PointF(mCenterPoint, mCurMovePointF);
@@ -612,14 +628,12 @@ public class FloatLayerView extends View implements IFloatLayerView {
                     //计算缩放比例
                     scale = moveToCenterDistance / bitmapToCenterDistance;
 
-
                     //缩放比例的界限判断
                     if (scale <= MIN_SCALE) {
                         scale = MIN_SCALE;
                     } else if (scale >= MAX_SCALE) {
                         scale = MAX_SCALE;
                     }
-
 
                     // 角度
                     double a = distance4PointF(mCenterPoint, mPreMovePointF);
@@ -635,14 +649,17 @@ public class FloatLayerView extends View implements IFloatLayerView {
                     double radian = Math.acos(cosb);
                     float newDegree = (float) radianToDegree(radian);
 
-                    //center -> proMove的向量， 我们使用PointF来实现
-                    PointF centerToProMove = new PointF((mPreMovePointF.x - mCenterPoint.x), (mPreMovePointF.y - mCenterPoint.y));
+                    // center -> proMove的向量， 我们使用PointF来实现
+                    PointF centerToProMove = new PointF((mPreMovePointF.x - mCenterPoint.x),
+                            (mPreMovePointF.y - mCenterPoint.y));
 
-                    //center -> curMove 的向量
-                    PointF centerToCurMove = new PointF((mCurMovePointF.x - mCenterPoint.x), (mCurMovePointF.y - mCenterPoint.y));
+                    // center -> curMove 的向量
+                    PointF centerToCurMove = new PointF((mCurMovePointF.x - mCenterPoint.x),
+                            (mCurMovePointF.y - mCenterPoint.y));
 
                     //向量叉乘结果, 如果结果为负数， 表示为逆时针， 结果为正数表示顺时针
-                    float result = centerToProMove.x * centerToCurMove.y - centerToProMove.y * centerToCurMove.x;
+                    float result = centerToProMove.x * centerToCurMove.y
+                            - centerToProMove.y * centerToCurMove.x;
 
                     if (result < 0) {
                         newDegree = -newDegree;
@@ -693,20 +710,18 @@ public class FloatLayerView extends View implements IFloatLayerView {
 
         mViewWidth = maxCoordinateX - minCoordinateX;
 
-
         //计算Y坐标最大的值和最小的值
         int maxCoordinateY = getMaxValue(mLTPoint.y, mRTPoint.y, mRBPoint.y, mLBPoint.y);
         int minCoordinateY = getMinValue(mLTPoint.y, mRTPoint.y, mRBPoint.y, mLBPoint.y);
 
         mViewHeight = maxCoordinateY - minCoordinateY;
 
-
-        //View中心点的坐标
-        Point viewCenterPoint = new Point((maxCoordinateX + minCoordinateX) / 2, (maxCoordinateY + minCoordinateY) / 2);
+        // View中心点的坐标
+        Point viewCenterPoint = new Point(
+                (maxCoordinateX + minCoordinateX) / 2, (maxCoordinateY + minCoordinateY) / 2);
 
         offsetX = mViewWidth / 2 - viewCenterPoint.x;
         offsetY = mViewHeight / 2 - viewCenterPoint.y;
-
 
         int halfDrawableWidth = mRotateDrawableWidth / 2;
         int halfDrawableHeight = mRotateDrawableHeight / 2;
@@ -746,7 +761,6 @@ public class FloatLayerView extends View implements IFloatLayerView {
         }
         return mLTPoint;
     }
-
 
     /**
      * 获取变长参数最大的值
@@ -969,5 +983,4 @@ public class FloatLayerView extends View implements IFloatLayerView {
     public void setCenterY(float y) {
         mCenterY = y;
     }
-
 }

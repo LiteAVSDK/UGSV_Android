@@ -11,7 +11,6 @@ import com.tencent.xmagic.utils.OnDownloadListener;
 import java.util.List;
 
 public class MotionsDownloader {
-
     private static final String TAG = MotionsDownloader.class.getName();
 
     private int successCount = 0;
@@ -61,9 +60,5 @@ public class MotionsDownloader {
         });
     }
 
-    public interface MotionsDownLoadCallBack {
-        void onComplete(int successCount, int failedCount);
-    }
-
-
+    public interface MotionsDownLoadCallBack { void onComplete(int successCount, int failedCount); }
 }

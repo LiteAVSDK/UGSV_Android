@@ -26,7 +26,7 @@ import okhttp3.Response;
 
 public class ResDownloadUtil {
     //下载后的文件夹组织结构如下
-    //files
+    // files
     //--xmagic
     //------downloaded_zip_md5_assets
     //------light_assets
@@ -60,16 +60,19 @@ public class ResDownloadUtil {
     private static final String DL_DIRECTORY_ASSETS_LIGHT_ASSETS = "light_assets";
     private static final String DL_DIRECTORY_ASSETS_LIGHT_MATERIAL = "light_material";
     private static final String DL_DIRECTORY_ASSETS_LIGHT_MOTION = "MotionRes";
-    private static final String DL_ZIP_FILE = "download_zip_file"; //zip文件，解压完成后会删除
-    private static final String DL_MD5_FILE_LIBS = "downloaded_zip_md5_libs"; //记录下载的zip文件的md5
-    private static final String DL_MD5_FILE_ASSETS = "downloaded_zip_md5_assets"; //记录下载的zip文件的md5
+    private static final String DL_ZIP_FILE = "download_zip_file"; // zip文件，解压完成后会删除
+    private static final String DL_MD5_FILE_LIBS =
+            "downloaded_zip_md5_libs"; //记录下载的zip文件的md5
+    private static final String DL_MD5_FILE_ASSETS =
+            "downloaded_zip_md5_assets"; //记录下载的zip文件的md5
 
-    public static boolean ENABLE_RESUME_FROM_BREAKPOINT = true;//下载服务器是否支持断点续传
+    public static boolean ENABLE_RESUME_FROM_BREAKPOINT = true; //下载服务器是否支持断点续传
 
     public static String getValidLibsDirectory(Context context, String downloadMd5Libs) {
         String directory = context.getApplicationContext().getFilesDir().getAbsolutePath()
                 + File.separator + DL_DIRECTORY_LIBS;
-        int libsReady = checkValidLibsExist(directory + File.separator + DL_MD5_FILE_LIBS, downloadMd5Libs);
+        int libsReady =
+                checkValidLibsExist(directory + File.separator + DL_MD5_FILE_LIBS, downloadMd5Libs);
         if (libsReady != ResDownloadUtil.CHECK_FILE_EXIST) {
             Log.w(TAG, "getValidLibsDirectory: libs not ready");
             return null;
@@ -80,7 +83,8 @@ public class ResDownloadUtil {
     public static String getValidAssetsDirectory(Context context, String downloadMd5Assets) {
         String directory = context.getApplicationContext().getFilesDir().getAbsolutePath()
                 + File.separator + DL_DIRECTORY_ASSETS_PARENT;
-        int assetsReady = checkValidLibsExist(directory + File.separator + DL_MD5_FILE_ASSETS, downloadMd5Assets);
+        int assetsReady = checkValidLibsExist(
+                directory + File.separator + DL_MD5_FILE_ASSETS, downloadMd5Assets);
         if (assetsReady != ResDownloadUtil.CHECK_FILE_EXIST) {
             Log.w(TAG, "getValidAssetsDirectory: assets not ready");
             return null;
@@ -91,24 +95,25 @@ public class ResDownloadUtil {
     private static final String MOTION_DL_TEMP_FILE_PREFIX = "temp_zip_file_";
     private static final Set<String> downloadingMotions = new HashSet<>();
 
-    public static void checkOrDownloadMotions(Context context, MotionDLModel model, OnDownloadListener listener) {
+    public static void checkOrDownloadMotions(
+            Context context, MotionDLModel model, OnDownloadListener listener) {
         synchronized (downloadingMotions) {
             if (downloadingMotions.contains(model.getCategory() + model.getName())) {
                 return;
             }
             downloadingMotions.add(model.getCategory() + model.getName());
         }
-        //files/xmagic/MotionRes/model.category/model.name
+        // files/xmagic/MotionRes/model.category/model.name
         String directory = context.getApplicationContext().getFilesDir().getAbsolutePath()
-                + File.separator + DL_DIRECTORY_ASSETS_PARENT
-                + File.separator + DL_DIRECTORY_ASSETS_LIGHT_MOTION;
+                + File.separator + DL_DIRECTORY_ASSETS_PARENT + File.separator
+                + DL_DIRECTORY_ASSETS_LIGHT_MOTION;
         File dir = new File(directory);
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
-        File file = new File(directory + File.separator + model.getCategory()
-                + File.separator + model.getName());
+        File file = new File(directory + File.separator + model.getCategory() + File.separator
+                + model.getName());
         if (file.exists()) {
             Log.d(TAG, "checkOrDownloadMotions: file exist:" + model.getName());
             // 有一种情况：在解压过程中，进程被杀掉，导致解压出来的文件夹不完整。
@@ -136,8 +141,8 @@ public class ResDownloadUtil {
         }
     }
 
-    private static void doDownloadMotion(String directory, final String category,
-                                         final String name, String url, final OnDownloadListener listener) {
+    private static void doDownloadMotion(String directory, final String category, final String name,
+            String url, final OnDownloadListener listener) {
         final String parent = directory + File.separator + category;
         File dir = new File(parent);
         if (!dir.exists()) {
@@ -183,11 +188,10 @@ public class ResDownloadUtil {
             setModelDownloadFinish(category, name);
             listener.onDownloadFailed(DownloadErrorCode.FILE_IO_ERROR);
         }
-
     }
 
     public static void checkOrDownloadFiles(Context context, int fileType, String downloadUrl,
-                                            String downloadMd5, OnDownloadListener listener) {
+            String downloadMd5, OnDownloadListener listener) {
         String directory;
         String existMd5File;
         if (fileType == FILE_TYPE_LIBS) {
@@ -201,17 +205,19 @@ public class ResDownloadUtil {
         } else {
             return;
         }
-        doCheckOrDownloadFiles(fileType, directory, existMd5File, downloadUrl, downloadMd5, listener);
+        doCheckOrDownloadFiles(
+                fileType, directory, existMd5File, downloadUrl, downloadMd5, listener);
     }
 
     private static final Object downloadLock = new Object();
     private static boolean libsIsDownding = false;
     private static boolean assetsIsDownding = false;
 
-    private static void doCheckOrDownloadFiles(final int fileType,
-                                               String directory, String existMd5File, String downloadUrl,
-                                               String downloadMd5, final OnDownloadListener listener) {
-        int fileStatus = checkValidLibsExist(directory + File.separator + existMd5File, downloadMd5);
+    private static void doCheckOrDownloadFiles(final int fileType, String directory,
+            String existMd5File, String downloadUrl, String downloadMd5,
+            final OnDownloadListener listener) {
+        int fileStatus =
+                checkValidLibsExist(directory + File.separator + existMd5File, downloadMd5);
         if (fileStatus == CHECK_FILE_EXIST) {
             Log.d(TAG, "checkDownload: file exists,valid md5");
             listener.onDownloadSuccess(directory);
@@ -234,14 +240,14 @@ public class ResDownloadUtil {
             }
         }
 
-        //md5文件不存在，或者md5值不符合，需要删除整个文件夹重新下载
+        // md5文件不存在，或者md5值不符合，需要删除整个文件夹重新下载
         if (fileType == FILE_TYPE_LIBS) {
             File dir = new File(directory);
             if (fileStatus == CHECK_FILE_MD5_INVALID) {
-                //md5值不符合，需要删除 files/xmagic_libs 文件夹重新下载
+                // md5值不符合，需要删除 files/xmagic_libs 文件夹重新下载
                 FileUtil.deleteRecursive(dir);
             } else if (fileStatus == CHECK_FILE_NOT_EXIST) {
-                //MD5文件还不存在，那有可能是还没开始下载，也可能是下载到一半了需要断点续传
+                // MD5文件还不存在，那有可能是还没开始下载，也可能是下载到一半了需要断点续传
                 if (ENABLE_RESUME_FROM_BREAKPOINT) {
                     Log.d(TAG, "doCheckOrDownloadFiles: CHECK_FILE_NOT_EXIST,can not delete");
                 } else {
@@ -252,10 +258,12 @@ public class ResDownloadUtil {
             dir.mkdirs();
 
         } else if (fileType == FILE_TYPE_ASSETS) {
-            //files/xmagic/light_assets
-            File dirLightAssets = new File(directory + File.separator + DL_DIRECTORY_ASSETS_LIGHT_ASSETS);
-            //files/xmagic/light_material
-            File dirLightMaterial = new File(directory + File.separator + DL_DIRECTORY_ASSETS_LIGHT_MATERIAL);
+            // files/xmagic/light_assets
+            File dirLightAssets =
+                    new File(directory + File.separator + DL_DIRECTORY_ASSETS_LIGHT_ASSETS);
+            // files/xmagic/light_material
+            File dirLightMaterial =
+                    new File(directory + File.separator + DL_DIRECTORY_ASSETS_LIGHT_MATERIAL);
             if (fileStatus == CHECK_FILE_MD5_INVALID) {
                 FileUtil.deleteRecursive(dirLightAssets);
                 FileUtil.deleteRecursive(dirLightMaterial);
@@ -289,21 +297,24 @@ public class ResDownloadUtil {
                             return;
                         }
                         if (fileType == FILE_TYPE_ASSETS) {
-                            //assets解压后，还需要整理文件夹，把二级目录抽到根目录
+                            // assets解压后，还需要整理文件夹，把二级目录抽到根目录
                             if (organizeAssetsDirectory(downloadedDirectory)) {
                                 //解压、copy文件都成功，才算成功
-                                FileUtil.writeContentIntoFile(downloadedDirectory, DL_MD5_FILE_ASSETS, md5);
-                                FileUtil.deleteRecursive(new File(downloadedDirectory, DL_ZIP_FILE));
+                                FileUtil.writeContentIntoFile(
+                                        downloadedDirectory, DL_MD5_FILE_ASSETS, md5);
+                                FileUtil.deleteRecursive(
+                                        new File(downloadedDirectory, DL_ZIP_FILE));
                                 setDownloadFinish(fileType);
                                 listener.onDownloadSuccess(downloadedDirectory);
                             } else {
-                                //copy文件失败了，删除整个目录
+                                // copy文件失败了，删除整个目录
                                 FileUtil.deleteRecursive(new File(downloadedDirectory));
                                 setDownloadFinish(fileType);
                                 listener.onDownloadFailed(DownloadErrorCode.FILE_IO_ERROR);
                             }
                         } else if (fileType == FILE_TYPE_LIBS) {
-                            FileUtil.writeContentIntoFile(downloadedDirectory, DL_MD5_FILE_LIBS, md5);
+                            FileUtil.writeContentIntoFile(
+                                    downloadedDirectory, DL_MD5_FILE_LIBS, md5);
                             //解压成功，删除zip包
                             FileUtil.deleteRecursive(new File(downloadedDirectory, DL_ZIP_FILE));
                             setDownloadFinish(fileType);
@@ -329,7 +340,6 @@ public class ResDownloadUtil {
                     setDownloadFinish(fileType);
                     listener.onDownloadFailed(errorCode);
                 }
-
             });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -338,7 +348,6 @@ public class ResDownloadUtil {
             listener.onDownloadFailed(DownloadErrorCode.FILE_IO_ERROR);
         }
     }
-
 
     private static void setDownloadFinish(int fileType) {
         synchronized (downloadLock) {
@@ -350,21 +359,23 @@ public class ResDownloadUtil {
         }
     }
 
-    //downloadedDirectory的值是DL_DIRECTORY_ASSETS
+    // downloadedDirectory的值是DL_DIRECTORY_ASSETS
     private static boolean organizeAssetsDirectory(String downloadedDirectory) {
-        for (String path : new String[]{"Light3DPlugin", "LightCore", "LightHandPlugin", "LightSegmentPlugin"}) {
+        for (String path : new String[] {
+                     "Light3DPlugin", "LightCore", "LightHandPlugin", "LightSegmentPlugin"}) {
             if (!copyAssets(downloadedDirectory, path, DL_DIRECTORY_ASSETS_LIGHT_ASSETS)) {
                 return false;
             }
-            //copy成功则删除这个目录
+            // copy成功则删除这个目录
             FileUtil.deleteRecursive(new File(downloadedDirectory + File.separator + path));
         }
 
-        for (String path : new String[]{"lut"}) {
-            if (!copyAssets(downloadedDirectory, path, DL_DIRECTORY_ASSETS_LIGHT_MATERIAL + File.separator + path)) {
+        for (String path : new String[] {"lut"}) {
+            if (!copyAssets(downloadedDirectory, path,
+                        DL_DIRECTORY_ASSETS_LIGHT_MATERIAL + File.separator + path)) {
                 return false;
             }
-            //copy成功则删除这个目录
+            // copy成功则删除这个目录
             FileUtil.deleteRecursive(new File(downloadedDirectory + File.separator + path));
         }
         return true;
@@ -387,19 +398,20 @@ public class ResDownloadUtil {
                 }
                 Log.e(TAG, "copyAssets path: " + Arrays.toString(fileNames));
                 File newFile = new File(parent + File.separator + newPath);
-                newFile.mkdirs();// 如果文件夹不存在，则递归
+                newFile.mkdirs(); // 如果文件夹不存在，则递归
                 for (String fileName : fileNames) {
-                    copyAssets(parent, oldPath + File.separator + fileName, newPath + File.separator + fileName);
+                    copyAssets(parent, oldPath + File.separator + fileName,
+                            newPath + File.separator + fileName);
                 }
             } else {
                 is = new FileInputStream(file);
                 fos = new FileOutputStream(new File(parent + File.separator + newPath));
                 byte[] buffer = new byte[1024 * 1024];
                 int byteCount = 0;
-                while ((byteCount = is.read(buffer)) != -1) {    // 循环从输入流读取
-                    fos.write(buffer, 0, byteCount);     // 将读取的输入流写入到输出流
+                while ((byteCount = is.read(buffer)) != -1) { // 循环从输入流读取
+                    fos.write(buffer, 0, byteCount); // 将读取的输入流写入到输出流
                 }
-                fos.flush();// 刷新缓冲区
+                fos.flush(); // 刷新缓冲区
                 is.close();
                 fos.close();
             }
@@ -447,7 +459,7 @@ public class ResDownloadUtil {
     }
 
     private static void download(String downloadUrl, String directory, String dlZipFile,
-                                 OnDownloadListener onDownloadSuccess) throws FileNotFoundException {
+            OnDownloadListener onDownloadSuccess) throws FileNotFoundException {
         if (ENABLE_RESUME_FROM_BREAKPOINT) {
             downloadWithResumeBreakPoint(downloadUrl, directory, dlZipFile, onDownloadSuccess);
         } else {
@@ -455,9 +467,8 @@ public class ResDownloadUtil {
         }
     }
 
-    private static void downloadWithoutResumeBreakPoint(final String url,
-                                                        final String directory, final String fileName,
-                                                        final OnDownloadListener listener) {
+    private static void downloadWithoutResumeBreakPoint(final String url, final String directory,
+            final String fileName, final OnDownloadListener listener) {
         Request request = new Request.Builder().url(url).build();
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
@@ -468,7 +479,8 @@ public class ResDownloadUtil {
 
             @Override
             public void onResponse(Call call, Response response) {
-                if (response == null || response.body() == null || response.body().byteStream() == null) {
+                if (response == null || response.body() == null
+                        || response.body().byteStream() == null) {
                     Log.e(TAG, "onResponse: null or body null");
                     listener.onDownloadFailed(DownloadErrorCode.NETWORK_ERROR);
                     return;
@@ -498,7 +510,8 @@ public class ResDownloadUtil {
                 }
             }
 
-            private void readData(Response response, InputStream is, FileOutputStream fos) throws IOException {
+            private void readData(Response response, InputStream is, FileOutputStream fos)
+                    throws IOException {
                 is = response.body().byteStream();
                 long total = response.body().contentLength();
                 Log.d(TAG, "onResponse: response.body().contentLength() = " + total);
@@ -530,9 +543,7 @@ public class ResDownloadUtil {
     }
 
     private static void downloadWithResumeBreakPoint(final String url, final String directory,
-                                                     final String fileName,
-                                                     final OnDownloadListener listener)
-            throws FileNotFoundException {
+            final String fileName, final OnDownloadListener listener) throws FileNotFoundException {
         File file = new File(directory, fileName);
         final RandomAccessFile accessFile = new RandomAccessFile(file, "rw");
         // 断点续传：重新开始下载的位置：file.length()
@@ -540,10 +551,7 @@ public class ResDownloadUtil {
         Log.d(TAG, "download: file.length=" + existFileLength);
         String range = String.format(Locale.getDefault(), "bytes=%d-", existFileLength);
 
-        Request request = new Request.Builder()
-                .url(url)
-                .header("range", range)
-                .build();
+        Request request = new Request.Builder().url(url).header("range", range).build();
         new OkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -553,7 +561,8 @@ public class ResDownloadUtil {
 
             @Override
             public void onResponse(Call call, Response response) {
-                if (response == null || response.body() == null || response.body().byteStream() == null) {
+                if (response == null || response.body() == null
+                        || response.body().byteStream() == null) {
                     Log.e(TAG, "onResponse: null or body null");
                     listener.onDownloadFailed(DownloadErrorCode.NETWORK_ERROR);
                     return;
@@ -576,7 +585,7 @@ public class ResDownloadUtil {
             }
 
             private void readData(RandomAccessFile accessFile, long existFileLength,
-                                  Response response, InputStream is) throws IOException {
+                    Response response, InputStream is) throws IOException {
                 is = response.body().byteStream();
                 long total = response.body().contentLength();
                 Log.d(TAG, "onResponse: response.body().contentLength() = " + total);
@@ -606,6 +615,4 @@ public class ResDownloadUtil {
             }
         });
     }
-
-
 }

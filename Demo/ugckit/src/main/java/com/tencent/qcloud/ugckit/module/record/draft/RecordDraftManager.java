@@ -1,15 +1,15 @@
 package com.tencent.qcloud.ugckit.module.record.draft;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.utils.SharedPreferenceUtils;
 
 import java.util.List;
 
@@ -18,7 +18,8 @@ import java.util.List;
  * 必须保证草稿箱中的分段以及将要录制的分段参数一致！
  * <p>
  * 一、最近一次的草稿箱
- * SharedPreferencesHelper中的 SP_KEY_RECORD_LAST_DRAFT 里保存最近录制的数据json格式如下，对应草稿箱实体类：RecordDraftInfo：
+ * SharedPreferencesHelper中的 SP_KEY_RECORD_LAST_DRAFT
+ * 里保存最近录制的数据json格式如下，对应草稿箱实体类：RecordDraftInfo：
  * {
  * "aspectRatio": 0,
  * "partList":
@@ -37,7 +38,8 @@ import java.util.List;
  * <p>
  * <p>
  * 二、历史草稿箱
- * SharedPreferencesHelper中的 SP_KEY_RECORD_HISTORY_DRAFT 里可以保存多次历史录制任务数据json格式如下，对应草稿箱实体类：HistoryRecordDraftInfo：
+ * SharedPreferencesHelper中的 SP_KEY_RECORD_HISTORY_DRAFT
+ * 里可以保存多次历史录制任务数据json格式如下，对应草稿箱实体类：HistoryRecordDraftInfo：
  * {
  * "historyDraftInfo":
  * [
@@ -71,8 +73,8 @@ import java.util.List;
 public class RecordDraftManager {
     private final String TAG = "RecordDraftManager";
 
-    public static RecordDraftManager    sInstance;
-    private       SharedPreferenceUtils mSharedPreferenceUtils;
+    public static RecordDraftManager sInstance;
+    private SharedPreferenceUtils mSharedPreferenceUtils;
 
     public RecordDraftManager(@NonNull Context context) {
         mSharedPreferenceUtils = new SharedPreferenceUtils(context, UGCKitConstants.SP_NAME_RECORD);
@@ -118,13 +120,15 @@ public class RecordDraftManager {
      */
     @Nullable
     public RecordDraftInfo getLastDraftInfo() {
-        String draftStr = mSharedPreferenceUtils.getSharedPreference(UGCKitConstants.SP_KEY_RECORD_LAST_DRAFT, "").toString();
+        String draftStr = mSharedPreferenceUtils
+                                  .getSharedPreference(UGCKitConstants.SP_KEY_RECORD_LAST_DRAFT, "")
+                                  .toString();
         if (TextUtils.isEmpty(draftStr)) {
             return null;
         }
         Gson gson = new Gson();
-        RecordDraftInfo recordDraftInfo = gson.fromJson(draftStr, new TypeToken<RecordDraftInfo>() {
-        }.getType());
+        RecordDraftInfo recordDraftInfo =
+                gson.fromJson(draftStr, new TypeToken<RecordDraftInfo>() {}.getType());
         return recordDraftInfo;
     }
 
@@ -154,5 +158,4 @@ public class RecordDraftManager {
 
         saveLastDraft(recordDraftInfo);
     }
-
 }

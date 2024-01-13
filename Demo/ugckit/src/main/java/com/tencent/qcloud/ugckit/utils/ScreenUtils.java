@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.DisplayMetrics;
 
 /**
  * ScreenUtils
@@ -40,5 +40,4 @@ public class ScreenUtils {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return sp * scale;
     }
-
 }

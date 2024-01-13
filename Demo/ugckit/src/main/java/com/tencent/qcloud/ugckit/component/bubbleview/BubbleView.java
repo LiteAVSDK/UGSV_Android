@@ -2,9 +2,9 @@ package com.tencent.qcloud.ugckit.component.bubbleview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.component.floatlayer.FloatLayerView;
 
@@ -68,6 +68,4 @@ public class BubbleView extends FloatLayerView {
     public long getEndTime() {
         return mEndTime;
     }
-
-
 }

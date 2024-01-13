@@ -41,5 +41,4 @@ public interface ICountDownTimerView {
      * 取消倒计时动画
      */
     void cancelDownAnimation();
-
 }

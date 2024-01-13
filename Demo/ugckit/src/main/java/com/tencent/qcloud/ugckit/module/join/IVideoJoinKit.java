@@ -20,7 +20,6 @@ public interface IVideoJoinKit {
      */
     void setVideoJoinListener(OnVideoJoinListener videoJoinListener);
 
-
     interface OnVideoJoinListener {
         /**
          * 视频合成取消

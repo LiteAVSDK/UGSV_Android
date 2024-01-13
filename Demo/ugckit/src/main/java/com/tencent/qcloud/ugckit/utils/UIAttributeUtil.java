@@ -16,8 +16,9 @@ public class UIAttributeUtil {
      * @param defaultResourceId 默认的图片id
      * @return Drawable
      */
-    public static Drawable getDrawableResources(Context context, int attrId, int defaultResourceId) {
-        TypedArray a = context.obtainStyledAttributes(new int[]{attrId});
+    public static Drawable getDrawableResources(
+            Context context, int attrId, int defaultResourceId) {
+        TypedArray a = context.obtainStyledAttributes(new int[] {attrId});
         int resourceId = a.getResourceId(0, defaultResourceId);
         Drawable drawable = context.getResources().getDrawable(resourceId);
         a.recycle();
@@ -25,27 +26,28 @@ public class UIAttributeUtil {
     }
 
     public static int getColorRes(Context context, int attrId, int defaultColorId) {
-        TypedArray a = context.obtainStyledAttributes(new int[]{attrId});
+        TypedArray a = context.obtainStyledAttributes(new int[] {attrId});
         int color = a.getColor(0, context.getResources().getColor(defaultColorId));
         a.recycle();
         return color;
     }
 
     public static int getTextSizeResources(Context context, int attrId, int defaultTextSize) {
-        TypedArray a = context.obtainStyledAttributes(new int[]{attrId});
+        TypedArray a = context.obtainStyledAttributes(new int[] {attrId});
         int textSize = a.getDimensionPixelOffset(0, defaultTextSize);
         a.recycle();
         return textSize;
     }
 
     public static int getResResources(Context context, int attrId, int defaultResourceId) {
-        TypedArray a = context.obtainStyledAttributes(new int[]{attrId});
+        TypedArray a = context.obtainStyledAttributes(new int[] {attrId});
         int resourceId = a.getResourceId(0, defaultResourceId);
         a.recycle();
         return resourceId;
     }
 
-    public static int[] getResResourcsArray(Context context, int[] attrId, int[] defaultResourceId) {
+    public static int[] getResResourcsArray(
+            Context context, int[] attrId, int[] defaultResourceId) {
         int[] resourceIdArray = new int[attrId.length];
 
         TypedArray a = context.obtainStyledAttributes(attrId);
@@ -55,5 +57,4 @@ public class UIAttributeUtil {
         a.recycle();
         return resourceIdArray;
     }
-
 }

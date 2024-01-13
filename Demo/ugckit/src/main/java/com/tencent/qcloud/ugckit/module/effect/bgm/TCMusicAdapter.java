@@ -2,31 +2,30 @@ package com.tencent.qcloud.ugckit.module.effect.bgm;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.progressbutton.SampleProgressButton;
-
+import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 
 import java.util.List;
 
-public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMusicViewHolder> implements View.OnClickListener {
-    private static final String                 TAG = "TCMusicAdapter";
-    private              Context                mContext;
-    private              List<TCMusicInfo>      mBGMList;
-    private              OnClickSubItemListener mOnClickSubItemListener;
+public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMusicViewHolder>
+        implements View.OnClickListener {
+    private static final String TAG = "TCMusicAdapter";
+    private Context mContext;
+    private List<TCMusicInfo> mBGMList;
+    private OnClickSubItemListener mOnClickSubItemListener;
 
     @NonNull
-    private SparseArray<LinearMusicViewHolder> mProgressButtonIndexMap = new SparseArray<LinearMusicViewHolder>();
+    private SparseArray<LinearMusicViewHolder> mProgressButtonIndexMap =
+            new SparseArray<LinearMusicViewHolder>();
 
     public TCMusicAdapter(Context context, List<TCMusicInfo> list) {
         mContext = context;
@@ -36,7 +35,8 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
     @NonNull
     @Override
     public LinearMusicViewHolder onCreateVH(@NonNull ViewGroup parent, int viewType) {
-        LinearMusicViewHolder linearMusicViewHolder = new LinearMusicViewHolder(View.inflate(parent.getContext(), R.layout.ugckit_item_editer_bgm, null));
+        LinearMusicViewHolder linearMusicViewHolder = new LinearMusicViewHolder(
+                View.inflate(parent.getContext(), R.layout.ugckit_item_editer_bgm, null));
         return linearMusicViewHolder;
     }
 
@@ -71,7 +71,8 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
     }
 
     @Override
-    public void onBindViewHolder(LinearMusicViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(
+            LinearMusicViewHolder holder, int position, List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
     }
 
@@ -110,9 +111,9 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
 
     public static class LinearMusicViewHolder extends RecyclerView.ViewHolder {
         private SampleProgressButton btnUse;
-        private TextView             tvName;
-        private OnItemClickListener  onItemClickListener;
-        private int                  position;
+        private TextView tvName;
+        private OnItemClickListener onItemClickListener;
+        private int position;
 
         public LinearMusicViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -154,5 +155,4 @@ public class TCMusicAdapter extends BaseRecyclerAdapter<TCMusicAdapter.LinearMus
     public interface OnClickSubItemListener {
         void onClickUseBtn(SampleProgressButton button, int position);
     }
-
 }

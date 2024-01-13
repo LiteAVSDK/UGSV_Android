@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 public class PictureTransitionKit {
     @NonNull
-    private static       PictureTransitionKit sInstance          = new PictureTransitionKit();
-    private static final int                  DEFAULT_FPS        = 20;  // 默认图片帧率
-    public static final  int                  DEFAULT_TRANSITION = TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;  //  默认转场动画类型
+    private static PictureTransitionKit sInstance = new PictureTransitionKit();
+    private static final int DEFAULT_FPS = 20; // 默认图片帧率
+    //  默认转场动画类型
+    public static final int DEFAULT_TRANSITION =
+            TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING;
 
-    private PictureTransitionKit() {
-
-    }
+    private PictureTransitionKit() {}
 
     @NonNull
     public static PictureTransitionKit getInstance() {
@@ -38,22 +38,28 @@ public class PictureTransitionKit {
         }
         switch (type) {
             case TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING:
-                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING);
+                duration = editer.setPictureTransition(
+                        TXVideoEditConstants.TX_TRANSITION_TYPE_LEFT_RIGHT_SLIPPING);
                 break;
             case TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING:
-                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING);
+                duration = editer.setPictureTransition(
+                        TXVideoEditConstants.TX_TRANSITION_TYPE_UP_DOWN_SLIPPING);
                 break;
             case TXVideoEditConstants.TX_TRANSITION_TYPE_ENLARGE:
-                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_ENLARGE);
+                duration = editer.setPictureTransition(
+                        TXVideoEditConstants.TX_TRANSITION_TYPE_ENLARGE);
                 break;
             case TXVideoEditConstants.TX_TRANSITION_TYPE_NARROW:
-                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_NARROW);
+                duration =
+                        editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_NARROW);
                 break;
             case TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING:
-                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING);
+                duration = editer.setPictureTransition(
+                        TXVideoEditConstants.TX_TRANSITION_TYPE_ROTATIONAL_SCALING);
                 break;
             case TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT:
-                duration = editer.setPictureTransition(TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT);
+                duration = editer.setPictureTransition(
+                        TXVideoEditConstants.TX_TRANSITION_TYPE_FADEIN_FADEOUT);
                 break;
         }
         return duration;

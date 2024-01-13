@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
 import android.content.Context;
-import androidx.annotation.IntDef;
 import android.widget.LinearLayout;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,19 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeMenu {
-
     public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
-    public static final int VERTICAL   = LinearLayout.VERTICAL;
+    public static final int VERTICAL = LinearLayout.VERTICAL;
 
-    private int                 mViewType;
-    private int                 orientation = HORIZONTAL;
-    private SwipeMenuLayout     mSwipeMenuLayout;
+    private int mViewType;
+    private int orientation = HORIZONTAL;
+    private SwipeMenuLayout mSwipeMenuLayout;
     private List<SwipeMenuItem> mSwipeMenuItems;
 
     @IntDef({HORIZONTAL, VERTICAL})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface OrientationMode {
-    }
+    public @interface OrientationMode {}
 
     public SwipeMenu(SwipeMenuLayout swipeMenuLayout, int viewType) {
         this.mSwipeMenuLayout = swipeMenuLayout;

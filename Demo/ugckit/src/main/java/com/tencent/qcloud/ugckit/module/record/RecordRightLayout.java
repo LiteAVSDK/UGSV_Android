@@ -2,44 +2,38 @@ package com.tencent.qcloud.ugckit.module.record;
 
 import android.app.Activity;
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.tencent.qcloud.ugckit.PermissionIntroductionDialog;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.record.interfaces.IRecordRightLayout;
 
-public class RecordRightLayout extends RelativeLayout implements IRecordRightLayout,
-        View.OnClickListener, AspectView.OnAspectListener {
+public class RecordRightLayout extends RelativeLayout
+        implements IRecordRightLayout, View.OnClickListener, AspectView.OnAspectListener {
     private static final String TAG = "RecordRightLayout";
 
-
-    private Activity            mActivity;
-    private ImageView           mImageMusic;        // 音乐
-    private TextView            mTextMusic;
-    private ImageView           mImageMusicMask;
-    private RelativeLayout      mLayoutMusic;
-    private AspectView          mAspectView;        // 屏比，目前有三种（1:1；3:4；9:16）
-    private ImageView           mImageBeauty;       // 美颜
-    private ImageView           mImageTEBeauty;     //高级美颜
-    private TextView            mTextBeauty;
-    private RelativeLayout      mLayoutBeauty;
-    private ImageView           mImageSoundEffect;  // 音效
-    private TextView            mTextSoundEffect;
-    private ImageView           mImageSoundEffectMask;
-    private RelativeLayout      mLayoutSoundEffect;
+    private Activity mActivity;
+    private ImageView mImageMusic; // 音乐
+    private TextView mTextMusic;
+    private ImageView mImageMusicMask;
+    private RelativeLayout mLayoutMusic;
+    private AspectView mAspectView; // 屏比，目前有三种（1:1；3:4；9:16）
+    private ImageView mImageBeauty; // 美颜
+    private ImageView mImageTEBeauty; //高级美颜
+    private TextView mTextBeauty;
+    private RelativeLayout mLayoutBeauty;
+    private ImageView mImageSoundEffect; // 音效
+    private TextView mTextSoundEffect;
+    private ImageView mImageSoundEffectMask;
+    private RelativeLayout mLayoutSoundEffect;
     private OnItemClickListener mOnItemClickListener;
-
-
 
     public RecordRightLayout(Context context) {
         super(context);
@@ -89,7 +83,8 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
         int id = view.getId();
         if (id == R.id.iv_beauty) {
             if (!PermissionIntroductionDialog.isGrantPermission()) {
-                showIntroductionDialog(((FragmentActivity) getContext()).getSupportFragmentManager(),
+                showIntroductionDialog(
+                        ((FragmentActivity) getContext()).getSupportFragmentManager(),
                         new PermissionIntroductionDialog.PositiveClickListener() {
                             @Override
                             public void onClickPositive() {
@@ -101,7 +96,8 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
             }
         } else if (id == R.id.iv_te_beauty) {
             if (!PermissionIntroductionDialog.isGrantPermission()) {
-                showIntroductionDialog(((FragmentActivity) getContext()).getSupportFragmentManager(),
+                showIntroductionDialog(
+                        ((FragmentActivity) getContext()).getSupportFragmentManager(),
                         new PermissionIntroductionDialog.PositiveClickListener() {
                             @Override
                             public void onClickPositive() {
@@ -118,19 +114,17 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
         }
     }
 
-
-
     private void showIntroductionDialog(FragmentManager fragmentManager,
-                                        PermissionIntroductionDialog.PositiveClickListener listener) {
-        PermissionIntroductionDialog
-                mPermissionIntroductionDialog = new PermissionIntroductionDialog(getContext()
-                .getString(R.string.app_personal_information_collection),
-                getContext().getString(R.string.beauty_cam_introduction),
-                PermissionIntroductionDialog.DialogPosition.BOTTOM);
+            PermissionIntroductionDialog.PositiveClickListener listener) {
+        PermissionIntroductionDialog mPermissionIntroductionDialog =
+                new PermissionIntroductionDialog(
+                        getContext().getString(R.string.app_personal_information_collection),
+                        getContext().getString(R.string.beauty_cam_introduction),
+                        PermissionIntroductionDialog.DialogPosition.BOTTOM);
         mPermissionIntroductionDialog.setPositiveClickListener(listener);
-        mPermissionIntroductionDialog.show(fragmentManager, PermissionIntroductionDialog.DIALOG_NAME);
+        mPermissionIntroductionDialog.show(
+                fragmentManager, PermissionIntroductionDialog.DIALOG_NAME);
     }
-
 
     /**
      * 切换了一种屏比
@@ -179,7 +173,8 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
      * 设置"音效"按钮是否可用
      *
      * @param enable {@code true} 清除背景音后，音效Icon变为可点击<br>
-     *               {@code false} 录制添加BGM后是录制不了人声的，而音效是针对人声有效的，此时开启音效遮罩层，音效Icon变为不可用
+     *               {@code false}
+     * 录制添加BGM后是录制不了人声的，而音效是针对人声有效的，此时开启音效遮罩层，音效Icon变为不可用
      */
     @Override
     public void setSoundEffectIconEnable(boolean enable) {
@@ -274,5 +269,4 @@ public class RecordRightLayout extends RelativeLayout implements IRecordRightLay
     public void setAspect(int aspectRatio) {
         mAspectView.setAspect(aspectRatio);
     }
-
 }

@@ -13,7 +13,6 @@ import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
@@ -27,7 +26,6 @@ import java.util.List;
  * 用于显示高级美颜收费提示框
  */
 public class TEChargePromptDialog {
-
     private static final String SH_NAME = "TEChargePromptDialog";
     private static final String SH_DISPLAY_PROHIBITED_KEY = "SH_DISPLAY_PROHIBITED_KEY";
     private static int startPosition = 5;
@@ -42,9 +40,11 @@ public class TEChargePromptDialog {
         }
         SpannableString spannableString = new SpannableString(
                 activity.getString(R.string.ugckit_tencent_effect_tip_dialog_content));
-        spannableString.setSpan(new NoRefCopyClickableSpan(), isChina() ? startPosition : en_StartPosition,
+        spannableString.setSpan(new NoRefCopyClickableSpan(),
+                isChina() ? startPosition : en_StartPosition,
                 isChina() ? endPosition : en_EndPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        new CommonDialog(activity).setCancelable(true)
+        new CommonDialog(activity)
+                .setCancelable(true)
                 .setTitle(activity.getString(R.string.ugckit_tencent_effect_tip_dialog_title))
                 .setContent(spannableString)
                 .setBtnTxt(activity.getString(R.string.ugckit_tencent_effect_tip_dialog_lefttxt),
@@ -56,9 +56,7 @@ public class TEChargePromptDialog {
                     }
 
                     @Override
-                    public void onRightBtnClick() {
-
-                    }
+                    public void onRightBtnClick() {}
                 })
                 .show();
     }
@@ -66,18 +64,17 @@ public class TEChargePromptDialog {
     public static void showTEConfirmDialog(final Activity activity) {
         SpannableString spannableString = new SpannableString(
                 activity.getString(R.string.ugckit_tencent_effect_tip_dialog_content));
-        spannableString.setSpan(new NoRefCopyClickableSpan(), isChina() ? startPosition : en_StartPosition,
+        spannableString.setSpan(new NoRefCopyClickableSpan(),
+                isChina() ? startPosition : en_StartPosition,
                 isChina() ? endPosition : en_EndPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        new CommonDialog(activity).setCancelable(true)
+        new CommonDialog(activity)
+                .setCancelable(true)
                 .setTitle(activity.getString(R.string.ugckit_tencent_effect_tip_dialog_title))
                 .setContent(spannableString)
                 .setBtnTxt(null,
                         activity.getString(R.string.ugckit_tencent_effect_tip_dialog_righttxt))
                 .show();
-
-
     }
-
 
     public static boolean isProhibited() {
         return (Boolean) new SharedPreferenceUtils(UGCKit.getAppContext(), SH_NAME)
@@ -89,9 +86,7 @@ public class TEChargePromptDialog {
                 .put(SH_DISPLAY_PROHIBITED_KEY, true);
     }
 
-
     public static class NoRefCopyClickableSpan extends ClickableSpan {
-
         @Override
         public void onClick(@NonNull View widget) {
             actionToWebViewActivity(widget.getContext(), null, WEB_URL);
@@ -123,7 +118,6 @@ public class TEChargePromptDialog {
         }
     }
 
-
     private static boolean isIntentAvailable(Context context, Intent intent) {
         final PackageManager packageManager = context.getPackageManager();
         @SuppressLint("WrongConstant")
@@ -132,6 +126,11 @@ public class TEChargePromptDialog {
     }
 
     private static boolean isChina() {
-        return UGCKit.getAppContext().getResources().getConfiguration().locale.getLanguage().toLowerCase().equals("zh");
+        return UGCKit.getAppContext()
+                .getResources()
+                .getConfiguration()
+                .locale.getLanguage()
+                .toLowerCase()
+                .equals("zh");
     }
 }

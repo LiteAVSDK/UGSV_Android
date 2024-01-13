@@ -1,7 +1,7 @@
 package com.tencent.qcloud.ugckit.utils;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.UGCKit;
 
@@ -18,7 +18,7 @@ import okhttp3.Response;
 
 public class DownloadUtil {
     private static DownloadUtil instance;
-    private        OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient;
 
     public static DownloadUtil getInstance() {
         if (instance == null) {
@@ -35,7 +35,8 @@ public class DownloadUtil {
         okHttpClient = new OkHttpClient();
     }
 
-    public void download(@NonNull final String url, @NonNull final String saveDir, @NonNull final DownloadListener downloadListener) {
+    public void download(@NonNull final String url, @NonNull final String saveDir,
+            @NonNull final DownloadListener downloadListener) {
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -78,14 +79,12 @@ public class DownloadUtil {
                     downloadListener.onDownloadFailed();
                 } finally {
                     try {
-                        if (is != null)
-                            is.close();
+                        if (is != null) is.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     try {
-                        if (fos != null)
-                            fos.close();
+                        if (fos != null) fos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

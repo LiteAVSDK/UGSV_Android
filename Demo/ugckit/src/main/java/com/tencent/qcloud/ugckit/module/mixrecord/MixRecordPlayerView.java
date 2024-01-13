@@ -1,5 +1,11 @@
 package com.tencent.qcloud.ugckit.module.mixrecord;
 
+import static android.media.MediaMetadataRetriever.OPTION_CLOSEST_SYNC;
+
+import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_BEGIN;
+import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_END;
+import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_PROGRESS;
+
 import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,21 +27,16 @@ import com.tencent.ugc.TXVideoEditConstants;
 
 import java.util.List;
 
-import static android.media.MediaMetadataRetriever.OPTION_CLOSEST_SYNC;
-import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_BEGIN;
-import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_END;
-import static com.tencent.rtmp.TXLiveConstants.PLAY_EVT_PLAY_PROGRESS;
-
 public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayListener, IPlayerView {
     private static final String TAG = "MixRecordPlayerView";
 
-    private TXVodPlayer      mVodPlayer;
+    private TXVodPlayer mVodPlayer;
     private TXCloudVideoView mCloudView;
-    private ImageView        mCoverimg;
-    private PlayerState      mPlayerState      = PlayerState.STATE_UNINIT;
-    private String           mVideoPath;
-    private int              mIndex            = -1;
-    private float            mContinuePosition = -1;
+    private ImageView mCoverimg;
+    private PlayerState mPlayerState = PlayerState.STATE_UNINIT;
+    private String mVideoPath;
+    private int mIndex = -1;
+    private float mContinuePosition = -1;
 
     public MixRecordPlayerView(Context context) {
         this(context, null);
@@ -70,9 +71,7 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
     }
 
     @Override
-    public void onNetStatus(TXVodPlayer player, Bundle status) {
-
-    }
+    public void onNetStatus(TXVodPlayer player, Bundle status) {}
 
     @Override
     public TXCloudVideoView getVideoView() {
@@ -144,28 +143,26 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
 
     private void hideCover() {
         if (mCoverimg.getVisibility() == VISIBLE) {
-            mCoverimg.animate().alpha(0).setDuration(100).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
+            mCoverimg.animate()
+                    .alpha(0)
+                    .setDuration(100)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {}
 
-                }
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mCoverimg.setVisibility(GONE);
+                            mCoverimg.setAlpha(1.0f);
+                        }
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mCoverimg.setVisibility(GONE);
-                    mCoverimg.setAlpha(1.0f);
-                }
+                        @Override
+                        public void onAnimationCancel(Animator animation) {}
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            }).start();
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {}
+                    })
+                    .start();
         }
     }
 
@@ -206,7 +203,7 @@ public class MixRecordPlayerView extends RelativeLayout implements ITXVodPlayLis
 
     @Override
     public void stopVideo() {
-        if (mVodPlayer != null) {//&& mPlayerState != PlayerState.STATE_PLAYING
+        if (mVodPlayer != null) { //&& mPlayerState != PlayerState.STATE_PLAYING
             mVodPlayer.setVodListener(null);
             mContinuePosition = mVodPlayer.getCurrentPlaybackTime();
             mVodPlayer.stopPlay(false);

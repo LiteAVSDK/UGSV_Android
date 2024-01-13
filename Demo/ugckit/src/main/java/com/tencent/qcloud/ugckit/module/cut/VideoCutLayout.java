@@ -2,31 +2,31 @@ package com.tencent.qcloud.ugckit.module.cut;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
-import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.R;
-
-import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.component.slider.VideoCutView;
+import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.utils.Edit;
 import com.tencent.ugc.TXVideoEditConstants;
 
-public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, View.OnClickListener, Edit.OnCutChangeListener {
+public class VideoCutLayout extends RelativeLayout
+        implements IVideoCutLayout, View.OnClickListener, Edit.OnCutChangeListener {
     private static final String TAG = "VideoCutLayout";
 
     private FragmentActivity mActivity;
-    private ImageView        mImageRotate;
-    private TextView         mTextDuration;
-    private VideoCutView     mVideoCutView;
-    private int              mRotation;
+    private ImageView mImageRotate;
+    private TextView mTextDuration;
+    private VideoCutView mVideoCutView;
+    private int mRotation;
 
     private OnRotateVideoListener mOnRotateVideoListener;
 
@@ -70,9 +70,7 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
     }
 
     @Override
-    public void onCutClick() {
-
-    }
+    public void onCutClick() {}
 
     @Override
     public void onCutChangeKeyDown() {
@@ -83,7 +81,10 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
     public void onCutChangeKeyUp(long startTime, long endTime, int type) {
         long duration = (endTime - startTime) / 1000;
 
-        String str = getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + duration + "s";
+        String str =
+                getResources().getString(
+                        R.string.ugckit_video_cutter_activity_load_video_success_already_picked)
+                + duration + "s";
         mTextDuration.setText(str);
 
         VideoEditerSDK.getInstance().setCutterStartTime(startTime, endTime);
@@ -103,7 +104,10 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
         if (selectDuration >= MAX_DURATION) {
             selectDuration = MAX_DURATION;
         }
-        mTextDuration.setText(getResources().getString(R.string.ugckit_video_cutter_activity_load_video_success_already_picked) + selectDuration + "s");
+        mTextDuration.setText(
+                getResources().getString(
+                        R.string.ugckit_video_cutter_activity_load_video_success_already_picked)
+                + selectDuration + "s");
 
         long cutTimeMs = videoInfo.duration;
         if (cutTimeMs > MAX_DURATION * 1000) {
@@ -135,5 +139,4 @@ public class VideoCutLayout extends RelativeLayout implements IVideoCutLayout, V
     public void setOnRotateVideoListener(OnRotateVideoListener listener) {
         mOnRotateVideoListener = listener;
     }
-
 }

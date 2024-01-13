@@ -8,7 +8,6 @@ import androidx.annotation.DrawableRes;
  */
 
 public interface IRecordButton {
-
     /**
      * 设置录制按钮监听器
      *

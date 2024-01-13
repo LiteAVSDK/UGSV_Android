@@ -13,6 +13,7 @@ import java.util.Map;
  * 上传续点控制
  */
 public class UploadResumeDefaultController implements IUploadResumeController {
+    private static final String TAG = "UploadResumeDefaultController";
 
     // 断点重传session本地缓存
     // 以文件md5作为key值，存储的内容是<session, uploadId, fileLastModify, expiredTime>
@@ -32,7 +33,8 @@ public class UploadResumeDefaultController implements IUploadResumeController {
     }
 
     @Override
-    public void saveSession(String filePath, String vodSessionKey, String uploadId, TVCUploadInfo uploadInfo) {
+    public void saveSession(
+            String filePath, String vodSessionKey, String uploadId, TVCUploadInfo uploadInfo) {
         if (filePath == null || filePath.isEmpty()) {
             return;
         }
@@ -46,16 +48,17 @@ public class UploadResumeDefaultController implements IUploadResumeController {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put(KEY_SESSION, vodSessionKey);
                     jsonObject.put(KEY_UPLOAD_ID, uploadId);
-                    jsonObject.put(KEY_EXPIRED_TIME, System.currentTimeMillis() / 1000 + 24 * 60 * 60);
+                    jsonObject.put(
+                            KEY_EXPIRED_TIME, System.currentTimeMillis() / 1000 + 24 * 60 * 60);
                     jsonObject.put(KEY_FILE_LAST_MOD_TIME, uploadInfo.getFileLastModifyTime());
-                    jsonObject.put(KEY_COVER_FILE_LAST_MOD_TIME, uploadInfo.isNeedCover()
-                            ? uploadInfo.getCoverLastModifyTime() : 0);
+                    jsonObject.put(KEY_COVER_FILE_LAST_MOD_TIME,
+                            uploadInfo.isNeedCover() ? uploadInfo.getCoverLastModifyTime() : 0);
                     String comment = jsonObject.toString();
                     mShareEditor.putString(sessionKey, comment);
                 }
                 mShareEditor.apply();
             } catch (Exception e) {
-                e.printStackTrace();
+                TVCLog.e(TAG, "saveSession failed", e);
             }
         }
     }
@@ -76,10 +79,11 @@ public class UploadResumeDefaultController implements IUploadResumeController {
                     resumeCacheData.setVodSessionKey(json.optString(KEY_SESSION, ""));
                     resumeCacheData.setUploadId(json.optString(KEY_UPLOAD_ID, ""));
                     resumeCacheData.setFileLastModTime(json.optLong(KEY_FILE_LAST_MOD_TIME, 0));
-                    resumeCacheData.setCoverFileLastModTime(json.optLong(KEY_COVER_FILE_LAST_MOD_TIME, 0));
+                    resumeCacheData.setCoverFileLastModTime(
+                            json.optLong(KEY_COVER_FILE_LAST_MOD_TIME, 0));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                TVCLog.e(TAG, "getResumeData failed", e);
             }
         }
         return resumeCacheData;
@@ -101,14 +105,15 @@ public class UploadResumeDefaultController implements IUploadResumeController {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                TVCLog.e(TAG, "clearLocalCache failed", e);
             }
         }
     }
 
     @Override
-    public boolean isResumeUploadVideo(String uploadId, TVCUploadInfo uploadInfo, String vodSessionKey,
-                                       long fileLastModTime, long coverFileLastModTime) {
-        return !TextUtils.isEmpty(uploadId) && uploadInfo != null && !TextUtils.isEmpty(vodSessionKey);
+    public boolean isResumeUploadVideo(String uploadId, TVCUploadInfo uploadInfo,
+            String vodSessionKey, long fileLastModTime, long coverFileLastModTime) {
+        return !TextUtils.isEmpty(uploadId) && uploadInfo != null
+                && !TextUtils.isEmpty(vodSessionKey);
     }
 }

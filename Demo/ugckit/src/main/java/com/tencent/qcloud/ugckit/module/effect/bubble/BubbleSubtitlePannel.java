@@ -5,12 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,32 +13,38 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.circlebmp.TCCircleView;
 import com.tencent.qcloud.ugckit.component.seekbar.TCColorView;
-
 
 import java.util.List;
 
 /**
  * 配置气泡字幕样式、以及字体颜色的控件
  */
-public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitlePannel, BubbleAdapter.OnItemClickListener, View.OnClickListener, TCColorView.OnSelectColorListener {
-    private View               mContentView;
-    private RecyclerView       mRecycleBubbles;
-    private BubbleAdapter      mBubbleAdapter;
+public class BubbleSubtitlePannel
+        extends FrameLayout implements IBubbleSubtitlePannel, BubbleAdapter.OnItemClickListener,
+                                       View.OnClickListener, TCColorView.OnSelectColorListener {
+    private View mContentView;
+    private RecyclerView mRecycleBubbles;
+    private BubbleAdapter mBubbleAdapter;
     private List<TCBubbleInfo> mBubbles;
-    private ImageView          mImageClose;
-    private TextView           mTextBubbleStyle;   //气泡样式
-    private TextView           mTextColor;         //文字颜色
-    private TCColorView        mColorView;
-    private TCCircleView       mCvColor;
-    private LinearLayout       mLlColor;
+    private ImageView mImageClose;
+    private TextView mTextBubbleStyle; //气泡样式
+    private TextView mTextColor; //文字颜色
+    private TCColorView mColorView;
+    private TCCircleView mCvColor;
+    private LinearLayout mLlColor;
 
     @Nullable
-    private TCSubtitleInfo           mSubtitleInfo;
+    private TCSubtitleInfo mSubtitleInfo;
     private OnBubbleSubtitleCallback mCallback;
 
     public BubbleSubtitlePannel(@NonNull Context context) {
@@ -57,7 +57,8 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
         init();
     }
 
-    public BubbleSubtitlePannel(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public BubbleSubtitlePannel(
+            @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -65,7 +66,8 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     public void init() {
         mSubtitleInfo = new TCSubtitleInfo();
 
-        mContentView = LayoutInflater.from(getContext()).inflate(R.layout.ugckit_layout_bubble_window, this, true);
+        mContentView = LayoutInflater.from(getContext())
+                               .inflate(R.layout.ugckit_layout_bubble_window, this, true);
         initViews(mContentView);
     }
 
@@ -86,7 +88,8 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     }
 
     private void enterAnimator() {
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getHeight(), 0);
+        ObjectAnimator translationY =
+                ObjectAnimator.ofFloat(mContentView, "translationY", mContentView.getHeight(), 0);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(400);
         set.play(translationY);
@@ -98,18 +101,13 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
-            }
+            public void onAnimationEnd(Animator animation) {}
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         set.start();
     }
@@ -133,7 +131,8 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
         mRecycleBubbles.setVisibility(View.VISIBLE);
         mBubbleAdapter = new BubbleAdapter(list);
         mBubbleAdapter.setOnItemClickListener(this);
-        GridLayoutManager manager = new GridLayoutManager(mContentView.getContext(), 4, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager manager = new GridLayoutManager(
+                mContentView.getContext(), 4, GridLayoutManager.VERTICAL, false);
         mRecycleBubbles.setLayoutManager(manager);
         mRecycleBubbles.setAdapter(mBubbleAdapter);
     }
@@ -159,16 +158,15 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     }
 
     private void exitAnimator() {
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(mContentView, "translationY", 0,
-                mContentView.getHeight());
+        ObjectAnimator translationY =
+                ObjectAnimator.ofFloat(mContentView, "translationY", 0, mContentView.getHeight());
         AnimatorSet set = new AnimatorSet();
         set.setDuration(200);
         set.play(translationY);
         set.setInterpolator(new AccelerateDecelerateInterpolator());
         set.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -176,12 +174,10 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         set.start();
     }
@@ -212,8 +208,6 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
 
         } else if (i == R.id.iv_close) {
             dismiss();
-
-
         }
     }
 
@@ -244,10 +238,10 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     }
 
     public void setTabTextColor(int selectedColor, int normalColor) {
-        int[] colors = new int[]{selectedColor, normalColor};
+        int[] colors = new int[] {selectedColor, normalColor};
         int[][] states = new int[2][];
-        states[0] = new int[]{android.R.attr.state_selected, android.R.attr.state_enabled};
-        states[1] = new int[]{android.R.attr.state_enabled};
+        states[0] = new int[] {android.R.attr.state_selected, android.R.attr.state_enabled};
+        states[1] = new int[] {android.R.attr.state_enabled};
         ColorStateList colorList = new ColorStateList(states, colors);
 
         mTextBubbleStyle.setTextColor(colorList);
@@ -262,5 +256,4 @@ public class BubbleSubtitlePannel extends FrameLayout implements IBubbleSubtitle
     public void setCancelIconResource(int resid) {
         mImageClose.setImageResource(resid);
     }
-
 }

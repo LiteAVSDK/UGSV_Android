@@ -13,9 +13,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-
-import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.utils.ToastUtil;
 
 /**
  * 录制-拍照ImageView
@@ -75,16 +74,21 @@ public class ImageSnapShotView extends RelativeLayout {
 
         ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(mIvSnapshotView, "scaleX", 1, scale);
         ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(mIvSnapshotView, "scaleY", 1, scale);
-        ObjectAnimator animatorTranslationX = ObjectAnimator.ofFloat(mIvSnapshotView, "translationX", 0, translationX);
-        ObjectAnimator animatorTranslationY = ObjectAnimator.ofFloat(mIvSnapshotView, "translationY", 0, translationY);
+        ObjectAnimator animatorTranslationX =
+                ObjectAnimator.ofFloat(mIvSnapshotView, "translationX", 0, translationX);
+        ObjectAnimator animatorTranslationY =
+                ObjectAnimator.ofFloat(mIvSnapshotView, "translationY", 0, translationY);
 
         AnimatorSet animatorSet1 = new AnimatorSet();
         animatorSet1.setDuration(500);
         animatorSet1.setInterpolator(new DecelerateInterpolator());
-        animatorSet1.play(animatorScaleX).with(animatorScaleY).with(animatorTranslationX).with(animatorTranslationY);
+        animatorSet1.play(animatorScaleX)
+                .with(animatorScaleY)
+                .with(animatorTranslationX)
+                .with(animatorTranslationY);
 
-        ObjectAnimator animatorFadeOut = ObjectAnimator.ofFloat(mIvSnapshotView, "alpha", 1.0f, 1.0f, 0.0f);
-
+        ObjectAnimator animatorFadeOut =
+                ObjectAnimator.ofFloat(mIvSnapshotView, "alpha", 1.0f, 1.0f, 0.0f);
 
         AnimatorSet animatorSet2 = new AnimatorSet();
         animatorSet2.setDuration(500);
@@ -97,26 +101,21 @@ public class ImageSnapShotView extends RelativeLayout {
 
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mIvSnapshotView.setVisibility(View.INVISIBLE);
-                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_activity_video_record_take_photo_success));
-//                mIsTakingPhoto = false;
+                ToastUtil.toastShortMessage(getResources().getString(
+                        R.string.ugckit_activity_video_record_take_photo_success));
+                //                mIsTakingPhoto = false;
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
     }

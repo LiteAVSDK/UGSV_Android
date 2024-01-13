@@ -3,9 +3,9 @@ package com.tencent.qcloud.ugckit.utils;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
@@ -24,16 +24,14 @@ public class CoverUtil {
 
     @NonNull
     private static CoverUtil sInstance = new CoverUtil();
-    private        String    mVideoPath;
+    private String mVideoPath;
 
-    private CoverUtil() {
-    }
+    private CoverUtil() {}
 
     @NonNull
     public static CoverUtil getInstance() {
         return sInstance;
     }
-
 
     public void setInputPath(String path) {
         mVideoPath = path;
@@ -51,7 +49,8 @@ public class CoverUtil {
                 if (!outputVideo.exists()) {
                     return null;
                 }
-                Bitmap bitmap = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getSampleImage(0, mVideoPath);
+                Bitmap bitmap = TXVideoInfoReader.getInstance(UGCKit.getAppContext())
+                                        .getSampleImage(0, mVideoPath);
                 if (bitmap == null) {
                     Log.e(TAG, "TXVideoInfoReader getSampleImage bitmap is null");
                     return null;
@@ -61,12 +60,14 @@ public class CoverUtil {
                     Log.e(TAG, "sdcardDir is null");
                     return null;
                 }
-                String folder = sdcardDir + File.separator + UGCKitConstants.DEFAULT_MEDIA_PACK_FOLDER;
+                String folder =
+                        sdcardDir + File.separator + UGCKitConstants.DEFAULT_MEDIA_PACK_FOLDER;
                 File appDir = new File(folder);
                 if (!appDir.exists()) {
                     appDir.mkdirs();
                 }
-                String fileName = "thumbnail" + ".jpg";
+                String fileName = "thumbnail"
+                        + ".jpg";
                 File file = new File(appDir, fileName);
                 if (file.exists()) {
                     file.delete();
@@ -95,12 +96,9 @@ public class CoverUtil {
                     listener.onCoverPath(coverImagePath);
                 }
             }
-
         };
         task.execute();
     }
 
-    public interface ICoverListener {
-        void onCoverPath(String coverPath);
-    }
+    public interface ICoverListener { void onCoverPath(String coverPath); }
 }

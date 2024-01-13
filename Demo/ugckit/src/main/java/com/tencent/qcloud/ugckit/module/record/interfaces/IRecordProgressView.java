@@ -4,8 +4,8 @@ import androidx.annotation.ColorRes;
 
 /**
  * 定制化"多段录制进度条"<br>
- * 注意：颜色请放入资源文件，通过R文件引入，示例 {@code getResources().getColor(R.color.record_progress_bg)}<br>
- * 进度条颜色，包括<br>
+ * 注意：颜色请放入资源文件，通过R文件引入，示例 {@code
+ * getResources().getColor(R.color.record_progress_bg)}<br> 进度条颜色，包括<br>
  * 1、已经录制的视频进度条颜色<br>
  * 2、删除上一段选中的进度条颜色<br>
  * 3、进度条背景颜色<br>
@@ -13,7 +13,6 @@ import androidx.annotation.ColorRes;
  */
 
 public interface IRecordProgressView {
-
     /**
      * 选中多段进度中最后一段
      */

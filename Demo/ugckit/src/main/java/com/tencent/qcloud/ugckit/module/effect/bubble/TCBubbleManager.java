@@ -25,11 +25,12 @@ public class TCBubbleManager {
     private static final String ROOT_DIR = "bubble";
 
     private static TCBubbleManager sInstance;
-    private final  Context         mContext;
+    private final Context mContext;
 
     public static TCBubbleManager getInstance(@NonNull Context context) {
-        if (sInstance == null)
+        if (sInstance == null) {
             sInstance = new TCBubbleManager(context);
+        }
         return sInstance;
     }
 
@@ -73,7 +74,8 @@ public class TCBubbleManager {
                 info.setHeight(height);
                 info.setDefaultSize(textSize);
                 //归一化坐标
-                info.setRect(top * 1.0f / height, left * 1.0f / width, right * 1.0f / width, bottom * 1.0f / height);
+                info.setRect(top * 1.0f / height, left * 1.0f / width, right * 1.0f / width,
+                        bottom * 1.0f / height);
                 info.setBubblePath(bubblePath);
                 info.setIconPath(iconPath);
 
@@ -85,7 +87,6 @@ public class TCBubbleManager {
         }
         return null;
     }
-
 
     @Nullable
     public Bitmap getBitmapFromAssets(@Nullable String path) {
@@ -110,7 +111,6 @@ public class TCBubbleManager {
         reader.close();
         return sb.toString();
     }
-
 
     private Bitmap getBitmap(String path) throws IOException {
         return BitmapFactory.decodeStream(getInputStreamFromAsset(path));

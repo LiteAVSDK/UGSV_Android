@@ -6,22 +6,20 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class MusicEntity implements Parcelable {
-
-    public int    id;               //id标识
-    public int    duration;         // 媒体播放总时间
-    public String title;            // 显示名称
-    public String display_name;     // 文件名称
-    public String path;             // 音乐文件的路径
-    public String albums;           // 专辑
-    public String artist;           // 艺术家
-    public String singer;           //歌手
+    public int id; // id标识
+    public int duration; // 媒体播放总时间
+    public String title; // 显示名称
+    public String display_name; // 文件名称
+    public String path; // 音乐文件的路径
+    public String albums; // 专辑
+    public String artist; // 艺术家
+    public String singer; //歌手
     public String durationStr;
-    public long   size;
-    public char   state = 0;        //0:idle 1:playing
-    public Uri    fileUri;
+    public long size;
+    public char state = 0; // 0:idle 1:playing
+    public Uri fileUri;
 
-    public MusicEntity() {
-    }
+    public MusicEntity() {}
 
     protected MusicEntity(Parcel in) {
         id = in.readInt();
@@ -74,19 +72,10 @@ public class MusicEntity implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "MusicEntity{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", display_name='" + display_name + '\'' +
-                ", path='" + path + '\'' +
-                ", duration='" + duration + '\'' +
-                ", albums=" + albums +
-                ", artist=" + artist +
-                ", singer=" + singer +
-                ", durationStr=" + durationStr +
-                ", size=" + size +
-                ", state=" + state +
-                ", fileUri=" + fileUri +
-                '}';
+        return "MusicEntity{"
+                + "id=" + id + ", title='" + title + '\'' + ", display_name='" + display_name + '\''
+                + ", path='" + path + '\'' + ", duration='" + duration + '\'' + ", albums=" + albums
+                + ", artist=" + artist + ", singer=" + singer + ", durationStr=" + durationStr
+                + ", size=" + size + ", state=" + state + ", fileUri=" + fileUri + '}';
     }
 }

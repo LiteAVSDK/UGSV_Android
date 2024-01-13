@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -12,9 +11,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
-
 
 /**
  * 倒计时动画View
@@ -22,9 +21,9 @@ import com.tencent.qcloud.ugckit.R;
 public class CountDownTimerView extends RelativeLayout implements ICountDownTimerView {
     public static int DEFAULT_COUNTDOWN_NUMBER = 3;
 
-    private TextView           mTextNumber;
+    private TextView mTextNumber;
     private ICountDownListener mListener;
-    private boolean            mAnimationStart;
+    private boolean mAnimationStart;
 
     public CountDownTimerView(Context context) {
         super(context);
@@ -83,7 +82,6 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
         ObjectAnimator animatorX4 = ObjectAnimator.ofFloat(mTextNumber, "scaleX", 1, 0);
         ObjectAnimator animatorY4 = ObjectAnimator.ofFloat(mTextNumber, "scaleY", 1, 0);
 
-
         AnimatorSet animatorSet1 = new AnimatorSet();
         animatorSet1.play(animatorX).with(animatorY);
         animatorSet1.setDuration(100);
@@ -113,9 +111,7 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
 
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -125,13 +121,10 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         animatorSet.start();
     }
@@ -151,5 +144,4 @@ public class CountDownTimerView extends RelativeLayout implements ICountDownTime
         DEFAULT_COUNTDOWN_NUMBER = 3;
         mAnimationStart = false;
     }
-
 }

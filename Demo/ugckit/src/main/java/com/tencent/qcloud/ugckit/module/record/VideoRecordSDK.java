@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
-import com.tencent.liteav.demo.beauty.BeautyParams;
-import com.tencent.qcloud.ugckit.R;
 import com.tencent.liteav.audio.TXCAudioUGCRecorder;
+import com.tencent.liteav.beautykit.BeautyParams;
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftInfo;
 import com.tencent.qcloud.ugckit.module.record.draft.RecordDraftManager;
@@ -18,7 +18,6 @@ import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.utils.VideoPathUtil;
-
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCPartsManager;
@@ -31,27 +30,25 @@ import java.util.List;
 public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
     private static final String TAG = "VideoRecordSDK";
 
-    public static  int                    STATE_START       = 1;
-    public static  int                    STATE_STOP        = 2;
-    public static  int                    STATE_RESUME      = 3;
-    public static  int                    STATE_PAUSE       = 4;
-    public static  int                    START_RECORD_SUCC = 0;
-    public static  int                    START_RECORD_FAIL = -1;
+    public static int STATE_START = 1;
+    public static int STATE_STOP = 2;
+    public static int STATE_RESUME = 3;
+    public static int STATE_PAUSE = 4;
+    public static int START_RECORD_SUCC = 0;
+    public static int START_RECORD_FAIL = -1;
     @NonNull
-    private static VideoRecordSDK         sInstance         = new VideoRecordSDK();
+    private static VideoRecordSDK sInstance = new VideoRecordSDK();
     @Nullable
-    private        TXUGCRecord            mRecordSDK;
-    private        UGCKitRecordConfig     mUGCKitRecordConfig;
-    private        RecordDraftManager     mRecordDraftManager;
-    private        OnVideoRecordListener  mOnVideoRecordListener;
-    private        OnRestoreDraftListener mOnRestoreDraftListener;
-    private        int                    mCurrentState     = STATE_STOP;
-    private        boolean                mPreviewFlag;
-    private        String                 mRecordVideoPath;
+    private TXUGCRecord mRecordSDK;
+    private UGCKitRecordConfig mUGCKitRecordConfig;
+    private RecordDraftManager mRecordDraftManager;
+    private OnVideoRecordListener mOnVideoRecordListener;
+    private OnRestoreDraftListener mOnRestoreDraftListener;
+    private int mCurrentState = STATE_STOP;
+    private boolean mPreviewFlag;
+    private String mRecordVideoPath;
 
-    private VideoRecordSDK() {
-
-    }
+    private VideoRecordSDK() {}
 
     @NonNull
     public static VideoRecordSDK getInstance() {
@@ -106,7 +103,8 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
                 mRecordSDK.setMute(mUGCKitRecordConfig.mIsMute);
             }
             mRecordSDK.startCameraSimplePreview(simpleConfig, videoView);
-            TXCAudioUGCRecorder.getInstance().setAECType(mUGCKitRecordConfig.mAECType, UGCKit.getAppContext());
+            TXCAudioUGCRecorder.getInstance().setAECType(
+                    mUGCKitRecordConfig.mAECType, UGCKit.getAppContext());
         } else {
             // 自定义配置
             TXRecordCommon.TXUGCCustomConfig customConfig = new TXRecordCommon.TXUGCCustomConfig();
@@ -162,7 +160,8 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordSDK.getBeautyManager().setToothWhitenLevel(beautyParams.mToothWhitenLevel);
             mRecordSDK.getBeautyManager().setWrinkleRemoveLevel(beautyParams.mWrinkleRemoveLevel);
             mRecordSDK.getBeautyManager().setPounchRemoveLevel(beautyParams.mPounchRemoveLevel);
-            mRecordSDK.getBeautyManager().setSmileLinesRemoveLevel(beautyParams.mSmileLinesRemoveLevel);
+            mRecordSDK.getBeautyManager().setSmileLinesRemoveLevel(
+                    beautyParams.mSmileLinesRemoveLevel);
             mRecordSDK.getBeautyManager().setForeheadLevel(beautyParams.mForeheadLevel);
             mRecordSDK.getBeautyManager().setEyeDistanceLevel(beautyParams.mEyeDistanceLevel);
             mRecordSDK.getBeautyManager().setEyeAngleLevel(beautyParams.mEyeAngleLevel);
@@ -225,7 +224,8 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
                 @Override
                 public void onSnapshot(final Bitmap bitmap) {
                     String fileName = System.currentTimeMillis() + ".jpg";
-                    MediaStore.Images.Media.insertImage(UGCKit.getAppContext().getContentResolver(), bitmap, fileName, null);
+                    MediaStore.Images.Media.insertImage(
+                            UGCKit.getAppContext().getContentResolver(), bitmap, fileName, null);
 
                     BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                         @Override
@@ -271,7 +271,8 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             if (mRecordSDK != null) {
                 mRecordSDK.getPartsManager().insertPart(recordPart.getPath(), i);
             }
-            TXVideoEditConstants.TXVideoInfo txVideoInfo = TXVideoInfoReader.getInstance(context).getVideoFileInfo(recordPart.getPath());
+            TXVideoEditConstants.TXVideoInfo txVideoInfo =
+                    TXVideoInfoReader.getInstance(context).getVideoFileInfo(recordPart.getPath());
             if (txVideoInfo != null) {
                 duration = duration + txVideoInfo.duration;
             }
@@ -353,17 +354,22 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             Log.d(TAG, "startRecord retCode:" + retCode);
             if (retCode != TXRecordCommon.START_RECORD_OK) {
                 if (retCode == TXRecordCommon.START_RECORD_ERR_NOT_INIT) {
-                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_start_record_not_init));
+                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(
+                            R.string.ugckit_start_record_not_init));
                 } else if (retCode == TXRecordCommon.START_RECORD_ERR_IS_IN_RECORDING) {
-                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_start_record_not_finish));
+                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(
+                            R.string.ugckit_start_record_not_finish));
                 } else if (retCode == TXRecordCommon.START_RECORD_ERR_VIDEO_PATH_IS_EMPTY) {
-                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_start_record_path_empty));
+                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(
+                            R.string.ugckit_start_record_path_empty));
                 } else if (retCode == TXRecordCommon.START_RECORD_ERR_API_IS_LOWER_THAN_18) {
-                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(R.string.ugckit_start_record_version_below));
+                    ToastUtil.toastShortMessage(UGCKit.getAppContext().getString(
+                            R.string.ugckit_start_record_version_below));
                 }
                 // 增加了TXUgcSDK.licence校验的返回错误码
                 else if (retCode == TXRecordCommon.START_RECORD_ERR_LICENCE_VERIFICATION_FAILED) {
-                    ToastUtil.toastShortMessage("licence校验失败，请调用TXUGCBase.getLicenceInfo(Context context)获取licence信息");
+                    ToastUtil.toastShortMessage(
+                            "licence校验失败，请调用TXUGCBase.getLicenceInfo(Context context)获取licence信息");
                 }
                 return START_RECORD_FAIL;
             }
@@ -405,7 +411,6 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mCurrentState = STATE_PAUSE;
         }
         mPreviewFlag = false;
-
     }
 
     /**
@@ -450,11 +455,11 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
             mRecordDraftManager.deleteLastRecordDraft();
         }
 
-//        AudioFocusManager.getInstance().abandonAudioFocus();
+        //        AudioFocusManager.getInstance().abandonAudioFocus();
     }
 
     public void setFilter(Bitmap leftBmp, float leftSpecialRatio, Bitmap rightBmp,
-                          float rightSpecialRatio, float leftRatio) {
+            float rightSpecialRatio, float leftRatio) {
         if (mRecordSDK != null) {
             mRecordSDK.setFilter(leftBmp, leftSpecialRatio, rightBmp, rightSpecialRatio, leftRatio);
         }
@@ -478,9 +483,11 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
                 mOnVideoRecordListener.onRecordEvent(event);
             }
         } else if (event == TXRecordCommon.EVT_CAMERA_CANNOT_USE) {
-            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_on_record_event_evt_camera_cannot_use));
+            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(
+                    R.string.ugckit_video_record_activity_on_record_event_evt_camera_cannot_use));
         } else if (event == TXRecordCommon.EVT_MIC_CANNOT_USE) {
-            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_on_record_event_evt_mic_cannot_use));
+            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(
+                    R.string.ugckit_video_record_activity_on_record_event_evt_mic_cannot_use));
         }
     }
 
@@ -495,7 +502,10 @@ public class VideoRecordSDK implements TXRecordCommon.ITXVideoRecordListener {
     public void onRecordComplete(@NonNull TXRecordCommon.TXRecordResult result) {
         Log.d(TAG, "onRecordComplete");
         if (result.retCode < 0) {
-            ToastUtil.toastShortMessage(UGCKit.getAppContext().getResources().getString(R.string.ugckit_video_record_activity_on_record_complete_fail_tip) + result.descMsg);
+            ToastUtil.toastShortMessage(
+                    UGCKit.getAppContext().getResources().getString(
+                            R.string.ugckit_video_record_activity_on_record_complete_fail_tip)
+                    + result.descMsg);
         } else {
             mCurrentState = STATE_STOP;
             pauseRecord();

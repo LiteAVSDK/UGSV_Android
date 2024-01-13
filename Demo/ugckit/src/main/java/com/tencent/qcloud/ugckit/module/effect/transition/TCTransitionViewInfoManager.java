@@ -31,5 +31,4 @@ public class TCTransitionViewInfoManager {
     public void clearMarkInfoList() {
         this.mMarkInfoList.clear();
     }
-
 }

@@ -6,20 +6,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.tencent.xmagic.demo.R;
 
-
 /**
  * 用于展示提示语的dialog
  * 可以修改 title，提示信息，左右按钮文字，以及按钮的响应信息
  */
 public class TipDialog extends AlertDialog {
-
     private TextView titleTv;
     private TextView msgTv;
     private Button leftBtn;
@@ -31,7 +28,6 @@ public class TipDialog extends AlertDialog {
     private String dialogLeftBtnStr;
     private String dialogRightBtnStr;
 
-
     public TipDialog(@NonNull Context context) {
         super(context);
     }
@@ -40,7 +36,8 @@ public class TipDialog extends AlertDialog {
         super(context, themeResId);
     }
 
-    public TipDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+    public TipDialog(@NonNull Context context, boolean cancelable,
+            @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
@@ -112,12 +109,9 @@ public class TipDialog extends AlertDialog {
         return this;
     }
 
-
     public interface TipDialogClickListener {
         void onLeftBtnClick(Button btn);
 
         void onRightBtnCLick(Button btn);
     }
-
-
 }

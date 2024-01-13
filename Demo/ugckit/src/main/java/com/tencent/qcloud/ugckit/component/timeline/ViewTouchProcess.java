@@ -1,14 +1,14 @@
 package com.tencent.qcloud.ugckit.component.timeline;
 
-import androidx.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
+import androidx.annotation.NonNull;
 
 public class ViewTouchProcess implements View.OnTouchListener {
-    private final String                    TAG = "ViewTouchProcess";
-    private       View                      mView;
-    private       float                     mStartX;
-    private       OnPositionChangedListener mOnPositionChangedListener;
+    private final String TAG = "ViewTouchProcess";
+    private View mView;
+    private float mStartX;
+    private OnPositionChangedListener mOnPositionChangedListener;
 
     public interface OnPositionChangedListener {
         void onPostionChanged(float distance);

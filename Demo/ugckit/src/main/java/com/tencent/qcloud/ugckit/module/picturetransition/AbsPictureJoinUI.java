@@ -4,13 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.tencent.qcloud.ugckit.module.cut.VideoPlayLayout;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
+import com.tencent.qcloud.ugckit.module.cut.VideoPlayLayout;
 
 public abstract class AbsPictureJoinUI extends RelativeLayout implements IPictureJoinKit {
-    private TitleBarLayout          mTitleBar;
-    private VideoPlayLayout         mVideoPlayLayout;
+    private TitleBarLayout mTitleBar;
+    private VideoPlayLayout mVideoPlayLayout;
     private PictureTransitionLayout mPictureTransitionLayout;
 
     public AbsPictureJoinUI(Context context) {
@@ -33,7 +33,8 @@ public abstract class AbsPictureJoinUI extends RelativeLayout implements IPictur
 
         mTitleBar = (TitleBarLayout) findViewById(R.id.titleBar_layout);
         mVideoPlayLayout = (VideoPlayLayout) findViewById(R.id.picture_play_layout);
-        mPictureTransitionLayout = (PictureTransitionLayout) findViewById(R.id.picture_transition_layout);
+        mPictureTransitionLayout =
+                (PictureTransitionLayout) findViewById(R.id.picture_transition_layout);
     }
 
     public TitleBarLayout getTitleBar() {
@@ -54,5 +55,4 @@ public abstract class AbsPictureJoinUI extends RelativeLayout implements IPictur
     public PictureTransitionLayout getPictureTransitionLayout() {
         return mPictureTransitionLayout;
     }
-
 }

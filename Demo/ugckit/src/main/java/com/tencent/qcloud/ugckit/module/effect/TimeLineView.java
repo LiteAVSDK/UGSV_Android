@@ -3,19 +3,18 @@ package com.tencent.qcloud.ugckit.module.effect;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import androidx.fragment.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import androidx.fragment.app.FragmentActivity;
 
-
-import com.tencent.qcloud.ugckit.component.timeline.SliderViewContainer;
-import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
-import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.component.timeline.SliderViewContainer;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressController;
 import com.tencent.qcloud.ugckit.component.timeline.VideoProgressView;
+import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.time.TCTimeFragment;
 import com.tencent.qcloud.ugckit.module.effect.time.TimeEffect;
 import com.tencent.qcloud.ugckit.module.effect.utils.PlayState;
@@ -25,17 +24,19 @@ import java.util.List;
 /**
  * 编辑控件：图片时间轴
  */
-public class TimeLineView extends RelativeLayout implements ITimeLineView, VideoProgressController.VideoProgressSeekListener, PlayerManagerKit.OnPreviewListener {
+public class TimeLineView extends RelativeLayout
+        implements ITimeLineView, VideoProgressController.VideoProgressSeekListener,
+                   PlayerManagerKit.OnPreviewListener {
     private static final String TAG = "TimeLineView";
 
-    private FragmentActivity        mActivity;
-    private ImageView               mImageSlider;
-    private VideoProgressView       mVideoProgressView;
+    private FragmentActivity mActivity;
+    private ImageView mImageSlider;
+    private VideoProgressView mVideoProgressView;
     private VideoProgressController mVideoProgressController;
-    private SliderViewContainer     mSpeedSlider;
-    private SliderViewContainer     mRepeatSlider;
-    private int                     startProgressIcon = R.drawable.ugckit_ic_repeate_range;
-    private OnTimeChangeListener    mListener;
+    private SliderViewContainer mSpeedSlider;
+    private SliderViewContainer mRepeatSlider;
+    private int startProgressIcon = R.drawable.ugckit_ic_repeate_range;
+    private OnTimeChangeListener mListener;
 
     public TimeLineView(Context context) {
         super(context);
@@ -82,7 +83,6 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
                         mVideoProgressView.addThumbnailDate(bitmap);
                     }
                 });
-
             }
         });
 
@@ -119,9 +119,7 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
     }
 
     @Override
-    public void onPreviewFinish() {
-
-    }
+    public void onPreviewFinish() {}
 
     @Override
     public void updateUIByFragment(int type) {
@@ -152,16 +150,18 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
         if (mSpeedSlider == null) {
             mSpeedSlider = new SliderViewContainer(getContext());
             mSpeedSlider.setSliderIcon(startProgressIcon);
-            mSpeedSlider.setStartTimeMs(startEffectTime, VideoEditerSDK.getInstance().getEffectDrawWidth());
-            mSpeedSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
-                @Override
-                public void onStartTimeMsChanged(long timeMs) {
-                    if (mListener != null) {
-                        mListener.onTimeChange(TimeEffect.SPEED_EFFECT, timeMs);
-                    }
-                    mVideoProgressController.setCurrentTimeMs(timeMs);
-                }
-            });
+            mSpeedSlider.setStartTimeMs(
+                    startEffectTime, VideoEditerSDK.getInstance().getEffectDrawWidth());
+            mSpeedSlider.setOnStartTimeChangedListener(
+                    new SliderViewContainer.OnStartTimeChangedListener() {
+                        @Override
+                        public void onStartTimeMsChanged(long timeMs) {
+                            if (mListener != null) {
+                                mListener.onTimeChange(TimeEffect.SPEED_EFFECT, timeMs);
+                            }
+                            mVideoProgressController.setCurrentTimeMs(timeMs);
+                        }
+                    });
             mVideoProgressController.addSliderView(mSpeedSlider);
         }
     }
@@ -170,16 +170,18 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
         if (mRepeatSlider == null) {
             mRepeatSlider = new SliderViewContainer(getContext());
             mRepeatSlider.setSliderIcon(startProgressIcon);
-            mRepeatSlider.setStartTimeMs(startEffectTime, VideoEditerSDK.getInstance().getEffectDrawWidth());
-            mRepeatSlider.setOnStartTimeChangedListener(new SliderViewContainer.OnStartTimeChangedListener() {
-                @Override
-                public void onStartTimeMsChanged(long timeMs) {
-                    if (mListener != null) {
-                        mListener.onTimeChange(TimeEffect.REPEAT_EFFECT, timeMs);
-                    }
-                    mVideoProgressController.setCurrentTimeMs(timeMs);
-                }
-            });
+            mRepeatSlider.setStartTimeMs(
+                    startEffectTime, VideoEditerSDK.getInstance().getEffectDrawWidth());
+            mRepeatSlider.setOnStartTimeChangedListener(
+                    new SliderViewContainer.OnStartTimeChangedListener() {
+                        @Override
+                        public void onStartTimeMsChanged(long timeMs) {
+                            if (mListener != null) {
+                                mListener.onTimeChange(TimeEffect.REPEAT_EFFECT, timeMs);
+                            }
+                            mVideoProgressController.setCurrentTimeMs(timeMs);
+                        }
+                    });
             mVideoProgressController.addSliderView(mRepeatSlider);
         }
     }
@@ -242,7 +244,6 @@ public class TimeLineView extends RelativeLayout implements ITimeLineView, Video
         void setCurrentTime(long time);
 
         void onRefresh();
-
     }
 
     public interface OnTimeChangeListener {

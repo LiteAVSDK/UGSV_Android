@@ -5,10 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +12,15 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.effect.paster.IPasterPannel;
 import com.tencent.qcloud.ugckit.module.effect.paster.TCPasterInfo;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
-import com.tencent.qcloud.ugckit.R;
-
 
 import java.util.List;
 
@@ -30,17 +28,17 @@ import java.util.List;
  * 贴纸面板
  */
 public class PasterPannel extends LinearLayout implements IPasterPannel, View.OnClickListener {
-    private Context                            mContext;
-    private int                                mSelectColor;
-    private int                                mCurrentTab;
-    private TextView                           mTextPaster;
-    private TextView                           mTextAnimatedPaster;
-    private RecyclerView                       mRecyclerView;
-    private PasterAdapter                      mPasterAdapter;
-    private ImageView                          mImageSure;
+    private Context mContext;
+    private int mSelectColor;
+    private int mCurrentTab;
+    private TextView mTextPaster;
+    private TextView mTextAnimatedPaster;
+    private RecyclerView mRecyclerView;
+    private PasterAdapter mPasterAdapter;
+    private ImageView mImageSure;
     private IPasterPannel.OnTabChangedListener mOnTabChangedListener;
-    private IPasterPannel.OnAddClickListener   mOnAddClickListener;
-    private IPasterPannel.OnItemClickListener  mOnItemClickListener;
+    private IPasterPannel.OnAddClickListener mOnAddClickListener;
+    private IPasterPannel.OnItemClickListener mOnItemClickListener;
 
     public PasterPannel(@NonNull Context context) {
         super(context);
@@ -72,7 +70,8 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
 
         mCurrentTab = TAB_ANIMATED_PASTER;
 
-        mSelectColor = UIAttributeUtil.getColorRes(context, R.attr.ugckitColorPrimary, R.color.ugckit_color_red2);
+        mSelectColor = UIAttributeUtil.getColorRes(
+                context, R.attr.ugckitColorPrimary, R.color.ugckit_color_red2);
         mTextAnimatedPaster.setTextColor(mSelectColor);
         mTextPaster.setTextColor(context.getResources().getColor(R.color.ugckit_white));
     }
@@ -81,7 +80,8 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
         mPasterAdapter = new PasterAdapter(pasterInfoList);
         mPasterAdapter.setOnItemClickListener(mOnItemClickListener);
 
-        GridLayoutManager manager = new GridLayoutManager(mContext, 1, GridLayoutManager.HORIZONTAL, false);
+        GridLayoutManager manager =
+                new GridLayoutManager(mContext, 1, GridLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mPasterAdapter);
     }
@@ -105,7 +105,8 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
                 return;
             }
             mCurrentTab = TAB_PASTER;
-            mTextAnimatedPaster.setTextColor(mContext.getResources().getColor(R.color.ugckit_white));
+            mTextAnimatedPaster.setTextColor(
+                    mContext.getResources().getColor(R.color.ugckit_white));
             mTextPaster.setTextColor(mSelectColor);
             if (mOnTabChangedListener != null) {
                 mOnTabChangedListener.onTabChanged(mCurrentTab);
@@ -137,7 +138,8 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
     }
 
     private void enterAnimator() {
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(this, "translationY", this.getHeight(), 0);
+        ObjectAnimator translationY =
+                ObjectAnimator.ofFloat(this, "translationY", this.getHeight(), 0);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(400);
         set.play(translationY);
@@ -149,33 +151,27 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
             }
 
             @Override
-            public void onAnimationEnd(Animator animation) {
-            }
+            public void onAnimationEnd(Animator animation) {}
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         set.start();
     }
 
     private void exitAnimator() {
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(this, "translationY", 0,
-                this.getHeight());
+        ObjectAnimator translationY =
+                ObjectAnimator.ofFloat(this, "translationY", 0, this.getHeight());
         AnimatorSet set = new AnimatorSet();
         set.setDuration(200);
         set.play(translationY);
         set.setInterpolator(new AccelerateDecelerateInterpolator());
         set.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {
-            }
+            public void onAnimationStart(Animator animation) {}
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -183,12 +179,10 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {
-            }
+            public void onAnimationCancel(Animator animation) {}
 
             @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
+            public void onAnimationRepeat(Animator animation) {}
         });
         set.start();
     }
@@ -209,10 +203,10 @@ public class PasterPannel extends LinearLayout implements IPasterPannel, View.On
     }
 
     public void setTabTextColor(int selectedColor, int normalColor) {
-        int[] colors = new int[]{selectedColor, normalColor};
+        int[] colors = new int[] {selectedColor, normalColor};
         int[][] states = new int[2][];
-        states[0] = new int[]{android.R.attr.state_selected, android.R.attr.state_enabled};
-        states[1] = new int[]{android.R.attr.state_enabled};
+        states[0] = new int[] {android.R.attr.state_selected, android.R.attr.state_enabled};
+        states[1] = new int[] {android.R.attr.state_enabled};
         ColorStateList colorList = new ColorStateList(states, colors);
 
         mTextPaster.setTextColor(colorList);

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tencent.qcloud.xiaoshipin">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <activity
+            android:name=".mainui.TCSplashActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme">
+        </activity>
+
+        <activity
+            android:name=".mainui.TCMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".userinfo.TCAboutActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".logoff.TCLogOffActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain" />
+
+        <activity
+            android:name=".login.TCLoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme" />
+
+        <activity
+            android:name=".login.TCRegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/RegisterTheme" />
+
+        <activity
+            android:name=".play.TCVodPlayerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".videorecord.TCVideoRecordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/RecordActivityTheme"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".videorecord.TCVideoFollowRecordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MixRecordActivityTheme"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".videorecord.TCVideoTripleScreenActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MixRecordActivityTheme"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
+            android:name=".videopublish.TCVideoPublisherActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <!-- TCWebViewActivity 用于显示内置网页，不能删。 -->
+        <activity
+            android:name=".webview.TCWebViewActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeMain">
+
+            <intent-filter>
+                <action android:name="com.tencent.liteav.action.webview" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+        <!--        <activity-->
+        <!--            android:name="com.umeng.qq.tencent.AssistActivity"-->
+        <!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
+        <activity
+            android:name=".videochoose.TCPicturePickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PickerActivityTheme" />
+
+        <activity
+            android:name=".videochoose.TCTripleRecordVideoPickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PickerActivityTheme" />
+
+        <activity
+            android:name=".videochoose.TCVideoPickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PickerActivityTheme" />
+
+        <activity
+            android:name=".videojoiner.TCPictureJoinActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/PictureTransitionActivityStyle" />
+
+        <activity
+            android:name=".videoeditor.TCVideoCutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/EditerActivityTheme" />
+
+        <activity
+            android:name=".videoeditor.TCVideoEditerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/EditerActivityTheme" />
+
+        <activity
+            android:name=".videoeditor.TCVideoEffectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/EditerActivityTheme" />
+
+        <activity
+            android:name=".videojoiner.TCVideoJoinerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity android:name=".userinfo.TCAboutIntroductionActivity" />
+
+        <!--        <provider-->
+        <!--            android:name="androidx.core.content.FileProvider"-->
+        <!--            android:authorities=".fileprovider"-->
+        <!--            android:exported="false"-->
+        <!--            android:grantUriPermissions="true">-->
+        <!--            <meta-data-->
+        <!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--                android:resource="@xml/filepaths" />-->
+        <!--        </provider>-->
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="false" />
+
+        <uses-library android:name="android.test.runner" />
+
+        <activity
+            android:name=".mainui.TCSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".mainui.TCLanguagaSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <receiver
+            android:name=".manager.LanguageChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

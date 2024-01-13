@@ -1,7 +1,6 @@
 package com.tencent.qcloud.ugckit.component.swipemenu;
 
 public interface Closeable {
-
     /**
      * Smooth closed the menu.
      */

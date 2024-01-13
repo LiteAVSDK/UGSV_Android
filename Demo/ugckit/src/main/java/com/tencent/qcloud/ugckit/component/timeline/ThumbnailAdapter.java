@@ -2,14 +2,13 @@ package com.tencent.qcloud.ugckit.component.timeline;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tencent.qcloud.ugckit.R;
 
@@ -17,12 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.ThumbnailViewHolder> {
-
-    private static final int TYPE_HEADER    = 1;
-    private static final int TYPE_FOOTER    = 2;
+    private static final int TYPE_HEADER = 1;
+    private static final int TYPE_FOOTER = 2;
     private static final int TYPE_THUMBNAIL = 3;
 
-    private int          mViewWidth;
+    private int mViewWidth;
     @Nullable
     private List<Bitmap> mThumbnailList;
 
@@ -48,15 +46,18 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
             case TYPE_HEADER:
             case TYPE_FOOTER:
                 itemView = new View(parent.getContext());
-                itemView.setLayoutParams(new ViewGroup.LayoutParams(mViewWidth / 2, ViewGroup.LayoutParams.MATCH_PARENT));
+                itemView.setLayoutParams(new ViewGroup.LayoutParams(
+                        mViewWidth / 2, ViewGroup.LayoutParams.MATCH_PARENT));
                 itemView.setBackgroundColor(Color.TRANSPARENT);
                 viewHolder = new ThumbnailViewHolder(itemView);
                 return viewHolder;
 
             case TYPE_THUMBNAIL:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_item_video_progress_thumbnail, null);
+                itemView = LayoutInflater.from(parent.getContext())
+                                   .inflate(R.layout.ugckit_item_video_progress_thumbnail, null);
                 viewHolder = new ThumbnailViewHolder(itemView);
-                viewHolder.ivThumbnail = (ImageView) itemView.findViewById(R.id.iv_video_progress_thumbnail);
+                viewHolder.ivThumbnail =
+                        (ImageView) itemView.findViewById(R.id.iv_video_progress_thumbnail);
                 return viewHolder;
         }
         return null;
@@ -98,7 +99,6 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
     }
 
     class ThumbnailViewHolder extends RecyclerView.ViewHolder {
-
         ImageView ivThumbnail;
 
         public ThumbnailViewHolder(@NonNull View itemView) {

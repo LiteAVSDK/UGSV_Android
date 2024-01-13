@@ -8,31 +8,29 @@ import static com.tencent.ugc.TXVideoEditConstants.SPEED_LEVEL_SLOWEST;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ProgressBar;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.effect.TimeLineView;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
-import com.tencent.qcloud.ugckit.R;
-
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditConstants.TXGenerateResult;
 import com.tencent.ugc.TXVideoEditer;
-
 import com.tencent.ugc.TXVideoEditer.TXVideoProcessListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,26 +40,26 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 时间特效的Fragment
  */
 public class TCTimeFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG                = "TCTimeFragment";
-    public static final  long DEAULT_REPEAT_DURATION_MS = 1000; //默认重复时间段1s
-    public static final  long DEAULT_SPEED_DURATION_MS = 1500; //默认速度时间段1.5s
+    private static final String TAG = "TCTimeFragment";
+    public static final long DEAULT_REPEAT_DURATION_MS = 1000; //默认重复时间段1s
+    public static final long DEAULT_SPEED_DURATION_MS = 1500; //默认速度时间段1.5s
 
-    private ImageView                       mImageCancel;
-    private ImageView                       mImageSpeed;
-    private ImageView                       mImageRepeat;
-    private ImageView                       mImageReverse;
-    private CircleImageView                 mCircleImageCancelSelect;
-    private CircleImageView                 mCircleSpeedSelect;
-    private CircleImageView                 mCircleImageRepeatSelect;
-    private CircleImageView                 mCircleImageReverseSelect;
-    private TXVideoEditer                   mTXVideoEditer;
-    private long                            mCurrentEffectStartMs;
-    private int                             mCurrentEffect  = TimeEffect.NONE_EFFECT;
-    private int                             noTimeMotionGif = R.drawable.ugckit_motion_time_normal;
-    private int                             slowMotionGif   = R.drawable.ugckit_motion_time_slow;
-    private int                             repeatGif       = R.drawable.ugckit_motion_time_repeat;
-    private int                             reverseGif      = R.drawable.ugckit_motion_time_reverse;
-    private int                             coverIcon       = R.drawable.ugckit_ic_effect5;
+    private ImageView mImageCancel;
+    private ImageView mImageSpeed;
+    private ImageView mImageRepeat;
+    private ImageView mImageReverse;
+    private CircleImageView mCircleImageCancelSelect;
+    private CircleImageView mCircleSpeedSelect;
+    private CircleImageView mCircleImageRepeatSelect;
+    private CircleImageView mCircleImageReverseSelect;
+    private TXVideoEditer mTXVideoEditer;
+    private long mCurrentEffectStartMs;
+    private int mCurrentEffect = TimeEffect.NONE_EFFECT;
+    private int noTimeMotionGif = R.drawable.ugckit_motion_time_normal;
+    private int slowMotionGif = R.drawable.ugckit_motion_time_slow;
+    private int repeatGif = R.drawable.ugckit_motion_time_repeat;
+    private int reverseGif = R.drawable.ugckit_motion_time_reverse;
+    private int coverIcon = R.drawable.ugckit_ic_effect5;
     private TimeLineView.OnTimeLineListener mListener;
 
     // 倒放跟反复特效需要全I帧视频，这里为等到全I帧视频的状态
@@ -74,7 +72,8 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ugckit_fragment_time, container, false);
     }
 
@@ -124,10 +123,14 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
 
     private void initViews(@NonNull View view) {
         mRootView = view;
-        noTimeMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectNormalIcon, R.drawable.ugckit_motion_time_normal);
-        slowMotionGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectSlowMotionIcon, R.drawable.ugckit_motion_time_slow);
-        repeatGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectRepeatIcon, R.drawable.ugckit_motion_time_repeat);
-        reverseGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectReverseIcon, R.drawable.ugckit_motion_time_reverse);
+        noTimeMotionGif = UIAttributeUtil.getResResources(getContext(),
+                R.attr.editerTimeEffectNormalIcon, R.drawable.ugckit_motion_time_normal);
+        slowMotionGif = UIAttributeUtil.getResResources(getContext(),
+                R.attr.editerTimeEffectSlowMotionIcon, R.drawable.ugckit_motion_time_slow);
+        repeatGif = UIAttributeUtil.getResResources(getContext(), R.attr.editerTimeEffectRepeatIcon,
+                R.drawable.ugckit_motion_time_repeat);
+        reverseGif = UIAttributeUtil.getResResources(getContext(),
+                R.attr.editerTimeEffectReverseIcon, R.drawable.ugckit_motion_time_reverse);
 
         mCircleImageCancelSelect = (CircleImageView) view.findViewById(R.id.time_tv_cancel_select);
         mImageCancel = (ImageView) view.findViewById(R.id.time_tv_cancel);
@@ -139,7 +142,8 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         mCircleImageRepeatSelect = (CircleImageView) view.findViewById(R.id.time_tv_repeat_select);
         mImageRepeat = (ImageView) view.findViewById(R.id.time_tv_repeat);
         mImageRepeat.setOnClickListener(this);
-        mCircleImageReverseSelect = (CircleImageView) view.findViewById(R.id.time_tv_reverse_select);
+        mCircleImageReverseSelect =
+                (CircleImageView) view.findViewById(R.id.time_tv_reverse_select);
         mImageReverse = (ImageView) view.findViewById(R.id.time_tv_reverse);
         mImageReverse.setOnClickListener(this);
 
@@ -170,7 +174,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         long currentTime = 0;
         if (mListener != null) {
             currentTime = mListener.getCurrentTime();
-
         }
         setRepeatList(currentTime);
         PlayerManagerKit.getInstance().previewAtTime(currentTime);
@@ -195,14 +198,14 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         VideoEditerSDK.getInstance().addEffectDuration(0);
         long repeatDurationPlus = (repeat.endTime - repeat.startTime) * (REPEAT_TIMES - 1);
         VideoEditerSDK.getInstance().addEffectDuration(repeatDurationPlus);
-        VideoEditerSDK.getInstance().setEffectDrawWidth(repeatDurationPlus + ((repeat.endTime - repeat.startTime)));
+        VideoEditerSDK.getInstance().setEffectDrawWidth(
+                repeatDurationPlus + ((repeat.endTime - repeat.startTime)));
     }
 
     private void initSpeedLayout() {
         long currentTime = 0;
         if (mListener != null) {
             currentTime = mListener.getCurrentTime();
-
         }
         setSpeed(currentTime);
         PlayerManagerKit.getInstance().previewAtTime(currentTime);
@@ -232,47 +235,53 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         final long speedDefaultDuration = 500;
         List<TXVideoEditConstants.TXSpeed> list = new ArrayList<>();
         TXVideoEditConstants.TXSpeed speed1 = new TXVideoEditConstants.TXSpeed();
-        speed1.startTime = timeline;                                                    // 开始时间
+        speed1.startTime = timeline; // 开始时间
         timeline += speedDefaultDuration;
         timeline = Math.min(timeline, duration);
         speed1.endTime = timeline;
-        speed1.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 慢速
+        speed1.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW; // 慢速
         list.add(speed1);
-        speedDurationPlus += (speed1.endTime - speed1.startTime) / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
+        speedDurationPlus += (speed1.endTime - speed1.startTime)
+                / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
         Log.i(TAG, "add speed: " + speed1.startTime + "   " + speed1.endTime + " SPEED_LEVEL_SLOW");
 
         TXVideoEditConstants.TXSpeed speed2 = new TXVideoEditConstants.TXSpeed();
-        speed2.startTime = timeline;                                              // 开始时间
+        speed2.startTime = timeline; // 开始时间
         timeline += speedDefaultDuration;
         timeline = Math.min(timeline, duration);
         speed2.endTime = timeline;
 
         long speedDuration = speed2.endTime - speed2.startTime;
         if (speedDuration > 0) {
-            speed2.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOWEST;                    // 极慢速
+            speed2.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOWEST; // 极慢速
             list.add(speed2);
             speedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOWEST);
-            Log.i(TAG, "add speed: " + speed2.startTime + "   " + speed2.endTime + " SPEED_LEVEL_SLOWEST");
+            Log.i(TAG,
+                    "add speed: " + speed2.startTime + "   " + speed2.endTime
+                            + " SPEED_LEVEL_SLOWEST");
         }
 
         TXVideoEditConstants.TXSpeed speed3 = new TXVideoEditConstants.TXSpeed();
-        speed3.startTime = timeline;                                             // 开始时间
+        speed3.startTime = timeline; // 开始时间
         timeline += speedDefaultDuration;
         timeline = Math.min(timeline, duration);
         speed3.endTime = timeline;
         speedDuration = speed3.endTime - speed3.startTime;
         if (speedDuration > 0) {
-            speed3.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW;                       // 极速
+            speed3.speedLevel = TXVideoEditConstants.SPEED_LEVEL_SLOW; // 极速
             list.add(speed3);
             speedDurationPlus += speedDuration / getSpeed(TXVideoEditConstants.SPEED_LEVEL_SLOW);
-            Log.i(TAG, "add speed: " + speed3.startTime + "   " + speed3.endTime + " SPEED_LEVEL_SLOW");
+            Log.i(TAG,
+                    "add speed: " + speed3.startTime + "   " + speed3.endTime
+                            + " SPEED_LEVEL_SLOW");
         }
         // 设入SDK
         mTXVideoEditer.setSpeedList(list);
         //每段变速后的播放时长 - 正常的播放时长
         speedDurationPlus -= (timeline - startTime);
-        Log.i(TAG, "mSpeedDurationPlus: " + speedDurationPlus
-                + "  duraiton:" + VideoEditerSDK.getInstance().getVideoDuration());
+        Log.i(TAG,
+                "mSpeedDurationPlus: " + speedDurationPlus
+                        + "  duraiton:" + VideoEditerSDK.getInstance().getVideoDuration());
         VideoEditerSDK.getInstance().setEffectDrawWidth(speedDurationPlus);
         VideoEditerSDK.getInstance().addEffectDuration(speedDurationPlus);
     }
@@ -378,8 +387,8 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
         }
         if (VideoEditerSDK.getInstance().getVideoSourcePath() != null
                 && VideoEditerSDK.getInstance().getVideoProcessPath() != null
-                && !VideoEditerSDK.getInstance().getVideoSourcePath()
-                .equals(VideoEditerSDK.getInstance().getVideoProcessPath())) {
+                && !VideoEditerSDK.getInstance().getVideoSourcePath().equals(
+                        VideoEditerSDK.getInstance().getVideoProcessPath())) {
             mNeedReload = true;
             mIsProcessing = true;
             TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
@@ -405,7 +414,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
 
     // 转全I帧监听
     TXVideoProcessListener processListener = new TXVideoProcessListener() {
-
         @Override
         public void onProcessProgress(float progress) {
             if (mProgressLayer == null || mProgressLayer.getVisibility() == View.GONE) {
@@ -436,7 +444,6 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
             mIsProcessing = false;
         }
     };
-
 
     /**
      * 取消设置了的时间特效
@@ -565,6 +572,5 @@ public class TCTimeFragment extends Fragment implements View.OnClickListener {
                 mCurrentEffectStartMs = timeMs;
                 break;
         }
-
     }
 }

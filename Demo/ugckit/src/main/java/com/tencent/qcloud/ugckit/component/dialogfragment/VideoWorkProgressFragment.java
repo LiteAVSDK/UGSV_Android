@@ -2,10 +2,6 @@ package com.tencent.qcloud.ugckit.component.dialogfragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,20 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.progressbar.NumberProgressBar;
 
 public class VideoWorkProgressFragment extends DialogFragment {
-    private static final String               KEY_TITLE  = "key_title";
-    private              View                 mViewContent;
-    private              ImageView            mImageStop;
-    private              TextView             mTextTips;
-    private              NumberProgressBar    mProgressLoading;
-    private              View.OnClickListener mListener;
-    private              int                  mProgress;
-    private              boolean              mCanCancel = true;
+    private static final String KEY_TITLE = "key_title";
+    private View mViewContent;
+    private ImageView mImageStop;
+    private TextView mTextTips;
+    private NumberProgressBar mProgressLoading;
+    private View.OnClickListener mListener;
+    private int mProgress;
+    private boolean mCanCancel = true;
 
     @NonNull
     public static VideoWorkProgressFragment newInstance(String title) {
@@ -45,7 +44,8 @@ public class VideoWorkProgressFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            Bundle savedInstanceState) {
         mViewContent = inflater.inflate(R.layout.ugckit_layout_joiner_progress, null);
         mTextTips = (TextView) mViewContent.findViewById(R.id.joiner_tv_msg);
         Bundle bundle = getArguments();
@@ -76,7 +76,6 @@ public class VideoWorkProgressFragment extends DialogFragment {
         });
         return mViewContent;
     }
-
 
     /**
      * 设置停止按钮的监听
@@ -113,7 +112,8 @@ public class VideoWorkProgressFragment extends DialogFragment {
             } else {
                 manager.beginTransaction().show(this).commitAllowingStateLoss();
             }
-            //Fragment already added FIXBUG:commit()并不立即执行transaction中包含的动作,而是把它加入到UI线程队列中.
+            // Fragment already added
+            // FIXBUG:commit()并不立即执行transaction中包含的动作,而是把它加入到UI线程队列中.
             //如果想要立即执行,可以在commit之后立即调用FragmentManager的executePendingTransactions()方法
             manager.executePendingTransactions();
         } catch (Exception e) {

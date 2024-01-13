@@ -6,11 +6,10 @@ import androidx.annotation.NonNull;
  * Activity跳转的信息保存
  */
 public class JumpActivityMgr {
-
     @NonNull
-    private static JumpActivityMgr sInstance     = new JumpActivityMgr();
-    private        boolean         mCutVideoFlag = true;
-    private        boolean         mQuickImport  = false;
+    private static JumpActivityMgr sInstance = new JumpActivityMgr();
+    private boolean mCutVideoFlag = true;
+    private boolean mQuickImport = false;
 
     private JumpActivityMgr() {
         mCutVideoFlag = true;

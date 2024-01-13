@@ -1,10 +1,10 @@
 package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -15,9 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class TCUtils {
-
     public static String md5(@NonNull String string) {
-
         byte[] hash;
         try {
             hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
@@ -55,7 +53,8 @@ public class TCUtils {
      * @param url      图片url
      * @param defResId 默认图 id
      */
-    public static void showPicWithUrl(@Nullable Context context, @Nullable ImageView view, String url, int defResId) {
+    public static void showPicWithUrl(
+            @Nullable Context context, @Nullable ImageView view, String url, int defResId) {
         if (context == null || view == null) {
             return;
         }
@@ -64,11 +63,13 @@ public class TCUtils {
                 view.setImageResource(defResId);
             } else {
                 RequestManager req = Glide.with(context);
-                req.load(url).placeholder(defResId).transform(new TCGlideCircleTransform(context)).into(view);
+                req.load(url)
+                        .placeholder(defResId)
+                        .transform(new TCGlideCircleTransform(context))
+                        .into(view);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }

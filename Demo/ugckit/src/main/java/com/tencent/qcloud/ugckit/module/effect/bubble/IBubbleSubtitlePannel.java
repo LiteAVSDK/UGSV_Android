@@ -10,7 +10,6 @@ import java.util.List;
  * 气泡字幕面板
  */
 public interface IBubbleSubtitlePannel {
-
     /**
      * 加载所有的气泡字幕
      */
@@ -43,5 +42,4 @@ public interface IBubbleSubtitlePannel {
          */
         void onBubbleSubtitleCallback(TCSubtitleInfo info);
     }
-
 }

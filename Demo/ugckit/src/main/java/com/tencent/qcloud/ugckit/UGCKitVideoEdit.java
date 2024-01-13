@@ -4,36 +4,30 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.media.AudioManager;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
-
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.JumpActivityMgr;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
+import com.tencent.qcloud.ugckit.component.dialog.ActionSheetDialog;
+import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.module.VideoGenerateKit;
 import com.tencent.qcloud.ugckit.module.editer.AbsVideoEditUI;
 import com.tencent.qcloud.ugckit.module.editer.UGCKitEditConfig;
-import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
-import com.tencent.qcloud.ugckit.utils.LogReport;
-import com.tencent.qcloud.ugckit.component.dialog.ActionSheetDialog;
-import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.effect.Config;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
+import com.tencent.qcloud.ugckit.module.record.AudioFocusManager;
+import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
@@ -63,39 +57,30 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         initDefault();
     }
 
-
     private void initDefault() {
         mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext());
 
         // 点击"完成"
-        getTitleBar().setTitle(getResources().getString(R.string.ugckit_complete), ITitleBarLayout.POSITION.RIGHT);
-        getTitleBar().setOnBackClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backPressed();
-            }
-        });
-        getTitleBar().setOnRightClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPublishDialog();
-            }
-        });
-        mAudioFocusManager = new AudioFocusManager(getContext(), new AudioFocusManager.OnAudioFocusChangeListener() {
-            @Override
-            public void onLossFocus() {
-                // 生成状态 取消生成
-                stopGenerate();
-                // 直接停止播放
-                PlayerManagerKit.getInstance().stopPlay();
-            }
+        getTitleBar().setTitle(
+                getResources().getString(R.string.ugckit_complete), ITitleBarLayout.POSITION.RIGHT);
+        getTitleBar().setOnBackClickListener(v -> backPressed());
+        getTitleBar().setOnRightClickListener(v -> showPublishDialog());
+        mAudioFocusManager = new AudioFocusManager(
+                getContext(), new AudioFocusManager.OnAudioFocusChangeListener() {
+                    @Override
+                    public void onLossFocus() {
+                        // 生成状态 取消生成
+                        stopGenerate();
+                        // 直接停止播放
+                        PlayerManagerKit.getInstance().stopPlay();
+                    }
 
-            @Override
-            public void onGain(boolean lossTransient, boolean lossTransientCanDuck) {
-                // 重新开始播放
-                PlayerManagerKit.getInstance().restartPlay();
-            }
-        });
+                    @Override
+                    public void onGain(boolean lossTransient, boolean lossTransientCanDuck) {
+                        // 重新开始播放
+                        PlayerManagerKit.getInstance().restartPlay();
+                    }
+                });
         // 设置默认为全功能导入视频方式
         JumpActivityMgr.getInstance().setQuickImport(false);
     }
@@ -103,27 +88,25 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     @Override
     public void backPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle(getContext().getString(R.string.ugckit_tips)).setCancelable(false).setMessage(R.string.ugckit_confirm_cancel_edit_content)
-                .setPositiveButton(R.string.ugckit_btn_back, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Log.i(TAG, "[UGCKit][VideoEdit]backPressed call stopPlay");
-                        PlayerManagerKit.getInstance().stopPlay();
-                        // 取消设置的特效
-                        VideoEditerSDK.getInstance().releaseSDK();
-                        VideoEditerSDK.getInstance().clear();
-                        if (mOnEditListener != null) {
-                            mOnEditListener.onEditCanceled();
-                        }
-                    }
-                })
-                .setNegativeButton(getContext().getString(R.string.ugckit_wrong_click), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
+        AlertDialog alertDialog =
+                builder.setTitle(getContext().getString(R.string.ugckit_tips))
+                        .setCancelable(false)
+                        .setMessage(R.string.ugckit_confirm_cancel_edit_content)
+                        .setPositiveButton(R.string.ugckit_btn_back,
+                                (dialog, which) -> {
+                                    dialog.dismiss();
+                                    Log.i(TAG, "[UGCKit][VideoEdit]backPressed call stopPlay");
+                                    PlayerManagerKit.getInstance().stopPlay();
+                                    // 取消设置的特效
+                                    VideoEditerSDK.getInstance().releaseSDK();
+                                    VideoEditerSDK.getInstance().clear();
+                                    if (mOnEditListener != null) {
+                                        mOnEditListener.onEditCanceled();
+                                    }
+                                })
+                        .setNegativeButton(getContext().getString(R.string.ugckit_wrong_click),
+                                (dialog, which) -> dialog.dismiss())
+                        .create();
         alertDialog.show();
     }
 
@@ -148,7 +131,8 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         if (info == null) {
             // 从"录制"进入，录制勾选了"进入编辑"，info在录制界面已设置，此处不为null
             // 从"录制"进入，录制不勾选"进入编辑"，info为null，需要重新获取
-            info = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(videoPath);
+            info = TXVideoInfoReader.getInstance(UGCKit.getAppContext())
+                           .getVideoFileInfo(videoPath);
             VideoEditerSDK.getInstance().setTXVideoInfo(info);
         }
 
@@ -158,7 +142,9 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         long startTime = VideoEditerSDK.getInstance().getCutterStartTime();
         long endTime = VideoEditerSDK.getInstance().getCutterEndTime();
         if (endTime > startTime) {
-            Log.i(TAG, "[UGCKit][VideoEdit][QuickImport]load thumbnail start time:" + startTime + ",end time:" + endTime);
+            Log.i(TAG,
+                    "[UGCKit][VideoEdit][QuickImport]load thumbnail start time:" + startTime
+                            + ",end time:" + endTime);
         }
 
         VideoEditerSDK.getInstance().setCutterStartTime(0, info.duration);
@@ -182,28 +168,29 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         actionSheetDialog.builder();
         actionSheetDialog.setCancelable(false);
         actionSheetDialog.setCancelable(false);
-        actionSheetDialog.addSheetItem(getResources().getString(R.string.ugckit_video_editer_activity_show_publish_dialog_save),
-                ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        if (Build.VERSION.SDK_INT <= 28 && ContextCompat.checkSelfPermission(getContext(),
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ToastUtil.toastLongMessage(getResources().getString(R.string.need_storage_permission));
-                        } else {
-                            VideoEditerSDK.getInstance().setPublishFlag(false);
-                            startGenerate();
-                        }
+        actionSheetDialog.addSheetItem(
+                getResources().getString(
+                        R.string.ugckit_video_editer_activity_show_publish_dialog_save),
+                ActionSheetDialog.SheetItemColor.Blue, which -> {
+                    if (Build.VERSION.SDK_INT <= 28
+                            && ContextCompat.checkSelfPermission(
+                                       getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    != PackageManager.PERMISSION_GRANTED) {
+                        ToastUtil.toastLongMessage(
+                                getResources().getString(R.string.need_storage_permission));
+                    } else {
+                        VideoEditerSDK.getInstance().setPublishFlag(false);
+                        startGenerate();
                     }
                 });
 
         if (mIsPublish) {
-            actionSheetDialog.addSheetItem(getResources().getString(R.string.ugckit_video_editer_activity_show_publish_dialog_publish),
-                    ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            VideoEditerSDK.getInstance().setPublishFlag(true);
-                            startGenerate();
-                        }
+            actionSheetDialog.addSheetItem(
+                    getResources().getString(
+                            R.string.ugckit_video_editer_activity_show_publish_dialog_publish),
+                    ActionSheetDialog.SheetItemColor.Blue, which -> {
+                        VideoEditerSDK.getInstance().setPublishFlag(true);
+                        startGenerate();
                     });
         }
         actionSheetDialog.show();
@@ -230,9 +217,11 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
     @Override
     public void start() {
         if (mAudioFocusManager != null) {
-            mAudioFocusManager.requestAudioFocus(AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            mAudioFocusManager.requestAudioFocus(
+                    AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         }
-        KeyguardManager manager = (KeyguardManager) UGCKit.getAppContext().getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager manager =
+                (KeyguardManager) UGCKit.getAppContext().getSystemService(Context.KEYGUARD_SERVICE);
         if (!manager.inKeyguardRestrictedInputMode()) {
             PlayerManagerKit.getInstance().restartPlay();
         }
@@ -312,5 +301,4 @@ public class UGCKitVideoEdit extends AbsVideoEditUI {
         VideoGenerateKit.getInstance().stopGenerate();
         mProgressFragmentUtil.dismissLoadingProgress();
     }
-
 }

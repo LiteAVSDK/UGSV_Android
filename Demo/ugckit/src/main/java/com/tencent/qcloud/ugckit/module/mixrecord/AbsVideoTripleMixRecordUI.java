@@ -9,24 +9,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.demo.beauty.constant.BeautyConstants;
-import com.tencent.liteav.demo.beauty.model.BeautyInfo;
-import com.tencent.liteav.demo.beauty.view.BeautyPanel;
+import com.tencent.liteav.beautykit.constant.BeautyConstants;
+import com.tencent.liteav.beautykit.model.BeautyInfo;
+import com.tencent.liteav.beautykit.view.BeautyPanel;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 import com.tencent.qcloud.ugckit.module.record.ScrollFilterView;
 
-public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implements IVideoMixRecordKit {
-    private TitleBarLayout        mTitleBar;
-    private IPlayerView           mPlayerViews;
-    private ScrollFilterView      mScrollFilterView;
-    private MixRecordRightLayout  mFollowRecordRightLayout;
+public abstract class AbsVideoTripleMixRecordUI
+        extends RelativeLayout implements IVideoMixRecordKit {
+    private TitleBarLayout mTitleBar;
+    private IPlayerView mPlayerViews;
+    private ScrollFilterView mScrollFilterView;
+    private MixRecordRightLayout mFollowRecordRightLayout;
     private MixRecordBottomLayout mMixRecordBottomLayout;
-    private RelativeLayout        mTencentEffectPanel;
-    private BeautyPanel           mBeautyPanel;
-    private CountDownTimerView    mCountDownTimerView;
-    private ImageView             mTEInfoImg;
+    private RelativeLayout mTencentEffectPanel;
+    private BeautyPanel mBeautyPanel;
+    private CountDownTimerView mCountDownTimerView;
+    private ImageView mTEInfoImg;
 
     public AbsVideoTripleMixRecordUI(Context context) {
         this(context, null);
@@ -59,19 +60,22 @@ public abstract class AbsVideoTripleMixRecordUI extends RelativeLayout implement
         mScrollFilterView.setBeautyPanel(mBeautyPanel);
 
         mTitleBar.setVisible(true, ITitleBarLayout.POSITION.RIGHT);
-        mTitleBar.setTitle(getResources().getString(R.string.ugckit_triple_replace_file), ITitleBarLayout.POSITION.RIGHT);//
+        mTitleBar.setTitle(getResources().getString(R.string.ugckit_triple_replace_file),
+                ITitleBarLayout.POSITION.RIGHT);
 
         View playerviewHolder = (View) findViewById(R.id.mixrecord_playerview_placeholder);
-        int player_layout_id = R.layout.ugckit_mix_record_view;
+        int playerLayoutId = R.layout.ugckit_mix_record_view;
         if (attrs != null) {
-            TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.UGCKitMixRecord, 0, 0);
+            TypedArray a = getContext().getTheme().obtainStyledAttributes(
+                    attrs, R.styleable.UGCKitMixRecord, 0, 0);
             try {
-                player_layout_id = a.getResourceId(R.styleable.UGCKitMixRecord_layout_id, player_layout_id);
+                playerLayoutId =
+                        a.getResourceId(R.styleable.UGCKitMixRecord_layout_id, playerLayoutId);
             } finally {
                 a.recycle();
             }
         }
-        View playerViews = LayoutInflater.from(getContext()).inflate(player_layout_id, this, false);
+        View playerViews = LayoutInflater.from(getContext()).inflate(playerLayoutId, this, false);
         playerViews.setId(R.id.ugckit_mixrecord_playerviews);
         playerViews.setLayoutParams(playerviewHolder.getLayoutParams());
         ViewGroup parent = ((ViewGroup) playerviewHolder.getParent());

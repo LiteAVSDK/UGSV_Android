@@ -11,12 +11,11 @@ import java.util.Map;
  * 保存信息配置类
  */
 public class SharedPreferenceUtils {
-    private SharedPreferences        mSharedPreferences;
+    private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
 
     public SharedPreferenceUtils(@NonNull Context context, String FILE_NAME) {
-        mSharedPreferences = context.getSharedPreferences(FILE_NAME,
-                Context.MODE_PRIVATE);
+        mSharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
     }
 

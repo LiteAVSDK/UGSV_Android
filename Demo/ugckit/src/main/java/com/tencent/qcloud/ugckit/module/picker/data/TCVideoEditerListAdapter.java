@@ -2,32 +2,30 @@ package com.tencent.qcloud.ugckit.module.picker.data;
 
 import android.content.Context;
 import android.text.TextUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
-import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 import com.tencent.qcloud.ugckit.R;
-
+import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
 
 import java.util.ArrayList;
 
-public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditerListAdapter.ViewHolder> {
-
+public class TCVideoEditerListAdapter
+        extends RecyclerView.Adapter<TCVideoEditerListAdapter.ViewHolder> {
     private Context mContext;
-    private int     mLastSelected = -1;
+    private int mLastSelected = -1;
     private boolean mMultiplePick;
     private boolean mIsOrdered;
 
     @NonNull
     private ArrayList<TCVideoFileInfo> mData = new ArrayList<TCVideoFileInfo>();
-    private ItemView.OnAddListener     mOnAddListener;
+    private ItemView.OnAddListener mOnAddListener;
     private ArrayList<TCVideoFileInfo> mOrderFileList;
 
     public TCVideoEditerListAdapter(Context context) {
@@ -91,7 +89,7 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         @NonNull
         private final ImageView thumb;
         @NonNull
-        private final TextView  duration;
+        private final TextView duration;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);

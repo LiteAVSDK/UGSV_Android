@@ -1,0 +1,17 @@
+﻿{
+  "name":"girl",
+  "count": 7,
+  "period":420,
+  "width":560,
+  "height":631,
+  "keyframe":7,
+  "frameArray": [
+                 {"picture":"girl0"},
+                 {"picture":"girl1"},
+                 {"picture":"girl2"},
+                 {"picture":"girl3"},
+                 {"picture":"girl4"},
+                 {"picture":"girl5"},
+                 {"picture":"girl6"}
+               ]
+}

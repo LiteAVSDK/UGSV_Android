@@ -13,14 +13,11 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.R;
 
-
 public class CommonDialog {
-
     private Context mContext;
     private Dialog mDialog;
     private TextView mTextTitle;
@@ -32,7 +29,8 @@ public class CommonDialog {
 
     public CommonDialog(@NonNull Context context) {
         this.mContext = context;
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager =
+                (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         initViews();
     }
 
@@ -74,7 +72,6 @@ public class CommonDialog {
         lp.x = 0;
         lp.y = 0;
         dialogWindow.setAttributes(lp);
-
     }
 
     @NonNull
@@ -128,7 +125,6 @@ public class CommonDialog {
         return this;
     }
 
-
     public void show() {
         if (mLeftBtn.getVisibility() == View.GONE) {
             mVerticalLine.setVisibility(View.GONE);
@@ -141,6 +137,4 @@ public class CommonDialog {
 
         void onRightBtnClick();
     }
-
-
 }

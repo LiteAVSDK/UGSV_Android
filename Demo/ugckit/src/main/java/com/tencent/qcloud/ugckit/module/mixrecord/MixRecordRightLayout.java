@@ -2,32 +2,29 @@ package com.tencent.qcloud.ugckit.module.mixrecord;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.tencent.qcloud.ugckit.PermissionIntroductionDialog;
 import com.tencent.qcloud.ugckit.R;
 
-
-public class MixRecordRightLayout extends RelativeLayout implements View.OnClickListener, IMixRecordRightLayout {
-    private Activity            mActivity;
-    private ImageView           mImageBeauty;       // 基础美颜
-    private ImageView           mImageTeBeauty;       // 高级美颜
-    private TextView            mTextBeauty;
-    private RelativeLayout      mLayoutBeauty;
-    private ImageView           mImageCountDown;    // 倒计时
-    private TextView            mTextCountDown;
-    private RelativeLayout      mLayoutCountdown;
+public class MixRecordRightLayout
+        extends RelativeLayout implements View.OnClickListener, IMixRecordRightLayout {
+    private Activity mActivity;
+    private ImageView mImageBeauty; // 基础美颜
+    private ImageView mImageTeBeauty; // 高级美颜
+    private TextView mTextBeauty;
+    private RelativeLayout mLayoutBeauty;
+    private ImageView mImageCountDown; // 倒计时
+    private TextView mTextCountDown;
+    private RelativeLayout mLayoutCountdown;
     private OnItemClickListener mOnItemClickListener;
-
-
 
     public MixRecordRightLayout(Context context) {
         super(context);
@@ -66,7 +63,8 @@ public class MixRecordRightLayout extends RelativeLayout implements View.OnClick
         int id = view.getId();
         if (id == R.id.iv_beauty) {
             if (!PermissionIntroductionDialog.isGrantPermission()) {
-                showIntroductionDialog(((FragmentActivity) getContext()).getSupportFragmentManager(),
+                showIntroductionDialog(
+                        ((FragmentActivity) getContext()).getSupportFragmentManager(),
                         new PermissionIntroductionDialog.PositiveClickListener() {
                             @Override
                             public void onClickPositive() {
@@ -78,7 +76,8 @@ public class MixRecordRightLayout extends RelativeLayout implements View.OnClick
             }
         } else if (id == R.id.iv_te_beauty) {
             if (!PermissionIntroductionDialog.isGrantPermission()) {
-                showIntroductionDialog(((FragmentActivity) getContext()).getSupportFragmentManager(),
+                showIntroductionDialog(
+                        ((FragmentActivity) getContext()).getSupportFragmentManager(),
                         new PermissionIntroductionDialog.PositiveClickListener() {
                             @Override
                             public void onClickPositive() {
@@ -93,18 +92,17 @@ public class MixRecordRightLayout extends RelativeLayout implements View.OnClick
         }
     }
 
-
     private void showIntroductionDialog(FragmentManager fragmentManager,
-                                        PermissionIntroductionDialog.PositiveClickListener listener) {
-        PermissionIntroductionDialog
-                mPermissionIntroductionDialog = new PermissionIntroductionDialog(getContext()
-                .getString(R.string.app_personal_information_collection),
-                getContext().getString(R.string.beauty_cam_introduction),
-                PermissionIntroductionDialog.DialogPosition.BOTTOM);
+            PermissionIntroductionDialog.PositiveClickListener listener) {
+        PermissionIntroductionDialog mPermissionIntroductionDialog =
+                new PermissionIntroductionDialog(
+                        getContext().getString(R.string.app_personal_information_collection),
+                        getContext().getString(R.string.beauty_cam_introduction),
+                        PermissionIntroductionDialog.DialogPosition.BOTTOM);
         mPermissionIntroductionDialog.setPositiveClickListener(listener);
-        mPermissionIntroductionDialog.show(fragmentManager, PermissionIntroductionDialog.DIALOG_NAME);
+        mPermissionIntroductionDialog.show(
+                fragmentManager, PermissionIntroductionDialog.DIALOG_NAME);
     }
-
 
     @Override
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -148,5 +146,4 @@ public class MixRecordRightLayout extends RelativeLayout implements View.OnClick
     public void setCountDownTextColor(int color) {
         mTextCountDown.setTextColor(getResources().getColor(color));
     }
-
 }

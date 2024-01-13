@@ -11,10 +11,10 @@ import androidx.annotation.Nullable;
 
 public class NetworkUtil {
     @Nullable
-    private        NetchangeReceiver mNetchangeReceiver = null;
-    private        Context           mContext;
-    private static NetworkUtil       sInstance;
-    private        NetchangeListener mListener;
+    private NetchangeReceiver mNetchangeReceiver = null;
+    private Context mContext;
+    private static NetworkUtil sInstance;
+    private NetchangeListener mListener;
 
     private NetworkUtil(Context context) {
         mContext = context.getApplicationContext();
@@ -31,7 +31,8 @@ public class NetworkUtil {
      * 获取网络类型
      */
     public static boolean isNetworkAvailable(@NonNull Context context) {
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivity =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
             if (info != null && info.isConnected()) {
@@ -56,7 +57,6 @@ public class NetworkUtil {
         }
         mContext.registerReceiver(mNetchangeReceiver, intentFilter);
     }
-
 
     /**
      * 取消注册网络变化监听器
@@ -87,7 +87,5 @@ public class NetworkUtil {
         mListener = listener;
     }
 
-    public interface NetchangeListener {
-        void onNetworkAvailable();
-    }
+    public interface NetchangeListener { void onNetworkAvailable(); }
 }

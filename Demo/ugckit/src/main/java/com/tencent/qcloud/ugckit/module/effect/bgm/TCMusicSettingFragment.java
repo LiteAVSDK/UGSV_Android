@@ -5,25 +5,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-
-import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
-import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
-import com.tencent.qcloud.ugckit.utils.DialogUtil;
-import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.UGCKitConstants;
+import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.IEditMusicPannel;
-import com.tencent.qcloud.ugckit.module.record.MusicInfo;
 import com.tencent.qcloud.ugckit.module.effect.bgm.view.TCEditMusicPannel;
 import com.tencent.qcloud.ugckit.module.effect.utils.DraftEditer;
-
+import com.tencent.qcloud.ugckit.module.effect.utils.EffectEditer;
+import com.tencent.qcloud.ugckit.module.record.MusicInfo;
+import com.tencent.qcloud.ugckit.utils.DialogUtil;
 import com.tencent.ugc.TXVideoEditer;
 
 import java.io.IOException;
@@ -34,9 +32,9 @@ import java.io.IOException;
 public class TCMusicSettingFragment extends Fragment {
     private static final String TAG = "TCMusicSettingFragment";
 
-    private DraftEditer       mEditerDraft;
+    private DraftEditer mEditerDraft;
     private TCEditMusicPannel mTCEditMusicPannel;
-    private MusicInfo         mMusicInfo;
+    private MusicInfo mMusicInfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +77,12 @@ public class TCMusicSettingFragment extends Fragment {
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         int result = editer.setBGM(mMusicInfo.path);
         if (result != 0) {
-            DialogUtil.showDialog(getContext(), getResources().getString(R.string.ugckit_bgm_setting_fragment_video_edit_failed), getResources().getString(R.string.ugckit_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format), null);
+            DialogUtil.showDialog(getContext(),
+                    getResources().getString(
+                            R.string.ugckit_bgm_setting_fragment_video_edit_failed),
+                    getResources().getString(
+                            R.string.ugckit_bgm_setting_fragment_background_sound_only_supports_mp3_or_m4a_format),
+                    null);
         }
         try {
             MediaPlayer mediaPlayer = new MediaPlayer();
@@ -96,7 +99,6 @@ public class TCMusicSettingFragment extends Fragment {
         editer.setBGMVolume(bgmVolume);
         editer.setVideoVolume(micVolume);
 
-
         mMusicInfo.videoVolume = micVolume;
         mMusicInfo.bgmVolume = bgmVolume;
         mMusicInfo.startTime = 0;
@@ -108,7 +110,8 @@ public class TCMusicSettingFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ugckit_fragment_bgm, container, false);
     }
 
@@ -163,26 +166,32 @@ public class TCMusicSettingFragment extends Fragment {
 
     private void showDeleteMusicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle(getResources().getString(R.string.ugckit_tips)).setCancelable(false).setMessage(R.string.ugckit_delete_bgm_or_not)
-                .setPositiveButton(R.string.ugckit_confirm_delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        DraftEditer.getInstance().setBgmPath(null);
-                        EffectEditer.getInstance().setBgmPath(null);
-                        VideoEditerSDK.getInstance().getEditer().setBGM(null);
+        AlertDialog alertDialog =
+                builder.setTitle(getResources().getString(R.string.ugckit_tips))
+                        .setCancelable(false)
+                        .setMessage(R.string.ugckit_delete_bgm_or_not)
+                        .setPositiveButton(R.string.ugckit_confirm_delete,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(
+                                            @NonNull DialogInterface dialog, int which) {
+                                        DraftEditer.getInstance().setBgmPath(null);
+                                        EffectEditer.getInstance().setBgmPath(null);
+                                        VideoEditerSDK.getInstance().getEditer().setBGM(null);
 
-                        getActivity().onBackPressed();
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.ugckit_btn_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
+                                        getActivity().onBackPressed();
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .setNegativeButton(getResources().getString(R.string.ugckit_btn_cancel),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(
+                                            @NonNull DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .create();
         alertDialog.show();
     }
-
-
 }

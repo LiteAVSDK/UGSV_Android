@@ -3,7 +3,6 @@ package com.tencent.qcloud.ugckit.module.effect;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
 
 public interface IVideoEffectKit {
-
     /**
      * 当Activity执行生命周期方法{@code onStart()}时，UGCKit需要执行{@link #start()}来重新播放视频
      */
@@ -15,7 +14,8 @@ public interface IVideoEffectKit {
     void stop();
 
     /**
-     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link #release()}来释放资源<br>
+     * 当Activity执行生命周期方法{@code onDestroy()}时，UGCKit需要执行{@link
+     * #release()}来释放资源<br>
      */
     void release();
 
@@ -55,5 +55,4 @@ public interface IVideoEffectKit {
          */
         void onEffectCancel();
     }
-
 }

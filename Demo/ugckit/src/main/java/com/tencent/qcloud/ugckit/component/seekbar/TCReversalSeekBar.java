@@ -9,39 +9,39 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
 
 public class TCReversalSeekBar extends View {
-    private static final String  TAG                = "ReversalSeekBar";
-    private              int     mWidth;
-    private              int     mHeight;
-    private              int     mSeekBarLeft;
-    private              int     mSeekBarRight;
-    private              int     mBgTop;
-    private              int     mBgBottom;
-    private              int     mRoundSize;
-    private              int     mViewEnd;
-    private              Paint   mNormalPaint;
-    private              Paint   mPointerPaint;
-    private              Paint   mProgressPaint;
-    private              float   mPointerLeft;
-    private              float   mPointerRight;
-    private              float   mPointerTop;
-    private              float   mPointerBottom;
-    private              boolean mIsOnDrag;
-    private              float   mCurrentLeftOffset = 0;
-    private              float   mLastX;
+    private static final String TAG = "ReversalSeekBar";
+    private int mWidth;
+    private int mHeight;
+    private int mSeekBarLeft;
+    private int mSeekBarRight;
+    private int mBgTop;
+    private int mBgBottom;
+    private int mRoundSize;
+    private int mViewEnd;
+    private Paint mNormalPaint;
+    private Paint mPointerPaint;
+    private Paint mProgressPaint;
+    private float mPointerLeft;
+    private float mPointerRight;
+    private float mPointerTop;
+    private float mPointerBottom;
+    private boolean mIsOnDrag;
+    private float mCurrentLeftOffset = 0;
+    private float mLastX;
 
     @Nullable
     private Drawable mPointerDrawable;
-    private int      mHalfDrawableWidth;
+    private int mHalfDrawableWidth;
 
     private float mCurrentProgress;
 
@@ -77,8 +77,10 @@ public class TCReversalSeekBar extends View {
         int progressColor = Color.parseColor("#FF4081");
         int backgroundColor = Color.parseColor("#BBBBBB");
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitTCReversalSeekBar);
-            mPointerDrawable = a.getDrawable(R.styleable.UGCKitTCReversalSeekBar_rs_pointerBackground);
+            TypedArray a =
+                    getContext().obtainStyledAttributes(attrs, R.styleable.UGCKitTCReversalSeekBar);
+            mPointerDrawable =
+                    a.getDrawable(R.styleable.UGCKitTCReversalSeekBar_rs_pointerBackground);
             mHalfDrawableWidth = mPointerDrawable.getIntrinsicWidth() / 2;
             progressColor = a.getColor(R.styleable.UGCKitTCReversalSeekBar_rs_progressColor,
                     Color.parseColor("#FF4081"));
@@ -116,13 +118,12 @@ public class TCReversalSeekBar extends View {
         mPointerLeft = mViewEnd - dis - mHalfDrawableWidth;
         mLastX = mPointerLeft;
         calculatePointerRect();
-
     }
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        //draw  bg
+        // draw  bg
         RectF rectF = new RectF();
         rectF.left = mSeekBarLeft;
         rectF.right = mSeekBarRight;
@@ -130,18 +131,17 @@ public class TCReversalSeekBar extends View {
         rectF.bottom = mBgBottom;
         canvas.drawRoundRect(rectF, mRoundSize, mRoundSize, mNormalPaint);
 
-        //draw progress
+        // draw progress
         if (mPointerRight < mViewEnd) {
             RectF pRecf = new RectF();
             pRecf.left = mPointerRight - mHalfDrawableWidth;
             pRecf.top = mBgTop;
             pRecf.right = mViewEnd;
             pRecf.bottom = mBgBottom;
-            canvas.drawRoundRect(pRecf,
-                    mRoundSize, mRoundSize, mProgressPaint);
+            canvas.drawRoundRect(pRecf, mRoundSize, mRoundSize, mProgressPaint);
         }
 
-        //draw pointer
+        // draw pointer
         Rect rect = new Rect();
         rect.left = (int) mPointerLeft;
         rect.top = (int) mPointerTop;
@@ -168,7 +168,6 @@ public class TCReversalSeekBar extends View {
             case MotionEvent.ACTION_UP:
                 isHandle = handleUpEvent(event);
                 break;
-
         }
         return isHandle;
     }
@@ -233,13 +232,13 @@ public class TCReversalSeekBar extends View {
         }
     }
 
-
     private boolean handleDownEvent(@NonNull MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
         if (x >= mPointerLeft - 100 && x <= mPointerRight + 100) {
-            if (mListener != null)
+            if (mListener != null) {
                 mListener.onSeekDown();
+            }
             mIsOnDrag = true;
             mLastX = x;
             return true;
@@ -248,7 +247,7 @@ public class TCReversalSeekBar extends View {
     }
 
     private void calculatePointerRect() {
-        //draw pointer
+        // draw pointer
         float pointerLeft = getPointerLeft(mCurrentLeftOffset);
         float pointerRight = pointerLeft + mPointerDrawable.getIntrinsicWidth();
         mPointerLeft = pointerLeft;
@@ -261,7 +260,8 @@ public class TCReversalSeekBar extends View {
      * 进行复位
      */
     public void resetSeekBar() {
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(mPointerLeft, mViewEnd - mPointerDrawable.getIntrinsicWidth());
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(
+                mPointerLeft, mViewEnd - mPointerDrawable.getIntrinsicWidth());
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.setDuration(200);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

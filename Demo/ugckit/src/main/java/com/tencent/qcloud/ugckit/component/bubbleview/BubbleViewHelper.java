@@ -20,23 +20,21 @@ import java.util.List;
  */
 public class BubbleViewHelper {
     @Nullable
-    private Bitmap           mBubbleBitmap;
+    private Bitmap mBubbleBitmap;
     private BubbleViewParams mParams;
-    private float            mTextDefaultSize = 36; // 字幕的默认代销
-    private String           mText;
-    private Paint            mPaint;
-    private int              mTextAreaTop;
-    private int              mTextAreaLeft;
-    private int              mTextAreaRight;
-    private int              mTextAreaBottom;
-    private int              mTextAreaHeight;
-    private int              mTextAreaWidth;
-    private int              mTextAreaCenterX;
-    private int              mTextAreaCenterY;
+    private float mTextDefaultSize = 36; // 字幕的默认代销
+    private String mText;
+    private Paint mPaint;
+    private int mTextAreaTop;
+    private int mTextAreaLeft;
+    private int mTextAreaRight;
+    private int mTextAreaBottom;
+    private int mTextAreaHeight;
+    private int mTextAreaWidth;
+    private int mTextAreaCenterX;
+    private int mTextAreaCenterY;
 
-    public BubbleViewHelper() {
-
-    }
+    public BubbleViewHelper() {}
 
     public void setBubbleTextParams(@NonNull BubbleViewParams params) {
         mParams = params;
@@ -57,8 +55,7 @@ public class BubbleViewHelper {
             int width = (int) mPaint.measureText(mText) + 1;
             mBubbleBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         }
-        initTextArea(
-                params.wordParamsInfo.getBubbleInfo().getTop(),
+        initTextArea(params.wordParamsInfo.getBubbleInfo().getTop(),
                 params.wordParamsInfo.getBubbleInfo().getLeft(),
                 params.wordParamsInfo.getBubbleInfo().getRight(),
                 params.wordParamsInfo.getBubbleInfo().getBottom());
@@ -69,7 +66,9 @@ public class BubbleViewHelper {
      */
     private void initPaint() {
         mPaint = new Paint();
-        mPaint.setColor(mParams.wordParamsInfo.getTextColor() != 0 ? mParams.wordParamsInfo.getTextColor() : Color.WHITE);
+        mPaint.setColor(mParams.wordParamsInfo.getTextColor() != 0
+                        ? mParams.wordParamsInfo.getTextColor()
+                        : Color.WHITE);
         mPaint.setTextSize(mTextDefaultSize);
         mPaint.setAntiAlias(true);
     }
@@ -95,7 +94,6 @@ public class BubbleViewHelper {
         mTextAreaCenterY = mTextAreaHeight / 2 + mTextAreaTop;
     }
 
-
     /**
      * 生成最终bitmap的方法
      *
@@ -108,7 +106,8 @@ public class BubbleViewHelper {
         }
         float textSize = measureFontSize(mText);
         mPaint.setTextSize(textSize);
-        Bitmap bitmap = Bitmap.createBitmap(mBubbleBitmap.getWidth(), mBubbleBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(
+                mBubbleBitmap.getWidth(), mBubbleBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         canvas.drawBitmap(mBubbleBitmap, 0, 0, mPaint);
         drawText(canvas);
@@ -135,13 +134,12 @@ public class BubbleViewHelper {
         if (height > mTextAreaHeight) {
             do {
                 trySize -= 1;
-                lines = measureTextLines(trySize, text) + 1;// +1是为了留出更多的空间
+                lines = measureTextLines(trySize, text) + 1; // +1是为了留出更多的空间
                 height = measureTextAreaHeight(trySize, lines);
             } while (height > mTextAreaHeight);
         }
         return trySize;
     }
-
 
     /**
      * 测量文字所占用的高度
@@ -171,17 +169,15 @@ public class BubbleViewHelper {
         return (int) Math.ceil(lines);
     }
 
-
     //------------------------------------------------渲染文字相关--------------------------------------------------------------
 
     private void drawText(@NonNull Canvas canvas) {
-        List<TextParams> list = locateText();  //定位字幕
+        List<TextParams> list = locateText(); //定位字幕
 
         for (TextParams params : list) {
             // 具体绘制字幕
             canvas.drawText(params.text, params.x, params.y, mPaint);
         }
-
     }
 
     /**
@@ -194,7 +190,7 @@ public class BubbleViewHelper {
     private List<TextParams> locateText() {
         List<TextParams> list = new ArrayList<>();
 
-        List<String> text = splitText();// 将字幕分割为一行一行
+        List<String> text = splitText(); // 将字幕分割为一行一行
 
         int middlePos = (text.size() + 1) / 2 - 1;
 
@@ -202,14 +198,13 @@ public class BubbleViewHelper {
 
         float fontHeight = getFontHeight();
 
-        if (text.size() % 2 == 1) {//行数奇数
+        if (text.size() % 2 == 1) { //行数奇数
             baseY = mTextAreaCenterY + fontHeight / 2;
         } else {
             baseY = mTextAreaCenterY;
         }
 
         list.add(new TextParams(text.get(middlePos), mTextAreaLeft, baseY));
-
 
         int loopTime = 0;
         for (int i = middlePos - 1; i >= 0; i--) {
@@ -224,7 +219,6 @@ public class BubbleViewHelper {
         }
         return list;
     }
-
 
     /**
      * 分割字幕
@@ -270,7 +264,6 @@ public class BubbleViewHelper {
 
         return text;
     }
-
 
     /**
      * 获取一个字体的高度

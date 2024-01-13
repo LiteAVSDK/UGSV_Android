@@ -2,12 +2,9 @@ package com.tencent.qcloud.ugckit;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,47 +13,49 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublish;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublishTypeDef;
 import com.tencent.qcloud.ugckit.utils.BackgroundTasks;
 import com.tencent.qcloud.ugckit.utils.LogReport;
 import com.tencent.qcloud.ugckit.utils.NetworkUtil;
+import com.tencent.qcloud.ugckit.utils.TCUserMgr;
 import com.tencent.qcloud.ugckit.utils.ToastUtil;
 
-import org.greenrobot.eventbus.EventBus;
+import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 
-public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickListener, TXUGCPublishTypeDef.ITXVideoPublishListener {
+public class UGCKitVideoPublish extends RelativeLayout
+        implements View.OnClickListener, TXUGCPublishTypeDef.ITXVideoPublishListener {
     @NonNull
     private String TAG = "UGCKitVideoPublish";
 
-    private Context           mContext;
-    private ImageView         mImageBack;      // 返回
-    private ImageView         mImageViewBg;
-    private ProgressBar       mProgressBar;     // 发布视频进度条
-    private TextView          mTextProgress;     // 发布视频进度文字
+    private Context mContext;
+    private ImageView mImageBack; // 返回
+    private ImageView mImageViewBg;
+    private ProgressBar mProgressBar; // 发布视频进度条
+    private TextView mTextProgress; // 发布视频进度文字
     @Nullable
-    private TXUGCPublish      mVideoPublish  = null;
-    private boolean           mIsFetchCosSig = false;
+    private TXUGCPublish mVideoPublish = null;
+    private boolean mIsFetchCosSig = false;
     @Nullable
-    private String            mCosSignature  = null;
+    private String mCosSignature = null;
     @NonNull
-    private Handler           mHandler       = new Handler();
-    private boolean           mAllDone       = false;
-    private boolean           mDisableCache;
-    private String            mLocalVideoPath;
+    private Handler mHandler = new Handler();
+    private boolean mAllDone = false;
+    private boolean mDisableCache;
+    private String mLocalVideoPath;
     @Nullable
-    private String            mVideoPath     = null;  // 视频路径
+    private String mVideoPath = null; // 视频路径
     @Nullable
-    private String            mCoverPath     = null;  // 视频封面路径
+    private String mCoverPath = null; // 视频封面路径
     private OnPublishListener mOnPublishListener;
 
     public UGCKitVideoPublish(Context context) {
@@ -101,11 +100,12 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
      */
     private void publishVideo() {
         if (mAllDone) {
-//            Intent intent = new Intent(TCVideoPublisherActivity.this, TCMainActivity.class);
-//            startActivity(intent);
+            //            Intent intent = new Intent(TCVideoPublisherActivity.this,
+            //            TCMainActivity.class); startActivity(intent);
         } else {
             if (!NetworkUtil.isNetworkAvailable(mContext)) {
-                ToastUtil.toastShortMessage(getResources().getString(R.string.ugckit_video_publisher_activity_no_network_connection));
+                ToastUtil.toastShortMessage(getResources().getString(
+                        R.string.ugckit_video_publisher_activity_no_network_connection));
                 return;
             }
             fetchSignature();
@@ -133,7 +133,8 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
                 /**
                  * ELK数据上报：获取签名成功
                  */
-                LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_SIGN, TCUserMgr.SUCCESS_CODE, "获取签名成功");
+                LogReport.getInstance().uploadLogs(
+                        LogReport.ELK_ACTION_VIDEO_SIGN, TCUserMgr.SUCCESS_CODE, "获取签名成功");
             }
 
             @Override
@@ -141,7 +142,8 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
                 /**
                  * ELK数据上报：获取签名失败
                  */
-                LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_SIGN, code, "获取签名失败");
+                LogReport.getInstance().uploadLogs(
+                        LogReport.ELK_ACTION_VIDEO_SIGN, code, "获取签名失败");
             }
         });
     }
@@ -150,33 +152,30 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
      * Step2:开始发布视频（子线程）
      */
     private void startPublish() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mVideoPublish == null) {
-                    mVideoPublish = new TXUGCPublish(UGCKit.getAppContext(), TCUserMgr.getInstance().getUserId());
-                }
-                /**
-                 * 设置视频发布监听器
-                 */
-                mVideoPublish.setListener(UGCKitVideoPublish.this);
-
-                TXUGCPublishTypeDef.TXPublishParam param = new TXUGCPublishTypeDef.TXPublishParam();
-                param.signature = mCosSignature;
-                param.videoPath = mVideoPath;
-                param.coverPath = mCoverPath;
-                int publishCode = mVideoPublish.publishVideo(param);
-//                if (publishCode != 0) {
-//                    mTVPublish.setText("发布失败，错误码：" + publishCode);
-//                }
-                NetworkUtil.getInstance(UGCKit.getAppContext()).setNetchangeListener(new NetworkUtil.NetchangeListener() {
-                    @Override
-                    public void onNetworkAvailable() {
-                        mTextProgress.setText(getResources().getString(R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
-                    }
-                });
-                NetworkUtil.getInstance(UGCKit.getAppContext()).registerNetChangeReceiver();
+        mHandler.post(() -> {
+            if (mVideoPublish == null) {
+                mVideoPublish = new TXUGCPublish(
+                        UGCKit.getAppContext(), TCUserMgr.getInstance().getUserId());
             }
+            /**
+             * 设置视频发布监听器
+             */
+            mVideoPublish.setListener(UGCKitVideoPublish.this);
+
+            TXUGCPublishTypeDef.TXPublishParam param = new TXUGCPublishTypeDef.TXPublishParam();
+            param.signature = mCosSignature;
+            param.videoPath = mVideoPath;
+            param.coverPath = mCoverPath;
+            int publishCode = mVideoPublish.publishVideo(param);
+            //                if (publishCode != 0) {
+            //                    mTVPublish.setText("发布失败，错误码：" + publishCode);
+            //                }
+            NetworkUtil.getInstance(UGCKit.getAppContext())
+                    .setNetchangeListener(
+                            ()
+                                    -> mTextProgress.setText(getResources().getString(
+                                            R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed)));
+            NetworkUtil.getInstance(UGCKit.getAppContext()).registerNetChangeReceiver();
         });
     }
 
@@ -240,25 +239,23 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
      */
     private void showCancelPublishDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        AlertDialog alertDialog = builder.setTitle(mContext.getString(R.string.ugckit_cancel_publish_title)).setCancelable(false).setMessage(R.string.ugckit_cancel_publish_msg)
-                .setPositiveButton(R.string.ugckit_cancel_publish_title, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        if (mVideoPublish != null) {
-                            mVideoPublish.canclePublish();
-                        }
-                        dialog.dismiss();
-                        if (mOnPublishListener != null) {
-                            mOnPublishListener.onPublishCancel();
-                        }
-                    }
-                })
-                .setNegativeButton(mContext.getString(R.string.ugckit_wrong_click), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
+        AlertDialog alertDialog =
+                builder.setTitle(mContext.getString(R.string.ugckit_cancel_publish_title))
+                        .setCancelable(false)
+                        .setMessage(R.string.ugckit_cancel_publish_msg)
+                        .setPositiveButton(R.string.ugckit_cancel_publish_title,
+                                (dialog, which) -> {
+                                    if (mVideoPublish != null) {
+                                        mVideoPublish.canclePublish();
+                                    }
+                                    dialog.dismiss();
+                                    if (mOnPublishListener != null) {
+                                        mOnPublishListener.onPublishCancel();
+                                    }
+                                })
+                        .setNegativeButton(mContext.getString(R.string.ugckit_wrong_click),
+                                (dialog, which) -> dialog.dismiss())
+                        .create();
         alertDialog.show();
     }
 
@@ -273,7 +270,9 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
         int progress = (int) (uploadBytes * 100 / totalBytes);
         Log.d(TAG, "onPublishProgress:" + progress);
         mProgressBar.setProgress(progress);
-        mTextProgress.setText(getResources().getString(R.string.ugckit_video_publisher_activity_is_uploading) + progress + "%");
+        mTextProgress.setText(
+                getResources().getString(R.string.ugckit_video_publisher_activity_is_uploading)
+                + progress + "%");
     }
 
     /**
@@ -284,7 +283,8 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
      */
     @Override
     public void onPublishComplete(@NonNull TXUGCPublishTypeDef.TXPublishResult publishResult) {
-        Log.d(TAG, "onPublishComplete:" + publishResult.retCode);
+        Log.d(TAG, "onPublishComplete:" + publishResult.retCode + ", url = " + publishResult.videoURL
+                + ", videoId = " + publishResult.videoId);
 
         /**
          * ELK数据上报：视频发布到点播系统
@@ -295,8 +295,10 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
             mImageBack.setVisibility(View.GONE);
             UploadUGCVideo(publishResult.videoId, publishResult.videoURL, publishResult.coverURL);
         } else {
-            if (publishResult.descMsg.contains("java.net.UnknownHostException") || publishResult.descMsg.contains("java.net.ConnectException")) {
-                mTextProgress.setText(mContext.getResources().getString(R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
+            if (publishResult.descMsg.contains("java.net.UnknownHostException")
+                    || publishResult.descMsg.contains("java.net.ConnectException")) {
+                mTextProgress.setText(mContext.getResources().getString(
+                        R.string.ugckit_video_publisher_activity_network_connection_is_disconnected_video_upload_failed));
             } else {
                 mTextProgress.setText(publishResult.descMsg);
             }
@@ -334,60 +336,60 @@ public class UGCKitVideoPublish extends RelativeLayout implements View.OnClickLi
      * @param videoURL
      * @param coverURL
      */
-    private void UploadUGCVideo(final String videoId, final String videoURL, final String coverURL) {
-        String title = null; //TODO:传入本地视频文件名称
+    private void UploadUGCVideo(
+            final String videoId, final String videoURL, final String coverURL) {
+        String title = null; // TODO:传入本地视频文件名称
         if (TextUtils.isEmpty(title)) {
             title = "小视频";
         }
         try {
-            JSONObject body = new JSONObject().put("file_id", videoId)
-                    .put("title", title)
-                    .put("frontcover", coverURL)
-                    .put("location", "未知")
-                    .put("play_url", videoURL);
-            TCUserMgr.getInstance().request("/upload_ugc", body, new TCUserMgr.HttpCallback("upload_ugc", new TCUserMgr.Callback() {
-                @Override
-                public void onSuccess(JSONObject data) {
-                    /**
-                     * ELK上报：发布视频到服务器
-                     */
-                    LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_UPLOAD_SERVER, TCUserMgr.SUCCESS_CODE, "UploadUGCVideo Sucess");
-
-                    BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+            JSONObject body = new JSONObject()
+                                      .put("file_id", videoId)
+                                      .put("title", title)
+                                      .put("frontcover", coverURL)
+                                      .put("location", "未知")
+                                      .put("play_url", videoURL);
+            TCUserMgr.getInstance().request("/upload_ugc", body,
+                    new TCUserMgr.HttpCallback("upload_ugc", new TCUserMgr.Callback() {
                         @Override
-                        public void run() {
-                            EventBus.getDefault().post(UGCKitConstants.EVENT_MSG_PUBLISH_DONE);
+                        public void onSuccess(JSONObject data) {
+                            /**
+                             * ELK上报：发布视频到服务器
+                             */
+                            LogReport.getInstance().uploadLogs(
+                                    LogReport.ELK_ACTION_VIDEO_UPLOAD_SERVER,
+                                    TCUserMgr.SUCCESS_CODE, "UploadUGCVideo Sucess");
 
-                            if (mOnPublishListener != null) {
-                                mOnPublishListener.onPublishComplete();
-                            }
+                            BackgroundTasks.getInstance().runOnUiThread(() -> {
+                                if (mOnPublishListener != null) {
+                                    mOnPublishListener.onPublishComplete(videoId, videoURL, coverURL);
+                                }
+
+                            });
                         }
-                    });
-                }
 
-                @Override
-                public void onFailure(int code, final String msg) {
-                    /**
-                     * ELK上报：发布视频到服务器
-                     */
-                    LogReport.getInstance().uploadLogs(LogReport.ELK_ACTION_VIDEO_UPLOAD_SERVER, code, msg);
-                }
-            }));
+                        @Override
+                        public void onFailure(int code, final String msg) {
+                            /**
+                             * ELK上报：发布视频到服务器
+                             */
+                            LogReport.getInstance().uploadLogs(
+                                    LogReport.ELK_ACTION_VIDEO_UPLOAD_SERVER, code, msg);
+                        }
+                    }));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
     public void release() {
         NetworkUtil.getInstance(UGCKit.getAppContext()).unregisterNetChangeReceiver();
         NetworkUtil.getInstance(UGCKit.getAppContext()).setNetchangeListener(null);
         deleteCache();
     }
 
-
     public interface OnPublishListener {
 
-        void onPublishComplete();
+        void onPublishComplete(String videoId, String videoURL, String coverURL);
 
         void onPublishCancel();
     }

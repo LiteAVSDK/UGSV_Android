@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.module;
 
 import android.graphics.Bitmap;
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.basic.BaseGenerateKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
@@ -12,15 +12,14 @@ import com.tencent.ugc.TXVideoEditer;
 /**
  * 视频预处理
  */
-public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideoProcessListener, TXVideoEditer.TXThumbnailListener {
+public class ProcessKit extends BaseGenerateKit
+        implements TXVideoEditer.TXVideoProcessListener, TXVideoEditer.TXThumbnailListener {
     private static final String TAG = "ProcessKit";
 
     @NonNull
     private static ProcessKit instance = new ProcessKit();
 
-    private ProcessKit() {
-
-    }
+    private ProcessKit() {}
 
     @NonNull
     public static ProcessKit getInstance() {
@@ -50,12 +49,16 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
 
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
-            Log.i(TAG, "[UGCKit][VideoProcess]generate thumbnail start time:" + cutterStartTime + ",end time:" + cutterEndTime + ",thumbnail count:" + thumbnailCount);
+            Log.i(TAG,
+                    "[UGCKit][VideoProcess]generate thumbnail start time:" + cutterStartTime
+                            + ",end time:" + cutterEndTime + ",thumbnail count:" + thumbnailCount);
             editer.setThumbnail(thumbnail);
             editer.setThumbnailListener(this);
             editer.setVideoProcessListener(this);
             editer.setCutFromTime(cutterStartTime, cutterEndTime);
-            Log.i(TAG, "[UGCKit][VideoProcess]generate video start time:" + cutterStartTime + ",end time:" + cutterEndTime);
+            Log.i(TAG,
+                    "[UGCKit][VideoProcess]generate video start time:" + cutterStartTime
+                            + ",end time:" + cutterEndTime);
             editer.processVideo();
         }
     }
@@ -66,7 +69,7 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
     public void stopProcess() {
         Log.d(TAG, "stopProcess");
 
-        //FIXBUG:如果上一次如生成缩略图没有停止，先停止，在进行下一次生成
+        // FIXBUG:如果上一次如生成缩略图没有停止，先停止，在进行下一次生成
         TXVideoEditer editer = VideoEditerSDK.getInstance().getEditer();
         if (editer != null) {
             editer.cancel();
@@ -102,5 +105,4 @@ public class ProcessKit extends BaseGenerateKit implements TXVideoEditer.TXVideo
         Log.d(TAG, "onThumbnail index:" + index + ",timeMs:" + timeMs);
         VideoEditerSDK.getInstance().addThumbnailBitmap(timeMs, bitmap);
     }
-
 }

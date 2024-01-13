@@ -2,27 +2,27 @@ package com.tencent.qcloud.ugckit.module.picker.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoEditerListAdapter;
 import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
-import com.tencent.qcloud.ugckit.R;
 
 import java.util.ArrayList;
 
-public class PickerListLayout extends RelativeLayout implements IPickerListLayout, ItemView.OnAddListener {
-    private static final int                      VIDEO_SPAN_COUNT = 4;
-    private              Activity                 mActivity;
-    private              RecyclerView             mRecyclerView;
-    private              TCVideoEditerListAdapter mAdapter;
-    private              ItemView.OnAddListener   mOnAddListener;
+public class PickerListLayout
+        extends RelativeLayout implements IPickerListLayout, ItemView.OnAddListener {
+    private static final int VIDEO_SPAN_COUNT = 4;
+    private Activity mActivity;
+    private RecyclerView mRecyclerView;
+    private TCVideoEditerListAdapter mAdapter;
+    private ItemView.OnAddListener mOnAddListener;
 
     public PickerListLayout(Context context) {
         super(context);
@@ -76,5 +76,4 @@ public class PickerListLayout extends RelativeLayout implements IPickerListLayou
     public void setOnItemAddListener(ItemView.OnAddListener listener) {
         mOnAddListener = listener;
     }
-
 }

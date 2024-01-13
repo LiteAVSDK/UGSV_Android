@@ -1,30 +1,27 @@
 package com.tencent.qcloud.ugckit.module.effect.filter;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 import com.tencent.qcloud.ugckit.R;
-
+import com.tencent.qcloud.ugckit.module.effect.BaseRecyclerAdapter;
 
 import java.util.List;
 
 public class StaticFilterAdapter extends BaseRecyclerAdapter<StaticFilterAdapter.FilterViewHolder> {
     private List<Integer> mFilterList;
-    private List<String>  mFileterNameList;
-    private int           mCurrentSelectedPos;
+    private List<String> mFileterNameList;
+    private int mCurrentSelectedPos;
 
     public StaticFilterAdapter(List<Integer> list, List<String> filerNameList) {
         mFilterList = list;
         mFileterNameList = filerNameList;
     }
-
 
     public void setCurrentSelectedPos(int pos) {
         int tPos = mCurrentSelectedPos;
@@ -44,11 +41,11 @@ public class StaticFilterAdapter extends BaseRecyclerAdapter<StaticFilterAdapter
         }
     }
 
-
     @NonNull
     @Override
     public FilterViewHolder onCreateVH(@NonNull ViewGroup parent, int viewType) {
-        return new FilterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ugckit_filter_layout, parent, false));
+        return new FilterViewHolder(LayoutInflater.from(parent.getContext())
+                                            .inflate(R.layout.ugckit_filter_layout, parent, false));
     }
 
     @Override
@@ -59,7 +56,7 @@ public class StaticFilterAdapter extends BaseRecyclerAdapter<StaticFilterAdapter
     public static class FilterViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
         ImageView ivImageTint;
-        TextView  tvName;
+        TextView tvName;
 
         public FilterViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -1,9 +1,9 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.module.cut.IVideoCutLayout;
@@ -25,28 +25,26 @@ import java.util.List;
  *
  *
  * The TXVideoEditer of the SDK uses the singleton mode.
- * To edit the same video across multiple activities/fragments, you can package it as a singleton in the upper layer.
- * <p>
- * Notes:
- * After each editing, make sure you call {@link VideoEditerSDK#clear()} to clear the configurations.
+ * To edit the same video across multiple activities/fragments, you can package it as a singleton in
+ * the upper layer. <p> Notes: After each editing, make sure you call {@link VideoEditerSDK#clear()}
+ * to clear the configurations.
  */
 
-
 public class VideoEditerSDK {
-    private static final String                              TAG = "VideoEditerKit";
-    private static       VideoEditerSDK                      sInstance;
+    private static final String TAG = "VideoEditerKit";
+    private static VideoEditerSDK sInstance;
     @Nullable
-    private              TXVideoEditer                       mTXVideoEditer;
-    private              List<ThumbnailBitmapInfo>           mThumbnailList;               // 缩略图相关, 将已经加在好的Bitmap缓存起来
-    private              boolean                             mIsReverse;
-    private              long                                mCutterDuration;                                   // 裁剪的总时长
-    private              long                                mCutterStartTime;                                  // 裁剪开始的时间
-    private              long                                mCutterEndTime;                                    // 裁剪结束的时间
-    private              long                                mVideoDuration;                                    // 视频原时长s
-    private              String                              mVideoPath;
-    private              boolean                             mPublishFlag;
-    private              TXVideoEditConstants.TXVideoInfo    mTXVideoInfo;
-    private final        List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
+    private TXVideoEditer mTXVideoEditer;
+    private List<ThumbnailBitmapInfo> mThumbnailList; // 缩略图相关, 将已经加在好的Bitmap缓存起来
+    private boolean mIsReverse;
+    private long mCutterDuration; // 裁剪的总时长
+    private long mCutterStartTime; // 裁剪开始的时间
+    private long mCutterEndTime; // 裁剪结束的时间
+    private long mVideoDuration; // 视频原时长s
+    private String mVideoPath;
+    private boolean mPublishFlag;
+    private TXVideoEditConstants.TXVideoInfo mTXVideoInfo;
+    private final List<TXVideoPreviewListenerWrapper> mPreviewWrapperList;
     private long mEffectDuration = 0;
 
     public static VideoEditerSDK getInstance() {
@@ -86,7 +84,8 @@ public class VideoEditerSDK {
         if (mVideoPath == null) {
             return mTXVideoInfo;
         }
-        mTXVideoInfo = TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(mVideoPath);
+        mTXVideoInfo =
+                TXVideoInfoReader.getInstance(UGCKit.getAppContext()).getVideoFileInfo(mVideoPath);
         if (mTXVideoInfo != null) {
             Log.d(TAG, "setTXVideoInfo duration:" + mTXVideoInfo.duration);
         }
@@ -94,11 +93,7 @@ public class VideoEditerSDK {
     }
 
     public void clear() {
-        if (mTXVideoEditer != null) {
-            mTXVideoEditer.setTXVideoPreviewListener(null);
-            mTXVideoEditer = null;
-        }
-
+        releaseSDK();
         mCutterDuration = 0;
         mCutterStartTime = 0;
         mCutterEndTime = 0;
@@ -115,8 +110,10 @@ public class VideoEditerSDK {
     }
 
     public void releaseSDK() {
+        Log.i(TAG,"release sdk");
         if (mTXVideoEditer != null) {
             mTXVideoEditer.release();
+            mTXVideoEditer = null;
         }
     }
 
@@ -138,7 +135,6 @@ public class VideoEditerSDK {
         return mCutterDuration;
     }
 
-
     public void setCutterStartTime(long startTime, long endTime) {
         mCutterStartTime = startTime;
         mCutterEndTime = endTime;
@@ -157,7 +153,6 @@ public class VideoEditerSDK {
         return mCutterEndTime;
     }
 
-
     /**
      * ======================================================预览相关======================================================
      */
@@ -170,26 +165,27 @@ public class VideoEditerSDK {
     }
 
     @NonNull
-    private TXVideoEditer.TXVideoPreviewListener mPreviewListener = new TXVideoEditer.TXVideoPreviewListener() {
-        @Override
-        public void onPreviewProgress(int time) {
-            int currentTimeMs = (int) (time / 1000);//转为ms值
-            synchronized (mPreviewWrapperList) {
-                for (TXVideoPreviewListenerWrapper wrapper : mPreviewWrapperList) {
-                    wrapper.onPreviewProgressWrapper(currentTimeMs);
+    private TXVideoEditer.TXVideoPreviewListener mPreviewListener =
+            new TXVideoEditer.TXVideoPreviewListener() {
+                @Override
+                public void onPreviewProgress(int time) {
+                    int currentTimeMs = (int) (time / 1000); //转为ms值
+                    synchronized (mPreviewWrapperList) {
+                        for (TXVideoPreviewListenerWrapper wrapper : mPreviewWrapperList) {
+                            wrapper.onPreviewProgressWrapper(currentTimeMs);
+                        }
+                    }
                 }
-            }
-        }
 
-        @Override
-        public void onPreviewFinished() {
-            synchronized (mPreviewWrapperList) {
-                for (TXVideoPreviewListenerWrapper wrapper : mPreviewWrapperList) {
-                    wrapper.onPreviewFinishedWrapper();
+                @Override
+                public void onPreviewFinished() {
+                    synchronized (mPreviewWrapperList) {
+                        for (TXVideoPreviewListenerWrapper wrapper : mPreviewWrapperList) {
+                            wrapper.onPreviewFinishedWrapper();
+                        }
+                    }
                 }
-            }
-        }
-    };
+            };
 
     public void addTXVideoPreviewListenerWrapper(TXVideoPreviewListenerWrapper listener) {
         synchronized (mPreviewWrapperList) {
@@ -210,7 +206,9 @@ public class VideoEditerSDK {
      * 初始化新的TXVideoEditer
      */
     public void initSDK() {
-        mTXVideoEditer = new TXVideoEditer(UGCKit.getAppContext());
+        if (mTXVideoEditer == null) {
+            mTXVideoEditer = new TXVideoEditer(UGCKit.getAppContext());
+        }
     }
 
     /**
@@ -236,7 +234,8 @@ public class VideoEditerSDK {
         return mTXVideoEditer.getVideoProcessPath();
     }
 
-    public void constructVideoInfo(@NonNull TXVideoEditConstants.TXVideoInfo videoInfo, long duration) {
+    public void constructVideoInfo(
+            @NonNull TXVideoEditConstants.TXVideoInfo videoInfo, long duration) {
         videoInfo.width = 100;
         videoInfo.height = 100;
         videoInfo.duration = duration;
@@ -305,7 +304,8 @@ public class VideoEditerSDK {
             mTXVideoEditer.setRenderRotation(0);
             // FIXBUG：获取缩略图之前需要设置缩略图的开始和结束时间点，SDK内部会根据开始时间和结束时间出缩略图
             mTXVideoEditer.setCutFromTime(mCutterStartTime, mCutterEndTime);
-            mTXVideoEditer.getThumbnail(thumbCount, IVideoCutLayout.DEFAULT_THUMBNAIL_WIDTH, IVideoCutLayout.DEFAULT_THUMBNAIL_HEIGHT, false, listener);
+            mTXVideoEditer.getThumbnail(thumbCount, IVideoCutLayout.DEFAULT_THUMBNAIL_WIDTH,
+                    IVideoCutLayout.DEFAULT_THUMBNAIL_HEIGHT, false, listener);
         }
     }
 
@@ -366,9 +366,7 @@ public class VideoEditerSDK {
         return getThumbnailList(0, mTXVideoInfo.duration);
     }
 
-    public interface ThumbnailsListener {
-        void onThumbnailGot(long time, Bitmap bitmap);
-    }
+    public interface ThumbnailsListener { void onThumbnailGot(long time, Bitmap bitmap); }
 
     private ThumbnailsListener mThumbnailsListener;
 
@@ -395,7 +393,7 @@ public class VideoEditerSDK {
     }
 
     private class ThumbnailBitmapInfo {
-        public long   ptsMs;
+        public long ptsMs;
         public Bitmap bitmap;
 
         public ThumbnailBitmapInfo(long ptsMs, Bitmap bitmap) {
@@ -403,5 +401,4 @@ public class VideoEditerSDK {
             this.bitmap = bitmap;
         }
     }
-
 }

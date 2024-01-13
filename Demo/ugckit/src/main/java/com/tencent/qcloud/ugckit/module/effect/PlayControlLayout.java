@@ -1,29 +1,30 @@
 package com.tencent.qcloud.ugckit.module.effect;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
-
+import com.tencent.qcloud.ugckit.R;
+import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
 import com.tencent.qcloud.ugckit.utils.DateTimeUtil;
-import com.tencent.qcloud.ugckit.UGCKitConstants;
 import com.tencent.qcloud.ugckit.utils.UIAttributeUtil;
-import com.tencent.qcloud.ugckit.R;
 
-public class PlayControlLayout extends RelativeLayout implements IPlayControlLayout, View.OnClickListener, PlayerManagerKit.OnPreviewListener, PlayerManagerKit.OnPlayStateListener {
+public class PlayControlLayout extends RelativeLayout
+        implements IPlayControlLayout, View.OnClickListener, PlayerManagerKit.OnPreviewListener,
+                   PlayerManagerKit.OnPlayStateListener {
     private static final String TAG = "PlayControlLayout";
 
     private ImageView mImagePlay;
-    private TextView  mTextCurrent;
-    private int       mPauseIcon           = R.drawable.ugckit_ic_pause_normal;
-    private int       mPlayIcon            = R.drawable.ugckit_ic_play_normal;
-    private int       mCurrentTimeColor    = R.color.ugckit_white;
-    private int       mCurrentTimeTextSize = 15;
+    private TextView mTextCurrent;
+    private int mPauseIcon = R.drawable.ugckit_ic_pause_normal;
+    private int mPlayIcon = R.drawable.ugckit_ic_play_normal;
+    private int mCurrentTimeColor = R.color.ugckit_white;
+    private int mCurrentTimeTextSize = 15;
 
     public PlayControlLayout(Context context) {
         super(context);
@@ -53,8 +54,10 @@ public class PlayControlLayout extends RelativeLayout implements IPlayControlLay
         PlayerManagerKit.getInstance().addOnPreviewLitener(this);
         PlayerManagerKit.getInstance().addOnPlayStateLitener(this);
 
-        mPlayIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerPlayIcon, R.drawable.ugckit_ic_play_normal);
-        mPauseIcon = UIAttributeUtil.getResResources(getContext(), R.attr.editerPauseIcon, R.drawable.ugckit_ic_pause_normal);
+        mPlayIcon = UIAttributeUtil.getResResources(
+                getContext(), R.attr.editerPlayIcon, R.drawable.ugckit_ic_play_normal);
+        mPauseIcon = UIAttributeUtil.getResResources(
+                getContext(), R.attr.editerPauseIcon, R.drawable.ugckit_ic_pause_normal);
     }
 
     @Override
@@ -122,5 +125,4 @@ public class PlayControlLayout extends RelativeLayout implements IPlayControlLay
     public void setPauseIconResource(int resid) {
         mPauseIcon = resid;
     }
-
 }

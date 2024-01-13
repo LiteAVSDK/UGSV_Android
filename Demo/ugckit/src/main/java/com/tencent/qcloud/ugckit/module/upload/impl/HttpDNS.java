@@ -15,15 +15,15 @@ import okhttp3.Dns;
 public class HttpDNS implements Dns {
     @Override
     public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-
-        List<String> ips = TXUGCPublishOptCenter.getInstance().query(hostname);  //获取HttpDNS解析结果
+        List<String> ips =
+                TXUGCPublishOptCenter.getInstance().query(hostname); //获取HttpDNS解析结果
         if (ips == null || ips.size() == 0) {
             //当httpdns缓存没有时，使用默认解析
             return Dns.SYSTEM.lookup(hostname);
         }
 
         List<InetAddress> result = new ArrayList<>();
-        for (String ip : ips) {  //将ip地址数组转换成所需要的对象列表
+        for (String ip : ips) { //将ip地址数组转换成所需要的对象列表
             result.addAll(Arrays.asList(InetAddress.getAllByName(ip)));
         }
         return result;

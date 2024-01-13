@@ -7,56 +7,54 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tencent.qcloud.ugckit.R;
-
 
 public class RangeSlider extends ViewGroup {
     private static final String TAG = "RangeSlider";
 
-    private static final int DEFAULT_LINE_SIZE       = 1;
-    private static final int DEFAULT_THUMB_WIDTH     = 7;
-    private static final int DEFAULT_TICK_START      = 0;
-    private static final int DEFAULT_TICK_END        = 5;
-    private static final int DEFAULT_TICK_INTERVAL   = 1;
-    public static final  int TYPE_LEFT               = 1;
-    public static final  int TYPE_RIGHT              = 2;
-    private static       int DEFAULT_MASK_BACKGROUND = 0xA0000000;
-    private static       int DEFAULT_LINE_COLOR      = 0xFFFF584C;
+    private static final int DEFAULT_LINE_SIZE = 1;
+    private static final int DEFAULT_THUMB_WIDTH = 7;
+    private static final int DEFAULT_TICK_START = 0;
+    private static final int DEFAULT_TICK_END = 5;
+    private static final int DEFAULT_TICK_INTERVAL = 1;
+    public static final int TYPE_LEFT = 1;
+    public static final int TYPE_RIGHT = 2;
+    private static int DEFAULT_MASK_BACKGROUND = 0xA0000000;
+    private static int DEFAULT_LINE_COLOR = 0xFFFF584C;
 
     @NonNull
-    private final Paint                 mLinePaint;
+    private final Paint mLinePaint;
     @NonNull
-    private final Paint                 mBgPaint;
+    private final Paint mBgPaint;
     @NonNull
-    private final ThumbView             mLeftThumb;
+    private final ThumbView mLeftThumb;
     @NonNull
-    private final ThumbView             mRightThumb;
+    private final ThumbView mRightThumb;
     @Nullable
-    private       Drawable              mRightIcon;
+    private Drawable mRightIcon;
     @Nullable
-    private       Drawable              mLeftIcon;
-    private       int                   mTouchSlop;
-    private       int                   mOriginalX;
-    private       int                   mLastX;
-    private       int                   mThumbWidth;
-    private       int                   mTickStart    = DEFAULT_TICK_START;
-    private       int                   mTickEnd      = DEFAULT_TICK_END;
-    private       int                   mTickInterval = DEFAULT_TICK_INTERVAL;
-    private       int                   mTickCount    = (mTickEnd - mTickStart) / mTickInterval;
-    private       float                 mLineSize;
-    private       boolean               mIsDragging;
-    private       OnRangeChangeListener mRangeChangeListener;
+    private Drawable mLeftIcon;
+    private int mTouchSlop;
+    private int mOriginalX;
+    private int mLastX;
+    private int mThumbWidth;
+    private int mTickStart = DEFAULT_TICK_START;
+    private int mTickEnd = DEFAULT_TICK_END;
+    private int mTickInterval = DEFAULT_TICK_INTERVAL;
+    private int mTickCount = (mTickEnd - mTickStart) / mTickInterval;
+    private float mLineSize;
+    private boolean mIsDragging;
+    private OnRangeChangeListener mRangeChangeListener;
 
     public RangeSlider(@NonNull Context context) {
         this(context, null);
@@ -69,23 +67,31 @@ public class RangeSlider extends ViewGroup {
     public RangeSlider(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.UGCKitRangeSlider, 0, 0);
-        mThumbWidth = array.getDimensionPixelOffset(R.styleable.UGCKitRangeSlider_thumbWidth, DEFAULT_THUMB_WIDTH);
-        mLineSize = array.getDimensionPixelOffset(R.styleable.UGCKitRangeSlider_lineHeight, DEFAULT_LINE_SIZE);
+        TypedArray array =
+                context.obtainStyledAttributes(attrs, R.styleable.UGCKitRangeSlider, 0, 0);
+        mThumbWidth = array.getDimensionPixelOffset(
+                R.styleable.UGCKitRangeSlider_thumbWidth, DEFAULT_THUMB_WIDTH);
+        mLineSize = array.getDimensionPixelOffset(
+                R.styleable.UGCKitRangeSlider_lineHeight, DEFAULT_LINE_SIZE);
         mBgPaint = new Paint();
-        mBgPaint.setColor(array.getColor(R.styleable.UGCKitRangeSlider_maskColor, DEFAULT_MASK_BACKGROUND));
+        mBgPaint.setColor(
+                array.getColor(R.styleable.UGCKitRangeSlider_maskColor, DEFAULT_MASK_BACKGROUND));
 
         mLinePaint = new Paint();
-        mLinePaint.setColor(array.getColor(R.styleable.UGCKitRangeSlider_lineColor, DEFAULT_LINE_COLOR));
+        mLinePaint.setColor(
+                array.getColor(R.styleable.UGCKitRangeSlider_lineColor, DEFAULT_LINE_COLOR));
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
         mLeftIcon = array.getDrawable(R.styleable.UGCKitRangeSlider_leftThumbDrawable);
         mRightIcon = array.getDrawable(R.styleable.UGCKitRangeSlider_rightThumbDrawable);
-        mLeftThumb = new ThumbView(context, mThumbWidth, mLeftIcon == null ? new ColorDrawable(DEFAULT_LINE_COLOR) : mLeftIcon);
-        mRightThumb = new ThumbView(context, mThumbWidth, mRightIcon == null ? new ColorDrawable(DEFAULT_LINE_COLOR) : mRightIcon);
+        mLeftThumb = new ThumbView(context, mThumbWidth,
+                mLeftIcon == null ? new ColorDrawable(DEFAULT_LINE_COLOR) : mLeftIcon);
+        mRightThumb = new ThumbView(context, mThumbWidth,
+                mRightIcon == null ? new ColorDrawable(DEFAULT_LINE_COLOR) : mRightIcon);
         setTickCount(array.getInteger(R.styleable.UGCKitRangeSlider_tickCount, DEFAULT_TICK_END));
-        setRangeIndex(array.getInteger(R.styleable.UGCKitRangeSlider_leftThumbIndex, DEFAULT_TICK_START),
+        setRangeIndex(
+                array.getInteger(R.styleable.UGCKitRangeSlider_leftThumbIndex, DEFAULT_TICK_START),
                 array.getInteger(R.styleable.UGCKitRangeSlider_rightThumbIndex, mTickCount));
         array.recycle();
 
@@ -143,7 +149,8 @@ public class RangeSlider extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        widthMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY);
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mLeftThumb.measure(widthMeasureSpec, heightMeasureSpec);
         mRightThumb.measure(widthMeasureSpec, heightMeasureSpec);
@@ -175,7 +182,6 @@ public class RangeSlider extends ViewGroup {
         final float lineTop = mLineSize;
         final float lineBottom = height - mLineSize;
 
-
         // top line
         canvas.drawRect(lThumbWidth + lThumbOffset, 0, rThumbOffset, lineTop, mLinePaint);
 
@@ -188,7 +194,6 @@ public class RangeSlider extends ViewGroup {
         if (rThumbOffset < width - mThumbWidth) {
             canvas.drawRect(rThumbOffset, 0, width, height, mBgPaint);
         }
-
     }
 
     /**
@@ -198,7 +203,8 @@ public class RangeSlider extends ViewGroup {
         ValueAnimator leftValueAnimator = ValueAnimator.ofFloat(mLeftThumb.getX(), 0f);
         leftValueAnimator.setDuration(200);
         leftValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        ValueAnimator rightValueAnimator = ValueAnimator.ofFloat(mRightThumb.getX(), this.getMeasuredWidth());
+        ValueAnimator rightValueAnimator =
+                ValueAnimator.ofFloat(mRightThumb.getX(), this.getMeasuredWidth());
 
         rightValueAnimator.setDuration(200);
         rightValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -239,7 +245,6 @@ public class RangeSlider extends ViewGroup {
         boolean handle = false;
 
         switch (event.getAction()) {
-
             case MotionEvent.ACTION_DOWN:
                 int x = (int) event.getX();
                 int y = (int) event.getY();
@@ -272,14 +277,16 @@ public class RangeSlider extends ViewGroup {
                     invalidate();
                     handle = true;
                     if (mRangeChangeListener != null) {
-                        mRangeChangeListener.onKeyUp(TYPE_LEFT, mLeftThumb.getRangeIndex(), mRightThumb.getRangeIndex());
+                        mRangeChangeListener.onKeyUp(
+                                TYPE_LEFT, mLeftThumb.getRangeIndex(), mRightThumb.getRangeIndex());
                     }
                 } else if (mRightThumb.isPressed()) {
                     releaseRightThumb();
                     invalidate();
                     handle = true;
                     if (mRangeChangeListener != null) {
-                        mRangeChangeListener.onKeyUp(TYPE_RIGHT, mLeftThumb.getRangeIndex(), mRightThumb.getRangeIndex());
+                        mRangeChangeListener.onKeyUp(TYPE_RIGHT, mLeftThumb.getRangeIndex(),
+                                mRightThumb.getRangeIndex());
                     }
                 }
                 break;
@@ -317,8 +324,7 @@ public class RangeSlider extends ViewGroup {
     }
 
     private boolean indexOutOfRange(int leftThumbIndex, int rightThumbIndex) {
-        return (leftThumbIndex < 0 || leftThumbIndex > mTickCount
-                || rightThumbIndex < 0
+        return (leftThumbIndex < 0 || leftThumbIndex > mTickCount || rightThumbIndex < 0
                 || rightThumbIndex > mTickCount);
     }
 
@@ -348,7 +354,8 @@ public class RangeSlider extends ViewGroup {
 
     private void notifyRangeChange(int type) {
         if (mRangeChangeListener != null) {
-//            mRangeChangeListener.onRangeChange(this, type, mLeftThumb.getRangeIndex(), mRightThumb.getRangeIndex());
+            //            mRangeChangeListener.onRangeChange(this, type, mLeftThumb.getRangeIndex(),
+            //            mRightThumb.getRangeIndex());
         }
     }
 
@@ -381,11 +388,9 @@ public class RangeSlider extends ViewGroup {
      */
     public void setRangeIndex(int leftIndex, int rightIndex) {
         if (indexOutOfRange(leftIndex, rightIndex)) {
-            throw new IllegalArgumentException(
-                    "Thumb index left " + leftIndex + ", or right " + rightIndex
-                            + " is out of bounds. Check that it is greater than the minimum ("
-                            + mTickStart + ") and less than the maximum value ("
-                            + mTickEnd + ")");
+            throw new IllegalArgumentException("Thumb index left " + leftIndex + ", or right "
+                    + rightIndex + " is out of bounds. Check that it is greater than the minimum ("
+                    + mTickStart + ") and less than the maximum value (" + mTickEnd + ")");
         } else {
             if (mLeftThumb.getRangeIndex() != leftIndex) {
                 mLeftThumb.setTickIndex(leftIndex);
@@ -484,5 +489,4 @@ public class RangeSlider extends ViewGroup {
 
         void onKeyUp(int type, int leftPinIndex, int rightPinIndex);
     }
-
 }

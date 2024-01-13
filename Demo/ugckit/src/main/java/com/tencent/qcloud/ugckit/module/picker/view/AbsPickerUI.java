@@ -7,12 +7,10 @@ import android.widget.RelativeLayout;
 import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.component.TitleBarLayout;
 
-
 public abstract class AbsPickerUI extends RelativeLayout implements IPickerLayout {
-
-    private   TitleBarLayout   mTitleBar;
+    private TitleBarLayout mTitleBar;
     protected PickerListLayout mSelectorListLayout;
-    private   PickedLayout     mSelectedLayout;
+    private PickedLayout mSelectedLayout;
 
     public AbsPickerUI(Context context) {
         super(context);
@@ -51,5 +49,4 @@ public abstract class AbsPickerUI extends RelativeLayout implements IPickerLayou
     public PickedLayout getPickedLayout() {
         return mSelectedLayout;
     }
-
 }

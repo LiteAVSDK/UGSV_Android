@@ -30,5 +30,4 @@ public interface ITimeLineView {
      * 当前时间点的Icon
      */
     void setCurrentProgessIconResource(@DrawableRes int resid);
-
 }

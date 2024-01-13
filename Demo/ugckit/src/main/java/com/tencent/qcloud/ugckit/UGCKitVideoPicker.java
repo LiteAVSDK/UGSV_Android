@@ -3,11 +3,9 @@ package com.tencent.qcloud.ugckit;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-
+import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.util.AttributeSet;
 
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.module.picker.data.ItemView;
@@ -44,7 +42,8 @@ public class UGCKitVideoPicker extends AbsPickerUI {
     @Override
     public void initDefault() {
         // 设置标题
-        getTitleBar().setTitle(getResources().getString(R.string.ugckit_video_choose), ITitleBarLayout.POSITION.MIDDLE);
+        getTitleBar().setTitle(getResources().getString(R.string.ugckit_video_choose),
+                ITitleBarLayout.POSITION.MIDDLE);
         getTitleBar().setVisible(false, ITitleBarLayout.POSITION.RIGHT);
         getPickerListLayout().setOnItemAddListener(new ItemView.OnAddListener() {
             @Override
@@ -60,7 +59,8 @@ public class UGCKitVideoPicker extends AbsPickerUI {
         mHandlder.post(new Runnable() {
             @Override
             public void run() {
-                ArrayList<TCVideoFileInfo> list = PickerManagerKit.getInstance(mActivity).getAllVideo();
+                ArrayList<TCVideoFileInfo> list =
+                        PickerManagerKit.getInstance(mActivity).getAllVideo();
                 getPickerListLayout().updateItems(list);
             }
         });
@@ -88,7 +88,8 @@ public class UGCKitVideoPicker extends AbsPickerUI {
             @Override
             public void onNextStep() {
                 if (listener != null) {
-                    ArrayList<TCVideoFileInfo> arrayList = getPickedLayout().getSelectItems(PickedLayout.TYPE_VIDEO);
+                    ArrayList<TCVideoFileInfo> arrayList =
+                            getPickedLayout().getSelectItems(PickedLayout.TYPE_VIDEO);
                     listener.onPickedList(arrayList);
                 }
             }

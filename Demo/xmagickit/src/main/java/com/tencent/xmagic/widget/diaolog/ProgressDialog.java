@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.tencent.xmagic.demo.R;
 
-
 public class ProgressDialog {
     private Dialog mDialog;
     private TextView mTextMsg;
@@ -31,8 +30,9 @@ public class ProgressDialog {
         mDialog = new Dialog(context, R.style.XmagicLoadingDialog);
         mDialog.setCancelable(false);
         LinearLayout layout = (LinearLayout) v.findViewById(R.id.beauty_ll_progress);
-        mDialog.setContentView(layout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT));
+        mDialog.setContentView(layout,
+                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT));
     }
 
     public void setCancelable(boolean cancelable) {

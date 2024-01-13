@@ -2,17 +2,15 @@ package com.tencent.qcloud.ugckit.module.effect.bgm;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.utils.HttpFileListener;
 import com.tencent.qcloud.ugckit.utils.HttpFileUtil;
 import com.tencent.qcloud.ugckit.utils.VideoDeviceUtil;
-import com.tencent.qcloud.ugckit.R;
-
 
 import java.io.File;
 import java.util.concurrent.Executors;
@@ -21,16 +19,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class TCMusicDownloadProgress {
+    public static final String BGM_FOLDER = "bgm";
+    private static final int CORE_POOL_SIZE = 8;
 
-    public static final  String BGM_FOLDER     = "bgm";
-    private static final int    CORE_POOL_SIZE = 8;
-
-    private int                mBgmPosition;
-    private boolean            mProcessing;
-    private String             mUrl;
-    private String             mBgmName;
+    private int mBgmPosition;
+    private boolean mProcessing;
+    private String mUrl;
+    private String mBgmName;
     @Nullable
-    private Downloadlistener   mListener;
+    private Downloadlistener mListener;
     private DownloadThreadPool sDownloadThreadPool;
 
     public TCMusicDownloadProgress(String bgmName, int position, String url) {
@@ -69,11 +66,12 @@ public class TCMusicDownloadProgress {
             public void onProcessEnd() {
                 mProcessing = false;
             }
-
         };
-        File onlineMaterialDir = VideoDeviceUtil.getExternalFilesDir(UGCKit.getAppContext(), BGM_FOLDER);
+        File onlineMaterialDir =
+                VideoDeviceUtil.getExternalFilesDir(UGCKit.getAppContext(), BGM_FOLDER);
         if (onlineMaterialDir == null || onlineMaterialDir.getName().startsWith("null")) {
-            mListener.onDownloadFail(UGCKit.getAppContext().getResources().getString(R.string.ugckit_bgm_download_progress_no_enough_storage_space));
+            mListener.onDownloadFail(UGCKit.getAppContext().getResources().getString(
+                    R.string.ugckit_bgm_download_progress_no_enough_storage_space));
             stop();
             return;
         }
@@ -82,7 +80,8 @@ public class TCMusicDownloadProgress {
         }
 
         ThreadPoolExecutor threadPool = getThreadExecutor();
-        HttpFileUtil httpFileUtil = new HttpFileUtil(mUrl, onlineMaterialDir.getPath(), mBgmName, fileListener, true);
+        HttpFileUtil httpFileUtil =
+                new HttpFileUtil(mUrl, onlineMaterialDir.getPath(), mBgmName, fileListener, true);
         threadPool.execute(httpFileUtil);
     }
 
@@ -98,12 +97,11 @@ public class TCMusicDownloadProgress {
     }
 
     public static class DownloadThreadPool extends ThreadPoolExecutor {
-
         @TargetApi(Build.VERSION_CODES.GINGERBREAD)
         public DownloadThreadPool(int poolSize) {
             super(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingDeque<Runnable>(),
-                    Executors.defaultThreadFactory(), new AbortPolicy());
+                    new LinkedBlockingDeque<Runnable>(), Executors.defaultThreadFactory(),
+                    new AbortPolicy());
         }
     }
 

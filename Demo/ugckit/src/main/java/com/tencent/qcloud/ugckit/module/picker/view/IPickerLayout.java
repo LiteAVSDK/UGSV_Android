@@ -6,7 +6,6 @@ import com.tencent.qcloud.ugckit.module.picker.data.TCVideoFileInfo;
 import java.util.ArrayList;
 
 public interface IPickerLayout extends ITitleBar {
-
     /**
      * 初始化参数
      */

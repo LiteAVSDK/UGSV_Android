@@ -1,0 +1,24 @@
+{
+  "bubbleList": [
+    {
+      "icon": "empty/icon.png",
+      "name": "empty"
+    },
+    {
+      "icon": "lightning/icon.png",
+      "name": "lightning"
+    },
+    {
+      "icon": "cloud/icon.png",
+      "name": "cloud"
+    },
+    {
+      "icon": "boom/icon.png",
+      "name": "boom"
+    },
+    {
+      "icon": "rabbit/icon.png",
+      "name": "rabbit"
+    }
+  ]
+}

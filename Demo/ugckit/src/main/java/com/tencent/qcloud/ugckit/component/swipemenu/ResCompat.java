@@ -7,15 +7,14 @@ import android.content.res.Resources.Theme;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.lang.reflect.Method;
 
 public class ResCompat {
-
     @Nullable
     public static Drawable getDrawable(@NonNull Context context, int drawableId) {
         return getDrawable(context, drawableId, null);
@@ -24,20 +23,22 @@ public class ResCompat {
     public static Drawable getDrawable(@NonNull Context context, int drawableId, Theme theme) {
         Resources resources = context.getResources();
         Class<?> resourcesClass = resources.getClass();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
-                Method getDrawableMethod = resourcesClass.getMethod("getDrawable", int.class, Theme.class);
+                Method getDrawableMethod =
+                        resourcesClass.getMethod("getDrawable", int.class, Theme.class);
                 getDrawableMethod.setAccessible(true);
                 return (Drawable) getDrawableMethod.invoke(resources, drawableId, theme);
             } catch (Throwable e) {
             }
-        else
+        } else {
             try {
                 Method getDrawableMethod = resourcesClass.getMethod("getDrawable", int.class);
                 getDrawableMethod.setAccessible(true);
                 return (Drawable) getDrawableMethod.invoke(resources, drawableId);
             } catch (Throwable e) {
             }
+        }
         return null;
     }
 
@@ -48,20 +49,22 @@ public class ResCompat {
     public static int getColor(@NonNull Context context, int colorId, Theme theme) {
         Resources resources = context.getResources();
         Class<?> resourcesClass = resources.getClass();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                Method getColorMethod = resourcesClass.getMethod("getColor", int.class, Theme.class);
+                Method getColorMethod =
+                        resourcesClass.getMethod("getColor", int.class, Theme.class);
                 getColorMethod.setAccessible(true);
                 return (Integer) getColorMethod.invoke(resources, colorId, theme);
             } catch (Throwable e) {
             }
-        else
+        } else {
             try {
                 Method getColorMethod = resourcesClass.getMethod("getColor", int.class);
                 getColorMethod.setAccessible(true);
                 return (Integer) getColorMethod.invoke(resources, colorId);
             } catch (Throwable e) {
             }
+        }
         return Color.BLACK;
     }
 
@@ -87,19 +90,21 @@ public class ResCompat {
 
     public static void setTextAppearance(@NonNull TextView view, int textAppearance) {
         Class<?> resourcesClass = view.getClass();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                Method getColorMethod = resourcesClass.getMethod("setTextAppearance", Context.class, int.class);
+                Method getColorMethod =
+                        resourcesClass.getMethod("setTextAppearance", Context.class, int.class);
                 getColorMethod.setAccessible(true);
                 getColorMethod.invoke(view, view.getContext(), textAppearance);
             } catch (Throwable e) {
             }
-        else
+        } else {
             try {
                 Method getColorMethod = resourcesClass.getMethod("setTextAppearance", int.class);
                 getColorMethod.setAccessible(true);
                 getColorMethod.invoke(view, textAppearance);
             } catch (Throwable e) {
             }
+        }
     }
 }

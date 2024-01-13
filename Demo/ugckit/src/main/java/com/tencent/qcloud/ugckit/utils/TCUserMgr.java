@@ -2,16 +2,14 @@ package com.tencent.qcloud.ugckit.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.text.TextUtils;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.text.TextUtils;
-import android.util.Log;
-
+import com.tencent.qcloud.ugckit.R;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.UGCKitConstants;
-import com.tencent.qcloud.ugckit.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +28,6 @@ import okhttp3.Response;
  * 用户管理模块
  */
 public class TCUserMgr {
-
     public static final String TAG = "TCUserMgr";
     public static final int SUCCESS_CODE = 200;
     private String mAppId = "";
@@ -39,11 +36,12 @@ public class TCUserMgr {
     private boolean userid;
 
     private TCUserMgr() {
-        mHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .build();
+        mHttpClient = new OkHttpClient()
+                              .newBuilder()
+                              .connectTimeout(10, TimeUnit.SECONDS)
+                              .readTimeout(10, TimeUnit.SECONDS)
+                              .writeTimeout(10, TimeUnit.SECONDS)
+                              .build();
     }
 
     private static class TCUserMgrHolder {
@@ -70,12 +68,11 @@ public class TCUserMgr {
     private String mAccountType;
     private String mNickName = "";
     private String mUserAvatar = "";
-    private int mSex = -1;//0:male,1:female,-1:unknown
+    private int mSex = -1; // 0:male,1:female,-1:unknown
     private String mCoverPic;
     private String mLocation;
 
-
-    //cos 配置
+    // cos 配置
     public static class CosInfo {
         public String bucket = "";
         public String appID = "";
@@ -92,7 +89,6 @@ public class TCUserMgr {
     }
 
     public interface Callback {
-
         /**
          * 登录成功
          */
@@ -105,7 +101,6 @@ public class TCUserMgr {
          * @param msg  错误信息
          */
         void onFailure(int code, final String msg);
-
     }
 
     public static class HttpCallback implements okhttp3.Callback {
@@ -205,7 +200,7 @@ public class TCUserMgr {
 
     public void setLocation(String location, final Callback callback) {
         mLocation = location;
-//        uploadUserInfo(callback);
+        //        uploadUserInfo(callback);
     }
 
     public int getUserSex() {
@@ -229,7 +224,8 @@ public class TCUserMgr {
         loginByToken(mUserId, mUserPwd, callback);
     }
 
-    public void login(final String userid, @NonNull final String password, final Callback callback) {
+    public void login(
+            final String userid, @NonNull final String password, final Callback callback) {
         LogReport.getInstance().setUserId(userid);
 
         final String pwd = TCUtils.md5(TCUtils.md5(password) + userid);
@@ -247,8 +243,7 @@ public class TCUserMgr {
 
     public void logOff(@NonNull final Callback callback) {
         try {
-            JSONObject body = new JSONObject()
-                    .put("userid", mUserId);
+            JSONObject body = new JSONObject().put("userid", mUserId);
             request("/cancellation", body, new HttpCallback("cancellation", new Callback() {
                 @Override
                 public void onSuccess(JSONObject data) {
@@ -272,9 +267,8 @@ public class TCUserMgr {
 
     public void refresh(@Nullable final Callback callback) {
         try {
-            JSONObject body = new JSONObject()
-                    .put("userid", mUserId)
-                    .put("refresh_token", mRefreshToken);
+            JSONObject body =
+                    new JSONObject().put("userid", mUserId).put("refresh_token", mRefreshToken);
 
             request("/refresh", body, new HttpCallback("login", new Callback() {
                 @Override
@@ -302,7 +296,8 @@ public class TCUserMgr {
         }
     }
 
-    public void uploadLogs(String action, String userName, long code, String errorMsg, okhttp3.Callback callback) {
+    public void uploadLogs(
+            String action, String userName, long code, String errorMsg, okhttp3.Callback callback) {
         Log.w(TAG, "uploadLogs: errorMsg " + errorMsg);
         String reqUrl = LogReport.DEFAULT_ELK_HOST;
         String body = "";
@@ -321,19 +316,18 @@ public class TCUserMgr {
             e.printStackTrace();
         }
         Request request = new Request.Builder()
-                .url(reqUrl)
-                .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body))
-                .build();
+                                  .url(reqUrl)
+                                  .post(RequestBody.create(
+                                          MediaType.parse("application/json; charset=utf-8"), body))
+                                  .build();
         mHttpClient.newCall(request).enqueue(callback);
     }
 
-    public void register(final String userid, @NonNull final String password, final Callback callback) {
+    public void register(
+            final String userid, @NonNull final String password, final Callback callback) {
         try {
             String pwd = TCUtils.md5(TCUtils.md5(password) + userid);
-            String body = new JSONObject()
-                    .put("userid", userid)
-                    .put("password", pwd)
-                    .toString();
+            String body = new JSONObject().put("userid", userid).put("password", pwd).toString();
             Log.w(TAG, "xsp_process: start register " + userid);
             request("/register", body, new HttpCallback("register", callback));
         } catch (Exception e) {
@@ -392,10 +386,10 @@ public class TCUserMgr {
     public void uploadUserInfo(final Callback callback) {
         try {
             JSONObject body = new JSONObject()
-                    .put("nickname", mNickName != null ? mNickName : "")
-                    .put("avatar", mUserAvatar != null ? mUserAvatar : "")
-                    .put("sex", mSex)
-                    .put("frontcover", mCoverPic != null ? mCoverPic : "");
+                                      .put("nickname", mNickName != null ? mNickName : "")
+                                      .put("avatar", mUserAvatar != null ? mUserAvatar : "")
+                                      .put("sex", mSex)
+                                      .put("frontcover", mCoverPic != null ? mCoverPic : "");
             request("/upload_user_info", body, new HttpCallback("upload_user_info", callback));
         } catch (Exception e) {
             e.printStackTrace();
@@ -405,9 +399,10 @@ public class TCUserMgr {
     private void request(String cmd, String body, okhttp3.Callback callback) {
         String reqUrl = UGCKitConstants.APP_SVR_URL + cmd;
         Request request = new Request.Builder()
-                .url(reqUrl)
-                .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body))
-                .build();
+                                  .url(reqUrl)
+                                  .post(RequestBody.create(
+                                          MediaType.parse("application/json; charset=utf-8"), body))
+                                  .build();
         mHttpClient.newCall(request).enqueue(callback);
     }
 
@@ -415,23 +410,24 @@ public class TCUserMgr {
         long now = System.currentTimeMillis() / 1000;
         try {
             String strBody = body.put("userid", mUserId)
-                    .put("timestamp", now)
-                    .put("expires", 3000)
-                    .toString();
+                                     .put("timestamp", now)
+                                     .put("expires", 3000)
+                                     .toString();
 
             String sig = getRequestSig(body);
 
-            Request request = new Request.Builder()
-                    .url(UGCKitConstants.APP_SVR_URL + cmd)
-                    .addHeader("Liteav-Sig", sig)
-                    .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), strBody))
-                    .build();
+            Request request =
+                    new Request.Builder()
+                            .url(UGCKitConstants.APP_SVR_URL + cmd)
+                            .addHeader("Liteav-Sig", sig)
+                            .post(RequestBody.create(
+                                    MediaType.parse("application/json; charset=utf-8"), strBody))
+                            .build();
             mHttpClient.newCall(request).enqueue(callback);
             Log.d(TAG, "xsp_process: " + request.toString() + ", Body" + strBody);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @NonNull
@@ -440,9 +436,9 @@ public class TCUserMgr {
         String strBody = null;
         try {
             strBody = body.put("userid", mUserId)
-                    .put("timestamp", now)
-                    .put("expires", 3000)
-                    .toString();
+                              .put("timestamp", now)
+                              .put("expires", 3000)
+                              .toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -451,12 +447,10 @@ public class TCUserMgr {
         return sig;
     }
 
-    private void loginByToken(final String userid, final String pwd, @Nullable final Callback callback) {
+    private void loginByToken(
+            final String userid, final String pwd, @Nullable final Callback callback) {
         try {
-            String body = new JSONObject()
-                    .put("userid", userid)
-                    .put("password", pwd)
-                    .toString();
+            String body = new JSONObject().put("userid", userid).put("password", pwd).toString();
 
             request("/login", body, new HttpCallback("login", new Callback() {
                 @Override
@@ -469,7 +463,7 @@ public class TCUserMgr {
                     if (data.has("roomservice_sign")) {
                         JSONObject serviceSig = data.optJSONObject("roomservice_sign");
                         mUserSig = serviceSig.optString("userSig");
-//                        mUserId = serviceSig.optString("userID");
+                        //                        mUserId = serviceSig.optString("userID");
                         mAccountType = serviceSig.optString("accountType");
                         mSdkAppID = serviceSig.optInt("sdkAppID");
                     }
@@ -493,43 +487,48 @@ public class TCUserMgr {
                     saveUserInfo();
 
                     // 登录成功上报
-                    uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, SUCCESS_CODE, "登录成功", new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            Log.d(TAG, "login uploadLogs onFailure");
-                        }
+                    uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, SUCCESS_CODE, "登录成功",
+                            new okhttp3.Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    Log.d(TAG, "login uploadLogs onFailure");
+                                }
 
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            Log.d(TAG, "login uploadLogs onResponse");
-                        }
-                    });
+                                @Override
+                                public void onResponse(Call call, Response response)
+                                        throws IOException {
+                                    Log.d(TAG, "login uploadLogs onResponse");
+                                }
+                            });
                     if (callback != null) {
                         callback.onSuccess(data);
                     }
-
                 }
 
                 @Override
                 public void onFailure(int code, final String msg) {
                     // 登录失败上报
-                    uploadLogs(LogReport.ELK_ACTION_LOGIN, userid, code, msg, new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            Log.d(TAG, "login uploadLogs onFailure");
-                        }
+                    uploadLogs(
+                            LogReport.ELK_ACTION_LOGIN, userid, code, msg, new okhttp3.Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    Log.d(TAG, "login uploadLogs onFailure");
+                                }
 
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            Log.d(TAG, "login uploadLogs onResponse");
-                        }
-                    });
+                                @Override
+                                public void onResponse(Call call, Response response)
+                                        throws IOException {
+                                    Log.d(TAG, "login uploadLogs onResponse");
+                                }
+                            });
                     if (callback != null) {
                         String errorMsg = msg;
                         if (code == 620) {
-                            errorMsg = UGCKit.getAppContext().getResources().getString(R.string.ugckit_user_mgr_user_does_not_exist);
+                            errorMsg = UGCKit.getAppContext().getResources().getString(
+                                    R.string.ugckit_user_mgr_user_does_not_exist);
                         } else if (code == 621) {
-                            errorMsg = UGCKit.getAppContext().getResources().getString(R.string.ugckit_user_mgr_wrong_password);
+                            errorMsg = UGCKit.getAppContext().getResources().getString(
+                                    R.string.ugckit_user_mgr_wrong_password);
                         }
                         callback.onFailure(code, errorMsg);
                     }
@@ -545,19 +544,21 @@ public class TCUserMgr {
     }
 
     private void loadUserInfo() {
-        //TODO: decrypt
+        // TODO: decrypt
         if (mContext == null) return;
         Log.d(TAG, "xsp_process: load local user info");
-        SharedPreferences settings = mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
+        SharedPreferences settings =
+                mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
         mUserId = settings.getString(UGCKitConstants.USER_ID, "");
         mUserPwd = settings.getString(UGCKitConstants.USER_PWD, "");
     }
 
     private void saveUserInfo() {
-        //TODO: encrypt
+        // TODO: encrypt
         if (mContext == null) return;
         Log.d(TAG, "xsp_process: save local user info");
-        SharedPreferences settings = mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
+        SharedPreferences settings =
+                mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(UGCKitConstants.USER_ID, mUserId);
         editor.putString(UGCKitConstants.USER_PWD, mUserPwd);
@@ -566,7 +567,8 @@ public class TCUserMgr {
 
     private void clearUserInfo() {
         if (mContext == null) return;
-        SharedPreferences settings = mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
+        SharedPreferences settings =
+                mContext.getSharedPreferences("TCUserInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(UGCKitConstants.USER_ID, "");
         editor.putString(UGCKitConstants.USER_PWD, "");

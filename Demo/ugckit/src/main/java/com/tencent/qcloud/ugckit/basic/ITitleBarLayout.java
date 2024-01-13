@@ -10,7 +10,6 @@ import android.widget.TextView;
  * 标题栏接口，标题栏设计为左中右三部分标题，左边为图片+文字，中间为文字，右边也会图片+文字
  */
 public interface ITitleBarLayout {
-
     /**
      * 设置左边标题的图片
      *
@@ -90,5 +89,4 @@ public interface ITitleBarLayout {
          */
         RIGHT
     }
-
 }

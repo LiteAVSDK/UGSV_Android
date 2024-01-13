@@ -4,16 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 import androidx.annotation.NonNull;
 
-
 public class BackgroundTasks {
-
-    private BackgroundTasks() {
-
-    }
+    private BackgroundTasks() {}
 
     @NonNull
     private Handler mHandler = new Handler(Looper.getMainLooper());
-
 
     public void runOnUiThread(Runnable runnable) {
         mHandler.post(runnable);
