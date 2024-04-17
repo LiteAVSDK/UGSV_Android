@@ -71,6 +71,10 @@ public class PictureTransitionKit {
                 return TXVideoEditConstants.PICTURE_TRANSITION_FAILED;
             }
         }
-        return VideoEditerSDK.getInstance().getEditer().setPictureList(bitmapList, DEFAULT_FPS);
+        TXVideoEditer videoEditer = VideoEditerSDK.getInstance().getEditer();
+        if (videoEditer == null) {
+            return TXVideoEditConstants.PICTURE_TRANSITION_FAILED;
+        }
+        return videoEditer.setPictureList(bitmapList, DEFAULT_FPS);
     }
 }

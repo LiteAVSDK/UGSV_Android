@@ -160,6 +160,7 @@
 
     <string name="ugckit_fragment_videolist_no_content">暫無內容噢~</string>
 
+    <string name="ugckit_tc_picture_join_picture_loading">圖片加載中</string>
     <string name="ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing">圖片異常，結束編輯</string>
     <string name="ugckit_tc_picture_join_activity_toast_cancel_video_generation">視頻取消生成</string>
 

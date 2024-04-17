@@ -166,6 +166,7 @@
 
     <string name="ugckit_fragment_videolist_no_content">暂无内容噢~</string>
 
+    <string name="ugckit_tc_picture_join_picture_loading">图片加载中</string>
     <string name="ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing">图片异常，结束编辑</string>
     <string name="ugckit_tc_picture_join_activity_toast_cancel_video_generation">取消视频生成</string>
 

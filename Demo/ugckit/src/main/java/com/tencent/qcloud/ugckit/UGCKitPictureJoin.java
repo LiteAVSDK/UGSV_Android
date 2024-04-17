@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
 import com.tencent.qcloud.ugckit.basic.UGCKitResult;
+import com.tencent.qcloud.ugckit.component.dialog.ProgressDialogUtil;
 import com.tencent.qcloud.ugckit.component.dialogfragment.ProgressFragmentUtil;
 import com.tencent.qcloud.ugckit.module.PictureGenerateKit;
 import com.tencent.qcloud.ugckit.module.PlayerManagerKit;
@@ -23,6 +25,8 @@ import com.tencent.ugc.TXVideoEditer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * 腾讯云短视频UGCKit:图片转场动画控件</p>
@@ -89,6 +93,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
 
     private ProgressFragmentUtil mProgressFragmentUtil;
     private ArrayList<Bitmap> mBitmapList;
+    private List<String> mLastPictureList = null;
 
     public UGCKitPictureJoin(Context context) {
         super(context);
@@ -105,7 +110,7 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
         initDefault();
     }
 
-    public void initDefault() {
+    private void initDefault() {
         mProgressFragmentUtil = new ProgressFragmentUtil((FragmentActivity) getContext());
         // 初始化SDK:TXVideoEditer
         VideoEditerSDK.getInstance().initSDK();
@@ -158,14 +163,30 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
             return;
         }
 
-        releaseBitmap(mBitmapList);
-        mBitmapList = BitmapUtils.decodeFileToBitmap(pictureList);
+        final List<String> copiedPictureList = new ArrayList<>(pictureList);
+        mLastPictureList = copiedPictureList;
+        releaseBitmapList();
+
+        Schedulers.io().scheduleDirect(() -> {
+            ArrayList<Bitmap> bitmapList = decodeFileListToBitmap(copiedPictureList);
+            post(() -> setBitmapList(bitmapList, copiedPictureList));
+        });
+    }
+
+    private void setBitmapList(ArrayList<Bitmap> bitmapList, List<String> pictureList) {
+        if (mLastPictureList != pictureList) {
+            Log.w(TAG, "not the last picture list, discarded.");
+            recycleBitmapList(bitmapList);
+            return;
+        }
+        Log.i(TAG, "setBitmapList");
+        mLastPictureList = null;
+        mBitmapList = bitmapList;
 
         int retCode = PictureTransitionKit.getInstance().setPictureList(mBitmapList);
         if (retCode == TXVideoEditConstants.PICTURE_TRANSITION_FAILED) {
             ToastUtil.toastShortMessage(getResources().getString(
                     R.string.ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing));
-
             PictureGenerateKit.getInstance().stopGenerate();
             return;
         }
@@ -235,24 +256,62 @@ public class UGCKitPictureJoin extends AbsPictureJoinUI {
 
     @Override
     public void stopPlay() {
-        releaseBitmap(mBitmapList);
+        releaseBitmapList();
         PlayerManagerKit.getInstance().stopPlay();
     }
 
     @Override
     public void release() {
         Log.i(TAG,"release");
-        releaseBitmap(mBitmapList);
+        releaseBitmapList();
         VideoEditerSDK.getInstance().releaseSDK();
     }
 
-    private void releaseBitmap(ArrayList<Bitmap> bitmapList) {
-        if (bitmapList == null) {
+    private void releaseBitmapList() {
+        final ArrayList<Bitmap> bitmapList = mBitmapList;
+        if (bitmapList == null || bitmapList.isEmpty()) {
             return;
         }
 
+        mBitmapList = new ArrayList<>();
+        PictureTransitionKit.getInstance().setPictureList(mBitmapList);
+        recycleBitmapList(bitmapList);
+    }
+
+    private void recycleBitmapList(List<Bitmap> bitmapList) {
+        if (bitmapList == null) {
+            return;
+        }
         for (Bitmap bitmap : bitmapList) {
             bitmap.recycle();
         }
+    }
+
+    @NonNull
+    private ArrayList<Bitmap> decodeFileListToBitmap(@NonNull List<String> picPathList) {
+        ProgressDialogUtil progressDialog = new ProgressDialogUtil(getContext());
+        String pictureLoadingStr =
+                getResources().getString(R.string.ugckit_tc_picture_join_picture_loading);
+
+        post(() -> {
+            progressDialog.showProgressDialog();
+            progressDialog.setProgressDialogMessage(pictureLoadingStr + " 0%");
+        });
+
+        ArrayList<Bitmap> arrayList = new ArrayList<>();
+        for (int i = 0; i < picPathList.size(); i++) {
+            String filePath = picPathList.get(i);
+            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromFile(
+                    filePath, BitmapUtils.DEFAULT_WIDTH, BitmapUtils.DEFAULT_HEIGHT);
+            arrayList.add(bitmap);
+            int progress = 100 * (i + 1) / picPathList.size();
+            Log.i(TAG, "picture loading progress=" + progress);
+            String message = pictureLoadingStr + " " + progress + "%";
+            post(() -> progressDialog.setProgressDialogMessage(message));
+            VideoEditerSDK.getInstance().addThumbnailBitmap(0, bitmap);
+        }
+
+        post(progressDialog::dismissProgressDialog);
+        return arrayList;
     }
 }

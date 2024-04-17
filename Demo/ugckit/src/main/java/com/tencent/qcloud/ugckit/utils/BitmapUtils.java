@@ -34,14 +34,11 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.tencent.qcloud.ugckit.UGCKit;
 import com.tencent.qcloud.ugckit.component.circlebmp.TCGlideCircleTransform;
-import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 图片工具类
@@ -51,19 +48,6 @@ public class BitmapUtils {
     // 默认图片宽高
     public static final int DEFAULT_WIDTH = 720;
     public static final int DEFAULT_HEIGHT = 1280;
-
-    @NonNull
-    public static ArrayList<Bitmap> decodeFileToBitmap(@NonNull List<String> picPathList) {
-        ArrayList<Bitmap> arrayList = new ArrayList<>();
-        for (int i = 0; i < picPathList.size(); i++) {
-            String filePath = picPathList.get(i);
-            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromFile(
-                    filePath, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            arrayList.add(bitmap);
-            VideoEditerSDK.getInstance().addThumbnailBitmap(0, bitmap);
-        }
-        return arrayList;
-    }
 
     @NonNull
     public static int[] getSize(String picturePath) {
