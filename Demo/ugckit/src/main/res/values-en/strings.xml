@@ -141,6 +141,7 @@
 
     <string name="ugckit_fragment_videolist_no_content">No content yet</string>
 
+    <string name="ugckit_tc_picture_join_picture_loading">Picture loading</string>
     <string name="ugckit_tc_picture_join_activity_toast_picture_is_abnormal_and_finish_editing">The editing ended due to an image error.</string>
     <string name="ugckit_tc_picture_join_activity_toast_cancel_video_generation">The video was canceled</string>
 

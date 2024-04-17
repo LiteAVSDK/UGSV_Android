@@ -17,5 +17,7 @@ public class TVCConfig {
 
     public boolean mIsDebuggable = true;
 
+    public long mTrafficLimit = -1;
+
     public IUploadResumeController mUploadResumeController;
 }

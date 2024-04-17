@@ -19,6 +19,9 @@ import com.tencent.qcloud.ugckit.module.upload.impl.TXUGCPublishOptCenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLConnection;
+
 
 /**
  * 短视频发布接口类
@@ -186,6 +189,7 @@ public class TXUGCPublish {
      * @return
      */
     public int publishVideo(final TXUGCPublishTypeDef.TXPublishParam param) {
+        TVCLog.i(TAG, "vodPublish version:" + TVCConstants.TVCVERSION);
         if (mPublishing) {
             TVCLog.e(TAG, "there is existing publish task");
             return TVCConstants.ERR_UGC_PUBLISHING;
@@ -258,6 +262,7 @@ public class TXUGCPublish {
         tvcConfig.mVodReqTimeOutInSec = 10;
         tvcConfig.mSliceSize = param.sliceSize;
         tvcConfig.mConcurrentCount = param.concurrentCount;
+        tvcConfig.mTrafficLimit = param.trafficLimit;
         tvcConfig.mUploadResumeController = param.uploadResumeController;
         tvcConfig.mIsDebuggable = mIsDebug;
 
@@ -348,6 +353,7 @@ public class TXUGCPublish {
      * @return
      */
     public int publishMedia(final TXUGCPublishTypeDef.TXMediaPublishParam param) {
+        TVCLog.i(TAG, "vodPublish version:" + TVCConstants.TVCVERSION);
         if (mPublishing) {
             TVCLog.e(TAG, "there is existing publish task");
             return TVCConstants.ERR_UGC_PUBLISHING;
@@ -406,7 +412,7 @@ public class TXUGCPublish {
      */
     public void canclePublish() {
         if (mTVCClient != null) {
-            mTVCClient.cancleUpload();
+            mTVCClient.cancelUpload();
         }
         mPublishing = false;
     }
@@ -424,28 +430,37 @@ public class TXUGCPublish {
         }
     }
 
+
     private String getFileType(String filePath) {
         String fileType = "";
-        if (null == filePath || filePath.length() == 0) {
+        if (TextUtils.isEmpty(filePath)) {
             return fileType;
         }
-        fileType = getFileTypeBySuffix(filePath);
-        if (TextUtils.isEmpty(fileType) && filePath.startsWith("content://")) {
+        if (filePath.startsWith("content://")) {
             fileType = getFileTypeByUri(Uri.parse(filePath));
         }
         if (TextUtils.isEmpty(fileType)) {
             String absolutePath = TVCUtils.getAbsolutePath(mContext, filePath);
-            fileType = getFileTypeBySuffix(absolutePath);
+            fileType = getFileTypeByURL(absolutePath);
         }
         return fileType;
     }
 
-    private String getFileTypeBySuffix(String filePath) {
+    private String getFileTypeByURL(String filePath) {
         String fileType = "";
-        if (null != filePath && filePath.length() != 0) {
-            int index = filePath.lastIndexOf(".");
-            if (index != -1) {
-                fileType = filePath.substring(index + 1);
+        File file = new File(filePath);
+        if (file.exists() && file.canRead()) {
+            try {
+                URLConnection urlConnection = file.toURI().toURL().openConnection();
+                String mimeType = urlConnection.getContentType();
+                if (!TextUtils.isEmpty(mimeType)) {
+                    int index = mimeType.lastIndexOf("/");
+                    if (index != -1) {
+                        fileType = mimeType.substring(index + 1);
+                    }
+                }
+            } catch (IOException e) {
+                TVCLog.e(TAG, "getFileTypeByURL failed, path:" + filePath + ", error:" + e);
             }
         }
         return fileType;
@@ -464,6 +479,7 @@ public class TXUGCPublish {
         }
         return fileType;
     }
+
 
     private String getVideoThumb(String videoPath) {
         String strCoverFilePath = null;

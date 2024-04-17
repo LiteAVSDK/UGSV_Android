@@ -56,6 +56,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.squareup.okio:okio:1.14.0'
     implementation 'com.qcloud.cos:cos-android-nobeacon:5.9.17'
-    implementation 'com.qcloud.cos:quic:1.5.41'
+    implementation 'com.qcloud.cos:quic:1.5.43'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 }

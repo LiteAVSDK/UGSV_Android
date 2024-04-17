@@ -5,7 +5,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.tencent.qcloud.quic.QuicNative;
+import com.tencent.tquic.impl.TnetConfig;
+import com.tencent.tquic.impl.TnetQuicRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * quic处理类
  */
 public class QuicClient {
+
     private static final String TAG = "QuicClient";
 
     public static final int ERROR_CODE_QUIC_TIME_OUT = -1;
@@ -21,7 +23,7 @@ public class QuicClient {
     public static final int PORT = 443;
 
     private final Handler mHandler;
-    private QuicNative mQuicNative;
+    private TnetQuicRequest mQuicNative;
     private QuicDetectListener mQuicDetectListener;
     private String mParams;
     private String mHost;
@@ -32,32 +34,44 @@ public class QuicClient {
         mHandler = new Handler(context.getMainLooper());
     }
 
-    private final QuicNative.NetworkCallback networkCallback = new QuicNative.NetworkCallback() {
+    private final TnetQuicRequest.Callback networkCallback = new TnetQuicRequest.Callback() {
         @Override
-        public void onConnect(int i, int i1) {
-            if (i1 == 0) {
-                mQuicNative.addHeader(":method", "HEAD");
-                if (!TextUtils.isEmpty(mParams)) {
-                    mQuicNative.addHeader(":path", mParams);
-                }
+        public void onConnect(int error_code) throws Exception {
+            if (error_code == 0) {
+                mQuicNative.addHeaders(":method", "HEAD");
                 mQuicNative.sendRequest(new byte[0], 0, true);
             } else {
-                notifyCallback(false, i1);
+                notifyCallback(false, error_code);
             }
         }
 
         @Override
-        public void onDataReceive(int i, byte[] bytes, int i1) {
-            String responseData = new String(bytes, StandardCharsets.ISO_8859_1);
-            TVCLog.i(TAG, mHost + " responseData:" + responseData);
-            notifyCallback(true, i1);
+        public void onNetworkLinked() throws Exception {
+
         }
 
         @Override
-        public void onCompleted(int i, int i1) {}
+        public void onHeaderRecv(String header) throws Exception {
+            notifyCallback(true, 0);
+            TVCLog.i(TAG, mHost + " responseData:" + header);
+        }
 
         @Override
-        public void onClose(int i, int i1, String s) {}
+        public void onDataRecv(byte[] body) throws Exception {
+            notifyCallback(true, 0);
+            String responseData = new String(body, StandardCharsets.ISO_8859_1);
+            TVCLog.i(TAG, mHost + " responseData:" + responseData);
+        }
+
+        @Override
+        public void onComplete(int stream_error) throws Exception {
+
+        }
+
+        @Override
+        public void onClose(int error_code, String error_str) throws Exception {
+
+        }
     };
 
     private final Runnable timeOutRunnable = new Runnable() {
@@ -103,11 +117,13 @@ public class QuicClient {
             } else {
                 this.mParams = originUri.getPath();
             }
-
-            mQuicNative = new QuicNative();
-            mQuicNative.setCallback(networkCallback);
+            TnetConfig config = new TnetConfig.Builder()
+                    .setIsCustom(false)
+                    .setTotalTimeoutMillis((int) TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT)
+                    .build();
+            mQuicNative = new TnetQuicRequest(networkCallback, config, 0);
+            mQuicNative.connect(mHost, domainIp);
             reqStartTime = System.currentTimeMillis();
-            mQuicNative.connect(mHost, domainIp, PORT, PORT);
             mHandler.postDelayed(timeOutRunnable, TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT);
         } else {
             notifyCallback(false, ERROR_CODE_QUIC_FAILED);
@@ -117,4 +133,5 @@ public class QuicClient {
     public interface QuicDetectListener {
         void onQuicDetectDone(boolean isQuic, long requestTime, int errorCode);
     }
+
 }

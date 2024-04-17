@@ -182,47 +182,49 @@ public class TVCUtils {
      * @return true 表示网络可用
      */
     public static int getNetWorkType(Context context) {
-        ConnectivityManager manager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        try {
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = manager.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
-            String type = networkInfo.getTypeName();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                String type = networkInfo.getTypeName();
 
-            if (type.equalsIgnoreCase("WIFI")) {
-                return TVCConstants.NETTYPE_WIFI;
-            } else if (type.equalsIgnoreCase("MOBILE")) {
-                NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                if (mobileInfo != null) {
-                    switch (mobileInfo.getType()) {
-                        case ConnectivityManager.TYPE_MOBILE: // 手机网络
-                            switch (mobileInfo.getSubtype()) {
-                                case TelephonyManager.NETWORK_TYPE_UMTS:
-                                case TelephonyManager.NETWORK_TYPE_EVDO_0:
-                                case TelephonyManager.NETWORK_TYPE_EVDO_A:
-                                case TelephonyManager.NETWORK_TYPE_HSDPA:
-                                case TelephonyManager.NETWORK_TYPE_HSUPA:
-                                case TelephonyManager.NETWORK_TYPE_HSPA:
-                                case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                                case TelephonyManager.NETWORK_TYPE_EHRPD:
-                                case TelephonyManager.NETWORK_TYPE_HSPAP:
-                                    return TVCConstants.NETTYPE_3G;
-                                case TelephonyManager.NETWORK_TYPE_CDMA:
-                                case TelephonyManager.NETWORK_TYPE_GPRS:
-                                case TelephonyManager.NETWORK_TYPE_EDGE:
-                                case TelephonyManager.NETWORK_TYPE_1xRTT:
-                                case TelephonyManager.NETWORK_TYPE_IDEN:
-                                    return TVCConstants.NETTYPE_2G;
-                                case TelephonyManager.NETWORK_TYPE_LTE:
-                                    return TVCConstants.NETTYPE_4G;
-                                default:
-                                    return TVCConstants.NETTYPE_NONE;
-                            }
+                if (type.equalsIgnoreCase("WIFI")) {
+                    return TVCConstants.NETTYPE_WIFI;
+                } else if (type.equalsIgnoreCase("MOBILE")) {
+                    NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                    if (mobileInfo != null) {
+                        switch (mobileInfo.getType()) {
+                            case ConnectivityManager.TYPE_MOBILE:// 手机网络
+                                switch (mobileInfo.getSubtype()) {
+                                    case TelephonyManager.NETWORK_TYPE_UMTS:
+                                    case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                                    case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                                    case TelephonyManager.NETWORK_TYPE_HSDPA:
+                                    case TelephonyManager.NETWORK_TYPE_HSUPA:
+                                    case TelephonyManager.NETWORK_TYPE_HSPA:
+                                    case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                                    case TelephonyManager.NETWORK_TYPE_EHRPD:
+                                    case TelephonyManager.NETWORK_TYPE_HSPAP:
+                                        return TVCConstants.NETTYPE_3G;
+                                    case TelephonyManager.NETWORK_TYPE_CDMA:
+                                    case TelephonyManager.NETWORK_TYPE_GPRS:
+                                    case TelephonyManager.NETWORK_TYPE_EDGE:
+                                    case TelephonyManager.NETWORK_TYPE_1xRTT:
+                                    case TelephonyManager.NETWORK_TYPE_IDEN:
+                                        return TVCConstants.NETTYPE_2G;
+                                    case TelephonyManager.NETWORK_TYPE_LTE:
+                                        return TVCConstants.NETTYPE_4G;
+                                    default:
+                                        return TVCConstants.NETTYPE_NONE;
+                                }
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            TVCLog.e(TAG, "getNetWorkType failed:" + e);
         }
-
         return TVCConstants.NETTYPE_NONE;
     }
 

@@ -1,24 +1,15 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
-import androidx.annotation.NonNull;
-
-import com.tencent.qcloud.quic.QuicConfig;
-import com.tencent.qcloud.quic.QuicNative;
-import com.tencent.qcloud.quic.QuicProxy;
-import com.tencent.qcloud.ugckit.BuildConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,68 +28,40 @@ import okhttp3.Response;
  */
 
 public class TXUGCPublishOptCenter {
-    private static final int WHAT_UPDATE_BEST_COS = 0x01;
-
-    private static final String KEY_COS_REGION = "cosRegion";
-    private static final String KEY_COS_DOMAIN = "cosDomain";
-    private static final String KEY_IS_QUIC = "isQUic";
-    private static final String KEY_REQUEST_TIME = "requestTime";
     private static final long PRE_UPLOAD_TIME_OUT = 8 * 1000;
 
-    private class CosRegionInfo {
+    private static class CosRegionInfo {
         private String region = "";
         private String domain = "";
         private boolean isQuic = false;
     }
 
     private static final String TAG = "TVC-OptCenter";
-    private static TXUGCPublishOptCenter ourInstance;
     private TVCDnsCache dnsCache = null;
     private boolean isInited = false;
     private String signature = "";
-    private CosRegionInfo bestCosInfo = new CosRegionInfo();
+    private final CosRegionInfo bestCosInfo = new CosRegionInfo();
     private long minCosRespTime;
     private UGCClient ugcClient;
-    private ConcurrentHashMap<String, Boolean> publishingList;
+    private final ConcurrentHashMap<String, Boolean> publishingList = new ConcurrentHashMap<>();
 
     private final Handler mProtectHandler = new Handler();
-    private final Handler mDetectHandler =
-            new Handler(Looper.getMainLooper(), new Handler.Callback() {
-                @Override
-                public boolean handleMessage(@NonNull Message msg) {
-                    if (msg.what == WHAT_UPDATE_BEST_COS) {
-                        Bundle data = msg.getData();
 
-                        String domain = data.getString(KEY_COS_DOMAIN);
-                        String region = data.getString(KEY_COS_REGION);
-                        long costTime = data.getLong(KEY_REQUEST_TIME);
-                        boolean isQuic = data.getBoolean(KEY_IS_QUIC);
-
-                        compareBestCos(domain, region, costTime, isQuic);
-                    }
-                    return true;
-                }
-            });
+    private static final class OurInstanceHolder {
+        static final TXUGCPublishOptCenter ourInstance = new TXUGCPublishOptCenter();
+    }
 
     public static TXUGCPublishOptCenter getInstance() {
-        if (ourInstance == null) {
-            synchronized (TXUGCPublishOptCenter.class) {
-                if (ourInstance == null) {
-                    ourInstance = new TXUGCPublishOptCenter();
-                }
-            }
-        }
-        return ourInstance;
+        return OurInstanceHolder.ourInstance;
     }
 
-    private TXUGCPublishOptCenter() {
-        publishingList = new ConcurrentHashMap<>();
-    }
 
-    public interface IPrepareUploadCallback { void onFinish(); }
+    public interface IPrepareUploadCallback {
+        void onFinish();
+    }
 
     public void prepareUpload(final Context context, String signature,
-            final IPrepareUploadCallback prepareUploadCallback) {
+                              final IPrepareUploadCallback prepareUploadCallback) {
         this.signature = signature;
         boolean ret = false;
         if (!isInited) {
@@ -201,6 +164,7 @@ public class TXUGCPublishOptCenter {
             minCosRespTime = 0;
             bestCosInfo.region = "";
             bestCosInfo.domain = "";
+            bestCosInfo.isQuic = false;
         }
 
         if (dnsCache == null || TextUtils.isEmpty(signature)) {
@@ -256,21 +220,14 @@ public class TXUGCPublishOptCenter {
         try {
             JSONObject jsonRsp = new JSONObject(rspString);
             int code = jsonRsp.optInt("code", -1);
-            String message = "";
-            try {
-                message = new String(jsonRsp.optString("message", "").getBytes("UTF-8"), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            String message = new String(jsonRsp.optString("message", "").
+                    getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
             if (0 != code) {
                 return;
             }
 
             JSONObject dataRsp = jsonRsp.getJSONObject("data");
-            if (dataRsp == null) {
-                return;
-            }
 
             String appId = dataRsp.optString("appId", "");
             JSONArray cosArray = dataRsp.optJSONArray("cosRegionList");
@@ -306,12 +263,12 @@ public class TXUGCPublishOptCenter {
             }
             exec.shutdown();
 
+            TVCLog.e(TAG, "preUploadResult:" + bestCosInfo.region + ", isQuic:" + bestCosInfo.isQuic
+                    + ",costTime:" + minCosRespTime);
+
             reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT,
-                    TextUtils.isEmpty(bestCosInfo.region) ? TVCConstants.ERROR
-                                                          : TVCConstants.NO_ERROR,
-                    TextUtils.isEmpty(bestCosInfo.region)
-                            ? ""
-                            : bestCosInfo.domain + "|" + bestCosInfo.region,
+                    TextUtils.isEmpty(bestCosInfo.region) ? TVCConstants.ERROR : TVCConstants.NO_ERROR,
+                    TextUtils.isEmpty(bestCosInfo.region) ? "" : bestCosInfo.domain + "|" + bestCosInfo.region,
                     reqTime, System.currentTimeMillis() - reqTime);
         } catch (JSONException e) {
             TVCLog.e(TAG, e.toString());
@@ -336,15 +293,6 @@ public class TXUGCPublishOptCenter {
 
     private void detectQuicNet(JSONArray cosArray, final Context context,
             final CountDownLatch latch, ExecutorService exec) throws JSONException {
-        // quic参数初始化
-        QuicNative.init();
-        QuicNative.setDebugLog(BuildConfig.DEBUG);
-
-        QuicConfig quicConfig = new QuicConfig();
-        quicConfig.setCustomProtocol(false);
-        quicConfig.setRaceType(QuicConfig.RACE_TYPE_ONLY_QUIC);
-        quicConfig.setTotalTimeoutSec((int) (TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT / 1000L));
-        QuicProxy.setTnetConfig(quicConfig);
 
         for (int i = 0; i < cosArray.length(); ++i) {
             final JSONObject cosInfoJsonObject;
@@ -365,7 +313,7 @@ public class TXUGCPublishOptCenter {
                                                 + ", timeCos = " + requestTime + ", errorCode = "
                                                 + errorCode + ", isQuic = " + isQuic);
                                 if (isQuic) {
-                                    sendToCompareCos(domain, region, requestTime, true);
+                                    compareBestCos(domain, region, requestTime, true);
                                 }
                                 latch.countDown();
                             }
@@ -374,9 +322,6 @@ public class TXUGCPublishOptCenter {
                 }
             });
         }
-
-        quicConfig.setTotalTimeoutSec(TVCConstants.UPLOAD_TIME_OUT_SEC);
-        QuicProxy.setTnetConfig(quicConfig);
     }
 
     private void detectBestCos(JSONArray cosArray, final CountDownLatch latch, ExecutorService exec)
@@ -412,41 +357,43 @@ public class TXUGCPublishOptCenter {
                         "detectBestCosIP domain = " + domain + ", region = " + region
                                 + ", timeCos = " + timeCost
                                 + ", response.code = " + response.code());
-                sendToCompareCos(domain, region, timeCost, false);
+                compareBestCos(domain, region, timeCost, false);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendToCompareCos(String domain, String region, long timeCost, boolean isQuic) {
-        Bundle data = new Bundle();
-        data.putString(KEY_COS_DOMAIN, domain);
-        data.putString(KEY_COS_REGION, region);
-        data.putLong(KEY_REQUEST_TIME, timeCost);
-        data.putBoolean(KEY_IS_QUIC, isQuic);
-
-        Message message = new Message();
-        message.what = WHAT_UPDATE_BEST_COS;
-        message.setData(data);
-
-        mDetectHandler.sendMessage(message);
-    }
-
     private void compareBestCos(String domain, String region, long timeCost, boolean isQuic) {
         synchronized (CosRegionInfo.class) {
-            if (minCosRespTime == 0 || timeCost < minCosRespTime) {
+            if (canUpdateBestCos(timeCost, isQuic)) {
                 minCosRespTime = timeCost;
                 bestCosInfo.region = region;
                 bestCosInfo.domain = domain;
                 bestCosInfo.isQuic = isQuic;
-
-                TVCLog.i(TAG,
-                        "detectBestCosIP bestCosDomain = " + bestCosInfo.domain
-                                + ", bestCosRegion = " + bestCosInfo.region
-                                + ", timeCos = " + minCosRespTime + ", isQuic = " + isQuic);
+                TVCLog.i(TAG, "compareBestCosIP bestCosDomain = " + bestCosInfo.domain
+                        + ", bestCosRegion = " + bestCosInfo.region
+                        + ", timeCos = " + minCosRespTime
+                        + ", isQuic = " + isQuic);
             }
         }
+    }
+
+    private boolean canUpdateBestCos(long timeCost, boolean isQuic) {
+        // quic first
+        boolean result;
+        if (minCosRespTime == 0) {
+            result = true;
+        } else if (bestCosInfo.isQuic) {
+            result = isQuic && timeCost < minCosRespTime;
+        } else {
+            if (isQuic) {
+                result = true;
+            } else {
+                result = timeCost < minCosRespTime;
+            }
+        }
+        return result;
     }
 
     private void getCosDNS(final String domain, String ips) {
@@ -511,8 +458,7 @@ public class TXUGCPublishOptCenter {
      */
     public boolean isNeedEnableQuic(String currentRegion) {
         synchronized (bestCosInfo) {
-            if (TextUtils.isEmpty(currentRegion)
-                    || TextUtils.equals(currentRegion, bestCosInfo.region)) {
+            if (TextUtils.isEmpty(currentRegion) || TextUtils.equals(currentRegion, bestCosInfo.region)) {
                 List<String> ipList = query(bestCosInfo.domain);
                 if (null != ipList && !ipList.isEmpty()) {
                     return bestCosInfo.isQuic;
@@ -524,7 +470,7 @@ public class TXUGCPublishOptCenter {
 
     public void disableQuicIfNeed() {
         synchronized (bestCosInfo) {
-            if (null != bestCosInfo && bestCosInfo.isQuic) {
+            if (bestCosInfo.isQuic) {
                 bestCosInfo.isQuic = false;
             }
         }

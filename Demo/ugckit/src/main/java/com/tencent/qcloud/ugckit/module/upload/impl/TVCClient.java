@@ -22,8 +22,8 @@ import com.tencent.cos.xml.transfer.TransferConfig;
 import com.tencent.cos.xml.transfer.TransferManager;
 import com.tencent.cos.xml.transfer.TransferState;
 import com.tencent.cos.xml.transfer.TransferStateListener;
-import com.tencent.qcloud.quic.QuicConfig;
-import com.tencent.qcloud.quic.QuicProxy;
+import com.tencent.qcloud.quic.QuicClientImpl;
+import com.tencent.tquic.impl.TnetConfig;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublishTypeDef;
 import com.tencent.qcloud.ugckit.module.upload.impl.compute.TXHttpTaskMetrics;
 import com.tencent.qcloud.ugckit.module.upload.impl.compute.TXOnGetHttpTaskMetrics;
@@ -56,7 +56,7 @@ public class TVCClient {
     private Context context;
     private Handler mainHandler;
     private boolean busyFlag = false;
-    private boolean cancleFlag = false;
+    private boolean cancelFlag = false;
     private TVCUploadInfo uploadInfo;
     private UGCClient ugcClient;
     private TVCUploadListener tvcListener;
@@ -100,6 +100,7 @@ public class TVCClient {
     private String mainVodServerErrMsg; //主域名请求失败的msg，用于备份域名都请求失败后，带回上报。
     private long mSliceSize = SLICE_SIZE_MIN; // 默认分片1M
     private int mConcurrentCount; // 并发数量
+    private long mTrafficLimit = -1;
     private IUploadResumeController mUploadResumeController; // 续点控制器
     private boolean mIsDebuggable = true;
 
@@ -113,6 +114,7 @@ public class TVCClient {
         updateConfig(tvcConfig);
     }
 
+
     /**
      * 更新配置
      */
@@ -122,6 +124,7 @@ public class TVCClient {
         this.customKey = tvcConfig.mCustomKey;
         this.mConcurrentCount = tvcConfig.mConcurrentCount;
         this.mIsDebuggable = tvcConfig.mIsDebuggable;
+        this.mTrafficLimit = tvcConfig.mTrafficLimit;
         ugcClient = UGCClient.getInstance(tvcConfig.mSignature, tvcConfig.mVodReqTimeOutInSec);
         mUploadResumeController = tvcConfig.mUploadResumeController;
         if (null == mUploadResumeController) {
@@ -262,7 +265,7 @@ public class TVCClient {
         busyFlag = true;
         // reset
         cosVideoPath = null;
-        cancleFlag = false;
+        cancelFlag = false;
         this.uploadInfo = info;
         this.tvcListener = listener;
 
@@ -305,10 +308,13 @@ public class TVCClient {
      *
      * @return 成功或者失败
      */
-    public void cancleUpload() {
-        cancleFlag = true;
+    public void cancelUpload() {
+        cancelFlag = true;
         if (mCOSXMLUploadTask != null) {
             mCOSXMLUploadTask.pause();
+        }
+        if (null != mCosXmlService) {
+            mCosXmlService.cancelAll();
         }
     }
 
@@ -380,6 +386,13 @@ public class TVCClient {
     // 解析上传请求返回信息
     private void parseInitRsp(String rspString) {
         TVCLog.i(TAG, "parseInitRsp: " + rspString);
+        if (cancelFlag) {
+            TVCLog.i(TAG, "upload is cancel when ready to upload to cos");
+            busyFlag = false;
+            cancelFlag = false;
+            notifyUploadFailed(TVCConstants.ERR_USER_CANCEL, "request is cancelled by manual pause");
+            return;
+        }
         if (TextUtils.isEmpty(rspString)) {
             TVCLog.e(TAG, "parseInitRsp->response is empty!");
             notifyUploadFailed(TVCConstants.ERR_UGC_PARSE_FAILED, "init response is empty");
@@ -476,11 +489,6 @@ public class TVCClient {
                             .isHttps(enableHttps)
                             .setSocketTimeout(TVCConstants.UPLOAD_TIME_OUT_SEC * 1000)
                             .dnsCache(true);
-            QuicConfig quicConfig = new QuicConfig();
-            quicConfig.setCustomProtocol(false);
-            quicConfig.setRaceType(QuicConfig.RACE_TYPE_ONLY_QUIC);
-            quicConfig.setTotalTimeoutSec(TVCConstants.UPLOAD_TIME_OUT_SEC);
-            QuicProxy.setTnetConfig(quicConfig);
 
             if (mConcurrentCount > 0) {
                 builder.setUploadMaxThreadCount(mConcurrentCount);
@@ -488,6 +496,11 @@ public class TVCClient {
             boolean isQuic = TXUGCPublishOptCenter.getInstance().isNeedEnableQuic(uploadRegion);
             if (isQuic) {
                 builder.enableQuic(true).setPort(QuicClient.PORT);
+                QuicClientImpl.setTnetConfig(new TnetConfig.Builder()
+                        .setIsCustom(false)
+                        .setTotalTimeoutMillis(TVCConstants.UPLOAD_TIME_OUT_SEC * 1000)
+                        .setConnectTimeoutMillis(TVCConstants.UPLOAD_CONNECT_TIME_OUT_MILL)
+                        .build());
             }
             TVCLog.i(TAG, "domain:" + uploadRegion + ",isQuic:" + isQuic);
 
@@ -636,6 +649,7 @@ public class TVCClient {
         return requestId;
     }
 
+
     // 解析cos上传视频返回信息
     private void startUploadCoverFile(CosXmlResult result) {
         // 第三步 通过COS上传封面
@@ -645,6 +659,7 @@ public class TVCClient {
             startFinishUploadUGC(result, TVCConstants.VOD_SERVER_HOST);
         }
     }
+
 
     // 通过COS上传视频
     private void uploadCosVideo() {
@@ -693,22 +708,25 @@ public class TVCClient {
                             new TransferConfig.Builder().setSliceSizeForUpload(sliceSize).build();
                     mTransferManager = new TransferManager(mCosXmlService, mTransferConfig);
                     TVCLog.i(TAG, "resumeData.srcPath: " + resumeData.srcPath);
-                    if (cancleFlag) {
+                    if (cancelFlag) {
                         TVCLog.i(TAG, "upload is cancel when ready to upload to cos");
                         busyFlag = false;
-                        cancleFlag = false;
-                        notifyUploadFailed(TVCConstants.ERR_USER_CANCEL,
-                                "request is cancelled by manual pause");
+                        cancelFlag = false;
+                        notifyUploadFailed(TVCConstants.ERR_USER_CANCEL, "request is cancelled by manual pause");
                         return;
                     }
+                    PutObjectRequest putObjectRequest;
                     if (resumeData.srcPath.startsWith("content://")) {
-                        mCOSXMLUploadTask =
-                                mTransferManager.upload(resumeData.bucket, resumeData.cosPath,
-                                        Uri.parse(resumeData.srcPath), resumeData.uploadId);
+                        putObjectRequest = new PutObjectRequest(resumeData.bucket, resumeData.cosPath,
+                                Uri.parse(resumeData.srcPath));
                     } else {
-                        mCOSXMLUploadTask = mTransferManager.upload(resumeData.bucket,
-                                resumeData.cosPath, resumeData.srcPath, resumeData.uploadId);
+                        putObjectRequest = new PutObjectRequest(resumeData.bucket, resumeData.cosPath,
+                                resumeData.srcPath);
                     }
+                    if (mTrafficLimit > 0) {
+                        putObjectRequest.setTrafficLimit(mTrafficLimit);
+                    }
+                    mCOSXMLUploadTask = mTransferManager.upload(putObjectRequest, resumeData.uploadId);
 
                     mCOSXMLUploadTask.setCosXmlProgressListener(new CosXmlProgressListener() {
                         @Override
@@ -756,13 +774,12 @@ public class TVCClient {
                     mCOSXMLUploadTask.setTransferStateListener(new TransferStateListener() {
                         @Override
                         public void onStateChanged(TransferState state) {
-                            if (cancleFlag && state == TransferState.PAUSED) {
+                            if (cancelFlag && state == TransferState.PAUSED) {
                                 busyFlag = false;
-                                cancleFlag = false;
+                                cancelFlag = false;
                                 setResumeData(uploadInfo.getFilePath(), vodSessionKey, uploadId);
-                                notifyUploadFailed(TVCConstants.ERR_USER_CANCEL,
-                                        "request is cancelled by manual "
-                                                + "pause");
+                                notifyUploadFailed(TVCConstants.ERR_USER_CANCEL, "request is cancelled by manual "
+                                        + "pause");
                             }
                         }
                     });
@@ -876,6 +893,13 @@ public class TVCClient {
     // 解析结束上传返回信息.
     private void parseFinishRsp(String rspString) {
         TVCLog.i(TAG, "parseFinishRsp: " + rspString);
+        if (cancelFlag) {
+            TVCLog.i(TAG, "upload is cancel when ready to upload to cos");
+            busyFlag = false;
+            cancelFlag = false;
+            notifyUploadFailed(TVCConstants.ERR_USER_CANCEL, "request is cancelled by manual pause");
+            return;
+        }
         if (TextUtils.isEmpty(rspString)) {
             TVCLog.e(TAG, "parseFinishRsp->response is empty!");
             notifyUploadFailed(
@@ -938,6 +962,7 @@ public class TVCClient {
                     uploadInfo.getFileType(), uploadInfo.getFileName(), "", "", 0, 0);
         }
     }
+
 
     /**
      * 数据上报
@@ -1118,11 +1143,16 @@ public class TVCClient {
                     // quic失败，使用http重新上传
                     quicTransToHttpRetry();
                     errorReportCode = TVCConstants.ERR_UPLOAD_QUIC_FAILED;
-                } else if (!cancleFlag) { //其他错误，非主动取消
+                } else if (!cancelFlag) { //其他错误，非主动取消
                     TVCLog.w(TAG, "exception interruption");
                     notifyUploadFailed(TVCConstants.ERR_UPLOAD_VIDEO_FAILED,
                             "cos upload video error:" + qcloudException.getMessage());
                     setResumeData(uploadInfo.getFilePath(), "", "");
+                } else {
+                    TVCLog.i(TAG, "upload is cancel when ready to upload to cos");
+                    busyFlag = false;
+                    cancelFlag = false;
+                    notifyUploadFailed(TVCConstants.ERR_USER_CANCEL, "request is cancelled by manual pause");
                 }
 
                 String errorMsg = "CosXmlClientException:" + qcloudException.getMessage();

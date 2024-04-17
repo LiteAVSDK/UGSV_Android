@@ -12,6 +12,9 @@ import okhttp3.Protocol;
  * 利用OKHTTP Event事件，用来统计TCP建立链接耗时 以及 收到收个回包的耗时
  */
 public class TXOkHTTPEventListener extends EventListener {
+
+    private static final String TAG = "TXOkHTTPEventListener";
+
     private long startTime;
     private long connectFinishTime;
     private long startRecvRspHeaderTime;
