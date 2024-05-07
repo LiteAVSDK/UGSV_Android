@@ -27,8 +27,8 @@ UGSV SDK 移动端 10.1 版本采用“腾讯视频”同款播放内核打造�
     <th style="text-align:center"><b>Android 版</b></th>
   </tr>
   <tr>
-    <td style="width:300px;height:300px;text-align:center"><img src="https://liteav.sdk.qcloud.com/doc/res/ugc/picture/xiaoshipin_app_qr_code_ios.png" /></td>
-    <td style="width:300px;height:300px;text-align:center"><img src="https://liteav.sdk.qcloud.com/doc/res/ugc/picture/xiaoshipin_app_qr_code_android.png" /></td>
+    <td style="width:300px;height:300px;text-align:center"><img src="https://qcloudimg.tencent-cloud.cn/raw/84f79674a5ac6504d50fcdedfdcaeb0f.png" /></td>
+    <td style="width:300px;height:300px;text-align:center"><img src="https://qcloudimg.tencent-cloud.cn/raw/4b3b8e6ec523e6d2b8cc435079b1b1d9.png" /></td>
   </tr>
 </table>
 
