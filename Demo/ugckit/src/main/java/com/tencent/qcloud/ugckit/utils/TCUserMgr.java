@@ -26,10 +26,16 @@ import okhttp3.Response;
 
 /**
  * 用户管理模块
+ * 使用须知：该服务器地址为腾讯云所有，仅用于帮助您快速完成调试体验，有随时停用/更新的可能性，请勿用于直接将其用于正式环境，
+ * 如您需要正式使用，请将该服务器地址替换为您的专属资源，保证您正式业务的安全与稳定。
  */
 public class TCUserMgr {
     public static final String TAG = "TCUserMgr";
     public static final int SUCCESS_CODE = 200;
+    /**
+     * 使用须知：该云点播账号为腾讯云所有，仅用于帮助您快速完成调试体验。账号有随时停用/更新的可能性，账号内的数据将不定期清除且不予恢复。
+     * 请勿将该账号直接用于正式环境，如您需要正式使用，请将该云点播账号替换为您的专属资源，保证您正式业务的安全与稳定。
+     */
     private String mAppId = "";
     private String mSubAppId = "";
     private String mSecretId = "";
@@ -56,6 +62,10 @@ public class TCUserMgr {
 
     private OkHttpClient mHttpClient;
     private Context mContext;
+    /**
+     * 使用须知：该云点播账号为腾讯云所有，仅用于帮助您快速完成调试体验。账号有随时停用/更新的可能性，账号内的数据将不定期清除且不予恢复。
+     * 请勿将该账号直接用于正式环境，如您需要正式使用，请将该云点播账号替换为您的专属资源，保证您正式业务的安全与稳定。
+     */
     @Nullable
     private String mUserId = "";
     @Nullable
