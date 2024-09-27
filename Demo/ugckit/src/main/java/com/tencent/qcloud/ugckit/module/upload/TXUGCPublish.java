@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
+
+import androidx.annotation.NonNull;
 
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCClient;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCConfig;
@@ -24,6 +27,7 @@ import java.net.URLConnection;
 
 
 /**
+ * Short Video Publishing Interface Class
  * 短视频发布接口类
  */
 public class TXUGCPublish {
@@ -38,9 +42,15 @@ public class TXUGCPublish {
     private String mCustomKey = "";
     private boolean mIsDebug = true;
     private boolean mIsCancel = false;
+    private final String mUploadKey;
 
     public TXUGCPublish(Context context, String customKey) {
+        this(context, customKey, "");
+    }
+
+    public TXUGCPublish(Context context, String customKey, @NonNull String uploadKey) {
         mCustomKey = customKey;
+        mUploadKey = uploadKey;
         if (context != null) {
             mContext = context;
             mHandler = new Handler(mContext.getMainLooper());
@@ -61,6 +71,7 @@ public class TXUGCPublish {
     }
 
     /**
+     * Set whether to print logs
      * 设置是否打印日志
      */
     public void setIsDebug(boolean isDebug) {
@@ -98,17 +109,19 @@ public class TXUGCPublish {
         tvcConfig.mVodReqTimeOutInSec = 10;
         tvcConfig.mSliceSize = param.sliceSize;
         tvcConfig.mConcurrentCount = param.concurrentCount;
+        tvcConfig.mTrafficLimit = param.trafficLimit;
         tvcConfig.mUploadResumeController = param.uploadResumeController;
         tvcConfig.mIsDebuggable = mIsDebug;
 
         if (mTVCClient == null) {
-            mTVCClient = new TVCClient(mContext, tvcConfig);
+            mTVCClient = new TVCClient(mContext, tvcConfig, mUploadKey);
         } else {
             mTVCClient.updateConfig(tvcConfig);
         }
 
         final TVCUploadInfo info = new TVCUploadInfo(getFileType(param.videoPath), param.videoPath,
-                getFileType(coverPath), coverPath, param.fileName);
+                getFileType(coverPath),
+                coverPath, param.fileName);
 
         if (info.getFileSize() == 0) {
             TVCLog.e(TAG, "publishVideo invalid videoPath");
@@ -118,15 +131,13 @@ public class TXUGCPublish {
         final long upLoadStartTime = System.currentTimeMillis();
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
-            public void onSuccess(
-                    final String fileId, final String playUrl, final String coverUrl) {
+            public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
                 if (mHandler != null) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             if (mListener != null) {
-                                TXUGCPublishTypeDef.TXPublishResult result =
-                                        new TXUGCPublishTypeDef.TXPublishResult();
+                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = TXUGCPublishTypeDef.PUBLISH_RESULT_OK;
                                 result.descMsg = "publish success";
                                 result.videoId = fileId;
@@ -134,9 +145,7 @@ public class TXUGCPublish {
                                 result.coverURL = coverUrl;
                                 mListener.onPublishComplete(result);
                             }
-                            TVCLog.i(TAG,
-                                    "upload cost Time:"
-                                            + (System.currentTimeMillis() - upLoadStartTime));
+                            TVCLog.i(TAG, "upload cost Time:" + (System.currentTimeMillis() - upLoadStartTime));
                         }
                     });
                 }
@@ -151,8 +160,7 @@ public class TXUGCPublish {
                         @Override
                         public void run() {
                             if (mListener != null) {
-                                TXUGCPublishTypeDef.TXPublishResult result =
-                                        new TXUGCPublishTypeDef.TXPublishResult();
+                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = errCode;
                                 result.descMsg = errMsg;
                                 mListener.onPublishComplete(result);
@@ -183,10 +191,8 @@ public class TXUGCPublish {
     }
 
     /**
+     * Upload video file (video file + cover image)
      * 上传视频文件 （视频文件 + 封面图）
-     *
-     * @param param
-     * @return
      */
     public int publishVideo(final TXUGCPublishTypeDef.TXPublishParam param) {
         TVCLog.i(TAG, "vodPublish version:" + TVCConstants.TVCVERSION);
@@ -203,20 +209,18 @@ public class TXUGCPublish {
             TVCLog.e(TAG, "publishVideo invalid UGCSignature");
             return TVCConstants.ERR_UGC_INVALID_SIGNATURE;
         }
-        // 正在发布，包含预上传
         mPublishing = true;
         mIsCancel = false;
         if (param.enablePreparePublish) {
-            // 启动预发布初始化，预发布后再开始上传
-            TXUGCPublishOptCenter.getInstance().prepareUpload(
-                    mContext, param.signature, new TXUGCPublishOptCenter.IPrepareUploadCallback() {
+            // Start pre-publishing initialization, start uploading after pre-publishing.
+            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
+                    new TXUGCPublishOptCenter.IPrepareUploadCallback() {
                         @Override
                         public void onFinish() {
                             if (mIsCancel) {
                                 mIsCancel = false;
-                                TVCLog.i(TAG, "upload is cancel after prepare upload");
-                                TXUGCPublishTypeDef.TXPublishResult result =
-                                        new TXUGCPublishTypeDef.TXPublishResult();
+                                TVCLog.i(TAG,"upload is cancel after prepare upload");
+                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = TVCConstants.ERR_USER_CANCEL;
                                 result.descMsg = "request is cancelled by manual pause";
                                 mListener.onPublishComplete(result);
@@ -267,13 +271,13 @@ public class TXUGCPublish {
         tvcConfig.mIsDebuggable = mIsDebug;
 
         if (mTVCClient == null) {
-            mTVCClient = new TVCClient(mContext, tvcConfig);
+            mTVCClient = new TVCClient(mContext, tvcConfig, mUploadKey);
         } else {
             mTVCClient.updateConfig(tvcConfig);
         }
 
-        TVCUploadInfo info = new TVCUploadInfo(
-                getFileType(param.mediaPath), param.mediaPath, null, null, param.fileName);
+        TVCUploadInfo info = new TVCUploadInfo(getFileType(param.mediaPath), param.mediaPath, null, null,
+                param.fileName);
 
         if (info.getFileSize() == 0) {
             TVCLog.e(TAG, "publishVideo invalid videoPath");
@@ -283,8 +287,7 @@ public class TXUGCPublish {
         final long upLoadStartTime = System.currentTimeMillis();
         int ret = mTVCClient.uploadVideo(info, new TVCUploadListener() {
             @Override
-            public void onSuccess(
-                    final String fileId, final String playUrl, final String coverUrl) {
+            public void onSuccess(final String fileId, final String playUrl, final String coverUrl) {
                 if (mHandler != null) {
                     mHandler.post(new Runnable() {
                         @Override
@@ -298,9 +301,7 @@ public class TXUGCPublish {
                                 result.mediaURL = playUrl;
                                 mMediaListener.onMediaPublishComplete(result);
                             }
-                            TVCLog.i(TAG,
-                                    "upload cost Time:"
-                                            + (System.currentTimeMillis() - upLoadStartTime));
+                            TVCLog.i(TAG, "upload cost Time:" + (System.currentTimeMillis() - upLoadStartTime));
                         }
                     });
                 }
@@ -347,10 +348,8 @@ public class TXUGCPublish {
     }
 
     /**
+     * Upload media file
      * 上传媒体文件
-     *
-     * @param param
-     * @return
      */
     public int publishMedia(final TXUGCPublishTypeDef.TXMediaPublishParam param) {
         TVCLog.i(TAG, "vodPublish version:" + TVCConstants.TVCVERSION);
@@ -369,15 +368,14 @@ public class TXUGCPublish {
         mPublishing = true;
         mIsCancel = false;
         if (param.enablePreparePublish) {
-            TXUGCPublishOptCenter.getInstance().prepareUpload(
-                    mContext, param.signature, new TXUGCPublishOptCenter.IPrepareUploadCallback() {
+            TXUGCPublishOptCenter.getInstance().prepareUpload(mContext, param.signature,
+                    new TXUGCPublishOptCenter.IPrepareUploadCallback() {
                         @Override
                         public void onFinish() {
                             if (mIsCancel) {
                                 mIsCancel = false;
-                                TVCLog.i(TAG, "upload is cancel after prepare upload");
-                                TXUGCPublishTypeDef.TXPublishResult result =
-                                        new TXUGCPublishTypeDef.TXPublishResult();
+                                TVCLog.i(TAG,"upload is cancel after prepare upload");
+                                TXUGCPublishTypeDef.TXPublishResult result = new TXUGCPublishTypeDef.TXPublishResult();
                                 result.retCode = TVCConstants.ERR_USER_CANCEL;
                                 result.descMsg = "request is cancelled by manual pause";
                                 mListener.onPublishComplete(result);
@@ -397,6 +395,8 @@ public class TXUGCPublish {
     }
 
     /**
+     * Set on-demand appId
+     * Its function is to facilitate the location of problems that occur during the upload process.
      * 设置点播appId
      * 作用是方便定位上传过程中出现的问题
      */
@@ -407,6 +407,9 @@ public class TXUGCPublish {
     }
 
     /**
+     * Cancel upload (cancel media/cancel short video publishing)
+     * Note: What is cancelled are the unstarted fragments. If the uploaded source file is too small, there are no
+     * fragments left to trigger the upload when cancelling, and the final file will still be uploaded completely.
      * 取消上传 （取消媒体/取消短视频发布）
      * 注意：取消的是未开始的分片。如果上传源文件太小，取消的时候已经没有分片还未触发上传，最终文件还是会上传完成
      */
@@ -418,9 +421,8 @@ public class TXUGCPublish {
     }
 
     /**
+     * Get reporting information
      * 获取上报信息
-     *
-     * @return
      */
     public Bundle getStatusInfo() {
         if (mTVCClient != null) {
@@ -454,10 +456,7 @@ public class TXUGCPublish {
                 URLConnection urlConnection = file.toURI().toURL().openConnection();
                 String mimeType = urlConnection.getContentType();
                 if (!TextUtils.isEmpty(mimeType)) {
-                    int index = mimeType.lastIndexOf("/");
-                    if (index != -1) {
-                        fileType = mimeType.substring(index + 1);
-                    }
+                    fileType = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
                 }
             } catch (IOException e) {
                 TVCLog.e(TAG, "getFileTypeByURL failed, path:" + filePath + ", error:" + e);

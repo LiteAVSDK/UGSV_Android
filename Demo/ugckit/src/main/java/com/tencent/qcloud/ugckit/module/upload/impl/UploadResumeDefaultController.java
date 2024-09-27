@@ -10,13 +10,15 @@ import org.json.JSONObject;
 import java.util.Map;
 
 /**
+ * Upload breakpoint control
  * 上传续点控制
  */
 public class UploadResumeDefaultController implements IUploadResumeController {
+
     private static final String TAG = "UploadResumeDefaultController";
 
-    // 断点重传session本地缓存
-    // 以文件md5作为key值，存储的内容是<session, uploadId, fileLastModify, expiredTime>
+    // Breakpoint retransmission session local cache
+    // Using the file MD5 as the key value, the stored content is <session, uploadId, fileLastModify, expiredTime>
     private static final String LOCAL_FILE_NAME = "TVCSession";
     private static final String KEY_SESSION = "session";
     private static final String KEY_UPLOAD_ID = "uploadId";
@@ -33,26 +35,26 @@ public class UploadResumeDefaultController implements IUploadResumeController {
     }
 
     @Override
-    public void saveSession(
-            String filePath, String vodSessionKey, String uploadId, TVCUploadInfo uploadInfo) {
+    public void saveSession(String filePath, String vodSessionKey, String uploadId, TVCUploadInfo uploadInfo
+            , String uploadKey) {
         if (filePath == null || filePath.isEmpty()) {
             return;
         }
         if (mSharedPreferences != null) {
             try {
-                String sessionKey = TVCUtils.getFileMD5(filePath);
-                // vodSessionKey、uploadId为空就表示删掉该记录
+                String sessionKey = TVCUtils.getFileMD5(filePath) + uploadKey;
+                // If vodSessionKey and uploadId are empty, it means to delete the record
                 if (TextUtils.isEmpty(vodSessionKey) || TextUtils.isEmpty(uploadId)) {
                     mShareEditor.remove(sessionKey);
                 } else {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put(KEY_SESSION, vodSessionKey);
                     jsonObject.put(KEY_UPLOAD_ID, uploadId);
-                    jsonObject.put(
-                            KEY_EXPIRED_TIME, System.currentTimeMillis() / 1000 + 24 * 60 * 60);
+                    // Expiration time is 1 day
+                    jsonObject.put(KEY_EXPIRED_TIME, System.currentTimeMillis() / 1000 + 24 * 60 * 60);
                     jsonObject.put(KEY_FILE_LAST_MOD_TIME, uploadInfo.getFileLastModifyTime());
-                    jsonObject.put(KEY_COVER_FILE_LAST_MOD_TIME,
-                            uploadInfo.isNeedCover() ? uploadInfo.getCoverLastModifyTime() : 0);
+                    jsonObject.put(KEY_COVER_FILE_LAST_MOD_TIME, uploadInfo.isNeedCover()
+                            ? uploadInfo.getCoverLastModifyTime() : 0);
                     String comment = jsonObject.toString();
                     mShareEditor.putString(sessionKey, comment);
                 }
@@ -64,12 +66,12 @@ public class UploadResumeDefaultController implements IUploadResumeController {
     }
 
     @Override
-    public ResumeCacheData getResumeData(String filePath) {
+    public ResumeCacheData getResumeData(String filePath, String uploadKey) {
         if (TextUtils.isEmpty(filePath)) {
             return null;
         }
         ResumeCacheData resumeCacheData = null;
-        String sessionKey = TVCUtils.getFileMD5(filePath);
+        String sessionKey = TVCUtils.getFileMD5(filePath) + uploadKey;
         if (mSharedPreferences.contains(sessionKey)) {
             try {
                 JSONObject json = new JSONObject(mSharedPreferences.getString(sessionKey, ""));
@@ -79,8 +81,7 @@ public class UploadResumeDefaultController implements IUploadResumeController {
                     resumeCacheData.setVodSessionKey(json.optString(KEY_SESSION, ""));
                     resumeCacheData.setUploadId(json.optString(KEY_UPLOAD_ID, ""));
                     resumeCacheData.setFileLastModTime(json.optLong(KEY_FILE_LAST_MOD_TIME, 0));
-                    resumeCacheData.setCoverFileLastModTime(
-                            json.optLong(KEY_COVER_FILE_LAST_MOD_TIME, 0));
+                    resumeCacheData.setCoverFileLastModTime(json.optLong(KEY_COVER_FILE_LAST_MOD_TIME, 0));
                 }
             } catch (Exception e) {
                 TVCLog.e(TAG, "getResumeData failed", e);
@@ -94,11 +95,10 @@ public class UploadResumeDefaultController implements IUploadResumeController {
         if (mSharedPreferences != null) {
             try {
                 Map<String, ?> allContent = mSharedPreferences.getAll();
-                //注意遍历map的方法
                 for (Map.Entry<String, ?> entry : allContent.entrySet()) {
                     JSONObject json = new JSONObject((String) entry.getValue());
                     long expiredTime = json.optLong(KEY_EXPIRED_TIME, 0);
-                    // 过期了清空key
+                    // Clear the key if it has expired
                     if (expiredTime < System.currentTimeMillis() / 1000) {
                         mShareEditor.remove(entry.getKey());
                         mShareEditor.apply();
@@ -111,9 +111,8 @@ public class UploadResumeDefaultController implements IUploadResumeController {
     }
 
     @Override
-    public boolean isResumeUploadVideo(String uploadId, TVCUploadInfo uploadInfo,
-            String vodSessionKey, long fileLastModTime, long coverFileLastModTime) {
-        return !TextUtils.isEmpty(uploadId) && uploadInfo != null
-                && !TextUtils.isEmpty(vodSessionKey);
+    public boolean isResumeUploadVideo(String uploadId, TVCUploadInfo uploadInfo, String vodSessionKey,
+                                       long fileLastModTime, long coverFileLastModTime, String uploadKey) {
+        return !TextUtils.isEmpty(uploadId) && uploadInfo != null && !TextUtils.isEmpty(vodSessionKey);
     }
 }

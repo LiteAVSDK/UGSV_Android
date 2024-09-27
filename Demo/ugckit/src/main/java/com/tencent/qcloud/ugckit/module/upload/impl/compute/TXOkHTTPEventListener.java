@@ -19,6 +19,7 @@ public class TXOkHTTPEventListener extends EventListener {
     private long connectFinishTime;
     private long startRecvRspHeaderTime;
 
+
     public long getTCPConnectionTimeCost() {
         return connectFinishTime - startTime;
     }

@@ -78,13 +78,10 @@ public class TVCUtils {
         if (sdcardDir == null) {
             return g_simulate_idfa;
         }
-        //读SP
-        SharedPreferences sp = context.getSharedPreferences(
-                "com.tencent.ugcpublish.dev_uuid", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences("com.tencent.ugcpublish.dev_uuid", Context.MODE_PRIVATE);
         idfaInSP = sp.getString("key_user_id", "");
 
         try {
-            //读文件
             String userIdFilePath = sdcardDir.getAbsolutePath() + "/txrtmp/spuid";
             File userIdFile = new File(userIdFilePath);
             if (userIdFile.exists()) {
@@ -108,8 +105,8 @@ public class TVCUtils {
         }
 
         if (TextUtils.isEmpty(idfa)) {
-            // UUID：16进制字符串(UTC毫秒时间(6字节) + 以开机到现在的时间戳为种子的随机数(4字节) +
-            // MD5(应用包名 + 系统生成UUID)(16字节)
+            // UUID: Hexadecimal string (UTC millisecond time (6 bytes) + random number seeded with a timestamp
+            // from boot to present (4 bytes) + MD5 (application package name + system-generated UUID) (16 bytes)
             idfa = "";
             long utcTimeMS = System.currentTimeMillis();
             long tickTimeMS = SystemClock.elapsedRealtime();
@@ -127,7 +124,6 @@ public class TVCUtils {
         TVCLog.i(TAG, "UUID:" + g_simulate_idfa);
         if (idfaInFile == null || !idfaInFile.equals(idfa)) {
             try {
-                //存文件
                 String userIdDirPath = sdcardDir.getAbsolutePath() + "/txrtmp";
                 File userIdDir = new File(userIdDirPath);
                 if (!userIdDir.exists()) userIdDir.mkdir();
@@ -144,7 +140,6 @@ public class TVCUtils {
         }
 
         if (idfaInSP == null || !idfaInSP.equals(idfa)) {
-            //存SP
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("key_user_id", idfa);
             editor.commit();
@@ -156,18 +151,15 @@ public class TVCUtils {
         return getSimulateIDFA(context);
     }
 
-    /*
-     * 获取网络类型
+    /**
+     * Is the network normal
      */
     public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivity =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
             NetworkInfo info = connectivity.getActiveNetworkInfo();
             if (info != null && info.isConnected()) {
-                // 当前网络是连接的
                 if (info.getState() == NetworkInfo.State.CONNECTED) {
-                    // 当前所连接的网络可用
                     return true;
                 }
             }
@@ -175,12 +167,6 @@ public class TVCUtils {
         return false;
     }
 
-    /**
-     * 网络是否正常
-     *
-     * @param context Context
-     * @return true 表示网络可用
-     */
     public static int getNetWorkType(Context context) {
         try {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -195,7 +181,7 @@ public class TVCUtils {
                     NetworkInfo mobileInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                     if (mobileInfo != null) {
                         switch (mobileInfo.getType()) {
-                            case ConnectivityManager.TYPE_MOBILE:// 手机网络
+                            case ConnectivityManager.TYPE_MOBILE:
                                 switch (mobileInfo.getSubtype()) {
                                     case TelephonyManager.NETWORK_TYPE_UMTS:
                                     case TelephonyManager.NETWORK_TYPE_EVDO_0:
@@ -229,10 +215,8 @@ public class TVCUtils {
     }
 
     /**
+     * Get application package name
      * 获取 应用包名
-     *
-     * @param context
-     * @return
      */
     public static String getPackageName(Context context) {
         String packagename = "";
@@ -240,7 +224,6 @@ public class TVCUtils {
             try {
                 PackageInfo info;
                 info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                // 当前版本的包名
                 packagename = info.packageName;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -250,10 +233,8 @@ public class TVCUtils {
     }
 
     /**
+     * Get application name
      * 获取 应用名
-     *
-     * @param context
-     * @return
      */
     public static String getAppName(Context context) {
         String appname = "";
@@ -263,8 +244,6 @@ public class TVCUtils {
                 ApplicationInfo info;
                 packageManager = context.getPackageManager();
                 info = packageManager.getApplicationInfo(context.getPackageName(), 0);
-
-                // 当前版本的包名
                 appname = (String) packageManager.getApplicationLabel(info);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -273,31 +252,28 @@ public class TVCUtils {
         return appname;
     }
 
+
     /**
+     * Get the absolute path of the multimedia file through URI
      * 通过uri获取多媒体文件的绝对路径
-     *
-     * @param context 上下文
-     * @param uriStr  媒体uri
-     * @return 返回多媒体文件的绝对路径
      */
     public static String getFilePathByUri(Context context, String uriStr) {
         try {
             Uri uri = Uri.parse(uriStr);
             String path = null;
-            // 以 file:// 开头的
+            // Starting with file://
             if (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) {
                 path = uri.getPath();
                 return path;
             }
-            // 以 content:// 开头的，比如 content://media/extenral/images/media/17766
+            // Starting with content://, such as content://media/extenral/images/media/17766
             if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())
                     && Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                Cursor cursor = context.getContentResolver().query(
-                        uri, new String[] {MediaStore.Images.Media.DATA}, null, null, null);
+                Cursor cursor = context.getContentResolver()
+                        .query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (cursor != null) {
                     if (cursor.moveToFirst()) {
-                        int columnIndex =
-                                cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                         if (columnIndex > -1) {
                             path = cursor.getString(columnIndex);
                         }
@@ -306,8 +282,6 @@ public class TVCUtils {
                 }
                 return path;
             }
-            // 4.4及之后的 是以 content:// 开头的，比如
-            // content://com.android.providers.media.documents/document/image%3A235700
             if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 if (isExternalStorageDocument(uri)) {
@@ -322,8 +296,9 @@ public class TVCUtils {
                 } else if (isDownloadsDocument(uri)) {
                     // DownloadsProvider
                     final String id = DocumentsContract.getDocumentId(uri);
-                    final Uri contentUri = ContentUris.withAppendedId(
-                            Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                    final Uri contentUri = ContentUris.withAppendedId(Uri.parse(
+                                    "content://downloads/public_downloads"),
+                            Long.parseLong(id));
                     path = getDataColumn(context, contentUri, null, null);
                     return path;
                 } else if (isMediaDocument(uri)) {
@@ -340,7 +315,7 @@ public class TVCUtils {
                         contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                     }
                     final String selection = "_id=?";
-                    final String[] selectionArgs = new String[] {split[1]};
+                    final String[] selectionArgs = new String[]{split[1]};
                     path = getDataColumn(context, contentUri, selection, selectionArgs);
                     return path;
                 } else {
@@ -370,14 +345,16 @@ public class TVCUtils {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    private static String getDataColumn(
-            Context context, Uri uri, String selection, String[] selectionArgs) {
+    private static String getDataColumn(Context context,
+                                        Uri uri,
+                                        String selection,
+                                        String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
         try {
-            cursor = context.getContentResolver().query(
-                    uri, projection, selection, selectionArgs, null);
+            cursor = context.getContentResolver()
+                    .query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
@@ -391,23 +368,20 @@ public class TVCUtils {
     }
 
     /**
+     * Convert path or URI to absolute path
      * 将路径或者URI转换为绝对路径
-     *
-     * @param context      上下文
-     * @param pathOrURIStr 绝对路径或者是URI
-     * @return 返回多媒体文件的绝对路径
      */
     public static String getAbsolutePath(Context context, String pathOrURIStr) {
         String absPath;
         if (pathOrURIStr.startsWith("content://")) {
-            // 处理URI 的情况,先转换为绝对路径
+            // Handle the case of URI, convert it to absolute path first
             absPath = getFilePathByUri(context, pathOrURIStr);
         } else {
-            // 处理绝对路径 情况
             absPath = pathOrURIStr;
         }
         return absPath;
     }
+
 
     public static boolean isExistsForPathOrUri(Context context, String pathOrURIStr) {
         boolean bVideoFileExist = false;
@@ -422,20 +396,18 @@ public class TVCUtils {
     }
 
     /**
-     * 获取单个文件的MD5值！
+     * Get the MD5 value of a single file
+     * 获取单个文件的MD5值
      */
     public static String getFileMD5(String filePath) {
         if (TextUtils.isEmpty(filePath)) {
             return null;
         }
-        StringBuilder stringBuilder = null;
-        try {
-            File file = new File(filePath);
-            char[] hexDigits = {
-                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-            FileInputStream in = new FileInputStream(file);
+        StringBuilder stringBuilder;
+        File file = new File(filePath);
+        char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        try (FileInputStream in = new FileInputStream(file)) {
             FileChannel ch = in.getChannel();
-
             long fileSize = ch.size();
             int bufferCount = (int) Math.ceil((double) fileSize / MD5_REGION_SIZE);
             MappedByteBuffer[] mappedByteBuffers;
@@ -481,6 +453,8 @@ public class TVCUtils {
 
     private static MappedByteBuffer getMD5FileMid(FileChannel ch) throws IOException {
         long fileSize = ch.size();
+        // The total length minus the range length, divided by 2, is the starting index of
+        // MD5_REGION_SIZE data in the middle of the file
         // 总长度减去范围长度，除以2，就是文件中间MD5_REGION_SIZE个数据的开始索引
         long start = (long) Math.floor((fileSize - MD5_REGION_SIZE) / 2D);
         return ch.map(FileChannel.MapMode.READ_ONLY, start, MD5_REGION_SIZE);

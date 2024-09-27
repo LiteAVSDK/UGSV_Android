@@ -24,9 +24,9 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
+ * Short video upload optimization: Involves HTTPDNS and PrepareUploadUGC pre-detection of the best park
  * 短视频上传优化：涉及到httpdns、PrepareUploadUGC预先探测最优园区
  */
-
 public class TXUGCPublishOptCenter {
     private static final long PRE_UPLOAD_TIME_OUT = 8 * 1000;
 
@@ -78,6 +78,7 @@ public class TXUGCPublishOptCenter {
     }
 
     /**
+     * Pre-upload initialization
      * 预上传初始化
      */
     private boolean prepareUploadInner(
@@ -114,6 +115,7 @@ public class TXUGCPublishOptCenter {
     }
 
     /**
+     * Time-consuming operation, executed synchronously
      * 耗时操作，同步执行完
      */
     private void prepareUploadFinal(final Context context) {
@@ -123,31 +125,29 @@ public class TXUGCPublishOptCenter {
             Response response = ugcClient.prepareUploadUGC();
             TVCLog.i(TAG, "prepareUploadUGC resp:" + response.message());
             if (response.isSuccessful()) {
-                reportPublishOptResult(context,
-                        TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
+                reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
                         TVCConstants.NO_ERROR, "", reqTime, System.currentTimeMillis() - reqTime);
-                // 解析预上传结果，并且发起最优园区探测
+                // Parse pre-upload results and initiate optimal park detection
                 parsePrepareUploadResp(context, response.body().string());
             } else {
-                reportPublishOptResult(context,
-                        TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
-                        TVCConstants.ERROR, "HTTP Code:" + response.code(), reqTime,
-                        System.currentTimeMillis() - reqTime);
+                reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
+                        TVCConstants.ERROR,
+                        "HTTP Code:" + response.code(), reqTime, System.currentTimeMillis() - reqTime);
             }
         } catch (IOException e) {
             TVCLog.i(TAG, "prepareUploadUGC failed:" + e.getMessage());
-            // 获取预上传失败
-            reportPublishOptResult(context,
-                    TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT, TVCConstants.ERROR,
+            reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT,
+                    TVCConstants.ERROR,
                     e.toString(), reqTime, System.currentTimeMillis() - reqTime);
         }
     }
 
     /**
+     * Report optimization processing results
      * 上报优化处理结果
      */
-    private void reportPublishOptResult(Context context, int reqType, int errCode, String errMsg,
-            long reqTime, long reqTimeCost) {
+    private void reportPublishOptResult(Context context, int reqType, int errCode, String errMsg, long reqTime,
+                                        long reqTimeCost) {
         UGCReport.ReportInfo reportInfo = new UGCReport.ReportInfo();
         reportInfo.reqType = reqType;
         reportInfo.errCode = errCode;
@@ -158,8 +158,8 @@ public class TXUGCPublishOptCenter {
         UGCReport.getInstance(context).addReportInfo(reportInfo);
     }
 
-    public boolean reFresh(
-            final Context context, final IPrepareUploadCallback prepareUploadCallback) {
+    public boolean reFresh(final Context context, final IPrepareUploadCallback prepareUploadCallback) {
+
         synchronized (bestCosInfo) {
             minCosRespTime = 0;
             bestCosInfo.region = "";
@@ -177,29 +177,27 @@ public class TXUGCPublishOptCenter {
         boolean ret = dnsCache.freshDomain(TVCConstants.VOD_SERVER_HOST, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                // 获取vod 域名失败
-                reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT,
-                        TVCConstants.ERROR, e.toString(), reqTime,
-                        System.currentTimeMillis() - reqTime);
+                // Failed to get VOD domain name
+                reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT, TVCConstants.ERROR,
+                        e.toString(), reqTime, System.currentTimeMillis() - reqTime);
                 prepareUploadFinal(context);
                 if (prepareUploadCallback != null) {
                     prepareUploadCallback.onFinish();
                 }
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    // 获取vod 域名失败
-                    reportPublishOptResult(context,
-                            TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT, TVCConstants.ERROR,
-                            "HTTP Code:" + response.code(), reqTime,
-                            System.currentTimeMillis() - reqTime);
+                    // Failed to get VOD domain name
+                    reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT,
+                            TVCConstants.ERROR,
+                            "HTTP Code:" + response.code(), reqTime, System.currentTimeMillis() - reqTime);
                 } else {
-                    reportPublishOptResult(context,
-                            TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT,
-                            TVCConstants.NO_ERROR, "", reqTime,
-                            System.currentTimeMillis() - reqTime);
+                    reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT,
+                            TVCConstants.NO_ERROR,
+                            "", reqTime, System.currentTimeMillis() - reqTime);
                 }
 
                 prepareUploadFinal(context);
@@ -236,28 +234,27 @@ public class TXUGCPublishOptCenter {
                 TVCLog.e(TAG, "parsePrepareUploadRsp , cosRegionList is null!");
                 return;
             }
-            CountDownLatch getCosIpLatch = new CountDownLatch(cosArray.length()); // 设置计数值
+            CountDownLatch getCosIpLatch = new CountDownLatch(cosArray.length());
             int cosIpFetchMaxThreadCount = Math.min(cosArray.length(), 8);
-            ExecutorService getCosIpExec =
-                    Executors.newFixedThreadPool(cosIpFetchMaxThreadCount); // 创建线程池
+            ExecutorService getCosIpExec = Executors.newFixedThreadPool(cosIpFetchMaxThreadCount);
             fetchCosIp(cosArray, getCosIpLatch, getCosIpExec);
             try {
-                getCosIpLatch.await(); // 等待所有线程完成操作
+                getCosIpLatch.await(); // Wait for all threads to complete operations
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            CountDownLatch latch = new CountDownLatch(cosArray.length() * 2); // 设置计数值
+            CountDownLatch latch = new CountDownLatch(cosArray.length() * 2);
             int maxThreadCount = Math.min(cosArray.length() * 2, 8);
-            ExecutorService exec = Executors.newFixedThreadPool(maxThreadCount); // 创建线程池
+            ExecutorService exec = Executors.newFixedThreadPool(maxThreadCount);
             final long reqTime = System.currentTimeMillis();
-            //探测quic
+            // QUIC detection
             detectQuicNet(cosArray, context, latch, exec);
-            //最优园区探测
+            // HTTP detection
             detectBestCos(cosArray, latch, exec);
 
             try {
-                latch.await(); // 等待所有线程完成操作
+                latch.await(); // Wait for all threads to complete operations
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -268,15 +265,14 @@ public class TXUGCPublishOptCenter {
 
             reportPublishOptResult(context, TVCConstants.UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT,
                     TextUtils.isEmpty(bestCosInfo.region) ? TVCConstants.ERROR : TVCConstants.NO_ERROR,
-                    TextUtils.isEmpty(bestCosInfo.region) ? "" : bestCosInfo.domain + "|" + bestCosInfo.region,
-                    reqTime, System.currentTimeMillis() - reqTime);
+                    TextUtils.isEmpty(bestCosInfo.region) ? "" : bestCosInfo.domain + "|" + bestCosInfo.region, reqTime,
+                    System.currentTimeMillis() - reqTime);
         } catch (JSONException e) {
             TVCLog.e(TAG, e.toString());
         }
     }
 
-    private void fetchCosIp(final JSONArray cosArray, final CountDownLatch latch,
-            ExecutorService exec) throws JSONException {
+    private void fetchCosIp(final JSONArray cosArray, final CountDownLatch latch, ExecutorService exec) throws JSONException {
         for (int i = 0; i < cosArray.length(); ++i) {
             final JSONObject cosInfoJsonObject = cosArray.getJSONObject(i);
             exec.execute(new Runnable() {
@@ -292,7 +288,7 @@ public class TXUGCPublishOptCenter {
     }
 
     private void detectQuicNet(JSONArray cosArray, final Context context,
-            final CountDownLatch latch, ExecutorService exec) throws JSONException {
+                               final CountDownLatch latch, ExecutorService exec) throws JSONException {
 
         for (int i = 0; i < cosArray.length(); ++i) {
             final JSONObject cosInfoJsonObject;
@@ -306,12 +302,12 @@ public class TXUGCPublishOptCenter {
                         QuicClient quicClient = new QuicClient(context);
                         quicClient.detectQuic(domain, new QuicClient.QuicDetectListener() {
                             @Override
-                            public void onQuicDetectDone(
-                                    boolean isQuic, long requestTime, int errorCode) {
-                                TVCLog.i(TAG,
-                                        "detectQuicNet domain = " + domain + ", region = " + region
-                                                + ", timeCos = " + requestTime + ", errorCode = "
-                                                + errorCode + ", isQuic = " + isQuic);
+                            public void onQuicDetectDone(boolean isQuic, long requestTime, int errorCode) {
+                                TVCLog.i(TAG, "detectQuicNet domain = " + domain
+                                        + ", region = " + region
+                                        + ", timeCos = " + requestTime
+                                        + ", errorCode = " + errorCode
+                                        + ", isQuic = " + isQuic);
                                 if (isQuic) {
                                     compareBestCos(domain, region, requestTime, true);
                                 }
@@ -324,8 +320,8 @@ public class TXUGCPublishOptCenter {
         }
     }
 
-    private void detectBestCos(JSONArray cosArray, final CountDownLatch latch, ExecutorService exec)
-            throws JSONException {
+    private void detectBestCos(JSONArray cosArray, final CountDownLatch latch,
+                               ExecutorService exec) throws JSONException {
         for (int i = 0; i < cosArray.length(); ++i) {
             final JSONObject cosInfoJsonObject = cosArray.getJSONObject(i);
             exec.execute(new Runnable() {
@@ -335,7 +331,6 @@ public class TXUGCPublishOptCenter {
                     String domain = cosInfoJsonObject.optString("domain", "");
                     int isAcc = cosInfoJsonObject.optInt("isAcc", 0);
                     if (!TextUtils.isEmpty(region) && !TextUtils.isEmpty(domain)) {
-                        // 、探测最优园区
                         detectBestCosIP(domain, region);
                     }
                     latch.countDown();
@@ -349,14 +344,16 @@ public class TXUGCPublishOptCenter {
         try {
             Response response = ugcClient.detectDomain(domain);
             if (response != null) {
-                // 服务器有返回认为是检测成功，不需要判断isSuccessful，因为私有域会返回403，检测也是正常的
+                // If the server returns a response, it is considered a successful detection,
+                // no need to judge isSuccessful, because the private domain will return 403,
+                // and the detection is normal
                 long endTS = System.currentTimeMillis();
                 long timeCost = endTS - beginTS;
 
-                TVCLog.i(TAG,
-                        "detectBestCosIP domain = " + domain + ", region = " + region
-                                + ", timeCos = " + timeCost
-                                + ", response.code = " + response.code());
+                TVCLog.i(TAG, "detectBestCosIP domain = " + domain
+                        + ", region = " + region
+                        + ", timeCos = " + timeCost
+                        + ", response.code = " + response.code());
                 compareBestCos(domain, region, timeCost, false);
             }
         } catch (IOException e) {
@@ -397,9 +394,8 @@ public class TXUGCPublishOptCenter {
     }
 
     private void getCosDNS(final String domain, String ips) {
-        //返回的ip列表为空，首先执行http dns
+        // If the returned IP list is empty, execute HTTP DNS first
         if (TextUtils.isEmpty(ips)) {
-            // 异步转同步
             final CountDownLatch countDownLatch = new CountDownLatch(1);
             boolean ret = dnsCache.freshDomain(domain, new Callback() {
                 @Override
@@ -419,7 +415,8 @@ public class TXUGCPublishOptCenter {
                     e.printStackTrace();
                 }
             }
-        } else { //返回的ip列表不为，首先把ip设置到HttpDnsCache中
+        } else {
+            // If the returned IP list is not empty, set the IP in HttpDnsCache first
             ArrayList<String> ipLists = new ArrayList<String>();
             if (ips.contains(";")) {
                 String[] ipArray = ips.split(",");
@@ -453,6 +450,10 @@ public class TXUGCPublishOptCenter {
     }
 
     /**
+     * Determine whether the current upload region is consistent with the detected optimal region.
+     * If consistent, return the detected QUIC switch. Otherwise, it means that the optimal detection result
+     * is not used, and the default COS region is used without enabling QUIC.
+     *
      * 判断当前上传region与探测出来的最优region是否一致，如果一致，返回探测出来的quic开关。
      * 否则证明没有使用最优探测结果，使用的默认cos region，没有开启quic
      */

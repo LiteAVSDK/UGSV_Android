@@ -15,11 +15,15 @@ import okio.ForwardingSink;
 import okio.Okio;
 import okio.Sink;
 
+
 public class ProgressRequestBody extends RequestBody {
-    public interface ProgressListener { void onProgress(long currentBytes, long contentLength); }
+
+    public interface ProgressListener {
+        void onProgress(long currentBytes, long contentLength);
+    }
 
     public class ProgressModel {
-        private long currentBytes = 0;
+        private long currentBytes  = 0;
         private long contentLength = 0;
 
         public ProgressModel(long currentBytes, long contentLength) {
@@ -51,7 +55,7 @@ public class ProgressRequestBody extends RequestBody {
     }
 
     class MyHandler extends Handler {
-        //放在主线程中显示
+
         public MyHandler() {
             super(Looper.getMainLooper());
         }
@@ -62,9 +66,9 @@ public class ProgressRequestBody extends RequestBody {
                 case UPDATE:
                     ProgressModel progressModel = (ProgressModel) msg.obj;
                     if (mListener != null)
-                        mListener.onProgress(
-                                progressModel.getCurrentBytes(), progressModel.getContentLength());
+                        mListener.onProgress(progressModel.getCurrentBytes(), progressModel.getContentLength());
                     break;
+
             }
         }
     }
@@ -103,7 +107,6 @@ public class ProgressRequestBody extends RequestBody {
                     contentLength = contentLength();
                 }
                 bytesWritten += byteCount;
-                //回调
                 Message msg = Message.obtain();
                 msg.what = UPDATE;
                 msg.obj = new ProgressModel(bytesWritten, contentLength);
