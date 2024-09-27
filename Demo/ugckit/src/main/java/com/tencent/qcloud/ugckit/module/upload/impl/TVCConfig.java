@@ -1,6 +1,7 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 public class TVCConfig {
+
     public String mCustomKey;
 
     public String mSignature;

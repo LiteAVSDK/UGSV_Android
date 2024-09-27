@@ -23,35 +23,38 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class UGCReport {
-    public static class ReportInfo {
-        public int reqType = 0;
-        public int errCode = 0;
-        public int vodErrCode = 0;
-        public String cosErrCode = "";
-        public String errMsg = "";
-        public long reqTime = 0;
-        public long reqTimeCost = 0;
-        public long fileSize = 0;
-        public String fileType = "";
-        public String fileName = "";
-        public String fileId = "";
-        public int appId = 0;
-        public String reqServerIp = "";
-        public int useHttpDNS = 0;
-        public String reportId = "";
-        public String reqKey = "";
-        public String vodSessionKey = "";
-        public String cosRegion = "";
-        public int useCosAcc = 0;
-        public long tcpConnTimeCost = 0;
-        public long recvRespTimeCost = 0;
-        public int retryCount = 0;
-        public boolean reporting = false; // 正在上报
-        public String requestId = "";
-        public String cosVideoPath = "";
 
-        public ReportInfo() {}
+public class UGCReport {
+
+    public static class ReportInfo {
+        public int     reqType          = 0;
+        public int     errCode          = 0;
+        public int     vodErrCode       = 0;
+        public String  cosErrCode       = "";
+        public String  errMsg           = "";
+        public long    reqTime          = 0;
+        public long    reqTimeCost      = 0;
+        public long    fileSize         = 0;
+        public String  fileType         = "";
+        public String  fileName         = "";
+        public String  fileId           = "";
+        public int     appId            = 0;
+        public String  reqServerIp      = "";
+        public int     useHttpDNS       = 0;
+        public String  reportId         = "";
+        public String  reqKey           = "";
+        public String  vodSessionKey    = "";
+        public String  cosRegion        = "";
+        public int     useCosAcc        = 0;
+        public long    tcpConnTimeCost  = 0;
+        public long    recvRespTimeCost = 0;
+        public int     retryCount       = 0;
+        public boolean reporting        = false;
+        public String  requestId        = "";
+        public String cosVideoPath      = "";
+
+        public ReportInfo() {
+        }
 
         public ReportInfo(ReportInfo info) {
             this.reqType = info.reqType;
@@ -84,34 +87,51 @@ public class UGCReport {
         @Override
         public String toString() {
             return "ReportInfo{"
-                    + "reqType=" + reqType + ", errCode=" + errCode + ", vodErrCode=" + vodErrCode
-                    + ", cosErrCode='" + cosErrCode + '\'' + ", errMsg='" + errMsg + '\''
-                    + ", reqTime=" + reqTime + ", reqTimeCost=" + reqTimeCost + ", fileSize="
-                    + fileSize + ", fileType='" + fileType + '\'' + ", fileName='" + fileName + '\''
-                    + ", fileId='" + fileId + '\'' + ", appId=" + appId + ", reqServerIp='"
-                    + reqServerIp + '\'' + ", useHttpDNS=" + useHttpDNS + ", reportId='" + reportId
-                    + '\'' + ", reqKey='" + reqKey + '\'' + ", vodSessionKey='" + vodSessionKey
-                    + '\'' + ", cosRegion='" + cosRegion + '\'' + ", useCosAcc=" + useCosAcc
-                    + ", retryCount=" + retryCount + ", reporting=" + reporting + ", requestId='"
-                    + requestId + '\'' + ", tcpConnTimeCost=" + tcpConnTimeCost
-                    + ", recvRespTimeCost=" + recvRespTimeCost + ", cosVideoPath=" + cosVideoPath
+                    + "reqType=" + reqType +
+                    ", errCode=" + errCode +
+                    ", vodErrCode=" + vodErrCode +
+                    ", cosErrCode='" + cosErrCode + '\'' +
+                    ", errMsg='" + errMsg + '\'' +
+                    ", reqTime=" + reqTime +
+                    ", reqTimeCost=" + reqTimeCost +
+                    ", fileSize=" + fileSize +
+                    ", fileType='" + fileType + '\'' +
+                    ", fileName='" + fileName + '\'' +
+                    ", fileId='" + fileId + '\'' +
+                    ", appId=" + appId +
+                    ", reqServerIp='" + reqServerIp + '\'' +
+                    ", useHttpDNS=" + useHttpDNS +
+                    ", reportId='" + reportId + '\'' +
+                    ", reqKey='" + reqKey + '\'' +
+                    ", vodSessionKey='" + vodSessionKey + '\'' +
+                    ", cosRegion='" + cosRegion + '\'' +
+                    ", useCosAcc=" + useCosAcc +
+                    ", retryCount=" + retryCount +
+                    ", reporting=" + reporting +
+                    ", requestId='" + requestId + '\'' +
+                    ", tcpConnTimeCost=" + tcpConnTimeCost +
+                    ", recvRespTimeCost=" + recvRespTimeCost +
+                    ", cosVideoPath="
+                    + cosVideoPath
                     + '}';
         }
     }
 
     ;
 
-    private static final String TAG = "TVC-UGCReport";
-    private static final int MAX_CACHES = 100; //最多缓存的上报记录条数
+    private static final String TAG        = "TVC-UGCReport";
+    // Maximum number of cached report records
+    private static final int    MAX_CACHES = 100;
 
     private static UGCReport ourInstance;
 
-    private Context context;
-    private OkHttpClient okHttpClient;
+    private Context          context;
+    private OkHttpClient     okHttpClient;
     private List<ReportInfo> reportCaches = new ArrayList<ReportInfo>();
 
     private TimerTask reportTask = null;
-    private Timer mTimer;
+    private Timer     mTimer;
+
 
     public static UGCReport getInstance(Context context) {
         if (ourInstance == null) {
@@ -125,14 +145,14 @@ public class UGCReport {
         return ourInstance;
     }
 
+
     private UGCReport(Context context) {
         this.context = context;
-        okHttpClient = new OkHttpClient()
-                               .newBuilder()
-                               .connectTimeout(10, TimeUnit.SECONDS) // 设置超时时间
-                               .readTimeout(10, TimeUnit.SECONDS) // 设置读取超时时间
-                               .writeTimeout(10, TimeUnit.SECONDS) // 设置写入超时时间
-                               .build();
+        okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build();
         reportTask = new TimerTask() {
             @Override
             public void run() {
@@ -220,7 +240,10 @@ public class UGCReport {
             String reqUrl = "https://vodreport.qcloud.com/ugcupload_new";
             TVCLog.i(TAG, "reportUGCEvent->request url:" + reqUrl + " body:" + body);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
-            Request request = new Request.Builder().url(reqUrl).post(requestBody).build();
+            Request request = new Request.Builder()
+                    .url(reqUrl)
+                    .post(requestBody)
+                    .build();
 
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
@@ -243,5 +266,6 @@ public class UGCReport {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 }

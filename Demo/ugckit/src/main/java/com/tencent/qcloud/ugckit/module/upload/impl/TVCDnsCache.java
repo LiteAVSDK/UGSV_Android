@@ -19,14 +19,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
+ * HTTPDNS cache, used to solve the slow and inaccurate problem of local DNS
  * httpdns缓存，用于解决localdns慢、不准确的问题
  */
-
 public class TVCDnsCache {
     private final Pattern patternIpV4 = Pattern.compile("^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])"
             + "(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}$");
-    private final Pattern patternIpV6 = Pattern.compile(
-            "^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]"
+    private final Pattern patternIpV6 = Pattern.compile("^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]"
             + "{1,4}:){1,7}:)|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}(:[0-9A-Fa-f]{1,4})"
             + "{1,2})|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4}){1,3})|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4})"
             + "{1,4})|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){1,5})|([0-9A-Fa-f]{1,4}:(:[0-9A-Fa-f]{1,4}){1,6})"
@@ -42,33 +41,32 @@ public class TVCDnsCache {
             + "|1\\d{2}|2[0-4]\\d|25[0-5])){3}))$");
     private static final String TAG = "TVC-TVCDnsCache";
 
-    private OkHttpClient okHttpClient;
-    private static String HTTPDNS_SERVER = "https://119.29.29.99/d?dn="; // httpdns服务器请求ip
-    private ConcurrentHashMap<String, List<String>> cacheMap;
-    private ConcurrentHashMap<String, List<String>>
-            fixCacheMap; //固定的dns缓存，从后台获取，认为这个是可信的
-    private static String HTTPDNS_TOKEN = "800654663"; //该token用于https加密标志，可明文保存
+    private final OkHttpClient okHttpClient;
+    private static String HTTPDNS_SERVER = "https://119.29.29.99/d?dn="; // HTTPDNS server request IP
+    private final ConcurrentHashMap<String, List<String>> cacheMap;
+    // Fixed DNS cache, obtained from the backend, considered trustworthy
+    private final ConcurrentHashMap<String, List<String>> fixCacheMap;
+    // This token is used for HTTPS encryption flag and can be stored in plaintext
+    private static String HTTPDNS_TOKEN = "800654663";
 
     public TVCDnsCache() {
-        okHttpClient = new OkHttpClient()
-                               .newBuilder()
-                               .connectTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT,
-                                       TimeUnit.MILLISECONDS) // 设置超时时间
-                               .readTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT,
-                                       TimeUnit.MILLISECONDS) // 设置读取超时时间
-                               .writeTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT,
-                                       TimeUnit.MILLISECONDS) // 设置写入超时时间
-                               .build();
-        cacheMap = new ConcurrentHashMap<String, List<String>>();
-        fixCacheMap = new ConcurrentHashMap<String, List<String>>();
+        okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)
+                .readTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(TVCConstants.PRE_UPLOAD_ANA_DNS_TIME_OUT, TimeUnit.MILLISECONDS)
+                .build();
+        cacheMap = new ConcurrentHashMap<>();
+        fixCacheMap = new ConcurrentHashMap<>();
     }
 
-    // 对指定域名发起httpdns请求
+    // Initiate HTTPDNS request for the specified domain
     public boolean freshDomain(final String domain, final Callback callback) {
         if (useProxy()) return false;
         String reqUrl = HTTPDNS_SERVER + domain + "&token=" + HTTPDNS_TOKEN;
         TVCLog.i(TAG, "freshDNS->request url:" + reqUrl);
-        Request request = new Request.Builder().url(reqUrl).build();
+        Request request = new Request.Builder()
+                .url(reqUrl)
+                .build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -122,11 +120,13 @@ public class TVCDnsCache {
         return patternIpV4.matcher(content).find() || patternIpV6.matcher(content).find();
     }
 
-    // 添加指定域名的ip列表，ip列表是后台返回的
+    // Add the IP list of the specified domain, the IP list is returned by the backend
     public void addDomainDNS(String domain, ArrayList<String> ipLists) {
-        if (useProxy()) return;
+        if (useProxy())
+            return;
 
-        if (ipLists == null || ipLists.size() == 0) return;
+        if (ipLists == null || ipLists.size() == 0)
+            return;
 
         fixCacheMap.put(domain, ipLists);
     }
@@ -179,7 +179,7 @@ public class TVCDnsCache {
         String host = System.getProperty("http.proxyHost");
         String port = System.getProperty("http.proxyPort");
         if (host != null && port != null) {
-            // 使用了本地代理模式
+            // Local proxy mode is used
             TVCLog.i(TAG, "use proxy " + host + ":" + port + ", will not use httpdns");
             return true;
         }

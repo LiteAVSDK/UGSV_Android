@@ -3,11 +3,12 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
 import android.text.TextUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.RandomAccessFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Video upload parameters
  * 视频上传参数
  */
 public class TVCUploadInfo {
@@ -23,12 +24,17 @@ public class TVCUploadInfo {
     private String coverName;
 
     /**
+     * Create upload parameters
      * 创建上传参数
      *
-     * @param fileType  文件类型
-     * @param filePath  文件本地路径
-     * @param coverType 封面图片类型
-     * @param coverPath 封面图片本地路径
+     * @param fileType  File type
+     *                  文件类型
+     * @param filePath  File local path
+     *                  文件本地路径
+     * @param coverType Cover image type
+     *                  封面图片类型
+     * @param coverPath Cover image local path
+     *                  封面图片本地路径
      */
     public TVCUploadInfo(String fileType, String filePath, String coverType, String coverPath) {
         this.fileType = fileType;
@@ -97,13 +103,12 @@ public class TVCUploadInfo {
         if (0 == videoFileSize) {
             TVCLog.i("getFileSize", "getFileSize: " + filePath);
             File file = new File(filePath);
-            try {
-                if (file.exists()) {
-                    FileInputStream fis = new FileInputStream(file);
-                    videoFileSize = fis.available();
+            if (file.exists()) {
+                try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
+                    videoFileSize = randomAccessFile.length();
+                } catch (Exception e) {
+                    TVCLog.e("getFileSize", "getFileSize: " + e);
                 }
-            } catch (Exception e) {
-                TVCLog.e("getFileSize", "getFileSize: " + e);
             }
         }
         return videoFileSize;
@@ -113,13 +118,12 @@ public class TVCUploadInfo {
         if (0 == coverFileSize) {
             TVCLog.i("getCoverFileSize", "getCoverFileSize: " + coverPath);
             File file = new File(coverPath);
-            try {
-                if (file.exists()) {
-                    FileInputStream fis = new FileInputStream(file);
-                    coverFileSize = fis.available();
+            if (file.exists()) {
+                try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r")) {
+                    coverFileSize = randomAccessFile.length();
+                } catch (Exception e) {
+                    TVCLog.e("getCoverFileSize", "getCoverFileSize: " + e);
                 }
-            } catch (Exception e) {
-                TVCLog.e("getCoverFileSize", "getCoverFileSize: " + e);
             }
         }
         return coverFileSize;

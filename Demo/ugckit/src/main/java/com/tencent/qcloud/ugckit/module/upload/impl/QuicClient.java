@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
+ * quic process class
  * quic处理类
  */
 public class QuicClient {
@@ -96,6 +97,11 @@ public class QuicClient {
     }
 
     /**
+     * Check if the QUIC link is connected
+     * <p>1. Whether the URL supports QUIC</p>
+     * <p>2. Whether the current network environment supports QUIC/UDP links</p>
+     * <h1>3. Need to run in a sub-thread</h1>
+     *
      * 查询quic链路是否连通
      * <p>1、url是否支持quic</p>
      * <p>2、当前网络环境是否支持quic/udp链路</p>

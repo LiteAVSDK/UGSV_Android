@@ -8,17 +8,19 @@ import com.tencent.qcloud.core.logger.QCloudLogger;
 
 @SuppressWarnings("UnusedReturnValue")
 public class TVCLog {
+
     private static final String MODULE_TAG = "[TVCUpload]";
 
     /**
+     * Must be called, after calling it, the log adapter will be added to start printing
      * 必须调用，调用之后才会添加日志adapter开始打印
      *
-     * @param isDebug 是否打印日志
+     * @param isDebug Whether to print logs
+     *                是否打印日志
      */
     public static void setDebuggable(boolean isDebug, Context context) {
         // target qCloud log config
-        new CosXmlBaseService(
-                context, new CosXmlServiceConfig.Builder().setDebuggable(isDebug).builder());
+        new CosXmlBaseService(context, new CosXmlServiceConfig.Builder().setDebuggable(isDebug).builder());
     }
 
     public static void v(String tag, String msg) {
