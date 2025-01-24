@@ -5,7 +5,7 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "12.2.0.15065";
+    public static final String TVCVERSION = "12.3.0.17115";
     public static       String VOD_SERVER_HOST     = "vod2.qcloud.com";
     public static       String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
 
