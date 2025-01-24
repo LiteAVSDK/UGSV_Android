@@ -32,4 +32,5 @@ dependencies {
     implementation rootProject.ext.androidxAppcompat
     implementation rootProject.ext.androidxRecyclerview
     implementation rootProject.ext.liteavSdk
+    implementation rootProject.ext.placeholderSdk
 }
