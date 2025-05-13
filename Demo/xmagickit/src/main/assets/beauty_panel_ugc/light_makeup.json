@@ -1,0 +1,37 @@
+{
+    "displayName":"轻美妆",
+    "displayNameEn":"Makeup",
+    "downloadPath":"MotionRes/light_makeup/",
+    "isShowGridLayout":true,
+    "propertyList":[
+        {
+            "displayName":"无",
+            "displayNameEn":"None",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/beauty/none.png"
+        },
+        {
+            "displayName": "白皙",
+            "displayNameEn": "White",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/light_makeup_icon/light_baixi.png",
+            "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demo_config/light_makeup/light_baixi.zip",
+            "sdkParam": {
+                "effectValue": 50,
+                "extraInfo": {
+                    "makeupLutStrength": "50"
+                }
+            }
+        },
+        {
+            "displayName": "淡颜",
+            "displayNameEn": "Light",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/light_makeup_icon/light_danyan.png",
+            "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demo_config/light_makeup/light_danyan.zip",
+            "sdkParam": {
+                "effectValue": 50,
+                "extraInfo": {
+                    "makeupLutStrength": "50"
+                }
+            }
+        }
+    ]
+}

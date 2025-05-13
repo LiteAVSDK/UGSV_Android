@@ -9,7 +9,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 24
-        versionName "12.4.0.5172"
+        versionName "12.5.0.5368"
 
         renderscriptTargetApi = 14
         renderscriptSupportModeEnabled = true

@@ -1,0 +1,100 @@
+{
+    "displayName": "贴纸",
+    "displayNameEn": "Motion",
+    "uiState": 2,
+    "isShowGridLayout": true,
+    "propertyList": [
+        {
+            "displayName": "2D贴纸",
+            "displayNameEn": "2D",
+            "downloadPath": "MotionRes/2dMotionRes/",
+            "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/motion_2d.png",
+            "propertyList": [
+                {
+                    "displayName": "无",
+                    "displayNameEn": "None",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/beauty/none.png"
+                },
+                {
+                    "displayName": "可爱涂鸦",
+                    "displayNameEn": "Cute graffiti",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_keaituya.png",
+                    "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_keaituya.zip"
+                },
+                {
+                    "displayName": "兔兔酱",
+                    "displayNameEn": "Bunny 1",
+                    "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_tutujiang.png",
+                    "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_tutujiang.zip"
+                }
+            ]
+        },
+        {
+            "displayName": "3D贴纸",
+            "displayNameEn": "3D",
+            "downloadPath": "MotionRes/3dMotionRes/",
+            "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/motion_3d.png",
+            "propertyList": [
+                {
+                    "displayName": "无",
+                    "displayNameEn": "None",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/beauty/none.png"
+                },
+                {
+                    "displayName": "知性玫瑰",
+                    "displayNameEn": "Glasses1",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_zhixingmeigui.png",
+                    "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_zhixingmeigui.zip"
+                }
+            ]
+        },
+        {
+            "displayName": "手势贴纸",
+            "displayNameEn": "Stickerhand",
+            "downloadPath": "MotionRes/handMotionRes/",
+            "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/motion_hand.png",
+            "propertyList": [
+                {
+                    "displayName": "无",
+                    "displayNameEn": "None",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/beauty/none.png"
+                },
+                {
+                    "displayName": "樱花女孩",
+                    "displayNameEn": "Sakura",
+                    "id": "motiongesture_sakura",
+                    "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_sakuragirl.zip",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_sakuragirl.png"
+                }
+            ]
+        },
+        {
+            "displayName": "风格整妆",
+            "uiCategory": "MAKEUP",
+            "displayNameEn": "Makeup",
+            "downloadPath": "MotionRes/makeupRes/",
+            "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/motion_2d.png",
+            "propertyList": [
+                {
+                    "uiCategory": "MAKEUP",
+                    "displayName": "无",
+                    "displayNameEn": "None",
+                    "id": "makeup_ID_NONE",
+                    "parentId": "makeup",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/beauty/none.png",
+                    "uiState": 0
+                },
+                {
+                    "displayName": "女团妆",
+                    "displayNameEn": "Young",
+                    "icon": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/image/video_nvtuanzhuang.png",
+                    "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_nvtuanzhuang.zip",
+                    "uiCategory": "MAKEUP",
+                    "sdkParam": {
+                        "effectValue": 60
+                    }
+                }
+            ]
+        }
+    ]
+}

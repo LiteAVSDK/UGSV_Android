@@ -12,7 +12,7 @@ public class TXUGCPublishTypeDef {
      * Definition of short video publishing parameters
      * 短视频发布参数定义
      */
-    public final static class TXPublishParam {
+    public static class TXPublishParam {
         /**
          * Tencent Cloud Storage COS service key ID, which has been deprecated, does not need to be filled in
          * 腾讯云存储cos服务密钥ID，已经废弃，不用填写
@@ -83,7 +83,7 @@ public class TXUGCPublishTypeDef {
      * Definition of media content publishing parameters
      * 媒体内容发布参数定义
      */
-    public final static class TXMediaPublishParam {
+    public static class TXMediaPublishParam {
         /**
          * signature
          */
@@ -190,7 +190,7 @@ public class TXUGCPublishTypeDef {
      * Media Content Publishing Result Definition
      * 媒体内容发布结果定义
      */
-    public final static class TXMediaPublishResult {
+    public static class TXMediaPublishResult {
         // Error Code
         public int    retCode;
         // Error Description Information

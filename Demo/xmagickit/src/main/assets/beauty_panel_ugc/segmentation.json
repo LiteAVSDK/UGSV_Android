@@ -1,0 +1,53 @@
+{
+    "displayName":"虚拟背景",
+    "displayNameEn":"Virtual background",
+    "downloadPath":"MotionRes/segmentMotionRes/",
+    "isShowGridLayout":true,
+    "propertyList":[
+        {
+            "displayName":"无",
+            "displayNameEn":"None",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/beauty/none.png"
+        },
+        {
+            "displayName":"自定义背景",
+            "displayNameEn":"Custom",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/add.png",
+            "resourceUri":"MotionRes/segmentMotionRes/video_empty_segmentation",
+            "sdkParam":{
+                "extraInfo":{
+                    "segType":"custom_background"
+                }
+            }
+        },
+        {
+            "displayName":"绿幕抠图",
+            "displayNameEn":"GreenScreen",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/greenscreen.png",
+            "resourceUri":"MotionRes/segmentMotionRes/video_greenscreen",
+            "sdkParam":{
+                "extraInfo":{
+                    "segType":"green_background"
+                }
+            }
+        },
+        {
+            "displayName": "背景模糊-弱",
+            "displayNameEn": "Weak Blur",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_segmentation_blur_45.png",
+            "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_segmentation_blur_45.zip"
+        },
+        {
+            "displayName": "背景模糊-强",
+            "displayNameEn": "Strong Blur",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_segmentation_blur_75.png",
+            "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_segmentation_blur_75.zip"
+        },
+        {
+            "displayName": "背景透明",
+            "displayNameEn": "Transparent",
+            "icon":"https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/RT_Cube/tencent_effect_icon/panel_icon_3.9.1/motions_icon/video_segmentation_transparent_bg.png",
+            "resourceUri": "https://mediacloud-76607.gzc.vod.tencent-cloud.com/TencentEffect/demoMotion/video_segmentation_transparent_bg.zip"
+        }
+    ]
+}

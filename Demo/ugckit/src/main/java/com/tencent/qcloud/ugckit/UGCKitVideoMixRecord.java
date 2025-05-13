@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tencent.liteav.beautykit.BeautyParams;
 import com.tencent.qcloud.ugckit.basic.ITitleBarLayout;
 import com.tencent.qcloud.ugckit.basic.OnUpdateUIListener;
@@ -20,7 +25,6 @@ import com.tencent.qcloud.ugckit.module.ProcessKit;
 import com.tencent.qcloud.ugckit.module.effect.VideoEditerSDK;
 import com.tencent.qcloud.ugckit.module.mixrecord.AbsVideoTripleMixRecordUI;
 import com.tencent.qcloud.ugckit.module.mixrecord.CountDownTimerView;
-import com.tencent.qcloud.ugckit.module.mixrecord.ICountDownTimerView;
 import com.tencent.qcloud.ugckit.module.mixrecord.IMixRecordJoinListener;
 import com.tencent.qcloud.ugckit.module.mixrecord.IMixRecordRightLayout;
 import com.tencent.qcloud.ugckit.module.mixrecord.MixRecordActionData;
@@ -41,11 +45,17 @@ import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoInfoReader;
-import com.tencent.xmagic.XMagicImpl;
-import com.tencent.xmagic.module.XmagicResParser;
-import com.tencent.xmagic.panel.XmagicPanelDataManager;
+import com.tencent.xmagic.CustomPropertyManager;
+import com.tencent.xmagic.DefaultPanelViewCallback;
+import com.tencent.xmagic.TEBeautySDKManger;
+import com.tencent.effect.beautykit.TEBeautyKit;
+import com.tencent.effect.beautykit.model.TEUIProperty;
+import com.tencent.effect.beautykit.utils.LogUtils;
+import com.tencent.effect.beautykit.view.panelview.TEPanelView;
+import com.tencent.xmagic.XmagicConstant;
 import com.tencent.xmagic.telicense.TELicenseCheck;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
@@ -60,12 +70,15 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
     private MixRecordJoiner mJoiner;
     private MixRecordConfig mConfig;
 
-    private XMagicImpl mXMagic;
-    private XMagicImpl.XmagicState mXmagicState = XMagicImpl.XmagicState.IDLE;
     private volatile boolean mIsTextureDestroyed = false;
     private boolean mIsReleased = false;
     private AudioFocusManager mAudioFocusManager = null;
     private int mBeautyType = -1; // 0 表示基础美颜 1、表示高级美颜
+    private              TEBeautyKit             mBeautyKit;
+    private              boolean                 mCanCreateBeautyKit = false;  //true 表示可以
+    private              String                  mLastParamList = null;
+    private              TEPanelView             mPanelView;
+    private  final       CustomPropertyManager   mCustomPropertyManager = new CustomPropertyManager();
 
     public UGCKitVideoMixRecord(Context context) {
         super(context);
@@ -131,10 +144,11 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
 
         getTEInfoImg().setOnClickListener(v -> TEChargePromptDialog.showTEConfirmDialog(mActivity));
 
+        this.addTEBeautyPanelView();
         registerVideoProcessListener();
-        XMagicImpl.checkAuth((errorCode, msg) -> {
+        TEBeautySDKManger.checkAuth((errorCode, msg) -> {
             if (errorCode == TELicenseCheck.ERROR_OK) {
-                loadXmagicRes();
+                loadXMagicRes();
             } else {
                 Log.e(TAG, "auth fail ，please check auth url and key" + errorCode + " " + msg);
             }
@@ -149,17 +163,16 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
         // 播放跟拍视频
         getPlayViews().startVideo();
 
-        if (mXmagicState == XMagicImpl.XmagicState.STOPPED) {
-            initXMagic();
+        if (mCanCreateBeautyKit) {
+            this.initTEBeautyKit();
         }
     }
 
     @Override
     public void stop() {
         Log.d(TAG, "stop");
-        if (mXMagic != null) {
-            mXMagic.onPause();
-            mXmagicState = XMagicImpl.XmagicState.STOPPED;
+        if (mBeautyKit != null) {
+            mBeautyKit.onPause();
         }
         getFollowRecordBottomLayout().getRecordButton().pauseRecordAnim();
         getFollowRecordBottomLayout().closeTorch();
@@ -173,7 +186,6 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
 
     @Override
     public void release() {
-        XmagicPanelDataManager.getInstance().clearData();
         getFollowRecordBottomLayout().getRecordProgressView().release();
         cleanBaseBeauty();
         // 停止录制
@@ -185,6 +197,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
 
         VideoRecordSDK.getInstance().setVideoRecordListener(null);
         mIsReleased = true;
+        TEBeautySDKManger.setBeautyCopyResCallBack(null);
         unRegisterVideoProcessListener();
     }
 
@@ -337,9 +350,6 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
         //恢复基础美颜属性
         getBeautyPanel().restoreBeauty();
         mBeautyType = 0;
-        if (mXMagic != null) {
-            mXMagic.setAudioMute(true);
-        }
         getScrollFilterView().setScrollable(true);
     }
 
@@ -352,9 +362,9 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
         // 显示高级美颜Panel
         getTEPanel().setVisibility(View.VISIBLE);
         getTEInfoImg().setVisibility(View.VISIBLE);
-        if (mXMagic != null) {
-            mXMagic.setBeautyStateOpen();
-            mXMagic.setAudioMute(false);
+        if (mBeautyKit != null) {
+            TEBeautySDKManger.setBeautyStateOpen();
+            mBeautyKit.setEffectState(TEBeautyKit.EffectState.ENABLED);
         }
         mBeautyType = 1;
         cleanBaseBeauty();
@@ -549,36 +559,70 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
         mConfig.mIsNeedEdit = enable;
     }
 
-    private void loadXmagicRes() {
-        new Thread(() -> {
-            XmagicResParser.copyRes(mActivity.getApplicationContext());
-            XmagicResParser.parseRes(mActivity.getApplicationContext());
-            initXMagic();
-        }).start();
-    }
-
-    /**
-     * 初始化美颜SDK
-     */
-
-    private void initXMagic() {
-        // 此处做延迟是因为在stop方法中会触发registerVideoProcessListener方法中设置的onTextureDestroyed方法执行，
-        // 但是onTextureDestroyed方法是在GL线程执行，并且执行的时机可能比较晚。
-        // 场景复现：快速的切换切后台，会导致start()方法已经执行，但onTextureDestroyed后执行，这样就会导致新创建的xmagic对象被销毁
-        BackgroundTasks.getInstance().postDelayed(() -> {
-            if (mXMagic == null) {
-                mXMagic = new XMagicImpl(mActivity, getTEPanel());
+    private void loadXMagicRes() {
+        TEBeautySDKManger.setBeautyCopyResCallBack(success -> {
+            if (success) {
+                mCanCreateBeautyKit = true;
+                initTEBeautyKit();
             } else {
-                mXMagic.onResume();
+                LogUtils.e(TAG, "copy res failed");
             }
-            mXmagicState = XMagicImpl.XmagicState.STARTED;
-        }, 500);
+        });
+        TEBeautySDKManger.copyRes();
     }
+
+    private void initTEBeautyKit() {
+        mBeautyKit = new TEBeautyKit(getContext().getApplicationContext(), XmagicConstant.EffectMode.PRO);
+        mCustomPropertyManager.setBeautyKit(mBeautyKit);
+        mBeautyKit.setEffectState(TEBeautySDKManger.getUserBeauty()
+                ? TEBeautyKit.EffectState.ENABLED : TEBeautyKit.EffectState.DISABLED);
+        setLastParam(mBeautyKit);
+        mPanelView.setupWithTEBeautyKit(mBeautyKit);
+    }
+
+    private void setLastParam(TEBeautyKit beautyKit) {
+        if (!TextUtils.isEmpty(mLastParamList)) {
+            Type type = (new TypeToken<List<TEUIProperty.TESDKParam>>() {
+            }).getType();
+            try {
+                List<TEUIProperty.TESDKParam> paramList = (new Gson()).fromJson(mLastParamList, type);
+                beautyKit.setEffectList(paramList);
+            } catch (Exception var4) {
+                LogUtils.e(TAG, "JSON parsing failed, please check the json string");
+                var4.printStackTrace();
+            }
+        }
+    }
+
+    private void addTEBeautyPanelView() {
+        TEBeautySDKManger.initPanelConfig();
+        this.mPanelView = new TEPanelView(getContext());
+        this.mPanelView.setLastParamList(mLastParamList);
+        this.mPanelView.showView(new DefaultPanelViewCallback() {
+            @Override
+            public void onClickCustomSeg(TEUIProperty uiProperty) {
+                if (mBeautyKit == null) {
+                    return;
+                }
+                mCustomPropertyManager.setData(uiProperty, mBeautyKit, mPanelView);
+                mCustomPropertyManager.pickMedia(mActivity, CustomPropertyManager.TE_CHOOSE_PHOTO_SEG_CUSTOM,
+                        CustomPropertyManager.PICK_CONTENT_ALL);
+
+            }
+        });
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+        getTEPanel().addView(mPanelView, params);
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mXMagic != null && data != null) {
-            mXMagic.onActivityResult(requestCode, resultCode, data);
+        if (this.mBeautyKit == null || this.mCustomPropertyManager == null) {
+            return;
         }
+        this.mCustomPropertyManager.onActivityResult(getContext(), requestCode, resultCode, data);
+
     }
 
     private void registerVideoProcessListener() {
@@ -586,23 +630,23 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
         instance.setVideoProcessListener(new TXUGCRecord.VideoCustomProcessListener() {
             @Override
             public int onTextureCustomProcess(int textureId, int width, int height) {
-                if (mBeautyType == 1 && mXmagicState == XMagicImpl.XmagicState.STARTED
-                        && mXMagic != null) {
-                    return mXMagic.process(textureId, width, height);
+                if (mBeautyType == 1 && mBeautyKit != null) {
+                    return mBeautyKit.process(textureId, width, height);
                 }
                 return textureId;
             }
 
             @Override
-            public void onDetectFacePoints(float[] floats) {}
+            public void onDetectFacePoints(float[] floats) {
+            }
 
             @Override
             public void onTextureDestroyed() {
                 if (Looper.getMainLooper() != Looper.myLooper()) { //非主线程
-                    if (mXMagic != null) {
-                        mXMagic.onDestroy();
+                    if (mBeautyKit != null) {
+                        mLastParamList = mBeautyKit.exportInUseSDKParam();
+                        mBeautyKit.onDestroy();
                     }
-                    Log.e(TAG, "XMagicImpl.XmagicState = " + mXmagicState.name());
                     mIsTextureDestroyed = true;
                     unRegisterVideoProcessListener();
                 }

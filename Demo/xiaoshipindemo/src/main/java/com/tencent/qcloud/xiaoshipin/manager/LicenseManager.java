@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 
 import com.tencent.ugc.TXUGCBase;
-import com.tencent.xmagic.XMagicImpl;
+import com.tencent.xmagic.TEBeautySDKManger;
 
 public class LicenseManager {
     // clang-format off
@@ -20,11 +20,11 @@ public class LicenseManager {
     }
 
     public static void setXMagicLicense() {
-        XMagicImpl.setXmagicAuthKeyAndUrl(xmagicAuthLicenceUrl, xmagicAuthKey);
+        TEBeautySDKManger.setXmagicAuthKeyAndUrl(xmagicAuthLicenceUrl, xmagicAuthKey);
     }
 
     public static void setLicense(Context context) {
         TXUGCBase.getInstance().setLicence(context, ugcLicenceUrl, ugcKey);
-        XMagicImpl.setXmagicAuthKeyAndUrl(xmagicAuthLicenceUrl, xmagicAuthKey);
+        TEBeautySDKManger.setXmagicAuthKeyAndUrl(xmagicAuthLicenceUrl, xmagicAuthKey);
     }
 }

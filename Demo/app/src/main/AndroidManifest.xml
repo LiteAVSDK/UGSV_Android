@@ -13,6 +13,8 @@
         android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning">
 
+
+
         <activity android:name="com.tencent.qcloud.xiaoshipin.mainui.TCSplashActivity"
             android:exported="true">
             <intent-filter>

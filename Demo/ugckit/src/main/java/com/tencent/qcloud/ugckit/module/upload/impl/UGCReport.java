@@ -1,8 +1,8 @@
 package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.content.Context;
-
-import com.tencent.qcloud.ugckit.basic.TUIBuild;
+import android.os.Build;
+import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +25,9 @@ import okhttp3.Response;
 
 
 public class UGCReport {
+
+    public static String REPORT_URL = TVCConstants.VOD_REPORT_DOMESTIC_HOST;
+    public static String REPORT_URL_BAK = TVCConstants.VOD_REPORT_DOMESTIC_HOST_BAK;
 
     public static class ReportInfo {
         public int     reqType          = 0;
@@ -176,7 +179,7 @@ public class UGCReport {
                 ReportInfo info = (ReportInfo) iter.next();
                 if (info.retryCount < 4) {
                     if (!info.reporting) {
-                        report(info);
+                        report(info, REPORT_URL);
                     }
                 } else {
                     iter.remove();
@@ -197,7 +200,7 @@ public class UGCReport {
         reportAll();
     }
 
-    public void report(final ReportInfo info) {
+    public void report(final ReportInfo info, String reqUrl) {
         TVCLog.i(TAG, "report: info = " + info.toString());
         try {
             JSONObject jsonObject = new JSONObject();
@@ -211,9 +214,8 @@ public class UGCReport {
             jsonObject.put("reqServerIp", info.reqServerIp);
             jsonObject.put("useHttpDNS", info.useHttpDNS);
             jsonObject.put("platform", 2000); // 1000 - iOS, 2000 - Android
-            //            jsonObject.put("device", TUIBuild.getManufacturer() +
-            //            TUIBuild.getModel());
-            jsonObject.put("osType", String.valueOf(TUIBuild.getSdkInt()));
+//            jsonObject.put("device", TXCBuild.Manufacturer() + TXCBuild.Model());
+            jsonObject.put("osType", String.valueOf(Build.VERSION.SDK_INT));
             jsonObject.put("netType", TVCUtils.getNetWorkType(context));
             jsonObject.put("reqTime", info.reqTime);
             jsonObject.put("reportId", info.reportId);
@@ -237,11 +239,11 @@ public class UGCReport {
             ++info.retryCount;
             info.reporting = true;
             String body = jsonObject.toString();
-            String reqUrl = "https://vodreport.qcloud.com/ugcupload_new";
-            TVCLog.i(TAG, "reportUGCEvent->request url:" + reqUrl + " body:" + body);
+            String reportReqUrl = reqUrl + "/ugcupload_new";
+            TVCLog.i(TAG, "reportUGCEvent->request url:" + reportReqUrl + " body:" + body);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
             Request request = new Request.Builder()
-                    .url(reqUrl)
+                    .url(reportReqUrl)
                     .post(requestBody)
                     .build();
 
@@ -249,6 +251,12 @@ public class UGCReport {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     info.reporting = false;
+                    // retry
+                    if (!TextUtils.equals(reqUrl, REPORT_URL_BAK)) {
+                        report(info, REPORT_URL_BAK);
+                    } else {
+                        TVCLog.e(TAG, "upload report failed, error:" + e);
+                    }
                 }
 
                 @Override

@@ -22,11 +22,10 @@ import com.tencent.cos.xml.transfer.TransferConfig;
 import com.tencent.cos.xml.transfer.TransferManager;
 import com.tencent.cos.xml.transfer.TransferState;
 import com.tencent.cos.xml.transfer.TransferStateListener;
-import com.tencent.qcloud.quic.QuicClientImpl;
-import com.tencent.tquic.impl.TnetConfig;
 import com.tencent.qcloud.ugckit.module.upload.TXUGCPublishTypeDef;
 import com.tencent.qcloud.ugckit.module.upload.impl.compute.TXHttpTaskMetrics;
 import com.tencent.qcloud.ugckit.module.upload.impl.compute.TXOnGetHttpTaskMetrics;
+import com.tencent.qcloud.ugckit.module.upload.impl.helper.TVCQuicConfigProxy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -429,7 +428,7 @@ public class TVCClient {
 
             JSONObject dataObj = jsonRsp.getJSONObject("data");
             JSONObject videoObj = dataObj.getJSONObject("video");
-            cosVideoPath = videoObj.getString("storagePath");
+            cosVideoPath = videoObj.optString("storagePath");
 
             // COS upload temporary certificate
             JSONObject tempCertificate = dataObj.getJSONObject("tempCertificate");
@@ -443,16 +442,17 @@ public class TVCClient {
             TVCLog.i(TAG, "isNeedCover:" + uploadInfo.isNeedCover());
             if (uploadInfo.isNeedCover()) {
                 JSONObject coverObj = dataObj.getJSONObject("cover");
-                cosCoverPath = coverObj.getString("storagePath");
+                cosCoverPath = coverObj.optString("storagePath");
             }
-            cosAppId = dataObj.getInt("storageAppId");
+            cosAppId = dataObj.optInt("storageAppId");
             // After upgrading from 5.4.10 to 5.4.20, the setAppIdAndRegion interface is deprecated,
             // and you need to stitch the costBucket format yourself to ensure it is bucket-appId
-            cosBucket = dataObj.getString("storageBucket") + "-" + cosAppId;
-            uploadRegion = dataObj.getString("storageRegionV5");
-            domain = dataObj.getString("domain");
-            vodSessionKey = dataObj.getString("vodSessionKey");
-            userAppId = dataObj.getInt("appId");
+            cosBucket = dataObj.optString("storageBucket") + "-" + cosAppId;
+            uploadRegion = dataObj.optString("storageRegionV5");
+            domain = dataObj.optString("domain");
+            vodSessionKey = dataObj.optString("vodSessionKey");
+            userAppId = dataObj.optInt("appId");
+            String uploadDomain = dataObj.optString("storageUploadDomain");
 
             JSONObject cosAccObj = dataObj.optJSONObject("cosAcc");
             if (cosAccObj != null) {
@@ -470,25 +470,32 @@ public class TVCClient {
             TVCLog.i(TAG, "cosAcc.isOpen=" + isOpenCosAcc);
             TVCLog.i(TAG, "cosAcc.domain=" + cosAccDomain);
 
-            CosXmlServiceConfig.Builder builder = new CosXmlServiceConfig.Builder()
-                    .setRegion(uploadRegion)
-                    .setDebuggable(mIsDebuggable)
+            CosXmlServiceConfig.Builder builder;
+
+            if (!TextUtils.isEmpty(uploadDomain)) {
+                builder = new CosXmlServiceConfig.Builder()
+                        .setRegion(uploadDomain)
+                        .setHostFormat("${region}");
+            } else {
+                builder = new CosXmlServiceConfig.Builder()
+                        .setRegion(uploadRegion);
+            }
+            builder.setDebuggable(mIsDebuggable)
                     .setAccelerate(isOpenCosAcc)
                     .isHttps(enableHttps)
                     .setSocketTimeout(TVCConstants.UPLOAD_TIME_OUT_SEC * 1000)
                     .dnsCache(true);
-
             if (mConcurrentCount > 0) {
                 builder.setUploadMaxThreadCount(mConcurrentCount);
             }
             boolean isQuic = TXUGCPublishOptCenter.getInstance().isNeedEnableQuic(uploadRegion);
             if (isQuic) {
                 builder.enableQuic(true).setPort(QuicClient.PORT);
-                QuicClientImpl.setTnetConfig(new TnetConfig.Builder()
-                        .setIsCustom(false)
-                        .setTotalTimeoutMillis(TVCConstants.UPLOAD_TIME_OUT_SEC * 1000)
-                        .setConnectTimeoutMillis(TVCConstants.UPLOAD_CONNECT_TIME_OUT_MILL)
-                        .build());
+                TVCQuicConfigProxy quicConfigProxy = new TVCQuicConfigProxy();
+                quicConfigProxy.setIsCustom(false);
+                quicConfigProxy.setTotalTimeoutMillis(TVCConstants.UPLOAD_TIME_OUT_SEC * 1000);
+                quicConfigProxy.setConnectTimeoutMillis(TVCConstants.UPLOAD_CONNECT_TIME_OUT_MILL);
+                quicConfigProxy.buildAndSetToGlobal();
             }
             TVCLog.i(TAG, "domain:" + uploadRegion + ",isQuic:" + isQuic);
 
