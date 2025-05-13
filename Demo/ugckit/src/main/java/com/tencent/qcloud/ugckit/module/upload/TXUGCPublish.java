@@ -19,6 +19,7 @@ import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadInfo;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUploadListener;
 import com.tencent.qcloud.ugckit.module.upload.impl.TVCUtils;
 import com.tencent.qcloud.ugckit.module.upload.impl.TXUGCPublishOptCenter;
+import com.tencent.qcloud.ugckit.module.upload.impl.UGCReport;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -510,5 +511,27 @@ public class TXUGCPublish {
             e.printStackTrace();
         }
         return strCoverFilePath;
+    }
+
+    /**
+     * set host env type
+     * @param envType {@link TVCConstants#ENV_DOMESTIC},{@link TVCConstants#ENV_INTL}
+     */
+    public static void setEnvConfig(int envType) {
+        if (envType == TVCConstants.ENV_DOMESTIC) {
+            TVCConstants.ENV_TYPE = envType;
+            TVCConstants.VOD_SERVER_HOST = TVCConstants.VOD_SERVER_DOMESTIC_HOST;
+            TVCConstants.VOD_SERVER_HOST_BAK = TVCConstants.VOD_SERVER_DOMESTIC_HOST_BAK;
+            UGCReport.REPORT_URL = TVCConstants.VOD_REPORT_DOMESTIC_HOST;
+            UGCReport.REPORT_URL_BAK = TVCConstants.VOD_REPORT_DOMESTIC_HOST_BAK;
+        } else if (envType == TVCConstants.ENV_INTL) {
+            TVCConstants.ENV_TYPE = envType;
+            TVCConstants.VOD_SERVER_HOST = TVCConstants.VOD_SERVER_INTL_HOST;
+            TVCConstants.VOD_SERVER_HOST_BAK = TVCConstants.VOD_SERVER_INTL_HOST_BAK;
+            UGCReport.REPORT_URL = TVCConstants.VOD_REPORT_INTL;
+            UGCReport.REPORT_URL_BAK = TVCConstants.VOD_REPORT_INTL_BAK;
+        } else {
+            TVCLog.e(TAG, "unknown env type:" + envType);
+        }
     }
 }

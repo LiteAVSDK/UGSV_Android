@@ -5,9 +5,33 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "12.4.0.17372";
-    public static       String VOD_SERVER_HOST     = "vod2.qcloud.com";
-    public static       String VOD_SERVER_HOST_BAK = "vod2.dnsv1.com";
+    public static final String TVCVERSION = "12.5.0.17567";
+
+    /**
+     * evn for DOMESTIC
+     * 国内环境
+     */
+    public static final int ENV_DOMESTIC = 1;
+    /**
+     * env for INTL
+     * 国际环境
+     */
+    public static final int ENV_INTL = 2;
+
+    public static final String VOD_SERVER_DOMESTIC_HOST     = "vod2.qcloud.com";
+    public static final String VOD_SERVER_DOMESTIC_HOST_BAK = "vod2.dnsv1.com";
+    public static final String VOD_SERVER_INTL_HOST     = "vod2.qcloud.com";
+    public static final String VOD_SERVER_INTL_HOST_BAK = "vod2.dnsv1.com";
+
+    public static final String VOD_REPORT_DOMESTIC_HOST = "https://vodreport.qcloud.com";
+    public static final String VOD_REPORT_DOMESTIC_HOST_BAK = "https://vodreport.qcloud.com";
+    public static final String VOD_REPORT_INTL = "https://vodreport.qcloud.com";
+    public static final String VOD_REPORT_INTL_BAK = "https://vodreport.qcloud.com";
+
+    public static int ENV_TYPE = ENV_DOMESTIC;
+    public static       String VOD_SERVER_HOST     = VOD_SERVER_DOMESTIC_HOST;
+    public static       String VOD_SERVER_HOST_BAK = VOD_SERVER_DOMESTIC_HOST_BAK;
+
 
     // Maximum Retry Times
     public static int MAX_REQUEST_COUNT = 2;
@@ -159,8 +183,7 @@ public class TVCConstants {
     public static final int ERR_UPLOAD_SIGN_EXPIRED = 1020;
 
 
-    /************************************************ Data Reporting Definition
-     * **********************************/
+    /************************************************ Data Reporting Definition **********************************/
     public static int UPLOAD_EVENT_ID_REQUEST_UPLOAD                = 10001;  // UGC Request Upload
     public static int UPLOAD_EVENT_ID_COS_UPLOAD                    = 20001;  // UGC Calls COS Upload
     public static int UPLOAD_EVENT_ID_UPLOAD_RESULT                 = 10002;  // UGC Ends Upload
@@ -168,6 +191,5 @@ public class TVCConstants {
     public static int UPLOAD_EVENT_DAU                              = 40001;  // Short Video Upload DAU Reporting
     public static int UPLOAD_EVENT_ID_REQUEST_VOD_DNS_RESULT        = 11001;  // VOD HTTP DNS Request Result
     public static int UPLOAD_EVENT_ID_REQUEST_PREPARE_UPLOAD_RESULT = 11002;  // PrepareUploadUGC Request Result
-    public static int UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT          = 11003;
-    // Best Park Detection Result (Including COS IP List)
+    public static int UPLOAD_EVENT_ID_DETECT_DOMAIN_RESULT          = 11003;  // Best Park Detection Result (Including COS IP List)
 }

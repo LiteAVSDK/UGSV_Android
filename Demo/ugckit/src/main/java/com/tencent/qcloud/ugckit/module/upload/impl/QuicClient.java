@@ -5,9 +5,12 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.tencent.tquic.impl.TnetConfig;
-import com.tencent.tquic.impl.TnetQuicRequest;
+import com.tencent.qcloud.ugckit.module.upload.impl.helper.TVCQuicConfigProxy;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -24,7 +27,7 @@ public class QuicClient {
     public static final int PORT = 443;
 
     private final Handler mHandler;
-    private TnetQuicRequest mQuicNative;
+    private Object mQuicClienObj;
     private QuicDetectListener mQuicDetectListener;
     private String mParams;
     private String mHost;
@@ -35,45 +38,70 @@ public class QuicClient {
         mHandler = new Handler(context.getMainLooper());
     }
 
-    private final TnetQuicRequest.Callback networkCallback = new TnetQuicRequest.Callback() {
-        @Override
-        public void onConnect(int error_code) throws Exception {
-            if (error_code == 0) {
-                mQuicNative.addHeaders(":method", "HEAD");
-                mQuicNative.sendRequest(new byte[0], 0, true);
-            } else {
-                notifyCallback(false, error_code);
-            }
+    private final Object mNetworkCallback = createQuicCallback();
+
+    private Object createQuicCallback() {
+        // create poxy Objects through Reflection
+        try {
+            final Class<?> callbackInterface = Class.forName("com.tencent.ugcupload.ugcquic.impl.UGCQuicCallback");
+            final Class<?> quicProxyClass = Class.forName("com.tencent.ugcupload.ugcquic.impl.UGCQuicClientProxy");
+            return Proxy.newProxyInstance(
+                    callbackInterface.getClassLoader(),
+                    new Class[]{callbackInterface},
+                    new InvocationHandler() {
+                        @Override
+                        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                            String methodName = method.getName();
+
+                            // hande Basic Methods of Object
+                            if ("toString".equals(methodName)) {
+                                return "UGCQuicCallbackProxy@" + Integer.toHexString(hashCode());
+                            }
+                            if ("hashCode".equals(methodName)) {
+                                return System.identityHashCode(proxy);
+                            }
+
+                            switch (methodName) {
+                                case "onConnect":
+                                    int error_code = (int) args[0];
+                                    if (error_code == 0) {
+                                        Method addHeadersMethod = quicProxyClass.getMethod("addHeaders",
+                                                String.class, String.class);
+                                        addHeadersMethod.invoke(mQuicClienObj, ":method", "HEAD");
+
+                                        Method sendRequestMethod = quicProxyClass.getMethod("sendRequest",
+                                                byte[].class, int.class, boolean.class);
+                                        sendRequestMethod.invoke(mQuicClienObj, new byte[0], 0, true);
+                                    } else {
+                                        notifyCallback(false, error_code);
+                                    }
+                                    break;
+                                case "onHeaderRecv":
+                                    String header = (String) args[0];
+                                    notifyCallback(true, 0);
+                                    TVCLog.i(TAG, mHost + " responseData:" + header);
+                                    break;
+                                case "onDataRecv":
+                                    byte[] body = (byte[]) args[0];
+                                    notifyCallback(true, 0);
+                                    String responseData = new String(body, StandardCharsets.ISO_8859_1);
+                                    TVCLog.i(TAG, mHost + " responseData:" + responseData);
+                                    break;
+                                // 其他方法若无需逻辑可留空
+                                case "onNetworkLinked":
+                                case "onComplete":
+                                case "onClose":
+                                    break;
+                            }
+                            return null;
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            TVCLog.e(TAG, "failed to create UGCQuicCallback through reflection, may not depend quic", e);
+            return null;
         }
-
-        @Override
-        public void onNetworkLinked() throws Exception {
-
-        }
-
-        @Override
-        public void onHeaderRecv(String header) throws Exception {
-            notifyCallback(true, 0);
-            TVCLog.i(TAG, mHost + " responseData:" + header);
-        }
-
-        @Override
-        public void onDataRecv(byte[] body) throws Exception {
-            notifyCallback(true, 0);
-            String responseData = new String(body, StandardCharsets.ISO_8859_1);
-            TVCLog.i(TAG, mHost + " responseData:" + responseData);
-        }
-
-        @Override
-        public void onComplete(int stream_error) throws Exception {
-
-        }
-
-        @Override
-        public void onClose(int error_code, String error_str) throws Exception {
-
-        }
-    };
+    }
 
     private final Runnable timeOutRunnable = new Runnable() {
         @Override
@@ -123,14 +151,30 @@ public class QuicClient {
             } else {
                 this.mParams = originUri.getPath();
             }
-            TnetConfig config = new TnetConfig.Builder()
-                    .setIsCustom(false)
-                    .setTotalTimeoutMillis((int) TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT)
-                    .build();
-            mQuicNative = new TnetQuicRequest(networkCallback, config, 0);
-            mQuicNative.connect(mHost, domainIp);
-            reqStartTime = System.currentTimeMillis();
-            mHandler.postDelayed(timeOutRunnable, TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT);
+            TVCQuicConfigProxy quicConfigProxy = new TVCQuicConfigProxy();
+            quicConfigProxy.setIsCustom(false);
+            quicConfigProxy.setTotalTimeoutMillis((int) TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT);
+            Object configObj = quicConfigProxy.build();
+            if (null != configObj) {
+                // 使用反射创建 TnetQuicRequest 的实例
+                try {
+                    Class<?> quicRequestClass = Class.forName("com.tencent.ugcupload.ugcquic.impl.UGCQuicClientProxy");
+                    Class<?> callbackClass = Class.forName("com.tencent.ugcupload.ugcquic.impl.UGCQuicCallback");
+                    Class<?> configClass = Class.forName("com.tencent.tquic.impl.TnetConfig");
+                    Constructor<?> quicRequestConstructor =
+                            quicRequestClass.getConstructor(callbackClass, configClass, int.class);
+                    mQuicClienObj = quicRequestConstructor.newInstance(mNetworkCallback, configObj, 0);
+                    Method connectMethod = quicRequestClass.getMethod("connect", String.class, String.class);
+                    connectMethod.invoke(mQuicClienObj, mHost, domainIp);
+                    reqStartTime = System.currentTimeMillis();
+                    mHandler.postDelayed(timeOutRunnable, TVCConstants.PRE_UPLOAD_QUIC_DETECT_TIMEOUT);
+                } catch (Exception e) {
+                    TVCLog.e(TAG, "quic opt failed, may not depend quic:" + e);
+                    notifyCallback(false, ERROR_CODE_QUIC_FAILED);
+                }
+            } else {
+                notifyCallback(false, ERROR_CODE_QUIC_FAILED);
+            }
         } else {
             notifyCallback(false, ERROR_CODE_QUIC_FAILED);
         }

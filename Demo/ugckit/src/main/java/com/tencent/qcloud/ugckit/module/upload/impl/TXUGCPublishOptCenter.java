@@ -2,6 +2,7 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -29,6 +30,7 @@ import okhttp3.Response;
  */
 public class TXUGCPublishOptCenter {
     private static final long PRE_UPLOAD_TIME_OUT = 8 * 1000;
+    private static final int WAIT_TIME_OUT = 101;
 
     private static class CosRegionInfo {
         private String region = "";
@@ -44,8 +46,7 @@ public class TXUGCPublishOptCenter {
     private long minCosRespTime;
     private UGCClient ugcClient;
     private final ConcurrentHashMap<String, Boolean> publishingList = new ConcurrentHashMap<>();
-
-    private final Handler mProtectHandler = new Handler();
+    private final Handler mProtectHandler;
 
     private static final class OurInstanceHolder {
         static final TXUGCPublishOptCenter ourInstance = new TXUGCPublishOptCenter();
@@ -53,6 +54,11 @@ public class TXUGCPublishOptCenter {
 
     public static TXUGCPublishOptCenter getInstance() {
         return OurInstanceHolder.ourInstance;
+    }
+
+    public TXUGCPublishOptCenter() {
+        // use main looper, can prevent Handler leak
+        mProtectHandler = new Handler(Looper.getMainLooper());
     }
 
 
@@ -81,8 +87,7 @@ public class TXUGCPublishOptCenter {
      * Pre-upload initialization
      * 预上传初始化
      */
-    private boolean prepareUploadInner(
-            final Context context, final IPrepareUploadCallback prepareUploadCallback) {
+    private boolean prepareUploadInner(final Context context, final IPrepareUploadCallback prepareUploadCallback) {
         dnsCache = new TVCDnsCache();
         final long startTime = System.currentTimeMillis();
         final AtomicBoolean isCallback = new AtomicBoolean(false);
@@ -168,6 +173,7 @@ public class TXUGCPublishOptCenter {
         }
 
         if (dnsCache == null || TextUtils.isEmpty(signature)) {
+            mProtectHandler.removeCallbacksAndMessages(null);
             return false;
         }
 
@@ -184,7 +190,6 @@ public class TXUGCPublishOptCenter {
                 if (prepareUploadCallback != null) {
                     prepareUploadCallback.onFinish();
                 }
-
             }
 
             @Override
@@ -206,6 +211,9 @@ public class TXUGCPublishOptCenter {
                 }
             }
         });
+        if (!ret) {
+            mProtectHandler.removeCallbacksAndMessages(null);
+        }
         return ret;
     }
 
@@ -453,7 +461,7 @@ public class TXUGCPublishOptCenter {
      * Determine whether the current upload region is consistent with the detected optimal region.
      * If consistent, return the detected QUIC switch. Otherwise, it means that the optimal detection result
      * is not used, and the default COS region is used without enabling QUIC.
-     *
+     * <p>
      * 判断当前上传region与探测出来的最优region是否一致，如果一致，返回探测出来的quic开关。
      * 否则证明没有使用最优探测结果，使用的默认cos region，没有开启quic
      */
