@@ -40,6 +40,6 @@ ext {
     androidxAppcompat = "androidx.appcompat:appcompat:1.0.0"
     androidxRecyclerview = "androidx.recyclerview:recyclerview:1.0.0"
 
-    liteavSdk="com.tencent.liteav:LiteAVSDK_UGC:latest.release"
-    placeholderSdk = "com.tencent.liteav:LiteAVSDK_UGC:latest.release"
+    liteavSdk="com.tencent.liteav:LiteAVSDK_Professional:latest.release"
+    placeholderSdk = "com.tencent.liteav:LiteAVSDK_Professional:latest.release"
 }
