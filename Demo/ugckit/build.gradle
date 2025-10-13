@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.squareup.okio:okio:1.14.0'
-    implementation 'com.qcloud.cos:cos-android-nobeacon:5.9.17'
+    implementation 'com.qcloud.cos:cos-android-nobeacon:5.9.46'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 }

@@ -36,5 +36,5 @@ android {
 }
 
 dependencies {
-    api 'com.qcloud.cos:quic:1.5.45'
+    api 'com.qcloud.cos:quic:1.5.46'
 }
