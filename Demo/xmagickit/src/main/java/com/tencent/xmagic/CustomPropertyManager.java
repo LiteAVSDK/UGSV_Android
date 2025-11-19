@@ -32,18 +32,27 @@ public class CustomPropertyManager {
     private Handler handler = new Handler(Looper.getMainLooper());
     private TEUIProperty customProperty = null;
 
-    private TEBeautyKit beautyKit = null;
+    private volatile TEBeautyKit beautyKit = null;
 
     private TEPanelView tePanelView = null;
+
+    private boolean shouldSetEffectLater = false;   //是否延期设置素材，true 表示延期设置
 
 
     public void setBeautyKit(TEBeautyKit beautyKit) {
         this.beautyKit = beautyKit;
+        handler.postDelayed(() -> {
+            if (customProperty != null && beautyKit != null) {
+                if (shouldSetEffectLater) {
+                    shouldSetEffectLater = false;
+                    beautyKit.setEffect(customProperty.sdkParam);
+                }
+            }
+        }, 200);
     }
 
-    public void setData(TEUIProperty customProperty, TEBeautyKit beautyKit, TEPanelView tePanelView) {
+    public void setData(TEUIProperty customProperty, TEPanelView tePanelView) {
         this.customProperty = customProperty;
-        this.beautyKit = beautyKit;
         this.tePanelView = tePanelView;
     }
 
@@ -85,25 +94,28 @@ public class CustomPropertyManager {
                     customProperty.sdkParam.extraInfo.put(TEUIProperty.TESDKParam.EXTRA_INFO_KEY_BG_TYPE,
                             TEUIProperty.TESDKParam.EXTRA_INFO_BG_TYPE_IMG);
                     customProperty.sdkParam.extraInfo.put(TEUIProperty.TESDKParam.EXTRA_INFO_KEY_BG_PATH, imgPath);
-                    beautyKit.setEffect(customProperty.sdkParam);
-                    handler.post(() -> {
-                        tePanelView.checkPanelViewItem(customProperty);
-                        customProperty = null;
-                    });
+                    setCustomSegParam();
                 });
             } else {
                 customProperty.sdkParam.extraInfo.put(TEUIProperty.TESDKParam.EXTRA_INFO_KEY_BG_TYPE,
                         TEUIProperty.TESDKParam.EXTRA_INFO_BG_TYPE_VIDEO);
                 customProperty.sdkParam.extraInfo.put(TEUIProperty.TESDKParam.EXTRA_INFO_KEY_BG_PATH, filePath);
-                beautyKit.setEffect(customProperty.sdkParam);
-                handler.post(() -> {
-                    tePanelView.checkPanelViewItem(customProperty);
-                    customProperty = null;
-                });
+                this.setCustomSegParam();
             }
         } else {
             customProperty = null;
         }
+    }
+
+
+    private void setCustomSegParam() {
+        shouldSetEffectLater = true;
+        if (this.beautyKit != null) {
+            this.beautyKit.setEffect(this.customProperty.sdkParam);
+        }
+        handler.post(() -> {
+            tePanelView.checkPanelViewItem(customProperty);
+        });
     }
 
 
