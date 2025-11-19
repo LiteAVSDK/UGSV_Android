@@ -1,18 +1,18 @@
 package com.tencent.qcloud.ugc.demo;
 
 import android.app.Activity;
+import android.app.Application;
 import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.multidex.MultiDexApplication;
 
 import com.tencent.qcloud.ugckit.utils.LogReport;
 
 /**
  * 小视频应用类，用于 ELK 数据上报
  */
-public class TCApplication extends MultiDexApplication {
+public class TCApplication extends Application {
     private static final String TAG = "TCApplication";
     private static TCApplication instance;
 

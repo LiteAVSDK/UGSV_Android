@@ -573,10 +573,10 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
 
     private void initTEBeautyKit() {
         mBeautyKit = new TEBeautyKit(getContext().getApplicationContext(), XmagicConstant.EffectMode.PRO);
-        mCustomPropertyManager.setBeautyKit(mBeautyKit);
         mBeautyKit.setEffectState(TEBeautySDKManger.getUserBeauty()
                 ? TEBeautyKit.EffectState.ENABLED : TEBeautyKit.EffectState.DISABLED);
         setLastParam(mBeautyKit);
+        mCustomPropertyManager.setBeautyKit(mBeautyKit);
         mPanelView.setupWithTEBeautyKit(mBeautyKit);
     }
 
@@ -604,7 +604,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
                 if (mBeautyKit == null) {
                     return;
                 }
-                mCustomPropertyManager.setData(uiProperty, mBeautyKit, mPanelView);
+                mCustomPropertyManager.setData(uiProperty, mPanelView);
                 mCustomPropertyManager.pickMedia(mActivity, CustomPropertyManager.TE_CHOOSE_PHOTO_SEG_CUSTOM,
                         CustomPropertyManager.PICK_CONTENT_ALL);
 
@@ -643,6 +643,7 @@ public class UGCKitVideoMixRecord extends AbsVideoTripleMixRecordUI
             @Override
             public void onTextureDestroyed() {
                 if (Looper.getMainLooper() != Looper.myLooper()) { //非主线程
+                    mCustomPropertyManager.setBeautyKit(null);
                     if (mBeautyKit != null) {
                         mLastParamList = mBeautyKit.exportInUseSDKParam();
                         mBeautyKit.onDestroy();

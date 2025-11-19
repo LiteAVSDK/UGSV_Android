@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tencent.xmagic.demo">
 
+    <uses-sdk tools:overrideLibrary="org.libpag" />
     <application>
         <uses-native-library tools:node="removeAll" />
     </application>
