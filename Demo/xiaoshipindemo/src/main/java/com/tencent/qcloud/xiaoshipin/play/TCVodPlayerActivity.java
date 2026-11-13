@@ -194,7 +194,7 @@ public class TCVodPlayerActivity extends Activity
 
             File sdcardDir = getExternalFilesDir(null);
             if (sdcardDir != null) {
-                config.setCacheFolderPath(sdcardDir.getAbsolutePath() + "/txcache");
+                config.setCacheFolderPath(sdcardDir.getAbsolutePath() + "/txplayerfiles");
             }
             config.setMaxCacheItems(5);
             vodPlayer.setConfig(config);
