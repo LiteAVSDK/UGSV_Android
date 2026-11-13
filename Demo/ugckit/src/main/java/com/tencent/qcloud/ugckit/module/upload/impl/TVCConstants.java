@@ -5,7 +5,7 @@ package com.tencent.qcloud.ugckit.module.upload.impl;
  * 视频上传常量定义
  */
 public class TVCConstants {
-    public static final String TVCVERSION = "13.4.0.20477";
+    public static final String TVCVERSION = "13.6.0.20747";
 
     /**
      * evn for DOMESTIC
